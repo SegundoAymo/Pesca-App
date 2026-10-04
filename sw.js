@@ -1,6 +1,6 @@
 // Service Worker: keeps the whole app on the phone so it works without a connection.
 // Bump VERSION on every release so phones pick up the new files.
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = `kitpesca-${VERSION}`;
 const DATA_CACHE = 'kitpesca-data';
 
@@ -44,7 +44,7 @@ const SHELL = [
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)));
+  event.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL.map((u) => new Request(u, { cache: 'reload' })))));
 });
 
 self.addEventListener('activate', (event) => {
