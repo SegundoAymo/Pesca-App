@@ -12,7 +12,7 @@ Las muestras de `mockups/` son mesas de trabajo del lienzo de diseño (formato `
 | `Clima.dc.html` | Pantalla Clima: tira de 16 días, resumen y 24 horas (datos de ejemplo). |
 | `Iconos-S7.dc.html` | Catálogo de 30 íconos (C1–C6, K1–K6, P1–P6, N1–N6, L1–L6). |
 
-`Calendario.dc.html`, `Clima.dc.html` e `Inicio.dc.html` todavía tienen el estilo anterior: hay que pasarlos al estilo Señal.
+`Calendario.dc.html`, `Clima.dc.html` e `Inicio.dc.html` tienen el estilo anterior. No hace falta pasarlos: la app ya está programada en estilo Señal y es la referencia actual (capturas: abrir la app).
 
 ## Descartados (de referencia)
 
