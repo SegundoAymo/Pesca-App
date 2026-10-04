@@ -92,15 +92,37 @@ function samePlace(a, b) {
 }
 
 export function getCachedForecast() {
-  return load('forecast', 1, null);
+  const entry = load('forecast', 1, null);
+  return entry && validForecast(entry.data) ? entry : null;
 }
 
 /**
  * Returns { place, fetchedAt, days, deltas, stale, error } or null when there is
  * no forecast at all. Uses the saved one if it is recent, for the same place.
  */
-export async function getForecast({ force = false, place } = {}) {
-  place = place || (await resolvePlace());
+let inflight = null; // { key, promise }: one request at a time per place choice
+
+function choiceKey() {
+  return JSON.stringify(getPlaceChoice());
+}
+
+function validForecast(data) {
+  const h = data?.hourly;
+  return Array.isArray(h?.time) && h.time.length > 0 && Array.isArray(h.temperature_2m);
+}
+
+export function getForecast({ force = false } = {}) {
+  const key = choiceKey();
+  if (inflight && inflight.key === key) return inflight.promise;
+  const promise = fetchForecast(force, key).finally(() => {
+    if (inflight?.promise === promise) inflight = null;
+  });
+  inflight = { key, promise };
+  return promise;
+}
+
+async function fetchForecast(force, key) {
+  const place = await resolvePlace();
   const cached = getCachedForecast();
   const fresh = cached && samePlace(cached.place, place) && Date.now() - cached.fetchedAt < REFRESH_MS;
   if (fresh && !force) return expand(cached, false);
@@ -108,7 +130,10 @@ export async function getForecast({ force = false, place } = {}) {
     const res = await fetch(forecastUrl(place));
     if (!res.ok) throw new Error(`Open-Meteo ${res.status}`);
     const data = await res.json();
+    if (!validForecast(data)) throw new Error('Respuesta sin pronóstico');
     const entry = { place, fetchedAt: Date.now(), data };
+    // The person may have picked another place while this was loading: don't overwrite.
+    if (choiceKey() !== key) return { ...expand(entry, false), outdated: true };
     save('forecast', 1, entry);
     return expand(entry, false);
   } catch (error) {

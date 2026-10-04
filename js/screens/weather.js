@@ -55,7 +55,8 @@ function dayView(day, key, isToday) {
     ? `<div class="card alert">${ICON.warning}<span>Tormenta eléctrica ${day.storms.map((s) => `de ${rangeText(s)}`).join(' y ')}. Salir del agua y guardar la caña.</span></div>`
     : '';
   const nowH = isToday ? day.hours.find((h) => h.h === nowHour()) : null;
-  const bigTemp = nowH?.temp != null ? `${Math.round(nowH.temp)}°` : `${day.max}°`;
+  const t = (v) => (v != null ? `${v}°` : '–');
+  const bigTemp = nowH?.temp != null ? `${Math.round(nowH.temp)}°` : t(day.max);
   return `${storm}
   <section class="card">
     <div class="summary-top">
@@ -67,7 +68,7 @@ function dayView(day, key, isToday) {
       </div>
     </div>
     <div class="wblocks">
-      <div class="wblock"><span class="k">Temperatura</span><span class="v">${day.min}° / ${day.max}°</span><span class="s">mínima / máxima</span></div>
+      <div class="wblock"><span class="k">Temperatura</span><span class="v">${t(day.min)} / ${t(day.max)}</span><span class="s">mínima / máxima</span></div>
       <div class="wblock"><span class="k">Lluvia</span><span class="v">${day.prob ?? '–'}%</span><span class="s">${day.mm != null ? `${fmt1(day.mm)} mm en el día` : ''}</span></div>
       <div class="wblock"><span class="k">Viento</span><span class="v">${windArrow(day.dir, 24)}${day.wind ?? '–'} km/h</span><span class="s">del ${windDir(day.dir, true)}${day.gust != null ? ` · ráfagas ${day.gust}` : ''}</span></div>
       <div class="wblock"><span class="k">Sol</span><span class="v">${day.sunrise ?? '–'}</span><span class="s">sale · se pone ${day.sunset ?? '–'}</span></div>
@@ -88,14 +89,14 @@ function strip(days, todayKey, selKey) {
     if (d.storms.length) cls.push('storm');
     const label = k === todayKey ? 'Hoy' : `${DOW_SHORT[weekday(date)]} ${date.d}`;
     return `<button type="button" role="listitem" class="${cls.join(' ')}" data-wday="${k}" aria-label="${esc(`${label}: ${d.sky}, ${d.min} a ${d.max} grados`)}"${k === selKey ? ' aria-current="date"' : ''}>
-      <span class="d">${label}</span>${weatherIcon(d.code, 34)}<span class="mm">${d.max}° ${d.min}°</span>
+      <span class="d">${label}</span>${weatherIcon(d.code, 34)}<span class="mm">${d.max ?? '–'}° ${d.min ?? '–'}°</span>
     </button>`;
   }).join('')}</div>`;
 }
 
 /* ---------- Place picker ---------- */
 
-function placePicker(go, refresh) {
+function placePicker(go, back, previous) {
   const recent = getRecentPlaces();
   const html = screen('Lugar', `
     <button type="button" class="big yellow" data-gps>${ICON.gps}<span class="label">Usar mi ubicación<small>El GPS del teléfono. Sin permiso, Navarro.</small></span></button>
@@ -112,7 +113,9 @@ function placePicker(go, refresh) {
   const choose = (choice) => {
     setPlaceChoice(choice);
     status = { loading: false, error: null, placeChanged: true };
-    go('clima', { replace: true });
+    // Return to the Clima screen the picker was opened from; otherwise open Clima in its place.
+    if (/^#\/clima(\/\d|$)/.test(previous() || '')) back();
+    else go('clima', { replace: true });
   };
   return {
     title: 'Lugar',
@@ -145,8 +148,8 @@ function placePicker(go, refresh) {
 
 /* ---------- Screen ---------- */
 
-export function render(params, { go, refresh }) {
-  if (params[0] === 'lugar') return placePicker(go, refresh);
+export function render(params, { go, refresh, back, previous }) {
+  if (params[0] === 'lugar') return placePicker(go, back, previous);
 
   const today = todayAR();
   const todayKey = dayKey(today);
@@ -154,7 +157,7 @@ export function render(params, { go, refresh }) {
   const days = cachedDays();
   const choice = getPlaceChoice();
   let selKey = params[0] && /^\d{4}-\d{2}-\d{2}$/.test(params[0]) ? params[0] : todayKey;
-  const place = status.lastPlace || cached?.place || null;
+  const place = cached?.place || status.lastPlace || null;
 
   let body;
   const ahead = daysBetween(today, parseDayKey(selKey));
@@ -192,11 +195,15 @@ export function render(params, { go, refresh }) {
       root.querySelectorAll('[data-wday]').forEach((b) => b.addEventListener('click', () => go(`clima/${b.dataset.wday}`, { replace: true })));
       const load = (force) => {
         status = { ...status, loading: true };
-        if (!days) refresh();
-        getForecast({ force }).then((f) => {
-          status = { loading: false, error: f?.error || null, lastPlace: f?.place || null, tried: true };
-          refresh();
-        });
+        refresh();
+        getForecast({ force })
+          .then((f) => { status = { loading: false, error: f?.error || null, lastPlace: f?.place || null, tried: true }; })
+          .catch((error) => { status = { loading: false, error, lastPlace: null, tried: true }; })
+          .finally(() => {
+            // Only redraw if the person is still on Clima (not on the place picker or another screen).
+            const h = location.hash.replace(/^#\/?/, '');
+            if (h === 'clima' || /^clima\/\d/.test(h)) refresh();
+          });
       };
       root.querySelectorAll('[data-reload]').forEach((b) => b.addEventListener('click', () => load(true)));
       const sel = root.querySelector('.daychip.sel');
@@ -211,6 +218,5 @@ export function render(params, { go, refresh }) {
         load(false);
       }
     },
-    unmount() {},
   };
 }

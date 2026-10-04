@@ -16,7 +16,7 @@ function climaInfo() {
   return {
     temp: now?.temp != null ? Math.round(now.temp) : null,
     storm: upcoming.length ? `Tormenta ${rangeText(upcoming[0])}` : '',
-    line: `${day.min}° / ${day.max}°`,
+    line: day.min != null ? `${day.min}° / ${day.max}°` : 'Ver pronóstico',
   };
 }
 

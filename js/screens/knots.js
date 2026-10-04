@@ -52,6 +52,6 @@ function knot(s, k) {
 export function render(params) {
   const s = SITUATIONS.find((x) => x.id === params[0]);
   if (!s) return situations();
-  const k = params[1] && KNOTS[params[1]];
+  const k = params[1] && Object.hasOwn(KNOTS, params[1]) ? KNOTS[params[1]] : null;
   return k ? knot(s, k) : situation(s);
 }

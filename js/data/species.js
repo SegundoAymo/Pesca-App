@@ -174,7 +174,7 @@ export const SPECIES = [
       { list: [
         '**Dónde:** anda en cardumen y hay que seguirlo. Con viento se afirma en el centro de la laguna.',
         '**Profundidad:** cambia según el día. Con heladas baja al fondo; en días templados sube.',
-        '**Horario:** de día. En las lagunas de la provincia la pesca nocturna no está permitida (dato de prensa, a confirmar).',
+        '**Horario:** de día. En las lagunas de la provincia la pesca nocturna del pejerrey no está permitida (Disposición 19/96, según prensa: confirmar).',
         '**Época:** temporada fría, de abril a agosto. Del 1 de septiembre al 30 de noviembre hay veda.',
       ] },
     ],
@@ -189,12 +189,14 @@ export const SPECIES = [
       { list: [
         '**Cómo pica:** la boya se corre a un costado y después se hunde. Estudia la carnada antes de tomarla: no clavar al primer movimiento.',
         '**Boca blanda:** no forzar la clavada ni la pelea.',
-        '**Reglas:** veda del 1 de septiembre al 30 de noviembre (Disposición 89/08); durante la veda solo sábados, domingos y feriados, respetando el cupo. Talla mínima 25 cm y cupo de 15 por día en la mayoría de las lagunas (según prensa que cita a la Dirección Provincial de Pesca: confirmar al empezar cada temporada).',
+        '**Reglas:** veda del 1 de septiembre al 30 de noviembre (Disposición 89/08); durante la veda solo sábados, domingos y feriados, respetando el cupo. Talla mínima 25 cm, medida de la punta de la boca cerrada al final de la cola (Disposición 19/96). Cupo de 15 por pescador por día en ríos, arroyos y canales y en la mayoría de las lagunas; algunas lagunas tienen cupo propio. Talla y cupo salen de prensa de 2026 que cita la norma: confirmar al empezar cada temporada.',
       ] },
     ],
-    confidence: 'Alta en armado y carnadas; la veda es oficial. Talla mínima y cupo salen de prensa, no de la disposición: están marcados para confirmar.',
+    confidence: 'Alta en armado y carnadas; la veda es oficial. Talla mínima, cupo y pesca nocturna salen de prensa de 2026 que cita la Disposición 19/96 (no pude leer el texto oficial): están marcados para confirmar.',
     sources: [
       { title: 'Veda de pejerrey — Provincia de Buenos Aires', url: 'https://www.gba.gob.ar/desarrollo_agrario/pesca/articulos/veda_de_pejerrey' },
+      { title: 'Comienza la veda del pejerrey (2026) — El Cronista', url: 'https://www.elcronista.ar/pejerrey-comienza-la-veda-de-la-pesca-deportiva-en-la-provincia-de-buenos-aires' },
+      { title: 'Reglamento de pesca deportiva de la Provincia — Pesca en Argentina', url: 'https://www.pescaargentina.com.ar/noticia/reglamento-de-pesca-deportiva-de-la-provincia-de-buenos-aires-880' },
       { title: '¿Cómo pica el pejerrey? — Pescador Deportivo', url: 'https://pescadordeportivo.net/2021/04/01/como-pica-el-pejerrey/' },
       { title: 'Lagunas para pejerrey — Weekend', url: 'https://weekend.perfil.com/noticias/pesca/pejerrey-15-lagunas-para-un-buen-arranque.phtml' },
       { title: 'Pejerrey — SIB', url: 'https://sib.gob.ar/especies/odontesthes-bonariensis' },

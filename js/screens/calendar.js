@@ -59,7 +59,7 @@ function weatherLine(day, today) {
   const wind = wx.wind != null ? `viento ${windDir(wx.dir)} ${wx.wind} km/h` : '';
   return `<div class="wx-line">
     ${weatherIcon(wx.code, 38)}
-    <span class="t"><strong>${esc(wx.sky)}</strong><span class="small">${wx.min}° / ${wx.max}°${rain ? ` · ${rain}` : ''}${wind ? ` · ${wind}` : ''}</span></span>
+    <span class="t"><strong>${esc(wx.sky)}</strong><span class="small">${wx.min ?? '–'}° / ${wx.max ?? '–'}°${rain ? ` · ${rain}` : ''}${wind ? ` · ${wind}` : ''}</span></span>
   </div>
   <a class="btn block" href="#/clima/${dayKey(day)}">Ver por hora ${ICON.chevron}</a>`;
 }

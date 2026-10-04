@@ -16,7 +16,9 @@ let currentName = null;
 let replacing = false;
 
 function parse(hash) {
-  const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
+  const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean).map((p) => {
+    try { return decodeURIComponent(p); } catch { return p; }
+  });
   return { name: parts[0] || '', params: parts.slice(1) };
 }
 
@@ -46,11 +48,11 @@ export function refresh() {
 
 function render(scrollTop = true) {
   const { name, params } = parse(location.hash);
-  const mod = SCREENS[name] || home;
+  const mod = Object.hasOwn(SCREENS, name) ? SCREENS[name] : home;
   if (mod.keepScroll && name === currentName) scrollTop = false;
   currentName = name;
   if (current?.unmount) current.unmount();
-  const view = mod.render(params, { go, refresh }) || {};
+  const view = mod.render(params, { go, refresh, back: goBack, previous: () => stack[stack.length - 2] || null }) || {};
   root.innerHTML = view.html || '';
   document.title = view.title ? `${view.title} · Kit de Pesca` : 'Kit de Pesca';
   root.querySelectorAll('[data-back]').forEach((b) => b.addEventListener('click', goBack));
@@ -88,9 +90,12 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     });
     setInterval(() => reg.update().catch(() => {}), 3600000);
   }).catch(() => {});
+  // Reload only when an update replaces a worker that was already in control
+  // (not on the very first visit, when the first worker takes over).
+  const hadController = !!navigator.serviceWorker.controller;
   let reloading = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (reloading) return;
+    if (reloading || !hadController) return;
     reloading = true;
     location.reload();
   });

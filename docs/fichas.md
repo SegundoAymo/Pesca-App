@@ -76,7 +76,7 @@ Cómo reconocerlo: cuerpo alargado y plateado con una franja plateada brillante 
 
 - Dónde: anda en cardumen y hay que seguirlo. Con viento se afirma en el centro de la laguna.
 - Profundidad: cambia según el día. Con heladas baja al fondo; en días templados sube.
-- Horario: de día. En las lagunas de la provincia la pesca nocturna no está permitida (dato de prensa, a confirmar).
+- Horario: de día. En las lagunas de la provincia la pesca nocturna del pejerrey no está permitida (Disposición 19/96, según prensa: confirmar).
 - Época: temporada fría, de abril a agosto. Del 1 de septiembre al 30 de noviembre hay veda.
 
 ### Equipo
@@ -89,9 +89,9 @@ Cómo reconocerlo: cuerpo alargado y plateado con una franja plateada brillante 
 
 - Cómo pica: la boya se corre a un costado y después se hunde. El pejerrey estudia la carnada antes de tomarla: no clavar al primer movimiento.
 - Boca blanda: no forzar la clavada ni la pelea.
-- Veda del 1 de septiembre al 30 de noviembre (Disposición 89/08). Durante la veda solo se puede pescar sábados, domingos y feriados, respetando el cupo. Talla mínima 25 cm y cupo de 15 por día en la mayoría de las lagunas (según prensa que cita a la Dirección Provincial de Pesca: confirmar al empezar cada temporada).
+- Veda del 1 de septiembre al 30 de noviembre (Disposición 89/08). Durante la veda solo se puede pescar sábados, domingos y feriados, respetando el cupo. Talla mínima 25 cm, medida de la punta de la boca cerrada al final de la cola (Disposición 19/96). Cupo de 15 por pescador por día en ríos, arroyos y canales y en la mayoría de las lagunas; algunas lagunas tienen cupo propio. Talla y cupo salen de prensa de 2026 que cita la norma: confirmar al empezar cada temporada.
 
-Confianza: alta en armado y carnadas; la veda es oficial. Talla mínima y cupo salen de prensa, no de la disposición: están en la ficha marcados para confirmar. Fuentes: [Veda de pejerrey — Provincia de Buenos Aires](https://www.gba.gob.ar/desarrollo_agrario/pesca/articulos/veda_de_pejerrey), [¿Cómo pica el pejerrey? — Pescador Deportivo](https://pescadordeportivo.net/2021/04/01/como-pica-el-pejerrey/), [Lagunas para pejerrey — Weekend](https://weekend.perfil.com/noticias/pesca/pejerrey-15-lagunas-para-un-buen-arranque.phtml), [Pejerrey — SIB](https://sib.gob.ar/especies/odontesthes-bonariensis), [Reglamento de pesca deportiva — Weekend](https://weekend.perfil.com/noticias/amp/pesca/reglamento-de-temporada-de-pesca-deportiva-de-la-provincia-de-buenos-aires-pejerrey-tararira-dorado-perca-trucha.phtml).
+Confianza: alta en armado y carnadas; la veda es oficial. Talla mínima, cupo y pesca nocturna salen de prensa de 2026 que cita la Disposición 19/96 (no pude leer el texto oficial: el sitio de la provincia está bloqueado desde el entorno de trabajo); están marcados para confirmar. Fuentes: [Comienza la veda del pejerrey (2026) — El Cronista](https://www.elcronista.ar/pejerrey-comienza-la-veda-de-la-pesca-deportiva-en-la-provincia-de-buenos-aires), [Reglamento de pesca deportiva de la Provincia — Pesca en Argentina](https://www.pescaargentina.com.ar/noticia/reglamento-de-pesca-deportiva-de-la-provincia-de-buenos-aires-880), [Veda de pejerrey — Provincia de Buenos Aires](https://www.gba.gob.ar/desarrollo_agrario/pesca/articulos/veda_de_pejerrey), [¿Cómo pica el pejerrey? — Pescador Deportivo](https://pescadordeportivo.net/2021/04/01/como-pica-el-pejerrey/), [Lagunas para pejerrey — Weekend](https://weekend.perfil.com/noticias/pesca/pejerrey-15-lagunas-para-un-buen-arranque.phtml), [Pejerrey — SIB](https://sib.gob.ar/especies/odontesthes-bonariensis), [Reglamento de pesca deportiva — Weekend](https://weekend.perfil.com/noticias/amp/pesca/reglamento-de-temporada-de-pesca-deportiva-de-la-provincia-de-buenos-aires-pejerrey-tararira-dorado-perca-trucha.phtml).
 
 ## Dientudo
 
