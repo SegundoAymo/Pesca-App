@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Kit de Pesca — inicio</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#14201C}a:hover{color:#14201C}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 20px 16px; background: #F2F4F3; color: #14201C; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; display: flex; flex-direction: column; gap: 14px">
+  <header style="display: flex; flex-direction: column; gap: 2px; padding: 8px 4px 4px">
+    <h1 style="margin: 0; font-size: 30px; font-weight: 700">Kit de Pesca</h1>
+    <span style="font-size: 15px; color: #4A5A54">Navarro · domingo 4 de octubre</span>
+  </header>
+
+  <a href="Clima.dc.html" aria-label="Clima: ver el pronóstico de hoy" style="display: flex; flex-direction: column; gap: 10px; background: #FFFFFF; border-radius: 20px; padding: 16px 18px; text-decoration: none; color: #14201C">
+    <span style="display: flex; align-items: center; gap: 14px">
+      <svg width="56" height="56" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5" fill="none" stroke="#14201C" stroke-width="1.8"></circle><path d="M9 1.8v1.4M3 8H1.8M4.6 3.6l1 1M13.4 3.6l-1 1" stroke="#14201C" stroke-width="1.8" stroke-linecap="round"></path><path d="M9 20h9a3.5 3.5 0 0 0 .4-6.97A5 5 0 0 0 8.7 13.4 3.3 3.3 0 0 0 9 20z" fill="#FFFFFF" stroke="#14201C" stroke-width="1.8" stroke-linejoin="round"></path></svg>
+      <span style="display: flex; flex-direction: column; flex: 1">
+        <span style="font-size: 24px; font-weight: 700">Clima</span>
+        <span style="font-size: 16px">17° ahora · 12° / 23°</span>
+      </span>
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19" fill="none" stroke="#14201C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </span>
+    <span style="display: flex; align-items: center; gap: 8px; background: #FDECEA; color: #8A1C12; border-radius: 10px; padding: 8px 10px; font-size: 14px; font-weight: 700">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L5 14h6l-1 8 8-12h-6l1-8z" fill="#B42318"></path></svg>
+      Tormenta eléctrica de 17 a 21 h
+    </span>
+  </a>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; flex: 1">
+    <a href="Calendario.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #FFFFFF; border-radius: 20px; text-decoration: none; color: #14201C">
+      <svg width="60" height="60" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5" fill="none" stroke="#14201C" stroke-width="1.6"></rect><path d="M3.5 9.5h17M8 3v4M16 3v4" stroke="#14201C" stroke-width="1.6" stroke-linecap="round"></path><path d="M7 15 C8.5 13 11 13 12.5 15 L14.5 13.8 L14 15 L14.5 16.2 L12.5 15 C11 17 8.5 17 7 15 Z" fill="#C2410C"></path></svg>
+      <span style="font-size: 20px; font-weight: 700">Calendario</span>
+    </a>
+    <a href="#peces" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #FFFFFF; border-radius: 20px; text-decoration: none; color: #14201C">
+      <svg width="60" height="60" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12 C6 6.5 13 6 17 10 L21.5 6.5 L20.5 12 L21.5 17.5 L17 14 C13 18 6 17.5 2.5 12 Z" fill="none" stroke="#14201C" stroke-width="1.6" stroke-linejoin="round"></path><circle cx="7.5" cy="11" r="1.1" fill="#14201C"></circle></svg>
+      <span style="font-size: 20px; font-weight: 700">Peces</span>
+    </a>
+    <a href="#nudos" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #FFFFFF; border-radius: 20px; text-decoration: none; color: #14201C">
+      <svg width="60" height="60" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18 C7 18 8 6 12 6 C16 6 16 13 12 13 C8 13 8 6 12 6 M12 13 C16 13 17 18 21 18" fill="none" stroke="#14201C" stroke-width="1.6" stroke-linecap="round"></path></svg>
+      <span style="font-size: 20px; font-weight: 700">Nudos</span>
+    </a>
+    <a href="#checklist" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #FFFFFF; border-radius: 20px; text-decoration: none; color: #14201C">
+      <svg width="60" height="60" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="2.5" fill="none" stroke="#14201C" stroke-width="1.6"></rect><path d="M7.5 9l1.5 1.5 3-3M7.5 15l1.5 1.5 3-3M14 9.5h3M14 15.5h3" fill="none" stroke="#14201C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      <span style="font-size: 20px; font-weight: 700">Checklist</span>
+    </a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

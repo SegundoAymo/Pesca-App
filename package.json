@@ -1,0 +1,8 @@
+{
+  "name": "kit-de-pesca",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}

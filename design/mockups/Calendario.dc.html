@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Calendario — octubre</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0F766E}a:hover{color:#0B5550}
+</style>
+</helmet>
+<div style="width: 390px; height: 1000px; box-sizing: border-box; padding: 12px 16px 20px; background: #F2F4F3; color: #14201C; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; display: flex; flex-direction: column; gap: 12px">
+  <header style="display: flex; align-items: center; gap: 10px; height: 48px">
+    <button type="button" aria-label="Volver al inicio" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19" fill="none" stroke="#14201C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+    <h1 style="margin: 0; font-size: 26px; font-weight: 700">Calendario</h1>
+  </header>
+
+  <div style="display: flex; align-items: center; justify-content: space-between">
+    <button type="button" aria-label="Mes anterior" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: #FFFFFF; cursor: pointer; display: flex; align-items: center; justify-content: center">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19" fill="none" stroke="#14201C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+    <h2 style="margin: 0; font-size: 22px; font-weight: 700">Octubre 2026</h2>
+    <button type="button" aria-label="Mes siguiente" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: #FFFFFF; cursor: pointer; display: flex; align-items: center; justify-content: center">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19" fill="none" stroke="#14201C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; font-size: 13px; font-weight: 700; color: #4A5A54; text-align: center">
+    <div>L</div><div>M</div><div>M</div><div>J</div><div>V</div><div>S</div><div>D</div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px">
+    <sc-for list="{{cells}}" as="c" hint-placeholder-count="35">
+      <sc-if value="{{c.blank}}" hint-placeholder-val="{{false}}">
+        <div style="height: 72px"></div>
+      </sc-if>
+      <sc-if value="{{c.real}}" hint-placeholder-val="{{true}}">
+        <button type="button" onClick="{{c.pick}}" aria-label="{{c.aria}}" style="height: 72px; border: 0; border-radius: 10px; background: {{c.tint}}; color: {{c.numFg}}; box-shadow: {{c.ring}}; display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 5px 2px 6px; font: inherit; cursor: pointer">
+          <span style="font-size: 13px; font-weight: 700; line-height: 1">{{c.day}}</span>
+          <sc-if value="{{c.tOk}}" hint-placeholder-val="{{true}}">
+            <svg width="24" height="15" viewBox="0 0 32 20" aria-hidden="true"><path d="M1 10 C6 4.5 17 4 24 8.5 L31 4 L29 10 L31 16 L24 11.5 C17 16 6 15.5 1 10 Z" fill="{{c.tIcon}}"></path></svg>
+          </sc-if>
+          <sc-if value="{{c.tNo}}" hint-placeholder-val="{{false}}">
+            <span style="width: 24px; height: 15px"></span>
+          </sc-if>
+          <sc-if value="{{c.cOk}}" hint-placeholder-val="{{true}}">
+            <svg width="24" height="15" viewBox="0 0 32 20" aria-hidden="true"><path d="M2 10 C5 1.5 17 1 23 8 L31 3 L29 10 L31 17 L23 12 C17 19 5 18.5 2 10 Z" fill="{{c.cIcon}}"></path></svg>
+          </sc-if>
+          <sc-if value="{{c.cNo}}" hint-placeholder-val="{{false}}">
+            <span style="width: 24px; height: 15px"></span>
+          </sc-if>
+          <sc-if value="{{c.bOk}}" hint-placeholder-val="{{true}}">
+            <svg width="24" height="15" viewBox="0 0 32 20" aria-hidden="true"><path d="M4 10 C8 6 18 5.5 24 8.5 L31 5 L29.5 10 L31 15 L24 11.5 C18 14.5 8 14 4 10 Z" fill="{{c.bIcon}}"></path><path d="M5 10.5 L0.8 14 M5 9.5 L0.8 6" stroke="{{c.bIcon}}" stroke-width="1.5" stroke-linecap="round" fill="none"></path></svg>
+          </sc-if>
+          <sc-if value="{{c.bNo}}" hint-placeholder-val="{{false}}">
+            <span style="width: 24px; height: 15px"></span>
+          </sc-if>
+        </button>
+      </sc-if>
+    </sc-for>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 14px">
+    <span style="display: flex; align-items: center; gap: 6px"><svg width="24" height="15" viewBox="0 0 32 20" aria-hidden="true"><path d="M1 10 C6 4.5 17 4 24 8.5 L31 4 L29 10 L31 16 L24 11.5 C17 16 6 15.5 1 10 Z" fill="#C2410C"></path></svg>Tararira</span>
+    <span style="display: flex; align-items: center; gap: 6px"><svg width="24" height="15" viewBox="0 0 32 20" aria-hidden="true"><path d="M2 10 C5 1.5 17 1 23 8 L31 3 L29 10 L31 17 L23 12 C17 19 5 18.5 2 10 Z" fill="#0F766E"></path></svg>Carpa</span>
+    <span style="display: flex; align-items: center; gap: 6px"><svg width="24" height="15" viewBox="0 0 32 20" aria-hidden="true"><path d="M4 10 C8 6 18 5.5 24 8.5 L31 5 L29.5 10 L31 15 L24 11.5 C18 14.5 8 14 4 10 Z" fill="#3730A3"></path><path d="M5 10.5 L0.8 14 M5 9.5 L0.8 6" stroke="#3730A3" stroke-width="1.5" stroke-linecap="round" fill="none"></path></svg>Bagre</span>
+    <span style="width: 100%; color: #4A5A54; font-size: 13px">El fondo es el color del mejor pez. Los días sin peces quedan apagados.</span>
+  </div>
+
+  <section style="background: #FFFFFF; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+      <h3 style="margin: 0; font-size: 20px; font-weight: 700">{{det.title}}</h3>
+      <span style="font-size: 14px; color: #4A5A54">{{det.moon}}</span>
+    </div>
+    <sc-if value="{{det.hasWx}}" hint-placeholder-val="{{true}}">
+      <div style="display: flex; align-items: center; gap: 10px; background: #F2F4F3; border-radius: 12px; padding: 8px 10px">
+        <sc-if value="{{det.wx.ic.sol}}" hint-placeholder-val="{{false}}"><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="#14201C" stroke-width="1.8"></circle><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" stroke="#14201C" stroke-width="1.8" stroke-linecap="round"></path></svg></sc-if>
+      <sc-if value="{{det.wx.ic.parcial}}" hint-placeholder-val="{{false}}"><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5" fill="none" stroke="#14201C" stroke-width="1.8"></circle><path d="M9 1.8v1.4M3 8H1.8M4.6 3.6l1 1M13.4 3.6l-1 1" stroke="#14201C" stroke-width="1.8" stroke-linecap="round"></path><path d="M9 20h9a3.5 3.5 0 0 0 .4-6.97A5 5 0 0 0 8.7 13.4 3.3 3.3 0 0 0 9 20z" fill="#FFFFFF" stroke="#14201C" stroke-width="1.8" stroke-linejoin="round"></path></svg></sc-if>
+      <sc-if value="{{det.wx.ic.nube}}" hint-placeholder-val="{{false}}"><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6.1 11.1 3.5 3.5 0 0 0 7 18z" fill="none" stroke="#14201C" stroke-width="1.8" stroke-linejoin="round"></path></svg></sc-if>
+      <sc-if value="{{det.wx.ic.lluvia}}" hint-placeholder-val="{{false}}"><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6.1 7.1 3.5 3.5 0 0 0 7 14z" fill="none" stroke="#14201C" stroke-width="1.8" stroke-linejoin="round"></path><path d="M8 17l-1 3M12 17l-1 3M16 17l-1 3" stroke="#1D5FA8" stroke-width="1.8" stroke-linecap="round"></path></svg></sc-if>
+      <sc-if value="{{det.wx.ic.tormenta}}" hint-placeholder-val="{{true}}"><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6.1 7.1 3.5 3.5 0 0 0 7 14z" fill="none" stroke="#14201C" stroke-width="1.8" stroke-linejoin="round"></path><path d="M12.5 14l-2.5 4h3l-2 4" fill="none" stroke="#B42318" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+        <div style="display: flex; flex-direction: column; flex: 1; line-height: 1.25">
+          <span style="font-size: 15px; font-weight: 700">{{det.wx.sky}}</span>
+          <span style="font-size: 13px; color: #4A5A54">{{det.wx.min}}° / {{det.wx.max}}° · lluvia {{det.wx.prob}}% · viento {{det.wx.wind}} km/h</span>
+        </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{det.noWx}}" hint-placeholder-val="{{false}}">
+      <div style="background: #F2F4F3; border-radius: 12px; padding: 10px 12px; font-size: 14px; color: #4A5A54">{{det.noWxText}}</div>
+    </sc-if>
+    <sc-for list="{{det.rows}}" as="r" hint-placeholder-count="3">
+      <div style="display: grid; grid-template-columns: 32px 76px minmax(0, 1fr) 30px; align-items: center; gap: 8px">
+        <sc-if value="{{r.isT}}" hint-placeholder-val="{{true}}">
+          <svg width="32" height="20" viewBox="0 0 32 20" aria-hidden="true"><path d="M1 10 C6 4.5 17 4 24 8.5 L31 4 L29 10 L31 16 L24 11.5 C17 16 6 15.5 1 10 Z" fill="{{r.icon}}"></path></svg>
+        </sc-if>
+        <sc-if value="{{r.isC}}" hint-placeholder-val="{{false}}">
+          <svg width="32" height="20" viewBox="0 0 32 20" aria-hidden="true"><path d="M2 10 C5 1.5 17 1 23 8 L31 3 L29 10 L31 17 L23 12 C17 19 5 18.5 2 10 Z" fill="{{r.icon}}"></path></svg>
+        </sc-if>
+        <sc-if value="{{r.isB}}" hint-placeholder-val="{{false}}">
+          <svg width="32" height="20" viewBox="0 0 32 20" aria-hidden="true"><path d="M4 10 C8 6 18 5.5 24 8.5 L31 5 L29.5 10 L31 15 L24 11.5 C18 14.5 8 14 4 10 Z" fill="{{r.icon}}"></path><path d="M5 10.5 L0.8 14 M5 9.5 L0.8 6" stroke="{{r.icon}}" stroke-width="1.5" stroke-linecap="round" fill="none"></path></svg>
+        </sc-if>
+        <span style="font-size: 16px; font-weight: 700">{{r.name}}</span>
+        <div style="position: relative; height: 12px; background: #E4E7E5; border-radius: 6px">
+          <div style="height: 12px; width: {{r.w}}; background: {{r.bar}}; border-radius: 6px"></div>
+          <div style="position: absolute; left: {{floorPct}}; top: -3px; width: 2px; height: 18px; background: #14201C"></div>
+        </div>
+        <span style="font-size: 16px; font-weight: 700; text-align: right">{{r.score}}</span>
+      </div>
+    </sc-for>
+    <p style="margin: 0; font-size: 13px; color: #4A5A54">La raya negra marca el piso mínimo. Sin dato de presión: puntaje con temporada y luna.</p>
+    <sc-if value="{{det.hasWx}}" hint-placeholder-val="{{true}}">
+      <a href="Clima.dc.html" style="display: flex; align-items: center; justify-content: center; gap: 8px; height: 48px; border-radius: 12px; background: #14201C; color: #FFFFFF; font-size: 16px; font-weight: 700; text-decoration: none">Ver por hora
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </a>
+    </sc-if>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"floor":{"editor":"range","min":40,"max":90,"step":1,"default":70,"section":"Lógica"},"$preview":{"width":390,"height":1000}}'>
+const DATA = [[1,0.665,24,29,33],[2,0.699,29,33,41],[3,0.733,35,38,50],[4,0.767,42,43,58],[5,0.801,48,48,67],[6,0.835,55,53,75],[7,0.868,61,57,82],[8,0.902,67,61,88],[9,0.936,72,65,93],[10,0.970,76,68,95],[11,0.004,78,69,96],[12,0.038,78,70,95],[13,0.072,76,69,93],[14,0.105,74,67,88],[15,0.139,70,65,83],[16,0.173,66,61,76],[17,0.207,61,58,68],[18,0.241,55,54,59],[19,0.275,50,50,51],[20,0.309,44,47,43],[21,0.343,39,43,35],[22,0.376,35,40,29],[23,0.410,32,38,24],[24,0.444,30,37,20],[25,0.478,29,36,18],[26,0.512,29,36,18],[27,0.546,30,38,20],[28,0.580,33,40,23],[29,0.613,37,43,28],[30,0.647,42,46,35],[31,0.681,47,51,42]];
+const SP = { t: { name: 'Tararira', hex: '#C2410C', col: 2 }, c: { name: 'Carpa', hex: '#0F766E', col: 3 }, b: { name: 'Bagre', hex: '#3730A3', col: 4 } };
+const KEYS = ['t', 'c', 'b'];
+const DOW = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+const MUTED = '#C9D0CD';
+function hx(h) { return [1, 3, 5].map(function (i) { return parseInt(h.slice(i, i + 2), 16); }); }
+function mix(h, a, base) { var c = hx(h), b = hx(base || '#FFFFFF'); return 'rgb(' + c.map(function (v, i) { return Math.round(b[i] + (v - b[i]) * a); }).join(',') + ')'; }
+function norm(s) { return Math.max(0, Math.min(1, (s - 70) / 30)); }
+function moon(p) {
+  if (p < 0.03 || p > 0.97) return 'Luna nueva';
+  if (Math.abs(p - 0.5) < 0.03) return 'Luna llena';
+  if (Math.abs(p - 0.25) < 0.03) return 'Cuarto creciente';
+  if (Math.abs(p - 0.75) < 0.03) return 'Cuarto menguante';
+  return p < 0.5 ? 'Luna creciente' : 'Luna menguante';
+}
+const PROFILES = [
+  { tmin: 12, tmax: 23, dir: 0, wind: 18, gust: 45, base: 'parcial', events: [{ from: 17, to: 20, code: 'tormenta', p: 70, mm: 1.5 }] },
+  { tmin: 10, tmax: 17, dir: 225, wind: 28, gust: 55, base: 'nube', events: [{ from: 4, to: 11, code: 'lluvia', p: 80, mm: 1.2 }] },
+  { tmin: 7, tmax: 16, dir: 180, wind: 15, gust: 25, base: 'sol', events: [] },
+  { tmin: 8, tmax: 19, dir: 90, wind: 10, gust: 18, base: 'sol', events: [] },
+  { tmin: 11, tmax: 22, dir: 45, wind: 15, gust: 24, base: 'parcial', events: [{ from: 14, to: 16, code: 'nube', p: 10, mm: 0 }] },
+  { tmin: 14, tmax: 25, dir: 0, wind: 20, gust: 32, base: 'parcial', events: [{ from: 21, to: 23, code: 'lluvia', p: 30, mm: 0.3 }] },
+  { tmin: 15, tmax: 24, dir: 315, wind: 18, gust: 30, base: 'nube', events: [{ from: 9, to: 14, code: 'lluvia', p: 60, mm: 0.8 }] }
+];
+const SKY = { sol: 'Soleado', luna: 'Despejado', parcial: 'Parcialmente nublado', nube: 'Nublado', lluvia: 'Lluvia', tormenta: 'Tormenta eléctrica' };
+const DOWL_C = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+const DIRS = ['norte', 'noreste', 'este', 'sureste', 'sur', 'suroeste', 'oeste', 'noroeste'];
+const DIRS_S = ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'];
+const WX_START = new Date(2026, 9, 4);
+const NOW_HOUR = 10;
+function icons(code) { return { sol: code === 'sol', luna: code === 'luna', parcial: code === 'parcial', nube: code === 'nube', lluvia: code === 'lluvia', tormenta: code === 'tormenta' }; }
+function shape(h) {
+  if (h >= 6 && h <= 15) return (1 - Math.cos(Math.PI * (h - 6) / 9)) / 2;
+  const x = h > 15 ? h - 15 : h + 9;
+  return (1 + Math.cos(Math.PI * x / 15)) / 2;
+}
+function hhmm(mins) { const h = Math.floor(mins / 60), m = Math.round(mins % 60); return h + ':' + (m < 10 ? '0' : '') + m; }
+function dirIdx(deg) { return Math.round((((deg % 360) + 360) % 360) / 45) % 8; }
+function dayData(i) {
+  const p = PROFILES[i % PROFILES.length];
+  const rise = 7 * 60 + 2 - Math.round(1.3 * i), set = 19 * 60 + 33 + Math.round(0.9 * i);
+  const hours = [];
+  for (let h = 0; h < 24; h++) {
+    const ev = p.events.find((e) => h >= e.from && h <= e.to);
+    const night = h * 60 + 30 < rise || h * 60 + 30 > set;
+    let code = ev ? ev.code : p.base;
+    if (night && code === 'sol') code = 'luna';
+    if (night && code === 'parcial') code = 'nube';
+    const ws = Math.round(p.wind * (0.55 + 0.45 * shape(h)));
+    const deg = Math.round(p.dir + 12 * Math.sin(h / 3));
+    hours.push({
+      h: h, code: code,
+      temp: Math.round(p.tmin + (p.tmax - p.tmin) * shape(h)),
+      prob: ev ? ev.p : (p.base === 'nube' ? 10 : 0),
+      mm: ev ? ev.mm : 0,
+      wind: ws, gust: Math.round(ws * p.gust / p.wind), deg: deg
+    });
+  }
+  const temps = hours.map((x) => x.temp);
+  const storm = p.events.find((e) => e.code === 'tormenta');
+  const rain = p.events.find((e) => e.code === 'lluvia');
+  const mmSum = Math.round(hours.reduce((a, x) => a + x.mm, 0) * 10) / 10;
+  let sky = SKY[p.base];
+  if (storm) sky = 'Tormenta por la tarde';
+  else if (rain) sky = rain.from < 12 ? 'Lluvia por la mañana' : (rain.from < 19 ? 'Lluvia por la tarde' : 'Lluvia a la noche');
+  const date = new Date(WX_START.getTime() + i * 86400000);
+  return {
+    p: p, hours: hours, rise: rise, set: set, date: date,
+    min: Math.min.apply(null, temps), max: Math.max.apply(null, temps),
+    prob: Math.max.apply(null, hours.map((x) => x.prob)), mmSum: mmSum,
+    wind: Math.max.apply(null, hours.map((x) => x.wind)), gust: Math.max.apply(null, hours.map((x) => x.gust)),
+    storm: storm, sky: sky, code: storm ? 'tormenta' : (rain ? 'lluvia' : p.base)
+  };
+}
+class Component extends DCLogic {
+  renderVals() {
+    const floor = this.props.floor ?? 70;
+    const st = this.state || {};
+    const sel = st.sel || 4;
+    const cells = [];
+    for (let i = 0; i < 3; i++) cells.push({ blank: true, real: false });
+    DATA.forEach((r) => {
+      const d = r[0];
+      const sc = { t: r[2], c: r[3], b: r[4] };
+      const wk = KEYS.reduce((a, k) => (sc[k] > sc[a] ? k : a), 't');
+      const any = sc[wk] >= floor;
+      const cell = {
+        blank: false, real: true, day: d, aria: d + ' de octubre',
+        pick: () => this.setState({ sel: d }),
+        ring: d === sel ? '0 0 0 3px #14201C' : (d === 4 ? 'inset 0 0 0 2px #14201C' : 'none'),
+        any: any, none: !any,
+        winT: any && wk === 't', winC: any && wk === 'c', winB: any && wk === 'b',
+        winIcon: mix(SP[wk].hex, 0.3 + 0.7 * norm(sc[wk])),
+        tint: any ? mix(SP[wk].hex, 0.1 + 0.14 * norm(sc[wk])) : 'transparent',
+        cardBg: any ? '#FFFFFF' : 'transparent',
+        numFg: any ? '#14201C' : '#7D8A85',
+        okList: [], others: []
+      };
+      KEYS.forEach((k) => {
+        const ok = sc[k] >= floor;
+        const n = norm(sc[k]);
+        const icon = mix(SP[k].hex, 0.3 + 0.7 * n);
+        const w = Math.round(12 + 12 * n);
+        cell[k + 'Ok'] = ok;
+        cell[k + 'No'] = !ok;
+        cell[k + 'Icon'] = icon;
+        cell[k + 'W'] = w;
+        cell[k + 'H'] = Math.round(w * 0.625);
+        if (ok) {
+          const it = { isT: k === 't', isC: k === 'c', isB: k === 'b', icon: icon };
+          cell.okList.push(it);
+          if (k !== wk) cell.others.push(it);
+        }
+      });
+      cells.push(cell);
+    });
+    while (cells.length % 7) cells.push({ blank: true, real: false });
+    const r = DATA[sel - 1];
+    const date = new Date(2026, 9, sel);
+    const rows = KEYS.map((k) => {
+      const s = r[SP[k].col];
+      return { name: SP[k].name, score: s, w: s + '%', bar: s >= floor ? SP[k].hex : MUTED, icon: SP[k].hex, isT: k === 't', isC: k === 'c', isB: k === 'b' };
+    });
+    return {
+      cells: cells, floorPct: floor + '%',
+      det: (function () {
+        const wi = sel - 4;
+        const has = wi >= 0 && wi < 16;
+        const out = { title: DOW[date.getDay()] + ' ' + sel + ' de octubre', moon: moon(r[1]), rows: rows, hasWx: has, noWx: !has, noWxText: wi < 0 ? 'Día pasado: sin pronóstico.' : 'Sin pronóstico todavía: llega hasta 16 días adelante.' };
+        if (has) { const w = dayData(wi); out.wx = { sky: w.sky, ic: icons(w.code), min: w.min, max: w.max, prob: w.prob, wind: w.wind }; }
+        return out;
+      })()
+    };
+  }
+}
+</script>
+</body>
+</html>
