@@ -1,0 +1,503 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "F1-Corridos.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "F1 · Corridos arriba",
+      "w": 390,
+      "x": 0,
+      "y": 1520
+    },
+    "F2-Tamano.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "F2 · Tamaño según puntaje",
+      "w": 390,
+      "x": 470,
+      "y": 1520
+    },
+    "F3-Fondo.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "F3 · Con fondo del mejor pez",
+      "w": 390,
+      "x": 940,
+      "y": 1520
+    },
+    "F4-Jerarquia.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "F4 · Ganador grande + chicos",
+      "w": 390,
+      "x": 1410,
+      "y": 1520
+    },
+    "F5-Apagados.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "F5 · Días flojos apagados",
+      "w": 390,
+      "x": 1880,
+      "y": 1520
+    },
+    "F6-Fondo-apagados.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "F6 · Fondo + días apagados (F3 + F5)",
+      "w": 390,
+      "x": 2350,
+      "y": 1520
+    },
+    "Franjas.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "C · Tres franjas",
+      "w": 390,
+      "x": 940,
+      "y": 0
+    },
+    "Ganador-puntos.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "E · Ganador + puntos",
+      "w": 390,
+      "x": 1880,
+      "y": 0
+    },
+    "Main.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "A · Ganador del día",
+      "w": 390,
+      "x": 0,
+      "y": 0
+    },
+    "Por-especie.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "D · Por especie",
+      "w": 390,
+      "x": 1410,
+      "y": 0
+    },
+    "Solo-resaltados.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "F · Tres peces, solo los que llegan",
+      "w": 390,
+      "x": 2350,
+      "y": 0
+    },
+    "Tres-peces.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "B · Tres peces",
+      "w": 390,
+      "x": 470,
+      "y": 0
+    },
+    "Inicio.dc.html": {
+      "x": 0,
+      "y": 3120,
+      "w": 390,
+      "h": 844,
+      "title": "Inicio",
+      "is_interactive": true
+    },
+    "Calendario.dc.html": {
+      "x": 470,
+      "y": 3120,
+      "w": 390,
+      "h": 1000,
+      "title": "Calendario (F6 + resumen del tiempo)",
+      "is_interactive": true
+    },
+    "Clima.dc.html": {
+      "x": 940,
+      "y": 3120,
+      "w": 390,
+      "h": 2000,
+      "title": "Clima — hoy y 24 horas",
+      "is_interactive": true
+    },
+    "Estilo-Laguna.dc.html": {
+      "x": 0,
+      "y": 5700,
+      "w": 840,
+      "h": 900,
+      "title": "Estilo 1 · Laguna"
+    },
+    "Estilo-Senal.dc.html": {
+      "x": 920,
+      "y": 5700,
+      "w": 840,
+      "h": 900,
+      "title": "Estilo 2 · Señal"
+    },
+    "Estilo-Cuaderno.dc.html": {
+      "x": 1840,
+      "y": 5700,
+      "w": 840,
+      "h": 900,
+      "title": "Estilo 3 · Cuaderno de pesca"
+    },
+    "Estilo-Deportivo.dc.html": {
+      "x": 2760,
+      "y": 5700,
+      "w": 840,
+      "h": 900,
+      "title": "Estilo 4 · Deportivo"
+    },
+    "S1-Renglones.dc.html": {
+      "x": 0,
+      "y": 7500,
+      "w": 390,
+      "h": 844,
+      "title": "S1 · Renglones"
+    },
+    "S2-Bloques.dc.html": {
+      "x": 470,
+      "y": 7500,
+      "w": 390,
+      "h": 844,
+      "title": "S2 · Renglones con bloque amarillo"
+    },
+    "S3-Columnas.dc.html": {
+      "x": 940,
+      "y": 7500,
+      "w": 390,
+      "h": 844,
+      "title": "S3 · Columnas"
+    },
+    "S4-Grilla-amarilla.dc.html": {
+      "x": 1410,
+      "y": 7500,
+      "w": 390,
+      "h": 844,
+      "title": "S4 · Grilla amarilla, ícono chico"
+    },
+    "S5-Pictogramas.dc.html": {
+      "x": 1880,
+      "y": 7500,
+      "w": 390,
+      "h": 844,
+      "title": "S5 · Pictogramas en círculo"
+    },
+    "S6-Barra.dc.html": {
+      "x": 2350,
+      "y": 7500,
+      "w": 390,
+      "h": 844,
+      "title": "S6 · Barra inferior"
+    },
+    "S7-Gigantes.dc.html": {
+      "x": 2820,
+      "y": 7500,
+      "w": 390,
+      "h": 844,
+      "title": "S7 · Íconos gigantes"
+    },
+    "Iconos-S7.dc.html": {
+      "x": 0,
+      "y": 9250,
+      "w": 1240,
+      "h": 1200,
+      "title": "Íconos para S7 — 6 opciones por sección"
+    },
+    "S7-Final.dc.html": {
+      "x": 1820,
+      "y": 9250,
+      "w": 390,
+      "h": 844,
+      "title": "S7 con íconos elegidos (C2, K1, P1, N3, L2)"
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-03T16:30:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "nA": {
+      "fill": "orange",
+      "maxH": 260,
+      "text": "A · Ganador del día — lo que pide el spec. Resalta: qué pez conviene ese día, de un vistazo. Pierde: no ves a los otros dos peces sin tocar el día. Un día gris = ningún pez llega al piso.",
+      "w": 390,
+      "x": 0,
+      "y": 920
+    },
+    "nB": {
+      "fill": "teal",
+      "maxH": 260,
+      "text": "B · Tres peces — los 3 íconos siempre, cada uno con su tono. Resalta: comparar las tres especies sin tocar nada. Pierde: celdas más cargadas, íconos chicos; cuesta ver el ganador.",
+      "w": 390,
+      "x": 470,
+      "y": 920
+    },
+    "nC": {
+      "fill": "blue",
+      "maxH": 260,
+      "text": "C · Tres franjas — tres bandas fijas (tararira arriba, carpa al medio, bagre abajo). Resalta: la tendencia del mes, las rachas de cada pez. Pierde: sin íconos hay que aprender el orden.",
+      "w": 390,
+      "x": 940,
+      "y": 920
+    },
+    "nD": {
+      "fill": "purple",
+      "maxH": 260,
+      "text": "D · Por especie — elegís un pez y el mes es su mapa de calor. Resalta: planificar una salida por un pez puntual, celdas limpias y grandes. Pierde: no compara especies en la misma pantalla.",
+      "w": 390,
+      "x": 1410,
+      "y": 920
+    },
+    "nE": {
+      "fill": "green",
+      "maxH": 260,
+      "text": "E · Ganador + puntos — ícono del mejor pez y tres puntos con el tono de cada uno. Resalta: respuesta rápida como A sin perder a los otros dos. Pierde: los puntos son chicos para leer matices.",
+      "w": 390,
+      "x": 1880,
+      "y": 920
+    },
+    "nF": {
+      "fill": "pink",
+      "maxH": 260,
+      "text": "F · Como B, pero el pez que no llega al piso no se dibuja. Cada pez mantiene su lugar (tararira arriba, carpa al medio, bagre abajo). Resalta: solo lo que vale la pena; los días flojos quedan casi vacíos. Pierde: no ves cuán cerca estuvo un pez de llegar.",
+      "w": 390,
+      "x": 2350,
+      "y": 920
+    },
+    "nF1": {
+      "fill": "pink",
+      "maxH": 260,
+      "text": "F1 · Corridos arriba — los peces que llegan se apilan desde arriba, sin huecos. Resalta: celdas compactas y parejas. Pierde: un pez cambia de lugar según el día, hay que mirar la forma del ícono.",
+      "w": 390,
+      "x": 0,
+      "y": 2420
+    },
+    "nF2": {
+      "fill": "pink",
+      "maxH": 260,
+      "text": "F2 · Tamaño según puntaje — el ícono crece y se oscurece con el puntaje. Resalta: los mejores días saltan aunque los tonos se parezcan. Pierde: los íconos chicos cuestan de reconocer.",
+      "w": 390,
+      "x": 470,
+      "y": 2420
+    },
+    "nF3": {
+      "fill": "pink",
+      "maxH": 260,
+      "text": "F3 · Con fondo — F más un fondo suave del color del mejor pez; gris si no llega ninguno. Resalta: el ganador de cada día sin perder a los otros. Pierde: más color en pantalla, el fondo compite con los íconos.",
+      "w": 390,
+      "x": 940,
+      "y": 2420
+    },
+    "nF4": {
+      "fill": "pink",
+      "maxH": 260,
+      "text": "F4 · Ganador grande + chicos — el mejor pez grande y los otros que llegan, chicos abajo. Resalta: jerarquía clara, primero qué conviene. Pierde: los secundarios son chicos.",
+      "w": 390,
+      "x": 1410,
+      "y": 2420
+    },
+    "nF5": {
+      "fill": "pink",
+      "maxH": 260,
+      "text": "F5 · Días flojos apagados — un día sin ningún pez pierde la tarjeta y queda tenue. Resalta: qué días salir, el mes se lee como un mapa de buenos días. Pierde: los días apagados se ven poco aunque igual se pueden tocar.",
+      "w": 390,
+      "x": 1880,
+      "y": 2420
+    },
+    "nF6": {
+      "fill": "pink",
+      "maxH": 260,
+      "text": "F6 · F3 + F5 — los días con peces llevan el fondo suave del mejor pez; los días sin ningún pez pierden la tarjeta y quedan tenues. Resalta: qué días salir y qué pez manda, a la vez. Pierde: más color que F5.",
+      "w": 390,
+      "x": 2350,
+      "y": 2420
+    },
+    "titulo": {
+      "kind": "title1",
+      "maxW": 2740,
+      "text": "Calendario de Clima — 6 variantes (octubre 2026, sin presión)",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "titulo2": {
+      "kind": "title1",
+      "maxW": 2740,
+      "text": "Variantes de F — solo los peces que llegan al piso",
+      "w": 240,
+      "x": 0,
+      "y": 1220
+    },
+    "titulo3": {
+      "kind": "title1",
+      "maxW": 1330,
+      "text": "Pantallas elegidas: Inicio, Calendario y Clima",
+      "x": 0,
+      "y": 2820
+    },
+    "nClima": {
+      "fill": "teal",
+      "maxH": 520,
+      "w": 390,
+      "x": 1410,
+      "y": 3120,
+      "text": "Datos de ejemplo: desde acá no se puede consultar Open-Meteo. Las tres pantallas están conectadas: tocá Clima o Calendario en el Inicio, y \"Ver por hora\" en el desglose de un día. En la app real, \"Ver por hora\" abre Clima en el día elegido; en esta muestra abre siempre en hoy. Decisiones: Clima ocupa la tarjeta ancha del Inicio porque es lo que se mira el día de pesca, con el aviso de tormenta ahí mismo; los días van en una tira que se desliza (16 días); salida y puesta del sol aparecen como filas dentro de la lista de horas; la hora actual se marca en celeste y las horas de tormenta en rojo."
+    },
+    "nEst1": {
+      "fill": "teal",
+      "w": 840,
+      "maxH": 320,
+      "x": 0,
+      "y": 6660,
+      "text": "LAGUNA — Por qué: el verde agua habla de la laguna sin competir con los colores de los peces; fondo verde muy claro y texto casi negro dan contraste alto al sol. Letra Atkinson Hyperlegible: hecha para personas con baja visión, distingue bien 1, l, I, 0 y O (sirve para leer horas y temperaturas de un vistazo). Íconos de línea: livianos y claros. A favor: el más equilibrado y el que ya usamos en las muestras. En contra: el menos distintivo; puede sentirse tranquilo de más."
+    },
+    "nEst2": {
+      "fill": "orange",
+      "w": 840,
+      "maxH": 320,
+      "x": 920,
+      "y": 6660,
+      "text": "SEÑAL — Por qué: negro, blanco y amarillo es la combinación de mayor contraste (la usan carteles y equipos náuticos): se lee al sol fuerte y con anteojos de sol. Letra Barlow Semi Condensed, de cartelería: entra más texto en cada botón sin achicar la letra, y los números se leen grandes. Íconos rellenos: se reconocen por la silueta aunque la pantalla tenga reflejos. A favor: el más legible afuera. En contra: el más duro y técnico; el amarillo y el negro pueden cansar."
+    },
+    "nEst3": {
+      "fill": "green",
+      "w": 840,
+      "maxH": 320,
+      "x": 1840,
+      "y": 6660,
+      "text": "CUADERNO DE PESCA — Por qué: remite a la libreta donde se anotan salidas y capturas; da una sensación cálida y de tradición. Fraunces (serif con carácter) en títulos y Source Sans 3 en el texto para que siga siendo fácil de leer. Íconos con trazo irregular, como dibujados con tinta, que combinan con los diagramas de nudos dibujados a mano. Colores de tierra, también en los peces. A favor: el más personal y con identidad. En contra: el papel claro con tinta tiene un poco menos de contraste que el blanco puro, y la serif se lee algo peor en tamaños chicos."
+    },
+    "nEst4": {
+      "fill": "blue",
+      "w": 840,
+      "maxH": 320,
+      "x": 2760,
+      "y": 6660,
+      "text": "DEPORTIVO — Por qué: toma el lenguaje de relojes y apps de outdoor: números muy grandes y pesados para leer la temperatura de lejos, y la tarjeta de Clima oscura que resalta como dato principal. Archivo, letra de palo seco robusta. Íconos de dos tonos: más vivos que los de línea sin perder claridad. Azul eléctrico como acento y verde lima solo para detalles. A favor: el más moderno y enérgico. En contra: más colores en pantalla, que compiten con los de los peces en el Calendario; el estilo puede envejecer más rápido."
+    },
+    "titulo4": {
+      "kind": "title1",
+      "maxW": 3600,
+      "text": "Estilos para la app: paleta, letra, íconos y botones",
+      "x": 0,
+      "y": 5400
+    },
+    "nS1": {
+      "fill": "orange",
+      "w": 390,
+      "maxH": 360,
+      "x": 0,
+      "y": 8400,
+      "text": "S1 · RENGLONES — formato: botones de ancho completo, uno debajo del otro, con ícono a la izquierda y flecha a la derecha. Íconos rellenos medianos (48 px). Se lee de arriba a abajo como una lista; el dedo pulgar alcanza todo."
+    },
+    "nS2": {
+      "fill": "orange",
+      "w": 390,
+      "maxH": 360,
+      "x": 470,
+      "y": 8400,
+      "text": "S2 · BLOQUE AMARILLO — formato: renglones altos con un bloque amarillo a la izquierda y una línea de ayuda debajo del nombre. Íconos alternativos: termómetro (Clima), luna (Calendario), anzuelo (Peces), anzuelo con nudo (Nudos) y caja de pesca (Checklist). Íconos grandes (62 px)."
+    },
+    "nS3": {
+      "fill": "orange",
+      "w": 390,
+      "maxH": 360,
+      "x": 940,
+      "y": 8400,
+      "text": "S3 · COLUMNAS — formato: dos columnas; a la izquierda Clima ocupa toda la altura (temperatura gigante, aviso y 'Ver por hora'), a la derecha las otras 4 secciones apiladas. Íconos de contorno grueso, sin relleno."
+    },
+    "nS4": {
+      "fill": "orange",
+      "w": 390,
+      "maxH": 360,
+      "x": 1410,
+      "y": 8400,
+      "text": "S4 · GRILLA AMARILLA — formato: grilla de 2 × 2 en amarillo pleno con ícono chico (32 px) arriba y el nombre enorme abajo. La palabra manda más que el dibujo. Esquinas casi rectas, como un cartel."
+    },
+    "nS5": {
+      "fill": "orange",
+      "w": 390,
+      "maxH": 360,
+      "x": 1880,
+      "y": 8400,
+      "text": "S5 · PICTOGRAMAS — formato: lista separada por rayas negras gruesas, como un cartel de señalización; cada sección con un pictograma blanco dentro de un círculo negro y una descripción corta. Sin tarjetas: todo sobre fondo blanco."
+    },
+    "nS6": {
+      "fill": "orange",
+      "w": 390,
+      "maxH": 360,
+      "x": 2350,
+      "y": 8400,
+      "text": "S6 · BARRA INFERIOR — formato tipo app: arriba el tiempo de hoy con temperatura gigante y las próximas horas (las de tormenta en rojo), un resumen del Calendario de hoy, y abajo una barra fija con las 5 secciones e íconos chicos (28 px). Se cambia de sección sin volver al inicio."
+    },
+    "nS7": {
+      "fill": "orange",
+      "w": 390,
+      "maxH": 360,
+      "x": 2820,
+      "y": 8400,
+      "text": "S7 · ÍCONOS GIGANTES — formato: una sola columna de 5 botones que ocupan toda la pantalla, con íconos de 84 a 92 px en dos tonos (amarillo y negro). Marco negro alrededor. Pensado para tocar sin mirar, con las manos mojadas. Ojo: el fondo negro se acerca a un modo oscuro, que habíamos descartado."
+    },
+    "titulo5": {
+      "kind": "title1",
+      "maxW": 3220,
+      "text": "Variantes del estilo Señal: formatos de botones e íconos",
+      "x": 0,
+      "y": 7200
+    },
+    "titulo6": {
+      "kind": "title1",
+      "maxW": 1800,
+      "text": "Íconos para S7",
+      "x": 0,
+      "y": 8950
+    },
+    "nIconos": {
+      "fill": "orange",
+      "w": 420,
+      "maxH": 560,
+      "x": 1320,
+      "y": 9250,
+      "text": "Cómo elegir: decime un código por sección (por ejemplo C5, K1, P1, N6, L2). Se pueden mezclar estilos. Ideas detrás: Clima con manga de viento (C5) porque al pescar importa mucho el viento; Calendario con el número del día de hoy (K1), que en la app cambia solo; Peces con la tararira de verdad (P1); Nudos con una línea armada con boya y plomada (N6), que representa también la sección Armados; Checklist con la caja de pesca (L2), que es lo que uno revisa antes de salir."
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Tres-peces.dc.html",
+    "Franjas.dc.html",
+    "Por-especie.dc.html",
+    "Ganador-puntos.dc.html",
+    "Solo-resaltados.dc.html",
+    "F1-Corridos.dc.html",
+    "F2-Tamano.dc.html",
+    "F3-Fondo.dc.html",
+    "F4-Jerarquia.dc.html",
+    "F5-Apagados.dc.html",
+    "F6-Fondo-apagados.dc.html",
+    "Inicio.dc.html",
+    "Calendario.dc.html",
+    "Clima.dc.html",
+    "Estilo-Laguna.dc.html",
+    "Estilo-Senal.dc.html",
+    "Estilo-Cuaderno.dc.html",
+    "Estilo-Deportivo.dc.html",
+    "S1-Renglones.dc.html",
+    "S2-Bloques.dc.html",
+    "S3-Columnas.dc.html",
+    "S4-Grilla-amarilla.dc.html",
+    "S5-Pictogramas.dc.html",
+    "S6-Barra.dc.html",
+    "S7-Gigantes.dc.html",
+    "Iconos-S7.dc.html",
+    "S7-Final.dc.html"
+  ],
+  "pages": [],
+  "title": "Kit de Pesca — diseños"
+}
