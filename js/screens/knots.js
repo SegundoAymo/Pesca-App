@@ -2,7 +2,7 @@ import { screen, esc, rich, bigLink, sourcesBlock } from '../ui.js';
 import { SITUATIONS, KNOTS, KNOT_SOURCES } from '../data/knots.js';
 import { RIGS } from '../data/rigs.js';
 import { rigCard } from './fish.js';
-import { knotStepSvg, KNOT_KEY } from '../drawings/knots.js';
+import { knotStepSvg, knotKey } from '../drawings/knots.js';
 
 function situations() {
   const body = `<p>Elegí qué querés unir. El recomendado para tu kit (nylon 0,30 mm) va primero.</p>`
@@ -44,7 +44,7 @@ function knot(s, k) {
       <dt>Resistencia</dt><dd>${k.strength ? esc(k.strength) : 'Sin dato'}</dd>
     </dl>
     ${k.note ? `<p>${rich(k.note)}</p>` : ''}
-    <div class="key">${KNOT_KEY.map((x) => `<span><i style="background:${x.color}"></i>${esc(x.label)}</span>`).join('')}</div>
+    <div class="key">${knotKey(k.id).map((x) => `<span><i style="background:${x.color}"></i>${esc(x.label)}</span>`).join('')}</div>
     <ol class="steps">${steps}</ol>`;
   return { title: k.name, html: screen(k.name, body, s.title) };
 }

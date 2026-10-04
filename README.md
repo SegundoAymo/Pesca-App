@@ -2,7 +2,26 @@
 
 App para el teléfono (PWA, Android) para pescar en la laguna de Navarro y alrededores: Clima, Calendario de pique, Peces, Nudos y Checklist.
 
-**Estado:** diseño y especificación terminados. Todavía no hay código de la app.
+**Estado:** primera versión de la app programada (las 6 pantallas, con los dibujos de nudos y armados). Falta probarla en el teléfono y publicarla.
+
+## Probarla en la computadora
+
+Hace falta un servidor local (los módulos de JavaScript no cargan abriendo el archivo directo):
+
+```
+python3 -m http.server 8000
+```
+
+y abrir http://localhost:8000. Pruebas de la lógica: `node --test` (Node 20 o más nuevo, sin instalar nada).
+
+## Publicarla en GitHub Pages
+
+1. Unir esta rama a `main`.
+2. En GitHub: Settings → Pages → Source: **GitHub Actions**.
+3. Cada push a `main` corre las pruebas y publica la app (`.github/workflows/pages.yml`).
+4. En el teléfono, abrir la dirección en Chrome y tocar **Instalar app**.
+
+Al subir una versión nueva, cambiar `VERSION` en `sw.js` para que los teléfonos la bajen; la app muestra "Hay una versión nueva: tocar para actualizar".
 
 ## Dónde está cada cosa
 
@@ -14,7 +33,21 @@ App para el teléfono (PWA, Android) para pescar en la laguna de Navarro y alred
 | [`docs/armados.md`](docs/armados.md) | 8 armados de línea para tararira, bagre y carpa, glosario y lista de compras. |
 | [`design/mockups/`](design/mockups) | Todas las muestras de diseño (calendario A–F6, Inicio, Calendario, Clima, estilos, variantes S1–S7, catálogo de íconos). |
 | [`design/icons/`](design/icons) | Íconos elegidos en SVG (Clima, Calendario, Peces, Nudos, Checklist) y el ícono de la app. |
+| [`docs/kit.md`](docs/kit.md) | El Kit original (equipo, señuelos, carnadas), del que salen varias fichas. |
 | [`tools/simulacion/`](tools/simulacion) | Scripts de Python con los que se calibró el modelo de puntaje. |
+| `index.html`, `css/`, `js/`, `fonts/`, `icons/`, `sw.js`, `manifest.webmanifest` | La app. |
+| [`test/`](test) | Pruebas automáticas (`node --test`). |
+
+## Código de la app
+
+| Carpeta | Qué hay |
+| --- | --- |
+| `js/logic/` | Lógica sin pantalla: fechas, luna, temperatura del agua, presión, puntaje y resumen del clima. Con pruebas. |
+| `js/data/` | Contenido: fichas de las 11 especies, nudos y armados. |
+| `js/drawings/` | Dibujos de los pasos de los nudos y de los armados, hechos en código. |
+| `js/screens/` | Una pantalla por archivo: inicio, calendario, clima, peces, nudos, checklist. |
+| `js/app.js` | Navegación (por `#/` en la dirección) y aviso de versión nueva. |
+| `js/weather-service.js` | Ubicación, búsqueda de lugares y pronóstico de Open-Meteo, guardado en el teléfono. |
 
 ## Versiones vivas (fuente de verdad)
 

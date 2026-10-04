@@ -3,7 +3,7 @@ import { esc, DOW_SHORT, MONTHS_SHORT } from '../ui.js';
 import { todayAR, weekday, dayKey } from '../logic/dates.js';
 import { cachedDays, getCachedForecast, getForecast } from '../weather-service.js';
 import { rangeText } from '../logic/weather.js';
-import { updateReady } from '../app.js';
+import { getUpdate } from '../update.js';
 
 function climaInfo() {
   const days = cachedDays();
@@ -50,9 +50,10 @@ export function render() {
   let alive = true;
   const showUpdate = (root) => {
     const slot = root.querySelector('[data-update]');
-    if (!slot || !updateReady) return;
+    const apply = getUpdate();
+    if (!slot || !apply) return;
     slot.innerHTML = '<button type="button" class="update-bar">Hay una versión nueva: tocar para actualizar</button>';
-    slot.firstChild.addEventListener('click', () => updateReady());
+    slot.firstChild.addEventListener('click', () => apply());
   };
 
   return {

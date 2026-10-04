@@ -5,6 +5,7 @@ import * as weather from './screens/weather.js';
 import * as fish from './screens/fish.js';
 import * as knots from './screens/knots.js';
 import * as checklist from './screens/checklist.js';
+import { setUpdate } from './update.js';
 
 const SCREENS = { '': home, calendario: calendar, clima: weather, peces: fish, nudos: knots, checklist };
 
@@ -75,14 +76,9 @@ render();
 
 /* ---------- Service Worker and updates ---------- */
 
-export let updateReady = null; // function that applies the waiting update
-
 if ('serviceWorker' in navigator && location.protocol !== 'file:') {
   navigator.serviceWorker.register('./sw.js').then((reg) => {
-    const offer = (worker) => {
-      updateReady = () => worker.postMessage('skipWaiting');
-      document.dispatchEvent(new CustomEvent('kit:update'));
-    };
+    const offer = (worker) => setUpdate(() => worker.postMessage('skipWaiting'));
     if (reg.waiting && navigator.serviceWorker.controller) offer(reg.waiting);
     reg.addEventListener('updatefound', () => {
       const w = reg.installing;

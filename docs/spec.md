@@ -226,6 +226,17 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
 | Código | Textos de la app en español; nombres internos del código en inglés. Teléfono de uso: Android, instalación desde Chrome con "Instalar app"; las pruebas de GPS y modo sin conexión se hacen en Chrome para Android. |
 | Orden de trabajo | 1) lógica de puntaje con pruebas, 2) Calendario, 3) Clima, 4) Peces, 5) Nudos y Armados con sus dibujos, 6) Checklist, 7) instalación y modo sin conexión, 8) publicación en GitHub Pages. |
 
+## Decisiones tomadas al programar
+
+- Presión en el Calendario: se usa el último pronóstico guardado solo si tiene menos de 24 horas; si es más viejo, el puntaje va sin presión.
+- La luna se calcula al mediodía de Argentina. La simulación de calibración la tomaba al mediodía de Greenwich; la diferencia es de hasta 2 puntos.
+- Pantallas internas: barra negra arriba con el botón Volver en amarillo y fondo claro para leer al sol. El Inicio conserva el marco negro de S7.
+- En Clima la hora actual va en amarillo (en la muestra era celeste), para usar los colores del estilo Señal.
+- El GPS se vuelve a pedir cada 30 minutos como mucho.
+- Checklist: se tilda con un toque en el ítem. Ordenar y borrar van en un modo aparte ("Ordenar o borrar"), para que los botones chicos no estorben; al borrar aparece "Deshacer".
+- Los dibujos de nudos son esquemas de 330 × 170 con la línea principal en negro, la punta en naranja y el movimiento en rojo. En los nudos que unen dos líneas, el naranja es la otra línea.
+- Publicación: un workflow de GitHub Actions corre las pruebas y publica en GitHub Pages en cada push a main.
+
 ## Pendientes y preguntas abiertas
 
 Todo lo que falta definir antes de programar: lo ya anotado en el documento más lo que apareció al revisarlo.
@@ -262,14 +273,14 @@ Checklist:
 
 Nudos:
 
-- [ ] Los diagramas paso a paso se dibujan propios, dentro de la app.
+- [x] Los diagramas paso a paso se dibujan propios, dentro de la app.
 
 App y técnica:
 
 - [x] Hosting en GitHub Pages; tecnología HTML, CSS y JavaScript simple, sin framework ni paso de compilación.
 - [x] Instalable en el teléfono (PWA), para abrirla como app y usarla sin conexión.
 - [x] Legible al sol: contraste alto y textos grandes. Sin modo oscuro.
-- [ ] Dibujar las ilustraciones: 84 pasos de nudos, 8 armados de línea y 3 de plomada (ver Nudos).
+- [x] Dibujar las ilustraciones: 84 pasos de nudos, 8 armados de línea y 3 de plomada (ver Nudos).
 
 Ideas para más adelante:
 

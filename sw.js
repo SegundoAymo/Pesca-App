@@ -21,6 +21,7 @@ const SHELL = [
   'js/icons.js',
   'js/store.js',
   'js/ui.js',
+  'js/update.js',
   'js/weather-service.js',
   'js/data/knots.js',
   'js/data/rigs.js',
