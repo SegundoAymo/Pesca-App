@@ -1,0 +1,676 @@
+<title>Pesca App · Propuestas visuales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&family=VT323&family=Chakra+Petch:wght@500;700&family=Bowlby+One&family=Rubik:wght@500;700;900&family=Kalam:wght@400;700&family=Spectral:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:wght@600;800&family=Barlow:wght@500;700&family=Shippori+Mincho:wght@500;800&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap">
+<style>
+/* Layout: catálogo vertical; cada propuesta = maqueta de teléfono a la izquierda + ficha de diseño a la derecha (apilado en móvil) */
+:root{
+  --bg:#EEF2F3; --surface:#FFFFFF; --fg:#13202A; --muted:#55646F; --line:#D3DCE1; --accent:#0B6A80;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1418; --surface:#12212A; --fg:#E4EDF0; --muted:#93A5AE; --line:#22353F; --accent:#5CC6DC; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0B1418; --surface:#12212A; --fg:#E4EDF0; --muted:#93A5AE; --line:#22353F; --accent:#5CC6DC; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.6 var(--f-body)}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:20px;padding-block:48px 80px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.08}
+p{margin:0}
+.intro{display:grid;gap:18px;max-width:760px;padding-bottom:40px}
+.eyebrow{font:600 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.intro h1{font-size:clamp(34px,6vw,60px);font-weight:800;letter-spacing:-.02em}
+.intro p{color:var(--muted);font-size:18px;max-width:65ch}
+.index{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.index a{font:600 13px/1 var(--f-mono);color:var(--fg);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:9px 14px;background:var(--surface)}
+.index a:hover,.index a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+
+.design{display:grid;grid-template-columns:340px minmax(0,1fr);gap:56px;align-items:start;padding-block:64px;border-top:1px solid var(--line)}
+.stage{display:flex;justify-content:center;padding:20px;border-radius:28px;background:var(--stage)}
+.info{display:grid;gap:22px;min-width:0}
+.info .tag{font:600 12px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.info h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.015em}
+.info .lede{font-size:18px;max-width:62ch}
+.info h3{font-size:15px;font-family:var(--f-mono);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.info ul{margin:0;padding-left:20px;display:grid;gap:8px;max-width:66ch}
+.info li::marker{color:var(--accent)}
+.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.swatches{display:flex;flex-wrap:wrap;gap:8px}
+.sw{display:grid;gap:4px;font:11px/1.2 var(--f-mono);color:var(--muted)}
+.sw i{display:block;width:44px;height:44px;border-radius:10px;border:1px solid var(--line)}
+.fonts{display:grid;gap:4px;font-size:15px}
+.fonts b{font-weight:400;font-size:22px;line-height:1.2;color:var(--fg)}
+.fonts span{font:12px var(--f-mono);color:var(--muted)}
+.note{border-left:3px solid var(--accent);padding:10px 16px;background:var(--surface);border-radius:0 12px 12px 0;max-width:66ch;font-size:15px}
+.note b{color:var(--accent)}
+
+/* ---------- teléfono base ---------- */
+.phone{width:300px;max-width:100%;height:620px;border-radius:46px;padding:10px;background:#16181B;box-shadow:0 30px 60px -20px rgba(10,20,30,.45),inset 0 0 0 2px #2A2E33;flex:none}
+.screen{height:100%;border-radius:36px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:13px 24px 4px;font:600 11px/1 system-ui,sans-serif;flex:none}
+.sb::after{content:"";position:absolute;left:50%;top:9px;width:80px;height:22px;border-radius:12px;background:#16181B;transform:translateX(-50%)}
+
+/* ---------- A · Carta Náutica ---------- */
+.n{background:#F4F8F7;color:#1D2A33;font-family:"IBM Plex Mono",monospace}
+.n-head{padding:10px 20px 8px}
+.n-coord{font-size:10px;letter-spacing:.08em;color:#5C6B74}
+.n-head h4{font:italic 700 23px/1.1 "Libre Caslon Text",Georgia,serif;margin:4px 0 2px}
+.n-sub{font:italic 12px "Libre Caslon Text",Georgia,serif;color:#5C6B74}
+.n-map{margin:0 12px;border:1.5px solid #1D2A33;position:relative;flex:none}
+.n-map svg{display:block;width:100%;height:auto}
+.n-map::before{content:"";position:absolute;inset:3px;border:.5px solid #1D2A33;pointer-events:none}
+.n-data{display:grid;grid-template-columns:1fr 1fr;margin:10px 12px 0;border:1px solid #9FB3BD}
+.n-data div{padding:7px 10px;border-right:1px solid #9FB3BD;border-bottom:1px solid #9FB3BD}
+.n-data div:nth-child(2n){border-right:0}.n-data div:nth-child(n+3){border-bottom:0}
+.n-data small{display:block;font-size:9px;letter-spacing:.1em;color:#5C6B74}
+.n-data b{font-size:15px;font-weight:600}
+.n-sol{margin:10px 12px 0;padding:8px 10px;background:#1D2A33;color:#F4F8F7;font-size:11px;display:flex;justify-content:space-between;align-items:center}
+.n-sol b{color:#F59ACB;font-size:13px}
+.n-tab{margin-top:auto;display:flex;justify-content:space-around;padding:10px 8px 22px;border-top:1px solid #9FB3BD;font:italic 12px "Libre Caslon Text",serif;color:#5C6B74}
+.n-tab .on{color:#B0207A;font-weight:700}
+
+/* ---------- B · Ecosonda ---------- */
+.s{background:#040A12;color:#BFEFFF;font-family:"Chakra Petch",sans-serif}
+.s .sb{color:#6E8AA0}
+.s-top{display:flex;justify-content:space-between;align-items:flex-end;padding:8px 16px 6px}
+.s-depth{font:56px/0.8 "VT323",monospace;color:#FFB300}
+.s-depth small{font-size:22px;color:#7A8FA0;margin-left:2px}
+.s-mini{text-align:right;font:20px/1 "VT323",monospace;color:#BFEFFF}
+.s-mini small{display:block;font:500 9px "Chakra Petch",sans-serif;letter-spacing:.14em;color:#6E8AA0;margin-bottom:2px}
+.s-mini div+div{margin-top:6px}
+.s-screen{margin:0 10px;border:1px solid #17304A;border-radius:6px;overflow:hidden;position:relative;flex:none}
+.s-screen canvas{display:block;width:100%;height:250px}
+.s-mode{display:flex;gap:6px;margin:10px 10px 0}
+.s-mode span{flex:1;text-align:center;font:700 11px/1 "Chakra Petch";letter-spacing:.12em;padding:9px 0;border:1px solid #17304A;border-radius:4px;color:#6E8AA0}
+.s-mode .on{background:#FFB300;color:#040A12;border-color:#FFB300}
+.s-act{margin:10px 10px 0;padding:10px 12px;border:1px solid #17304A;border-radius:6px;display:grid;gap:6px}
+.s-act header{display:flex;justify-content:space-between;font:700 10px "Chakra Petch";letter-spacing:.14em;color:#6E8AA0}
+.s-act header b{color:#FF4B3A}
+.s-bars{display:flex;gap:3px;height:16px}
+.s-bars i{flex:1;background:#17304A}
+.s-bars i.h{background:linear-gradient(#FFB300,#FF4B3A)}
+.s-act p{font:18px/1 "VT323",monospace;color:#BFEFFF}
+
+/* ---------- C · Caja de Señuelos ---------- */
+.l{background:#D7FF3B;color:#1B1340;font-family:"Rubik",sans-serif}
+.l-hi{padding:6px 18px 0;display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:14px}
+.l-av{width:34px;height:34px;border-radius:50%;background:#FF3D8B;border:3px solid #1B1340;display:grid;place-items:center;color:#fff;font:900 13px "Rubik"}
+.l-hero{margin:12px 14px 0;background:#FF3D8B;border:3px solid #1B1340;border-radius:26px;padding:14px 16px 12px;color:#fff;box-shadow:5px 5px 0 #1B1340;position:relative}
+.l-hero small{font:900 12px/1 "Rubik";letter-spacing:.08em;color:#1B1340}
+.l-hero h4{font:44px/0.95 "Bowlby One",Impact,sans-serif;margin:6px 0 2px;color:#fff;-webkit-text-stroke:1.5px #1B1340;text-shadow:3px 3px 0 #1B1340}
+.l-hero p{font-weight:700;font-size:13px;color:#1B1340}
+.l-gauge{position:absolute;right:12px;top:12px;width:78px}
+.l-stk{display:flex;flex-wrap:wrap;gap:6px;margin:16px 14px 0}
+.l-stk span{font:900 11px/1 "Rubik";letter-spacing:.04em;padding:8px 10px;border:2.5px solid #1B1340;border-radius:999px;background:#fff}
+.l-stk span:nth-child(1){background:#FF6A13;color:#fff;transform:rotate(-3deg)}
+.l-stk span:nth-child(2){transform:rotate(2deg)}
+.l-stk span:nth-child(3){background:#1B1340;color:#D7FF3B;transform:rotate(-2deg)}
+.l-feed{margin:14px 14px 0;background:#fff;border:3px solid #1B1340;border-radius:22px;padding:10px 12px;display:grid;grid-template-columns:86px 1fr;gap:10px;align-items:center}
+.l-feed b{font:900 14px/1.15 "Rubik";display:block}
+.l-feed span{font-size:12px;font-weight:500}
+.l-feed em{font-style:normal;font-weight:900;color:#FF3D8B}
+.l-streak{margin:12px 14px 0;background:#1B1340;color:#D7FF3B;border-radius:22px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font:900 13px "Rubik"}
+.l-dots{display:flex;gap:5px}
+.l-dots i{width:14px;height:14px;border-radius:50%;background:#D7FF3B}
+.l-dots i.x{background:transparent;border:2px solid #D7FF3B}
+.l-nav{margin:auto 14px 18px;background:#fff;border:3px solid #1B1340;border-radius:999px;display:flex;justify-content:space-around;align-items:center;padding:6px;font:900 11px "Rubik"}
+.l-plus{width:46px;height:46px;border-radius:50%;background:#FF6A13;border:3px solid #1B1340;color:#fff;display:grid;place-items:center;font:28px/1 "Bowlby One"}
+
+/* ---------- D · Cuaderno de Campo ---------- */
+.c{background-color:#F3F6F1;background-image:linear-gradient(#D7E3DD 1px,transparent 1px),linear-gradient(90deg,#D7E3DD 1px,transparent 1px);background-size:16px 16px;color:#22385A;font-family:"Spectral",Georgia,serif}
+.c-head{padding:8px 20px 0;border-left:2px solid #E3A6A0;margin-left:26px}
+.c-head h4{font:700 26px/1 "Kalam",cursive;margin:0}
+.c-head p{font:italic 13px "Spectral",serif;color:#4F6578}
+.c-fig{margin:6px 12px 0;position:relative}
+.c-fig svg{display:block;width:100%;height:auto}
+.c-card{margin:2px 18px 0;background:#FBFCFA;border:1px solid #BACBC2;padding:10px 10px 10px 14px;display:grid;grid-template-columns:1fr 1fr 58px;gap:4px 12px;font-size:13px;position:relative;box-shadow:2px 3px 0 rgba(34,56,90,.08)}
+.c-card dt{font:600 9px/1 "Spectral";letter-spacing:.14em;text-transform:uppercase;color:#6B7E8C;margin-top:4px}
+.c-card dd{margin:0;font:700 17px/1.1 "Kalam",cursive}
+.c-stamp{grid-column:3;grid-row:1 / span 2;align-self:center;transform:rotate(-12deg);border:2px solid #C2413A;color:#C2413A;border-radius:50%;width:58px;height:58px;display:grid;place-items:center;text-align:center;font:700 8.5px/1.1 "Spectral";letter-spacing:.06em;text-transform:uppercase}
+.c-notes{margin:12px 22px 0;font:400 15px/1.35 "Kalam",cursive;color:#2F4F7A}
+.c-notes u{text-decoration-color:#C2413A;text-decoration-thickness:2px}
+.c-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding:10px 20px 22px;font:700 14px "Kalam",cursive}
+.c-add{background:#22385A;color:#F3F6F1;padding:8px 14px;border-radius:4px 14px 6px 12px}
+
+/* ---------- E · Modo Exterior ---------- */
+.h{background:#FFD60A;color:#0B0B0B;font-family:"Barlow",sans-serif}
+.h-top{padding:6px 18px 0}
+.h-top small{font:800 13px/1 "Barlow Condensed";letter-spacing:.16em}
+.h-top h4{font:800 80px/0.84 "Barlow Condensed",sans-serif;letter-spacing:-.02em;margin:4px 0 0;text-transform:uppercase}
+.h-top p{font:700 15px "Barlow";margin-top:4px}
+.h-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:12px 12px 0}
+.h-grid div{background:#0B0B0B;color:#FFD60A;border-radius:10px;padding:10px 12px}
+.h-grid small{display:block;font:800 11px/1 "Barlow Condensed";letter-spacing:.14em;color:#fff}
+.h-grid b{font:800 34px/1 "Barlow Condensed"}
+.h-grid em{font:700 13px "Barlow";font-style:normal;color:#fff;margin-left:3px}
+.h-cta{margin:10px 12px 0;background:#fff;border:4px solid #0B0B0B;border-radius:14px;height:78px;display:flex;align-items:center;gap:12px;padding:0 16px;font:800 25px/0.95 "Barlow Condensed";text-transform:uppercase}
+.h-cta i{width:46px;height:46px;border-radius:50%;background:#0B0B0B;color:#FFD60A;display:grid;place-items:center;font:800 34px/1 "Barlow";font-style:normal;flex:none}
+.h-row{display:grid;grid-template-columns:1fr 84px;gap:6px;margin:6px 12px 0}
+.h-row div{border:4px solid #0B0B0B;border-radius:14px;height:62px;display:grid;place-items:center;font:800 17px/1 "Barlow Condensed";text-transform:uppercase;text-align:center}
+.h-row .sos{background:#D7261E;color:#fff;border-color:#0B0B0B;font-size:24px}
+.h-nav{margin-top:auto;display:grid;grid-template-columns:repeat(3,1fr);background:#0B0B0B;color:#fff;padding:14px 6px 24px;text-align:center;font:800 14px/1 "Barlow Condensed";letter-spacing:.1em}
+.h-nav .on{color:#FFD60A}
+
+/* ---------- F · Gyotaku ---------- */
+.g{background:#ECEAE4;color:#151517;font-family:"Zen Kaku Gothic New",sans-serif}
+.g-top{display:flex;justify-content:space-between;align-items:baseline;padding:10px 22px 0;font-size:11px;letter-spacing:.14em;color:#6A6862}
+.g-top b{font:800 15px "Shippori Mincho",serif;letter-spacing:.2em;color:#151517}
+.g-print{position:relative;margin:14px 0 0;height:230px}
+.g-print svg{position:absolute;left:0;top:0;width:100%;height:230px}
+.g-seal{position:absolute;right:26px;bottom:6px;width:38px;height:46px;background:#C23B22;color:#ECEAE4;display:grid;place-items:center;font:800 22px/1 "Shippori Mincho",serif;border-radius:3px;transform:rotate(2deg)}
+.g-name{padding:4px 22px 0}
+.g-name h4{font:800 40px/1 "Shippori Mincho",serif;margin:0;letter-spacing:.04em}
+.g-name i{font:italic 12px "Spectral",serif;color:#6A6862}
+.g-meta{display:flex;gap:16px;padding:10px 22px 0;font-size:12px}
+.g-meta b{display:block;font:500 20px "Shippori Mincho",serif}
+.g-meta span{color:#6A6862;letter-spacing:.1em;font-size:10px}
+.g-list{margin:16px 22px 0;border-top:1px solid #151517}
+.g-list div{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #C9C6BE;font-size:13px}
+.g-list span{font-family:"Shippori Mincho",serif;font-size:15px}
+.g-list em{font-style:normal;color:#6A6862;font-variant-numeric:tabular-nums}
+.g-nav{margin-top:auto;display:flex;justify-content:center;gap:26px;padding:12px 0 22px;font-size:11px;letter-spacing:.2em;color:#6A6862}
+.g-nav .on{color:#C23B22}
+
+/* ---------- comparación ---------- */
+.compare{padding-block:64px 0;border-top:1px solid var(--line);display:grid;gap:22px}
+.compare h2{font-size:clamp(28px,4vw,40px);font-weight:800}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:700;white-space:nowrap}
+.dots{font-family:var(--f-mono);letter-spacing:2px;color:var(--accent);white-space:nowrap}
+.reco{display:grid;gap:14px;max-width:72ch;font-size:17px}
+.reco p{max-width:68ch}
+
+@media (max-width:860px){
+  .design{grid-template-columns:minmax(0,1fr);gap:28px;padding-block:48px}
+  .stage{padding:16px 10px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .l-stk span{transition:transform .2s}
+  .stage:hover .l-stk span{transform:rotate(0)}
+}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <span class="eyebrow">App de pesca · Exploración visual</span>
+    <h1>Seis maneras de verse para la misma app</h1>
+    <p>Cada propuesta muestra la pantalla de inicio con los mismos datos (condiciones del agua, ventana de pique, capturas) para que la comparación sea justa. Tres salen directo del mundo de la pesca; las otras tres prueban caminos más amplios.</p>
+    <nav class="index" aria-label="Propuestas">
+      <a href="#carta">A · Carta Náutica</a>
+      <a href="#sonda">B · Ecosonda</a>
+      <a href="#senuelo">C · Caja de Señuelos</a>
+      <a href="#cuaderno">D · Cuaderno de Campo</a>
+      <a href="#exterior">E · Modo Exterior</a>
+      <a href="#gyotaku">F · Gyotaku</a>
+      <a href="#comparar">Comparación</a>
+    </nav>
+  </header>
+
+  <!-- ================= A ================= -->
+  <section class="design" id="carta" style="--stage:#DCE9EE">
+    <div class="stage">
+      <div class="phone"><div class="screen n">
+        <div class="sb"><span>06:12</span><span>4G ▮▮▮</span></div>
+        <header class="n-head">
+          <div class="n-coord">35°34′S · 58°01′W</div>
+          <h4>Laguna de Chascomús</h4>
+          <div class="n-sub">Carta de pesca · sector norte · prof. en metros</div>
+        </header>
+        <div class="n-map">
+          <svg viewBox="0 0 276 196" role="img" aria-label="Carta batimétrica con zona de pique marcada">
+            <rect width="276" height="196" fill="#FDFEFE"/>
+            <path d="M0 0H232C206 40 172 70 142 104C112 138 62 160 0 172Z" fill="#D6E9F1"/>
+            <path d="M0 0H178C152 26 122 46 102 72C82 98 42 116 0 126Z" fill="#AFD2E4"/>
+            <path d="M0 0H122C102 20 74 30 54 54C38 74 18 80 0 86Z" fill="#E6DCB2"/>
+            <path d="M0 86C18 80 38 74 54 54C74 30 102 20 122 0" fill="none" stroke="#1D2A33" stroke-width="1.2"/>
+            <path d="M0 126C42 116 82 98 102 72C122 46 152 26 178 0" fill="none" stroke="#1D2A33" stroke-width=".6" stroke-dasharray="3 2"/>
+            <path d="M0 172C62 160 112 138 142 104C172 70 206 40 232 0" fill="none" stroke="#1D2A33" stroke-width=".6"/>
+            <path d="M40 196C110 184 180 150 214 112C240 84 262 50 276 34" fill="none" stroke="#1D2A33" stroke-width=".6" stroke-dasharray="6 2 1 2"/>
+            <g font-family="Libre Caslon Text, serif" font-style="italic" font-size="9" fill="#1D2A33">
+              <text x="70" y="78">1₄</text><text x="112" y="62">1₈</text><text x="38" y="112">1₆</text>
+              <text x="140" y="44">2₅</text><text x="96" y="118">2₇</text><text x="56" y="150">2₉</text>
+              <text x="196" y="40">3₁</text><text x="150" y="150">3₃</text><text x="230" y="86">3₄</text><text x="118" y="182">3₂</text>
+              <text x="14" y="30" font-size="11" font-weight="700">Chascomús</text>
+            </g>
+            <circle cx="176" cy="104" r="22" fill="none" stroke="#B0207A" stroke-width="1.6" stroke-dasharray="4 3"/>
+            <circle cx="176" cy="104" r="3" fill="#B0207A"/>
+            <text x="162" y="74" font-family="IBM Plex Mono, monospace" font-size="8" fill="#B0207A" font-weight="600">PIQUE ALTO</text>
+            <path d="M110 140l7-14 7 14-7-4z" fill="#1D2A33"/>
+            <text x="98" y="152" font-family="IBM Plex Mono, monospace" font-size="7" fill="#1D2A33">VOS · 1,1 km</text>
+            <g transform="translate(244 164)">
+              <circle r="18" fill="none" stroke="#B0207A" stroke-width=".7"/>
+              <circle r="13" fill="none" stroke="#B0207A" stroke-width=".4"/>
+              <path d="M0-18L3 0 0 18-3 0Z" fill="#B0207A"/><path d="M-18 0L0-3 18 0 0 3Z" fill="#B0207A" opacity=".55"/>
+              <text y="-21" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="#B0207A">N</text>
+            </g>
+          </svg>
+        </div>
+        <div class="n-data">
+          <div><small>AGUA</small><b>16,4 °C</b></div>
+          <div><small>VIENTO</small><b>NE 12 kn</b></div>
+          <div><small>PRESIÓN</small><b>1016 ↘</b></div>
+          <div><small>LUNA</small><b>Crec. 62%</b></div>
+        </div>
+        <div class="n-sol"><span>Período solunar mayor</span><b>06:40 – 08:20</b></div>
+        <nav class="n-tab"><span class="on">Carta</span><span>Diario</span><span>Especies</span><span>Perfil</span></nav>
+      </div></div>
+    </div>
+    <div class="info">
+      <span class="tag">Inspirada en pesca · cartografía náutica</span>
+      <h2>A · Carta Náutica</h2>
+      <p class="lede">La pantalla principal es un mapa que habla el idioma de las cartas de navegación: líneas de profundidad, sondajes en cursiva, magenta para lo importante y una rosa de los vientos.</p>
+      <div>
+        <h3>Por qué funciona</h3>
+        <ul>
+          <li>El pescador decide <em>dónde</em> tirar antes que <em>qué</em> usar. Poner la batimetría al frente responde esa pregunta en un vistazo.</li>
+          <li>Usa convenciones reales: las cartas náuticas marcan en magenta las ayudas a la navegación y escriben las profundidades con decimal en subíndice (2₇ = 2,7 m). Quien navega lo reconoce al instante.</li>
+          <li>Transmite precisión y confianza. Sirve para una app seria de datos: mareas, presión, viento en nudos.</li>
+          <li>Escala bien: el mismo lenguaje sirve para lagunas, ríos y mar, y para marcar “mis lugares” en magenta.</li>
+        </ul>
+      </div>
+      <div class="specs">
+        <div><h3>Paleta</h3><div class="swatches">
+          <div class="sw"><i style="background:#F4F8F7"></i>Papel</div>
+          <div class="sw"><i style="background:#AFD2E4"></i>Bajo</div>
+          <div class="sw"><i style="background:#E6DCB2"></i>Tierra</div>
+          <div class="sw"><i style="background:#B0207A"></i>Magenta</div>
+          <div class="sw"><i style="background:#1D2A33"></i>Tinta</div>
+        </div></div>
+        <div><h3>Tipografía</h3><div class="fonts">
+          <b style="font-family:'Libre Caslon Text',serif;font-style:italic">Libre Caslon Italic</b><span>Nombres de lugares, como en la carta</span>
+          <b style="font-family:'IBM Plex Mono',monospace;font-size:18px">IBM Plex Mono</b><span>Datos, coordenadas, unidades</span>
+        </div></div>
+      </div>
+      <p class="note"><b>Ideal para</b> pescadores embarcados y de costa que planifican la salida. <b>Ojo:</b> exige buena data batimétrica; donde no la haya, el mapa queda vacío.</p>
+    </div>
+  </section>
+
+  <!-- ================= B ================= -->
+  <section class="design" id="sonda" style="--stage:#0E1B26">
+    <div class="stage">
+      <div class="phone"><div class="screen s">
+        <div class="sb"><span>05:48</span><span>BT · SONDA</span></div>
+        <div class="s-top">
+          <div class="s-depth">9.1<small>m</small></div>
+          <div class="s-mini">
+            <div><small>AGUA</small>16.4°C</div>
+            <div><small>VELOC.</small>3.2 km/h</div>
+          </div>
+        </div>
+        <div class="s-screen"><canvas id="sonar" width="280" height="250" aria-label="Lectura de ecosonda con cardumen y fondo"></canvas></div>
+        <div class="s-mode"><span class="on">2D</span><span>DOWN</span><span>SIDE</span><span>MAPA</span></div>
+        <div class="s-act">
+          <header><span>ACTIVIDAD DE PECES</span><b>ALTA</b></header>
+          <div class="s-bars"><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i></div>
+          <p>4 ecos · 5.8 – 7.2 m · pique hasta 08:20</p>
+        </div>
+      </div></div>
+    </div>
+    <div class="info">
+      <span class="tag">Inspirada en pesca · pantallas de ecosonda</span>
+      <h2>B · Ecosonda</h2>
+      <p class="lede">Toda la app se ve como un fishfinder: fondo casi negro, la rampa de color clásica de las sondas (azul, amarillo, rojo) y números grandes en tipografía de pantalla.</p>
+      <div>
+        <h3>Por qué funciona</h3>
+        <ul>
+          <li>Mucha pesca se hace de madrugada o de noche. Un fondo oscuro no encandila y cuida la visión nocturna.</li>
+          <li>Los colores no son decorativos: en una sonda, rojo es eco fuerte (fondo duro, pez grande) y amarillo es eco medio. La app puede usar esa misma lógica para todo (pique alto = rojo).</li>
+          <li>Abre la puerta a conectar sondas Bluetooth o mostrar datos de sondas compartidas. El diseño ya está preparado para eso.</li>
+          <li>Se siente técnico y “de equipo”, algo que valora el pescador que invierte en su embarcación.</li>
+        </ul>
+      </div>
+      <div class="specs">
+        <div><h3>Paleta</h3><div class="swatches">
+          <div class="sw"><i style="background:#040A12"></i>Fondo</div>
+          <div class="sw"><i style="background:#1A4F8F"></i>Eco débil</div>
+          <div class="sw"><i style="background:#FFB300"></i>Eco medio</div>
+          <div class="sw"><i style="background:#FF4B3A"></i>Eco fuerte</div>
+          <div class="sw"><i style="background:#BFEFFF"></i>Texto</div>
+        </div></div>
+        <div><h3>Tipografía</h3><div class="fonts">
+          <b style="font-family:'VT323',monospace;font-size:28px">VT323 · 9.1 m</b><span>Lecturas grandes, estilo LCD</span>
+          <b style="font-family:'Chakra Petch',sans-serif">Chakra Petch</b><span>Etiquetas y botones</span>
+        </div></div>
+      </div>
+      <p class="note"><b>Ideal para</b> pesca embarcada, de noche o técnica. <b>Ojo:</b> a pleno sol una pantalla oscura se lee peor; conviene combinarla con un modo claro.</p>
+    </div>
+  </section>
+
+  <!-- ================= C ================= -->
+  <section class="design" id="senuelo" style="--stage:#2A2152">
+    <div class="stage">
+      <div class="phone"><div class="screen l">
+        <div class="sb"><span>07:05</span><span>5G ▮▮▮</span></div>
+        <div class="l-hi"><span>Hola, Nico</span><div class="l-av">N</div></div>
+        <div class="l-hero">
+          <small>¿SALE HOY?</small>
+          <h4>¡SALE!</h4>
+          <p>Viento a favor y luna creciendo</p>
+          <svg class="l-gauge" viewBox="0 0 80 50" aria-label="Pique 8,2 de 10">
+            <path d="M8 44A32 32 0 0 1 72 44" fill="none" stroke="#1B1340" stroke-width="10" stroke-linecap="round"/>
+            <path d="M8 44A32 32 0 0 1 72 44" fill="none" stroke="#D7FF3B" stroke-width="6" stroke-linecap="round" stroke-dasharray="100" stroke-dashoffset="18"/>
+            <text x="40" y="44" text-anchor="middle" font-family="Bowlby One" font-size="15" fill="#fff" stroke="#1B1340" stroke-width=".6">8,2</text>
+          </svg>
+        </div>
+        <div class="l-stk"><span>PEJERREY EN RACHA</span><span>06:40 – 08:20</span><span>VIENTO OK</span></div>
+        <div class="l-feed">
+          <svg viewBox="0 0 120 60" aria-label="Señuelo fire tiger">
+            <defs><clipPath id="lureBody"><path d="M8 30C24 10 70 8 96 22L114 30 96 38C70 52 24 50 8 30Z"/></clipPath></defs>
+            <g clip-path="url(#lureBody)">
+              <rect width="120" height="60" fill="#D7FF3B"/>
+              <rect y="34" width="120" height="30" fill="#FF6A13"/>
+              <g fill="#1B1340"><path d="M34 0l6 0-4 32-6 0z"/><path d="M52 0l6 0-4 32-6 0z"/><path d="M70 0l6 0-4 30-6 0z"/><path d="M86 6l5 0-3 24-5 0z"/></g>
+            </g>
+            <path d="M8 30C24 10 70 8 96 22L114 30 96 38C70 52 24 50 8 30Z" fill="none" stroke="#1B1340" stroke-width="3"/>
+            <circle cx="24" cy="27" r="5" fill="#fff" stroke="#1B1340" stroke-width="2"/><circle cx="25" cy="27" r="2" fill="#1B1340"/>
+            <path d="M8 30L-2 26" stroke="#1B1340" stroke-width="3"/>
+          </svg>
+          <div><b>Lu sacó una tararira de 2,1 kg</b><span>con un <em>fire tiger</em> · hace 12 min</span></div>
+        </div>
+        <div class="l-streak"><span>RACHA: 5 SALIDAS</span><div class="l-dots"><i></i><i></i><i></i><i></i><i></i><i class="x"></i></div></div>
+        <nav class="l-nav"><span>INICIO</span><span>MAPA</span><span class="l-plus">+</span><span>AMIGOS</span><span>YO</span></nav>
+      </div></div>
+    </div>
+    <div class="info">
+      <span class="tag">Inspirada en pesca · señuelos y su packaging</span>
+      <h2>C · Caja de Señuelos</h2>
+      <p class="lede">Colores sacados de los señuelos más famosos: chartreuse, rosa chicle y el patrón <em>fire tiger</em>. Bordes gruesos, sombras planas y stickers. Responde una sola pregunta en grande: ¿sale hoy?</p>
+      <div>
+        <h3>Por qué funciona</h3>
+        <ul>
+          <li>Los señuelos son el objeto más colorido y coleccionable de la pesca. Usar sus patrones reales le da identidad propia y reconocible.</li>
+          <li>Reduce el pronóstico a un veredicto (“¡SALE!”, 8,2/10). Para el pescador ocasional, eso vale más que diez números.</li>
+          <li>Está pensada para lo social: rachas, el feed de amigos y capturas fáciles de compartir en historias. Eso ayuda a que la app crezca de boca en boca.</li>
+          <li>Atrae a un público joven y nuevo en la pesca, que hoy no se siente representado por apps grises y técnicas.</li>
+        </ul>
+      </div>
+      <div class="specs">
+        <div><h3>Paleta</h3><div class="swatches">
+          <div class="sw"><i style="background:#D7FF3B"></i>Chartreuse</div>
+          <div class="sw"><i style="background:#FF3D8B"></i>Chicle</div>
+          <div class="sw"><i style="background:#FF6A13"></i>Fire tiger</div>
+          <div class="sw"><i style="background:#1B1340"></i>Tinta</div>
+          <div class="sw"><i style="background:#FFFFFF"></i>Blanco</div>
+        </div></div>
+        <div><h3>Tipografía</h3><div class="fonts">
+          <b style="font-family:'Bowlby One',sans-serif">Bowlby One</b><span>Veredictos y titulares</span>
+          <b style="font-family:'Rubik',sans-serif;font-weight:900">Rubik Black</b><span>Interfaz, stickers, botones</span>
+        </div></div>
+      </div>
+      <p class="note"><b>Ideal para</b> una app con comunidad, gamificación y público amplio. <b>Ojo:</b> a un pescador veterano y técnico le puede parecer poco serio.</p>
+    </div>
+  </section>
+
+  <!-- ================= D ================= -->
+  <section class="design" id="cuaderno" style="--stage:#C9D9D0">
+    <div class="stage">
+      <div class="phone"><div class="screen c">
+        <div class="sb"><span>08:31</span><span>▮▮▮</span></div>
+        <header class="c-head">
+          <h4>Sáb 4 de octubre</h4>
+          <p>Laguna de Chascomús · muelle del club · 06:55 h</p>
+        </header>
+        <div class="c-fig">
+          <svg viewBox="0 0 276 150" aria-label="Ilustración de un pejerrey con anotaciones">
+            <defs>
+              <filter id="wash" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="4"/><feDisplacementMap in="SourceGraphic" scale="14"/></filter>
+            </defs>
+            <ellipse cx="128" cy="78" rx="98" ry="30" fill="#7FB3A3" opacity=".38" filter="url(#wash)"/>
+            <ellipse cx="120" cy="86" rx="70" ry="12" fill="#9DB7D5" opacity=".45" filter="url(#wash)"/>
+            <g fill="none" stroke="#22385A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M36 78C60 56 140 50 196 70L230 52 222 78 232 104 196 88C140 106 60 100 36 78Z"/>
+              <path d="M44 79Q130 74 200 79" stroke="#5E7FA8" stroke-width="3" opacity=".7"/>
+              <path d="M104 58L112 44 124 56"/><path d="M146 58L152 48 162 60"/>
+              <path d="M120 98L126 108 138 98"/><path d="M80 92L86 104 94 94"/>
+              <path d="M60 70Q66 80 60 90"/>
+            </g>
+            <circle cx="50" cy="75" r="3.5" fill="#22385A"/>
+            <g font-family="Kalam, cursive" font-size="11" fill="#2F4F7A">
+              <path d="M150 26Q140 36 132 64" fill="none" stroke="#C2413A" stroke-width="1"/>
+              <text x="152" y="24">banda plateada</text>
+              <path d="M30 120Q40 108 52 82" fill="none" stroke="#C2413A" stroke-width="1"/>
+              <text x="10" y="134">ojo grande: pejerrey</text>
+              <path d="M36 112H232" stroke="#22385A" stroke-width=".8" fill="none"/>
+              <path d="M36 108V116M232 108V116" stroke="#22385A" stroke-width=".8"/>
+              <text x="216" y="134">38 cm</text>
+            </g>
+          </svg>
+        </div>
+        <dl class="c-card">
+          <div><dt>Especie</dt><dd>Pejerrey</dd></div>
+          <div><dt>Peso</dt><dd>410 g</dd></div>
+          <div><dt>Carnada</dt><dd>Filet de mojarra</dd></div>
+          <div><dt>Prof.</dt><dd>1,2 m</dd></div>
+          <span class="c-stamp">De&shy;vuelto al agua</span>
+        </dl>
+        <p class="c-notes">Picó fuerte cuando el viento <u>rotó al NE</u>. Mañana probar la boya más baja y llegar antes de las 6.</p>
+        <footer class="c-foot"><span>Diario · 23 entradas</span><span class="c-add">+ Anotar</span></footer>
+      </div></div>
+    </div>
+    <div class="info">
+      <span class="tag">Inspirada en pesca · libreta del naturalista</span>
+      <h2>D · Cuaderno de Campo</h2>
+      <p class="lede">La app como la libreta de un pescador naturalista: papel cuadriculado, ilustración en acuarela, notas a mano y un sello de “devuelto al agua”.</p>
+      <div>
+        <h3>Por qué funciona</h3>
+        <ul>
+          <li>Pone el registro de capturas en el centro. Es la función que más retiene usuarios: cada salida que anotás vuelve más valiosa a la app.</li>
+          <li>Las notas personales (“probar la boya más baja”) convierten la app en memoria del pescador. Ninguna app genérica de clima ofrece eso.</li>
+          <li>Comunica pesca responsable sin sermonear: el sello de devolución y las medidas reales celebran la captura y la liberación.</li>
+          <li>Tiene un tono cálido y artesanal que encaja con pesca con mosca, pesca de costa y quienes pescan por la experiencia.</li>
+        </ul>
+      </div>
+      <div class="specs">
+        <div><h3>Paleta</h3><div class="swatches">
+          <div class="sw"><i style="background:#F3F6F1"></i>Papel</div>
+          <div class="sw"><i style="background:#7FB3A3"></i>Acuarela</div>
+          <div class="sw"><i style="background:#22385A"></i>Tinta</div>
+          <div class="sw"><i style="background:#C2413A"></i>Lápiz rojo</div>
+          <div class="sw"><i style="background:#D7E3DD"></i>Cuadrícula</div>
+        </div></div>
+        <div><h3>Tipografía</h3><div class="fonts">
+          <b style="font-family:'Kalam',cursive;font-weight:700">Kalam</b><span>Notas y valores “escritos a mano”</span>
+          <b style="font-family:'Spectral',serif">Spectral</b><span>Etiquetas y texto corrido</span>
+        </div></div>
+      </div>
+      <p class="note"><b>Ideal para</b> una app centrada en el diario de pesca y la comunidad de pesca y devolución. <b>Ojo:</b> las ilustraciones por especie llevan trabajo de producción.</p>
+    </div>
+  </section>
+
+  <!-- ================= E ================= -->
+  <section class="design" id="exterior" style="--stage:#262626">
+    <div class="stage">
+      <div class="phone"><div class="screen h">
+        <div class="sb"><span>13:20</span><span>▮▮▮ 78%</span></div>
+        <div class="h-top">
+          <small>PIQUE AHORA</small>
+          <h4>Bueno</h4>
+          <p>Mejor ventana: 17:50 – 19:30</p>
+        </div>
+        <div class="h-grid">
+          <div><small>VIENTO</small><b>12</b><em>km/h NE</em></div>
+          <div><small>AGUA</small><b>16°</b><em>estable</em></div>
+          <div><small>PRESIÓN</small><b>↘</b><em>1016 hPa</em></div>
+          <div><small>OLA</small><b>0,4</b><em>m</em></div>
+        </div>
+        <div class="h-cta"><i>+</i>Registrar captura</div>
+        <div class="h-row"><div>Volver al auto · 1,2 km</div><div class="sos">SOS</div></div>
+        <nav class="h-nav"><span class="on">HOY</span><span>MAPA</span><span>DIARIO</span></nav>
+      </div></div>
+    </div>
+    <div class="info">
+      <span class="tag">Camino amplio · señalética y equipo de seguridad</span>
+      <h2>E · Modo Exterior</h2>
+      <p class="lede">Diseño utilitario pensado para usarse con sol de frente, manos mojadas y una caña en la otra mano. Amarillo de seguridad, negro y tipografía condensada enorme.</p>
+      <div>
+        <h3>Por qué funciona</h3>
+        <ul>
+          <li>Negro sobre amarillo es una de las combinaciones más legibles que existen (contraste cercano a 14:1). Por eso la usan la señalética vial y el equipamiento náutico.</li>
+          <li>Botones de 62 a 78 px de alto: se pueden tocar con guantes, con dedos mojados o sin mirar mucho.</li>
+          <li>Prioriza la acción: registrar una captura es un solo toque, y “volver al auto” y SOS están siempre a mano. La seguridad también es parte de pescar.</li>
+          <li>Funciona bien con una sola mano y a la distancia de un brazo, apoyado en la conservadora o en el kayak.</li>
+        </ul>
+      </div>
+      <div class="specs">
+        <div><h3>Paleta</h3><div class="swatches">
+          <div class="sw"><i style="background:#FFD60A"></i>Seguridad</div>
+          <div class="sw"><i style="background:#0B0B0B"></i>Negro</div>
+          <div class="sw"><i style="background:#FFFFFF"></i>Blanco</div>
+          <div class="sw"><i style="background:#D7261E"></i>Alerta</div>
+        </div></div>
+        <div><h3>Tipografía</h3><div class="fonts">
+          <b style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:26px">BARLOW CONDENSED</b><span>Estados y números gigantes</span>
+          <b style="font-family:'Barlow',sans-serif;font-weight:700">Barlow</b><span>Texto de apoyo</span>
+        </div></div>
+      </div>
+      <p class="note"><b>Ideal para</b> pesca de costa, kayak y vadeo, o como “modo exterior” que se activa solo con mucha luz. <b>Ojo:</b> como identidad única puede cansar; brilla más como modo complementario.</p>
+    </div>
+  </section>
+
+  <!-- ================= F ================= -->
+  <section class="design" id="gyotaku" style="--stage:#D6D2C8">
+    <div class="stage">
+      <div class="phone"><div class="screen g">
+        <div class="sb"><span>21:04</span><span>▮▮▮</span></div>
+        <div class="g-top"><b>TROFEOS</b><span>2026 · 14 CAPTURAS</span></div>
+        <div class="g-print">
+          <svg viewBox="0 0 320 230" aria-label="Impresión en tinta de un dorado">
+            <defs>
+              <filter id="ink" x="0" y="0" width="100%" height="100%">
+                <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7" result="n"/>
+                <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -0.9 1.2" result="m"/>
+                <feComposite in="SourceGraphic" in2="m" operator="in"/>
+              </filter>
+              <pattern id="scales" width="9" height="7" patternUnits="userSpaceOnUse">
+                <path d="M0 7Q4.5 0 9 7" fill="none" stroke="#ECEAE4" stroke-width=".8" opacity=".55"/>
+              </pattern>
+              <clipPath id="fishClip"><path d="M24 118C60 70 150 56 226 84L292 40 278 116 296 190 228 146C150 176 62 164 24 118Z"/></clipPath>
+            </defs>
+            <g filter="url(#ink)">
+              <path d="M24 118C60 70 150 56 226 84L292 40 278 116 296 190 228 146C150 176 62 164 24 118Z" fill="#151517"/>
+              <path d="M118 70C126 52 136 40 150 36C160 46 166 58 172 72Z" fill="#151517"/>
+              <path d="M196 80L204 64 214 82Z" fill="#151517"/>
+              <path d="M118 160L136 192 160 160Z" fill="#151517"/>
+              <path d="M74 146L80 172 98 150Z" fill="#151517"/>
+              <path d="M180 156L190 178 202 152Z" fill="#151517"/>
+            </g>
+            <g clip-path="url(#fishClip)"><rect x="70" y="60" width="160" height="110" fill="url(#scales)"/></g>
+            <g stroke="#ECEAE4" stroke-width=".7" opacity=".6" fill="none">
+              <path d="M140 44L144 70M150 40L154 70M160 46L162 70"/>
+              <path d="M240 80L282 50M240 116H280M240 150L284 180"/>
+              <path d="M70 92Q80 118 70 142"/>
+            </g>
+            <circle cx="50" cy="110" r="7" fill="#ECEAE4"/><circle cx="50" cy="110" r="3" fill="#151517"/>
+          </svg>
+          <div class="g-seal" aria-label="Sello: tsuri, pescar">釣</div>
+        </div>
+        <div class="g-name"><h4>Dorado</h4><i>Salminus brasiliensis</i></div>
+        <div class="g-meta">
+          <div><b>4,2 kg</b><span>PESO</span></div>
+          <div><b>71 cm</b><span>LARGO</span></div>
+          <div><b>12·09</b><span>RÍO PARANÁ</span></div>
+        </div>
+        <div class="g-list">
+          <div><span>Surubí</span><em>6,8 kg · 03·08</em></div>
+          <div><span>Tararira</span><em>2,1 kg · 21·09</em></div>
+          <div><span>Pejerrey</span><em>0,41 kg · 04·10</em></div>
+        </div>
+        <nav class="g-nav"><span>HOY</span><span class="on">TROFEOS</span><span>MAPA</span></nav>
+      </div></div>
+    </div>
+    <div class="info">
+      <span class="tag">Camino amplio · arte japonés del grabado de peces</span>
+      <h2>F · Gyotaku</h2>
+      <p class="lede">El <em>gyotaku</em> es la técnica japonesa de entintar un pez y estamparlo en papel para dejar registro de la captura. Esta propuesta convierte cada trofeo en una lámina: tinta negra, papel washi, un sello rojo y muchísimo aire.</p>
+      <div>
+        <h3>Por qué funciona</h3>
+        <ul>
+          <li>El gyotaku nació para lo mismo que la app: registrar la captura con su peso, medida, lugar y fecha. La referencia tiene sentido y no es solo estética.</li>
+          <li>Se diferencia de todas las apps de pesca del mercado, que se parecen entre sí (mapas azules, íconos de clima). Es memorable.</li>
+          <li>Hace que compartir un trofeo se sienta especial; la lámina se puede exportar como imagen o hasta imprimirse como póster (posible producto premium).</li>
+          <li>El minimalismo da jerarquía clara: una captura protagonista, el resto en una lista silenciosa. El sello 釣 significa “pescar”.</li>
+        </ul>
+      </div>
+      <div class="specs">
+        <div><h3>Paleta</h3><div class="swatches">
+          <div class="sw"><i style="background:#ECEAE4"></i>Washi</div>
+          <div class="sw"><i style="background:#151517"></i>Sumi</div>
+          <div class="sw"><i style="background:#C23B22"></i>Hanko</div>
+          <div class="sw"><i style="background:#6A6862"></i>Gris piedra</div>
+        </div></div>
+        <div><h3>Tipografía</h3><div class="fonts">
+          <b style="font-family:'Shippori Mincho',serif;font-weight:800">Shippori Mincho</b><span>Nombres de especies y cifras</span>
+          <b style="font-family:'Zen Kaku Gothic New',sans-serif">Zen Kaku Gothic</b><span>Interfaz y etiquetas</span>
+        </div></div>
+      </div>
+      <p class="note"><b>Ideal para</b> una sección de trofeos o una versión premium enfocada en pesca deportiva de grandes piezas. <b>Ojo:</b> como app completa le falta densidad para datos diarios de clima y pique.</p>
+    </div>
+  </section>
+
+  <!-- ================= Comparación ================= -->
+  <section class="compare" id="comparar">
+    <span class="eyebrow">Comparación</span>
+    <h2>Cuál conviene según qué app quieras hacer</h2>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Propuesta</th><th>Público principal</th><th>Función estrella</th><th>Legible al sol</th><th>Diferenciación</th><th>Esfuerzo de producción</th></tr></thead>
+        <tbody>
+          <tr><td>A · Carta Náutica</td><td>Embarcados, planificadores</td><td>Mapa de spots y profundidades</td><td class="dots">●●●●○</td><td class="dots">●●●○○</td><td>Medio-alto (datos batimétricos)</td></tr>
+          <tr><td>B · Ecosonda</td><td>Pesca técnica y nocturna</td><td>Actividad de peces en vivo</td><td class="dots">●●○○○</td><td class="dots">●●●○○</td><td>Medio</td></tr>
+          <tr><td>C · Caja de Señuelos</td><td>Jóvenes, principiantes, social</td><td>“¿Sale hoy?” + comunidad</td><td class="dots">●●●●○</td><td class="dots">●●●●●</td><td>Bajo-medio</td></tr>
+          <tr><td>D · Cuaderno de Campo</td><td>Mosca, costa, pesca y devolución</td><td>Diario de capturas</td><td class="dots">●●●○○</td><td class="dots">●●●●○</td><td>Alto (ilustraciones por especie)</td></tr>
+          <tr><td>E · Modo Exterior</td><td>Costa, kayak, vadeo</td><td>Registro en un toque, seguridad</td><td class="dots">●●●●●</td><td class="dots">●●○○○</td><td>Bajo</td></tr>
+          <tr><td>F · Gyotaku</td><td>Pesca deportiva, trofeos</td><td>Lámina de trofeo compartible</td><td class="dots">●●●○○</td><td class="dots">●●●●●</td><td>Medio (generar la impresión)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="reco">
+      <p><b>Mi recomendación:</b> no hace falta elegir una sola. Una combinación sólida sería usar <b>A · Carta Náutica</b> como identidad base (seria, útil, propia del mundo de la pesca), sumar <b>E · Modo Exterior</b> como modo de alto contraste que se activa al estar afuera, y tomar <b>F · Gyotaku</b> para la pantalla de trofeos y las imágenes para compartir.</p>
+      <p>Si la app apunta a comunidad y a gente que recién empieza, el camino es <b>C · Caja de Señuelos</b>: es la que más rápido se reconoce y la más fácil de viralizar.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+function drawSonar(){
+  var cv=document.getElementById('sonar'); if(!cv||!cv.getContext) return;
+  var W=280,H=250,dpr=Math.min(window.devicePixelRatio||1,3);
+  cv.width=W*dpr; cv.height=H*dpr;
+  var x=cv.getContext('2d'); x.scale(dpr,dpr);
+  var seed=11; function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;}
+  var pxPerM=H/12;
+  var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#071A33'); g.addColorStop(1,'#04101F');
+  x.fillStyle=g; x.fillRect(0,0,W,H);
+  function bottom(i){return 190+14*Math.sin(i/42)+6*Math.sin(i/11+1);}
+  for(var i=0;i<W;i+=2){
+    for(var k=0;k<6;k++){ var y=rnd()*bottom(i); x.fillStyle='rgba(60,130,220,'+(0.15+rnd()*0.3)+')'; x.fillRect(i,y,2,1); }
+    var ty=88+5*Math.sin(i/30); x.fillStyle='rgba(70,150,230,'+(0.25+rnd()*0.25)+')'; x.fillRect(i,ty+rnd()*6,2,2);
+    var b=bottom(i);
+    x.fillStyle='#FF3B2F'; x.fillRect(i,b,2,5);
+    x.fillStyle='#FFB300'; x.fillRect(i,b+5,2,8);
+    x.fillStyle='#2D7BD8'; x.fillRect(i,b+13,2,10);
+    x.fillStyle='#123E77'; x.fillRect(i,b+23,2,H);
+  }
+  var fish=[[62,128,1],[110,150,0.8],[168,122,1.25],[214,146,0.9]];
+  fish.forEach(function(f){
+    for(var j=-8;j<=8;j++){
+      var y=f[1]+j*j*0.18*f[2], cx=f[0]+j*1.6*f[2];
+      x.fillStyle=Math.abs(j)<3?'#FF3B2F':(Math.abs(j)<6?'#FFB300':'#3C8BE0');
+      x.fillRect(cx,y,2,3*f[2]);
+    }
+    x.font='600 10px "Chakra Petch", sans-serif'; x.fillStyle='#BFEFFF';
+    x.fillText((f[1]/pxPerM).toFixed(1),f[0]-8,f[1]-8);
+  });
+  x.font='18px "VT323", monospace'; x.textAlign='right';
+  for(var d=0;d<=12;d+=3){ var yy=d*pxPerM; x.fillStyle='rgba(191,239,255,.18)'; x.fillRect(0,yy,W-22,1); x.fillStyle='#7A8FA0'; x.fillText(String(d),W-4,Math.min(Math.max(yy+5,14),H-3)); }
+}
+drawSonar();
+// redibuja cuando cargan las fuentes para que las etiquetas usen VT323 / Chakra Petch
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(drawSonar);}
+</script>
