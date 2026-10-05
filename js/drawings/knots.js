@@ -25,10 +25,11 @@ const swatch = (body) => `<svg viewBox="0 0 30 14" width="30" height="14" aria-h
 /** Key for knots drawn with the step system: each entry carries a small drawing. */
 const STEP_KEY = [
   { label: 'Línea principal', svg: swatch(`<path d="M2 7 H28" stroke="${K}" stroke-width="5" stroke-linecap="round"/>`) },
-  { label: 'Pasos anteriores', svg: swatch(`<path d="M2 7 H28" stroke="#A3A39C" stroke-width="5" stroke-linecap="round"/>`) },
+  { label: 'Pasos anteriores', svg: swatch(`<path d="M2 7 H28" stroke="#F2C392" stroke-width="5" stroke-linecap="round"/>`) },
   { label: 'Este paso', svg: swatch(`<path d="M2 7 H28" stroke="${O}" stroke-width="5" stroke-linecap="round"/>`) },
-  { label: 'Punta', svg: swatch(`<path d="M2 7 H18" stroke="${O}" stroke-width="5" stroke-linecap="round"/><circle cx="22" cy="7" r="5" fill="#F5F5F2" stroke="${O}" stroke-width="3"/>`) },
+  { label: 'Punta', svg: swatch(`<path d="M2 7 H22" stroke="${O}" stroke-width="5" stroke-linecap="round"/><path d="M22 1 V13" stroke="${O}" stroke-width="5" stroke-linecap="round"/>`) },
   { label: 'Pasar la punta', svg: swatch(`<path d="M2 7 H20" stroke="${R}" stroke-width="2.5" stroke-dasharray="5 3"/><path d="M20 2 L28 7 L20 12z" fill="${R}"/>`) },
+  { label: 'Sostener', svg: swatch(`<ellipse cx="15" cy="3.5" rx="6" ry="3.5" fill="#F2C9A4" stroke="${K}" stroke-width="1"/><ellipse cx="15" cy="10.5" rx="6" ry="3.5" fill="#F2C9A4" stroke="${K}" stroke-width="1"/>`) },
   { label: 'Tirar para apretar', svg: swatch(`<path d="M2 7 H17" stroke="${R}" stroke-width="5"/><path d="M16 1 L29 7 L16 13z" fill="${R}"/>`) },
 ];
 
@@ -113,14 +114,28 @@ const EYE_Y = 85;
    Solid thick red arrow: pull to tighten. Over/under is shown by drawing order: a line
    drawn later with a paper-colored edge passes over what was drawn before. */
 
-const D = '#A3A39C'; // already placed in earlier steps
+const D = '#F2C392'; // already placed in earlier steps: the tip's path, faded
 const PAPER = '#F5F5F2';
 
 /** A line with no paper edge: used for the half of a wrap that goes behind. */
 const bare = (d, color, w = 5) => `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
 
-/** Hollow ring at the free end of the line. */
-const tip = (x, y, color = O) => `<circle cx="${x}" cy="${y}" r="6" fill="${PAPER}" stroke="${color}" stroke-width="3.5"/>`;
+const SKIN = '#F2C9A4';
+
+/** Free end of the line at (x, y), pointing at angle a (degrees). Default: a cut bar across it. */
+const TIP_STYLE = 'bar';
+function tip(x, y, a, color = O) {
+  const shapes = {
+    ring: `<circle cx="7" cy="0" r="6" fill="${PAPER}" stroke="${color}" stroke-width="3.5"/>`,
+    bar: `<path d="M0 -8 V8" stroke="${PAPER}" stroke-width="9" stroke-linecap="round"/><path d="M0 -8 V8" stroke="${color}" stroke-width="5" stroke-linecap="round"/>`,
+    diamond: `<path d="M-2 0 L7 -7 L16 0 L7 7Z" fill="${color}" stroke="${PAPER}" stroke-width="2"/>`,
+  };
+  return `<g transform="translate(${x} ${y}) rotate(${a})">${shapes[TIP_STYLE]}</g>`;
+}
+
+/** Thumb and finger pinching at (x, y): where to hold while pulling. */
+const hold = (x, y) => `<ellipse cx="${x}" cy="${y - 14}" rx="9" ry="7" fill="${SKIN}" stroke="${K}" stroke-width="1.5"/>`
+  + `<ellipse cx="${x}" cy="${y + 14}" rx="9" ry="7" fill="${SKIN}" stroke="${K}" stroke-width="1.5"/>`;
 
 /** Pull to tighten: a solid, thick arrow (different from the dashed movement arrow). */
 const pull = (d) => `<path d="${d}" fill="none" stroke="${R}" stroke-width="6" stroke-linecap="butt" marker-end="url(#kph)"/>`;
@@ -154,32 +169,32 @@ const CL = {
   smallUp: 'M205 100 C206 90 207 75 207 58',
   // Step 4: over the top and down through the big loop.
   bigOver: 'M207 58 C207 36 154 36 151 58 L148 128',
-  bigUnder: 'M148 128 L147 158',
+  bigUnder: 'M148 128 L147 150',
 };
 const clWraps = (color) => coil(180, 85, 5, 16, 13, color);
 
 const CLINCH = [
   // 1. Through the eye.
   hook(EYE_X, EYE_Y) + line('M10 85 H221') + line(CL.eyeShort, O) + ringFront(EYE_X, EYE_Y, 9)
-    + tip(165, 110) + arrow('M150 132 H100'),
+    + tip(165, 110, 180) + arrow('M150 132 H100'),
   // 2. Wraps around the main line.
   (() => {
     const w = clWraps(O);
     return hook(EYE_X, EYE_Y) + w.back + line('M10 85 H221') + line(CL.eye, D) + w.front + line(CL.tail2, O)
-      + ringFront(EYE_X, EYE_Y, 9) + tip(88, 114) + arrow('M190 52 C170 36 128 36 110 54') + text(140, 150, '5 a 7 vueltas');
+      + ringFront(EYE_X, EYE_Y, 9) + tip(88, 114, 135) + arrow('M190 52 C170 36 128 36 110 54') + text(140, 150, '5 a 7 vueltas');
   })(),
   // 3. Through the small loop next to the eye.
   (() => {
     const w = clWraps(D);
     return hook(EYE_X, EYE_Y) + w.back + line(CL.small, O) + line('M10 85 H221') + line(CL.eye, D) + w.front
-      + line(CL.smallUp, O) + ringFront(EYE_X, EYE_Y, 9) + tip(207, 58) + arrow('M110 160 H190')
+      + line(CL.smallUp, O) + ringFront(EYE_X, EYE_Y, 9) + tip(207, 58, -90) + arrow('M110 160 H190')
       + text(130, 30, 'por el lazo chico, junto al ojo');
   })(),
   // 4. Back down through the big loop that formed.
   (() => {
     const w = clWraps(D);
     return hook(EYE_X, EYE_Y) + w.back + line(CL.bigUnder, O) + line(CL.small, D) + line('M10 85 H221') + line(CL.eye, D)
-      + w.front + line(CL.smallUp, D) + line(CL.bigOver, O) + ringFront(EYE_X, EYE_Y, 9) + tip(147, 158)
+      + w.front + line(CL.smallUp, D) + line(CL.bigOver, O) + ringFront(EYE_X, EYE_Y, 9) + tip(147, 150, 90)
       + arrow('M236 54 C236 22 192 14 176 24') + text(16, 30, 'y por el lazo grande', 'start');
   })(),
   // 5. Wet, pull and trim.
@@ -187,6 +202,7 @@ const CLINCH = [
     const w = coil(212, 85, 5, 8, 9, D);
     return hook(EYE_X, EYE_Y) + w.back + line('M10 85 H221') + line('M212 94 C218 100 224 98 221 85', D) + w.front
       + line('M172 94 L160 104', D) + ringFront(EYE_X, EYE_Y, 9)
+      + hold(276, 85) + text(276, 56, 'sostener')
       + pull('M120 58 H40') + text(80, 46, 'tirar') + drop(70, 130) + scissors(150, 124);
   })(),
 ];
