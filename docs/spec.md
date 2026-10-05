@@ -242,6 +242,20 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   - Superposición: la línea que se dibuja después tapa a la de abajo, sin borde. El borde del color del fondo va solo donde se cruzan dos líneas del mismo tono, en la que pasa por encima. El borde es parte del cruce, no del paso: se mantiene en los pasos siguientes.
   - La línea pasa por el ojo del anzuelo sin taparle el borde y vuelve por debajo, lejos de la pata. Los nudos (también los terminados) se dibujan con sus vueltas y cruces, sin bloques ni pelotitas.
   - La leyenda de cada nudo se arma con lo que usan sus dibujos.
+  - Piezas base: línea doble (dos hebras de verdad, abiertas donde se separan y unidas solo en el doblez); nudo simple (tres cruces: encima, debajo, encima); vueltas (el frente entero cruza la línea y la parte de atrás va más clara, como un resorte); torsión de dos hebras (en cada cruce la de arriba lleva borde y se alterna); lo que pasa por detrás de un objeto (bobina, señuelo, manguito, boya) va en puntitos del color de la línea, para no confundirse con la flecha de trazos.
+  - Metales separados: anzuelo en gris oscuro; acero (alambre y brazoladas de acero) en gris azulado, con sus tres tonos cuando se mueve; emerillón y manguito en bronce.
+- Control de cada dibujo de nudo, antes de darlo por bueno (salió de revisar los errores de la primera versión):
+  1. Continuidad: cada línea es un solo recorrido de punta a punta. Los tramos se tocan en el mismo punto; no hay tramos sueltos, huecos ni corrimientos (por ejemplo, la línea a otra altura que el nudo al que entra).
+  2. Igual entre pasos: lo ya hecho se dibuja con la misma forma y en el mismo lugar que en el paso anterior; solo cambia de tono.
+  3. Fiel al texto: el dibujo muestra lo que dice el paso. Si dice "cruzar", las líneas se cruzan; si dice "alrededor de la otra línea", las vueltas envuelven solo a esa; si dice "al revés", va en sentido contrario; si dice "por el lazo", se ve cuál lazo.
+  4. Se reconoce el nudo: un nudo simple, una vuelta o un lazo se dibujan con la forma de la pieza base, nunca como un rulo, una mancha o un bloque. El nudo terminado deja ver sus vueltas.
+  5. Delante y detrás: cada cruce dice qué va encima. Lo que va detrás de un objeto, en puntitos; ninguna línea pasa por encima de un objeto si en la realidad va por detrás.
+  6. Línea doble: nunca un tramo cerrado salvo el doblez del lazo.
+  7. Flechas: la de tirar sale del extremo de la línea que se tira, en su misma dirección; la de mover va junto a lo que se mueve y no lo tapa. Nada de flechas sueltas.
+  8. Herramientas al lado de lo que tocan: la tijera, junto al sobrante que se corta (y el sobrante se ve); la pinza o el sostener, sobre la pieza.
+  9. Colores: cada cosa con su color de material; el tono de la tanza según el paso; metales que no se confunden entre sí.
+  10. Bordes y textos: nada a menos de 8 px del borde del dibujo; los textos no tapan líneas ni objetos y entran enteros.
+  11. Revisión: cada dibujo se mira al menos a 1,5× de tamaño antes de mostrarlo.
 - Publicación: un workflow de GitHub Actions corre las pruebas y publica en GitHub Pages en cada push a main.
 
 ## Pendientes y preguntas abiertas
