@@ -20,7 +20,20 @@ const KEYS = {
   wire: [{ color: K, label: 'Alambre' }, { color: O, label: 'Punta del alambre' }, { color: R, label: 'Movimiento' }],
 };
 
+const swatch = (body) => `<svg viewBox="0 0 30 14" width="30" height="14" aria-hidden="true">${body}</svg>`;
+
+/** Key for knots drawn with the step system: each entry carries a small drawing. */
+const STEP_KEY = [
+  { label: 'Línea principal', svg: swatch(`<path d="M2 7 H28" stroke="${K}" stroke-width="5" stroke-linecap="round"/>`) },
+  { label: 'Pasos anteriores', svg: swatch(`<path d="M2 7 H28" stroke="#A3A39C" stroke-width="5" stroke-linecap="round"/>`) },
+  { label: 'Este paso', svg: swatch(`<path d="M2 7 H28" stroke="${O}" stroke-width="5" stroke-linecap="round"/>`) },
+  { label: 'Punta', svg: swatch(`<path d="M2 7 H18" stroke="${O}" stroke-width="5" stroke-linecap="round"/><circle cx="22" cy="7" r="5" fill="#F5F5F2" stroke="${O}" stroke-width="3"/>`) },
+  { label: 'Pasar la punta', svg: swatch(`<path d="M2 7 H20" stroke="${R}" stroke-width="2.5" stroke-dasharray="5 3"/><path d="M20 2 L28 7 L20 12z" fill="${R}"/>`) },
+  { label: 'Tirar para apretar', svg: swatch(`<path d="M2 7 H17" stroke="${R}" stroke-width="5"/><path d="M16 1 L29 7 L16 13z" fill="${R}"/>`) },
+];
+
 export function knotKey(id) {
+  if (id === 'clinch') return STEP_KEY;
   if (['sangre', 'doble-uni', 'cirujano', 'albright', 'fg'].includes(id)) return KEYS.join;
   if (id === 'tope') return KEYS.stop;
   if (id === 'haywire' || id === 'manguito') return KEYS.wire;
@@ -86,13 +99,97 @@ function sleeve(x, y, crushed = false) {
   return `<rect x="${x - 18}" y="${y - (crushed ? 7 : 11)}" width="36" height="${crushed ? 14 : 22}" rx="4" fill="#C9C9C2" stroke="${G}" stroke-width="2.5"/>`;
 }
 
-const draw = (body) => `<svg viewBox="0 0 330 170" width="330" height="170" role="img" aria-hidden="true"><defs><marker id="kah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="${R}"/></marker></defs>${body}</svg>`;
+const draw = (body) => `<svg viewBox="0 0 330 170" width="330" height="170" role="img" aria-hidden="true"><defs><marker id="kah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="${R}"/></marker><marker id="kph" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="3.4" markerHeight="3.4" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="${R}"/></marker></defs>${body}</svg>`;
 
 /* ---------- Knots ---------- */
 
 // Line arriving from the left to an eye at (230, 85).
 const EYE_X = 230;
 const EYE_Y = 85;
+
+/* ---------- Step system (first used on Clinch mejorado) ----------
+   Black: the main line. Gray: what earlier steps already placed. Orange: what moves
+   in this step. The tip ends in a hollow ring. Dashed red arrow: where the tip goes.
+   Solid thick red arrow: pull to tighten. Over/under is shown by drawing order: a line
+   drawn later with a paper-colored edge passes over what was drawn before. */
+
+const D = '#A3A39C'; // already placed in earlier steps
+const PAPER = '#F5F5F2';
+
+/** A line with no paper edge: used for the half of a wrap that goes behind. */
+const bare = (d, color, w = 5) => `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+/** Hollow ring at the free end of the line. */
+const tip = (x, y, color = O) => `<circle cx="${x}" cy="${y}" r="6" fill="${PAPER}" stroke="${color}" stroke-width="3.5"/>`;
+
+/** Pull to tighten: a solid, thick arrow (different from the dashed movement arrow). */
+const pull = (d) => `<path d="${d}" fill="none" stroke="${R}" stroke-width="6" stroke-linecap="butt" marker-end="url(#kph)"/>`;
+
+/** Wraps around a horizontal line at y, from xRight leftwards, n turns of width d and
+    half-height a. Returns the halves behind and in front of the line, to draw before
+    and after it. The front halves only get a paper edge in their middle, where they
+    cross the line, so the turns stay joined at the ends. */
+function coil(xRight, y, n, d, a, color) {
+  let back = '';
+  let front = '';
+  for (let i = 0; i < n; i++) {
+    const x = xRight - i * d;
+    back += bare(`M${x} ${y + a} L${x - d / 2} ${y - a}`, color);
+    const fx0 = x - d / 2;
+    const fx1 = x - d;
+    front += bare(`M${fx0 - d * 0.15} ${y - a * 0.4} L${fx1 + d * 0.15} ${y + a * 0.4}`, PAPER, 8);
+    front += bare(`M${fx0} ${y - a} L${fx1} ${y + a}`, color);
+  }
+  return { back, front };
+}
+
+// Clinch mejorado. Main line along y = 85 to the hook eye at (230, 85).
+// Path of the tip, piece by piece (each piece is drawn orange in its step, gray after):
+const CL = {
+  eye: 'M221 85 H232 C250 85 250 110 228 110 H198 C190 110 186 104 184 98', // through the eye and back
+  eyeShort: 'M221 85 H232 C250 85 250 110 228 110 H165', // step 1 ends here
+  tail2: 'M100 98 C96 104 92 110 88 114', // loose end after the wraps
+  // Step 3: down and around, then up through the small loop next to the eye.
+  small: 'M100 98 C80 112 84 142 120 142 H180 C198 142 205 128 205 100',
+  smallUp: 'M205 100 C206 90 207 75 207 58',
+  // Step 4: over the top and down through the big loop.
+  bigOver: 'M207 58 C207 36 154 36 151 58 L148 128',
+  bigUnder: 'M148 128 L147 158',
+};
+const clWraps = (color) => coil(180, 85, 5, 16, 13, color);
+
+const CLINCH = [
+  // 1. Through the eye.
+  hook(EYE_X, EYE_Y) + line('M10 85 H221') + line(CL.eyeShort, O) + ringFront(EYE_X, EYE_Y, 9)
+    + tip(165, 110) + arrow('M150 132 H100'),
+  // 2. Wraps around the main line.
+  (() => {
+    const w = clWraps(O);
+    return hook(EYE_X, EYE_Y) + w.back + line('M10 85 H221') + line(CL.eye, D) + w.front + line(CL.tail2, O)
+      + ringFront(EYE_X, EYE_Y, 9) + tip(88, 114) + arrow('M190 52 C170 36 128 36 110 54') + text(140, 150, '5 a 7 vueltas');
+  })(),
+  // 3. Through the small loop next to the eye.
+  (() => {
+    const w = clWraps(D);
+    return hook(EYE_X, EYE_Y) + w.back + line(CL.small, O) + line('M10 85 H221') + line(CL.eye, D) + w.front
+      + line(CL.smallUp, O) + ringFront(EYE_X, EYE_Y, 9) + tip(207, 58) + arrow('M110 160 H190')
+      + text(130, 30, 'por el lazo chico, junto al ojo');
+  })(),
+  // 4. Back down through the big loop that formed.
+  (() => {
+    const w = clWraps(D);
+    return hook(EYE_X, EYE_Y) + w.back + line(CL.bigUnder, O) + line(CL.small, D) + line('M10 85 H221') + line(CL.eye, D)
+      + w.front + line(CL.smallUp, D) + line(CL.bigOver, O) + ringFront(EYE_X, EYE_Y, 9) + tip(147, 158)
+      + arrow('M236 54 C236 22 192 14 176 24') + text(16, 30, 'y por el lazo grande', 'start');
+  })(),
+  // 5. Wet, pull and trim.
+  (() => {
+    const w = coil(212, 85, 5, 8, 9, D);
+    return hook(EYE_X, EYE_Y) + w.back + line('M10 85 H221') + line('M212 94 C218 100 224 98 221 85', D) + w.front
+      + line('M172 94 L160 104', D) + ringFront(EYE_X, EYE_Y, 9)
+      + pull('M120 58 H40') + text(80, 46, 'tirar') + drop(70, 130) + scissors(150, 124);
+  })(),
+];
 
 const STEPS = {
   carrete: [
@@ -116,13 +213,7 @@ const STEPS = {
     hook(EYE_X, EYE_Y) + line('M10 78 H200') + tag('M10 94 H160 C180 94 195 90 200 88') + tight(198, 222, 85, K) + arrow('M100 40 H20') + arrow('M100 130 H20') + drop(150, 128),
     hook(EYE_X, EYE_Y) + line('M10 85 H222') + tight(198, 222, 85, K) + tag('M198 92 L180 104') + scissors(168, 124),
   ],
-  clinch: [
-    hook(EYE_X, EYE_Y) + line('M10 85 H221') + tag('M221 85 H230 C246 85 246 108 220 108 H170') + ringFront(EYE_X, EYE_Y, 9) + arrow('M160 132 H120'),
-    hook(EYE_X, EYE_Y) + line('M10 85 H221') + tag('M221 85 H230 C246 85 246 108 220 108 L210 98') + wraps(110, 205, 85, 100, 6) + tag('M110 95 L96 120') + ringFront(EYE_X, EYE_Y, 9) + text(160, 140, '5 a 7 vueltas'),
-    hook(EYE_X, EYE_Y) + line('M10 85 H221') + tag('M221 85 H230 C246 85 246 108 220 108 L210 98') + wraps(120, 205, 85, 100, 6) + tag('M120 95 C90 120 120 150 160 140 C200 132 214 112 214 96') + ringFront(EYE_X, EYE_Y, 9) + arrow('M200 60 C214 70 216 80 214 88') + text(110, 40, 'por el lazo chico, junto al ojo'),
-    hook(EYE_X, EYE_Y) + line('M10 85 H221') + tag('M221 85 H230 C246 85 246 108 220 108 L210 98') + wraps(120, 205, 85, 100, 6) + tag('M120 95 C90 120 120 150 160 140 C200 132 214 112 214 96 C214 70 170 120 150 120') + ringFront(EYE_X, EYE_Y, 9) + text(100, 40, 'y por el lazo grande'),
-    hook(EYE_X, EYE_Y) + line('M10 85 H221') + tight(176, 221, 85) + tag('M176 92 L160 104') + drop(80, 130) + scissors(150, 124),
-  ],
+  clinch: CLINCH,
   snell: [
     `<path d="M100 60 H250 a24 24 0 0 1 0 48 H230 l8 -10" fill="none" stroke="${G}" stroke-width="6" stroke-linecap="round"/><rect x="92" y="52" width="10" height="16" fill="${G}"/>` + line('M10 60 H96') + line('M96 60 H200 C230 60 230 82 200 82 H110', K) + tag('M110 82 H40') + text(80, 130, 'paleta'),
     `<path d="M100 60 H250 a24 24 0 0 1 0 48 H230 l8 -10" fill="none" stroke="${G}" stroke-width="6" stroke-linecap="round"/><rect x="92" y="52" width="10" height="16" fill="${G}"/>` + line('M10 60 H96') + line('M96 62 H200 C230 62 230 84 200 84', K) + wraps(108, 196, 60, 72, 8) + tag('M196 74 L210 120') + text(150, 140, '7 a 10 vueltas hacia la curva'),
