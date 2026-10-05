@@ -61,7 +61,7 @@ Navegación por situación: elegís qué querés unir, ves los nudos que sirven 
 
 Ilustraciones (obligatorias en la app):
 
-- Nudos: un dibujo por paso, con el sistema de colores y flechas de "Decisiones tomadas al programar" (dibujos de nudos y armados). Son 18 nudos y 84 pasos.
+- Nudos: un dibujo por paso, con el sistema de colores y flechas de "Decisiones tomadas al programar" (dibujos de nudos y armados). Son 18 nudos y 86 pasos.
 - Armados de línea: un dibujo vertical de cada armado, de la madre al anzuelo, con cada pieza nombrada y las medidas (largo de brazolada, separación, distancia boya–carnada) marcadas al costado. Son 8 armados y los 3 de plomada.
 - Cómo se hacen: dibujos vectoriales propios dentro del código de la app, con un mismo estilo. Funcionan sin conexión, se ven nítidos en cualquier pantalla y no dependen de imágenes con permisos de terceros.
 - Se dibujan durante la programación, a partir de los pasos de las pestañas Nudos y Armados.
@@ -256,6 +256,8 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   9. Colores: cada cosa con su color de material; el tono de la tanza según el paso; metales que no se confunden entre sí.
   10. Bordes y textos: nada a menos de 8 px del borde del dibujo; los textos no tapan líneas ni objetos y entran enteros.
   11. Revisión: cada dibujo se mira al menos a 1,5× de tamaño antes de mostrarlo.
+  12. Pasos suficientes: al rehacer un nudo, revisar si falta algún paso intermedio para que se entienda (por ejemplo, cómo queda algo antes de apretar) y agregarlo; no quedarse con los pasos que ya había.
+  13. Por el ojo: si un nudo va atado a un ojo (anzuelo, emerillón, señuelo), en todos los pasos se ve la línea pasando por el ojo, también con el nudo apretado.
 - Publicación: un workflow de GitHub Actions corre las pruebas y publica en GitHub Pages en cada push a main.
 
 ## Pendientes y preguntas abiertas
