@@ -630,20 +630,20 @@ const LP_START = [
   { name: 'primer lazo', d: 'M120 120 C150 120 200 110 200 75 C200 45 176 38 162 40 C140 44 132 66 140 86', z: [[0, 0], [0.85, 0], [1, -0.6]] },
   { name: 'punta por detrás', d: 'M140 86 C146 102 156 112 168 124 C176 132 190 140 214 140', z: [[0, -0.6], [0.2, -1], [0.75, -1], [1, 0.6]] },
 ];
-const LP_TIP = { name: 'punta entre lazos', d: 'M186 128 C178 118 175 104 177 92 C179 78 168 66 148 66 H104', z: [[0, 1], [0.12, 0.5], [1, 0.5]] };
+const LP_TIP = { name: 'punta entre lazos', d: 'M184 147 C198 150 202 138 196 130 C190 122 181 114 179 106 C177 92 172 78 160 66 C150 56 138 44 124 32', z: [[0, 1], [0.08, 0.5], [1, 0.5]] };
 const LPA = figure(...LP_START,
-  { name: 'segundo lazo', d: 'M214 140 C240 134 246 104 236 78 C226 54 196 46 176 56 C154 66 150 94 160 114 C166 124 176 128 186 128', z: [[0, 0.6], [0.1, 1], [1, 1]] },
+  { name: 'segundo lazo', d: 'M214 140 C240 134 246 104 236 78 C226 54 196 46 176 56 C154 66 150 86 146 98 C142 108 134 116 136 124 C138 134 160 144 184 147', z: [[0, 0.6], [0.1, 1], [1, 1]] },
   LP_TIP);
 /** After the second loop went through the first; the line starts at x0. */
 const lpThrough = (x0 = 10) => figure({ ...LP_START[0], d: `M${x0} 120 H120` }, ...LP_START.slice(1),
-  { name: 'pata de abajo', d: 'M214 140 C226 140 226 122 210 114 C198 108 190 104 188 98 C186 90 188 86 194 84 C198 82 204 80 214 80', z: [[0, 0.6], [0.15, 1], [0.5, 1], [0.8, -1.5], [1, -1.5]] },
+  { name: 'pata de abajo', d: 'M214 140 C226 140 226 122 210 114 C198 108 190 104 188 98 C186 90 188 86 194 84 C198 82 204 80 214 80', z: [[0, 0.6], [0.15, 1], [0.6, 1], [0.85, -1.5], [1, -1.5]] },
   { name: 'lazo final', d: 'M214 80 C250 84 300 90 304 70 C308 46 256 52 214 60', z: -1.5 },
-  { name: 'pata de arriba', d: 'M214 60 C206 60 200 60 194 58 C188 56 182 54 176 56 C154 66 150 94 160 114 C166 124 176 128 186 128', z: [[0, -1.5], [0.1, -1.5], [0.22, 1], [1, 1]] },
-  { ...LP_TIP, z: [[0, 1], [0.12, 0.5], [1, 0.5]] });
+  { name: 'pata de arriba', d: 'M214 60 C206 60 200 60 194 58 C188 56 182 54 176 56 C154 66 150 86 146 98 C142 108 134 116 136 124 C138 134 160 144 184 147', z: [[0, -1.5], [0.1, -1.5], [0.22, 1], [1, 1]] },
+  LP_TIP);
 const LPB = lpThrough();
 // Squeezed in the middle; the final loop also shorter (x only, keeping the order of
 // points, so no crossing changes).
-const lpTight = (x0) => warp(warp(lpThrough(x0), pinch(184, 104, 0.4, 36, 110)), (x, y) => [x > 200 ? 200 + (x - 200) * 0.75 : x, y]);
+const lpTight = (x0) => warp(warp(lpThrough(x0), pinch(184, 104, 0.52, 30, 110)), (x, y) => [x > 200 ? 200 + (x - 200) * 0.75 : x, y]);
 const LPC = lpTight(62);
 const LPD = lpTight(10);
 const lpAll = (fig, c) => Object.fromEntries(fig.parts.map((n) => [n, c]));
@@ -656,17 +656,17 @@ const step3 = (items, ...rest) => {
 const tipAt = (fig, upTo, c) => { const [x, y, a] = endOf(fig, upTo); return tip(x, y, a, c); };
 const LAZO_PERFECTO = [
   step3([{ fig: LPA, upTo: 'punta por detrás', colors: { 'línea': L1.still, 'primer lazo': M, 'punta por detrás': M } }],
-    tipAt(LPA, 'punta por detrás', M), text(100, 160, 'la punta pasa por detrás')),
+    tipAt(LPA, 'punta por detrás', M), text(100, 165, 'la punta pasa por detrás')),
   step3([{ fig: LPA, upTo: 'segundo lazo', colors: { 'línea': L1.still, 'primer lazo': Dn, 'punta por detrás': Dn, 'segundo lazo': M } }],
-    tipAt(LPA, 'segundo lazo', M), arrow('M266 124 C278 96 270 62 246 46'), text(165, 160, 'otra vuelta, encima del primer lazo')),
+    tipAt(LPA, 'segundo lazo', M), arrow('M266 124 C278 96 270 62 246 46'), text(10, 24, 'otra vuelta, por delante', 'start')),
   step3([{ fig: LPA, colors: { ...lpAll(LPA, Dn), 'línea': L1.still, 'punta entre lazos': M } }],
-    tipAt(LPA, null, M), text(124, 160, 'la punta, entre los dos lazos')),
+    tipAt(LPA, null, M), text(124, 165, 'la punta, entre los dos lazos')),
   step3([{ fig: LPA, colors: { ...lpAll(LPA, Dn), 'línea': L1.still, 'segundo lazo': M } }],
-    tipAt(LPA, null, Dn), arrow('M256 110 C276 112 290 106 300 94'), text(130, 160, 'el 2.º lazo, por dentro del 1.º')),
+    tipAt(LPA, null, Dn), arrow('M164 86 C184 80 204 72 226 70 C252 68 276 70 298 78'), text(130, 165, 'el 2.º lazo, por dentro del 1.º')),
   step3([{ fig: LPB, colors: { ...lpAll(LPB, Dn), 'línea': L1.still, 'pata de abajo': M, 'lazo final': M, 'pata de arriba': M } }],
-    tipAt(LPB, null, Dn), text(130, 160, 'sale a la derecha: lazo final')),
+    tipAt(LPB, null, Dn), text(130, 165, 'sale a la derecha: lazo final')),
   step3([{ fig: LPC, colors: lpAll(LPC, M) }], tipAt(LPC, null, M), pull('M54 120 H24'), pull('M286 76 H298'), text(320, 30, 'cerrar', 'end')),
-  step3([{ fig: LPD, colors: lpAll(LPD, Dn) }], tipAt(LPD, null, Dn), scissors(134, 50)),
+  step3([{ fig: LPD, colors: lpAll(LPD, Dn) }], tipAt(LPD, null, Dn), scissors(142, 60)),
 ];
 
 /* Sangre: line 1 (green) from the left at y = 78, line 2 (orange) from the right at y = 92. */
