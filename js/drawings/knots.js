@@ -27,10 +27,10 @@ const STEP_KEY = [
   { label: 'Línea principal', svg: swatch(`<path d="M2 7 H28" stroke="${K}" stroke-width="5" stroke-linecap="round"/>`) },
   { label: 'Pasos anteriores', svg: swatch(`<path d="M2 7 H28" stroke="#F2C392" stroke-width="5" stroke-linecap="round"/>`) },
   { label: 'Este paso', svg: swatch(`<path d="M2 7 H28" stroke="${O}" stroke-width="5" stroke-linecap="round"/>`) },
-  { label: 'Punta', svg: swatch(`<path d="M2 7 H22" stroke="${O}" stroke-width="5" stroke-linecap="round"/><path d="M22 1 V13" stroke="${O}" stroke-width="5" stroke-linecap="round"/>`) },
+  { label: 'Punta', svg: swatch(`<path d="M2 7 H16" stroke="${O}" stroke-width="5" stroke-linecap="round"/><path d="M15 7 L22 1 L29 7 L22 13Z" fill="${O}"/>`) },
   { label: 'Pasar la punta', svg: swatch(`<path d="M2 7 H20" stroke="${R}" stroke-width="2.5" stroke-dasharray="5 3"/><path d="M20 2 L28 7 L20 12z" fill="${R}"/>`) },
-  { label: 'Sostener', svg: swatch(`<ellipse cx="15" cy="3.5" rx="6" ry="3.5" fill="#F2C9A4" stroke="${K}" stroke-width="1"/><ellipse cx="15" cy="10.5" rx="6" ry="3.5" fill="#F2C9A4" stroke="${K}" stroke-width="1"/>`) },
-  { label: 'Tirar para apretar', svg: swatch(`<path d="M2 7 H17" stroke="${R}" stroke-width="5"/><path d="M16 1 L29 7 L16 13z" fill="${R}"/>`) },
+  { label: 'Sostener', svg: swatch(`<path d="M5 1 L13 7 L5 13Z M25 1 L17 7 L25 13Z" fill="#1B4F9C"/>`) },
+  { label: 'Tirar para apretar', svg: swatch(`<path d="M2 7 H17" stroke="#1B4F9C" stroke-width="5"/><path d="M16 1 L29 7 L16 13z" fill="#1B4F9C"/>`) },
 ];
 
 export function knotKey(id) {
@@ -100,7 +100,7 @@ function sleeve(x, y, crushed = false) {
   return `<rect x="${x - 18}" y="${y - (crushed ? 7 : 11)}" width="36" height="${crushed ? 14 : 22}" rx="4" fill="#C9C9C2" stroke="${G}" stroke-width="2.5"/>`;
 }
 
-const draw = (body) => `<svg viewBox="0 0 330 170" width="330" height="170" role="img" aria-hidden="true"><defs><marker id="kah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="${R}"/></marker><marker id="kph" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="3.4" markerHeight="3.4" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="${R}"/></marker></defs>${body}</svg>`;
+const draw = (body) => `<svg viewBox="0 0 330 170" width="330" height="170" role="img" aria-hidden="true"><defs><marker id="kah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="${R}"/></marker><marker id="kph" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="3.4" markerHeight="3.4" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#1B4F9C"/></marker></defs>${body}</svg>`;
 
 /* ---------- Knots ---------- */
 
@@ -109,36 +109,31 @@ const EYE_X = 230;
 const EYE_Y = 85;
 
 /* ---------- Step system (first used on Clinch mejorado) ----------
-   Black: the main line. Gray: what earlier steps already placed. Orange: what moves
-   in this step. The tip ends in a hollow ring. Dashed red arrow: where the tip goes.
-   Solid thick red arrow: pull to tighten. Over/under is shown by drawing order: a line
+   Color says what kind of instruction it is; shape says which one.
+   Lines: black is the main line, light orange what earlier steps already placed,
+   orange what moves in this step; the tip ends in a diamond. Gray is only metal.
+   Red: the path of the tip (thin dashed arrow). Blue: forces, a thick solid arrow
+   to pull and two facing arrows to hold. Over/under is shown by drawing order: a line
    drawn later with a paper-colored edge passes over what was drawn before. */
 
 const D = '#F2C392'; // already placed in earlier steps: the tip's path, faded
+const F = '#1B4F9C'; // forces: pull and hold
 const PAPER = '#F5F5F2';
 
 /** A line with no paper edge: used for the half of a wrap that goes behind. */
 const bare = (d, color, w = 5) => `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
 
-const SKIN = '#F2C9A4';
+/** Free end of the line at (x, y), pointing at angle a (degrees): a small diamond. */
+const tip = (x, y, a, color = O) => `<g transform="translate(${x} ${y}) rotate(${a})"><path d="M-3 0 L6 -7 L15 0 L6 7Z" fill="${color}"/></g>`;
 
-/** Free end of the line at (x, y), pointing at angle a (degrees). Default: a cut bar across it. */
-const TIP_STYLE = 'bar';
-function tip(x, y, a, color = O) {
-  const shapes = {
-    ring: `<circle cx="7" cy="0" r="6" fill="${PAPER}" stroke="${color}" stroke-width="3.5"/>`,
-    bar: `<path d="M0 -8 V8" stroke="${PAPER}" stroke-width="9" stroke-linecap="round"/><path d="M0 -8 V8" stroke="${color}" stroke-width="5" stroke-linecap="round"/>`,
-    diamond: `<path d="M-2 0 L7 -7 L16 0 L7 7Z" fill="${color}" stroke="${PAPER}" stroke-width="2"/>`,
-  };
-  return `<g transform="translate(${x} ${y}) rotate(${a})">${shapes[TIP_STYLE]}</g>`;
+/** Hold at (x, y): two short solid arrows squeezing the spot from both sides. */
+function hold(x, y) {
+  const one = (s) => `<path d="M${x} ${y - s * 34} V${y - s * 22}" stroke="${F}" stroke-width="5"/><path d="M${x - 8} ${y - s * 22} L${x + 8} ${y - s * 22} L${x} ${y - s * 9}Z" fill="${F}"/>`;
+  return one(1) + one(-1);
 }
 
-/** Thumb and finger pinching at (x, y): where to hold while pulling. */
-const hold = (x, y) => `<ellipse cx="${x}" cy="${y - 14}" rx="9" ry="7" fill="${SKIN}" stroke="${K}" stroke-width="1.5"/>`
-  + `<ellipse cx="${x}" cy="${y + 14}" rx="9" ry="7" fill="${SKIN}" stroke="${K}" stroke-width="1.5"/>`;
-
-/** Pull to tighten: a solid, thick arrow (different from the dashed movement arrow). */
-const pull = (d) => `<path d="${d}" fill="none" stroke="${R}" stroke-width="6" stroke-linecap="butt" marker-end="url(#kph)"/>`;
+/** Pull to tighten: a thick solid arrow out of the line being pulled. */
+const pull = (d) => `<path d="${d}" fill="none" stroke="${F}" stroke-width="6" stroke-linecap="butt" marker-end="url(#kph)"/>`;
 
 /** Wraps around a horizontal line at y, from xRight leftwards, n turns of width d and
     half-height a. Returns the halves behind and in front of the line, to draw before
@@ -169,7 +164,7 @@ const CL = {
   smallUp: 'M205 100 C206 90 207 75 207 58',
   // Step 4: over the top and down through the big loop.
   bigOver: 'M207 58 C207 36 154 36 151 58 L148 128',
-  bigUnder: 'M148 128 L147 150',
+  bigUnder: 'M148 128 L147 152',
 };
 const clWraps = (color) => coil(180, 85, 5, 16, 13, color);
 
@@ -194,16 +189,16 @@ const CLINCH = [
   (() => {
     const w = clWraps(D);
     return hook(EYE_X, EYE_Y) + w.back + line(CL.bigUnder, O) + line(CL.small, D) + line('M10 85 H221') + line(CL.eye, D)
-      + w.front + line(CL.smallUp, D) + line(CL.bigOver, O) + ringFront(EYE_X, EYE_Y, 9) + tip(147, 150, 90)
+      + w.front + line(CL.smallUp, D) + line(CL.bigOver, O) + ringFront(EYE_X, EYE_Y, 9) + tip(147, 152, 90)
       + arrow('M236 54 C236 22 192 14 176 24') + text(16, 30, 'y por el lazo grande', 'start');
   })(),
   // 5. Wet, pull and trim.
   (() => {
     const w = coil(212, 85, 5, 8, 9, D);
-    return hook(EYE_X, EYE_Y) + w.back + line('M10 85 H221') + line('M212 94 C218 100 224 98 221 85', D) + w.front
+    return hook(EYE_X, EYE_Y) + w.back + line('M70 85 H221') + line('M212 94 C218 100 224 98 221 85', D) + w.front
       + line('M172 94 L160 104', D) + ringFront(EYE_X, EYE_Y, 9)
-      + hold(276, 85) + text(276, 56, 'sostener')
-      + pull('M120 58 H40') + text(80, 46, 'tirar') + drop(70, 130) + scissors(150, 124);
+      + hold(276, 85) + text(276, 40, 'sostener')
+      + pull('M72 85 H30') + text(46, 64, 'tirar') + drop(70, 130) + scissors(150, 124);
   })(),
 ];
 
