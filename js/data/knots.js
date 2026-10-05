@@ -70,7 +70,8 @@ export const KNOTS = {
       'Dar 5 a 7 vueltas con la punta alrededor de la línea principal.',
       'Pasar la punta por el lazo chico que quedó junto al ojo.',
       'Pasarla también por el lazo grande que se formó.',
-      'Mojar, apretar y cortar.',
+      'Mojar y apretar: tirar de la línea sosteniendo el anzuelo.',
+      'Cortar el sobrante.',
     ],
   },
   snell: {
@@ -108,14 +109,15 @@ export const KNOTS = {
     lines: 'Nylon, fluorocarbono',
     strength: null,
     difficulty: 'Media',
-    note: 'El lazo queda alineado con la línea. Para un señuelo, se ata en la punta y el lazo se pasa por el ojo del señuelo.',
+    note: 'El lazo queda alineado con la línea. Para un señuelo, se ata en la punta, el lazo se pasa por el ojo del señuelo y después el señuelo por adentro del lazo.',
     steps: [
       'Hacer un lazo pasando la punta por detrás de la línea.',
       'Dar otra vuelta con la punta, por delante del primer lazo.',
       'Pasar la punta entre los dos lazos.',
       'Tomar el segundo lazo y pasarlo por dentro del primero.',
       'El segundo lazo queda asomando por el primero: ese es el lazo final.',
-      'Tirar del lazo y de la línea para cerrar; cortar.',
+      'Tirar del lazo y de la línea para cerrar el nudo.',
+      'Cortar el sobrante.',
     ],
   },
   sangre: {

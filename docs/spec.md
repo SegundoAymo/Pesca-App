@@ -61,7 +61,7 @@ Navegación por situación: elegís qué querés unir, ves los nudos que sirven 
 
 Ilustraciones (obligatorias en la app):
 
-- Nudos: un dibujo por paso, con el sistema de colores y flechas de "Decisiones tomadas al programar" (dibujos de nudos y armados). Son 18 nudos y 86 pasos.
+- Nudos: un dibujo por paso, con el sistema de colores y flechas de "Decisiones tomadas al programar" (dibujos de nudos y armados). Son 18 nudos y 88 pasos.
 - Armados de línea: un dibujo vertical de cada armado, de la madre al anzuelo, con cada pieza nombrada y las medidas (largo de brazolada, separación, distancia boya–carnada) marcadas al costado. Son 8 armados y los 3 de plomada.
 - Cómo se hacen: dibujos vectoriales propios dentro del código de la app, con un mismo estilo. Funcionan sin conexión, se ven nítidos en cualquier pantalla y no dependen de imágenes con permisos de terceros.
 - Se dibujan durante la programación, a partir de los pasos de las pestañas Nudos y Armados.
@@ -258,6 +258,9 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   11. Revisión: cada dibujo se mira al menos a 1,5× de tamaño antes de mostrarlo.
   12. Pasos suficientes: al rehacer un nudo, revisar si falta algún paso intermedio para que se entienda (por ejemplo, cómo queda algo antes de apretar) y agregarlo; no quedarse con los pasos que ya había.
   13. Por el ojo: si un nudo va atado a un ojo (anzuelo, emerillón, señuelo), en todos los pasos se ve la línea pasando por el ojo, también con el nudo apretado.
+  14. Lo que se tira se mueve: en los pasos de apretar, la línea de la que se tira y el nudo que se cierra van en tono fuerte; lo que se sostiene, con la flecha de sostener.
+  15. Apretar y cortar, en pasos separados: primero se ve el nudo cerrado y después, en su propio paso, la tijera junto al sobrante.
+  16. El nudo terminado con su forma: cada nudo apretado se dibuja con su estructura propia (sus vueltas, cruces y pasadas), no con un resorte que sirve para cualquiera.
 - Cómo se controlan los dibujos de nudos:
   - Prueba automática (`test/knots-drawing.test.js`, corre con `node --test` y en cada publicación): mide lo que no necesita criterio. Nada fuera del borde, textos enteros y sin tapar el dibujo, colores de la paleta, flecha de tirar saliendo de una línea, rombo pegado a su línea, tijera junto a un sobrante y una línea pasando por cada ojo. Los nudos todavía sin rehacer figuran como pendientes y no frenan la publicación; al rehacer uno, se agrega a la lista de rehechos.
   - Revisión independiente: el agente `revisor-nudos` (`.claude/agents/revisor-nudos.md`) mira las imágenes de cada paso sin saber qué se quiso dibujar y las compara con las reglas y con cómo se ata el nudo de verdad. Las imágenes salen de `node tools/nudos/hoja.mjs` (usa Playwright, solo para desarrollo). Se usa después de dibujar o cambiar un nudo y antes de mostrarlo.
