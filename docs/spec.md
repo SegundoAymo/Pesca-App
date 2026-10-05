@@ -61,7 +61,7 @@ Navegación por situación: elegís qué querés unir, ves los nudos que sirven 
 
 Ilustraciones (obligatorias en la app):
 
-- Nudos: un dibujo por paso, con la línea principal y la punta en colores distintos y una flecha que marca el movimiento de ese paso. Son 18 nudos y unos 84 pasos.
+- Nudos: un dibujo por paso, con el sistema de colores y flechas de "Decisiones tomadas al programar" (dibujos de nudos y armados). Son 18 nudos y 84 pasos.
 - Armados de línea: un dibujo vertical de cada armado, de la madre al anzuelo, con cada pieza nombrada y las medidas (largo de brazolada, separación, distancia boya–carnada) marcadas al costado. Son 8 armados y los 3 de plomada.
 - Cómo se hacen: dibujos vectoriales propios dentro del código de la app, con un mismo estilo. Funcionan sin conexión, se ven nítidos en cualquier pantalla y no dependen de imágenes con permisos de terceros.
 - Se dibujan durante la programación, a partir de los pasos de las pestañas Nudos y Armados.
@@ -234,8 +234,14 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
 - En Clima la hora actual va en amarillo (en la muestra era celeste), para usar los colores del estilo Señal.
 - El GPS se vuelve a pedir cada 30 minutos como mucho.
 - Checklist: se tilda con un toque en el ítem. Ordenar y borrar van en un modo aparte ("Ordenar o borrar"), para que los botones chicos no estorben; al borrar aparece "Deshacer".
-- Los dibujos de nudos son esquemas de 330 × 170 con la línea principal en negro, la punta en naranja y el movimiento en rojo. En los nudos que unen dos líneas, el naranja es la otra línea.
-- Rediseño de los dibujos de nudos (en prueba con el Clinch mejorado; si se aprueba, se pasa a los 18): línea principal en negro, lo que se hizo en pasos anteriores en naranja claro (el gris queda para el metal del anzuelo), lo que se mueve en este paso en naranja, la punta termina en un rombo. El color dice qué tipo de indicación es y la forma cuál: en rojo el camino de la punta (flecha fina de trazos); en azul las fuerzas, "tirar para apretar" (flecha gruesa y llena que sale de la línea que se tira) y "sostener" (dos flechitas llenas enfrentadas que aprietan el punto donde se sostiene). La flecha de tirar arranca separada del final de la línea, para que no se confunda con ella. La gota de "mojar" va en celeste. Las líneas no llevan borde blanco: la que se dibuja después tapa a la de abajo, como el aro del anzuelo. El borde blanco va solo donde se cruzan dos líneas del mismo color o de colores parecidos (negro con negro, naranja con naranja claro), en la que pasa por encima. El borde es parte del cruce, no del paso: una vez dibujado, se mantiene en los pasos siguientes aunque esas líneas ya estén en naranja claro. La línea pasa por el ojo del anzuelo sin taparle el borde. Los cruces muestran qué tramo va por encima y cuál por debajo, y el nudo terminado se dibuja con sus vueltas, sin bloques ni pelotitas. La leyenda de arriba muestra cada uno de estos signos.
+- Dibujos de nudos y armados: esquemas de 330 × 170 (los armados, verticales). Sistema de dibujo:
+  - El color dice qué es cada cosa. Tanzas: verde la línea; naranja la otra línea (en los nudos que unen dos, el hilo del tope y las brazoladas de los armados). Metal en gris: anzuelo, emerillón, plomada, manguito y alambre de acero. Herramientas (tijera, pinza) en negro. Objetos con su color: boya amarilla y blanca, señuelo amarillo, perla blanca.
+  - En cada tanza el tono dice qué le pasa en ese paso: oscuro, queda quieta; fuerte, se mueve en este paso; claro, ya se hizo en un paso anterior. Los armados no tienen pasos y van en el tono oscuro.
+  - La punta termina en un rombo.
+  - Indicaciones: en rojo el movimiento (flecha fina de trazos que marca por dónde va lo que se mueve: la punta, un lazo o el anzuelo; en forma de giro para "girar"). En azul las fuerzas: tirar (flecha gruesa y llena, separada del final de la línea que se tira), sostener (dos flechitas enfrentadas que aprietan, también para la pinza) y abrir (dos flechitas hacia afuera, para mantener un lazo abierto). La gota de "mojar" en celeste.
+  - Superposición: la línea que se dibuja después tapa a la de abajo, sin borde. El borde del color del fondo va solo donde se cruzan dos líneas del mismo tono, en la que pasa por encima. El borde es parte del cruce, no del paso: se mantiene en los pasos siguientes.
+  - La línea pasa por el ojo del anzuelo sin taparle el borde y vuelve por debajo, lejos de la pata. Los nudos (también los terminados) se dibujan con sus vueltas y cruces, sin bloques ni pelotitas.
+  - La leyenda de cada nudo se arma con lo que usan sus dibujos.
 - Publicación: un workflow de GitHub Actions corre las pruebas y publica en GitHub Pages en cada push a main.
 
 ## Pendientes y preguntas abiertas

@@ -44,7 +44,7 @@ function knot(s, k) {
       <dt>Resistencia</dt><dd>${k.strength ? esc(k.strength) : 'Sin dato'}</dd>
     </dl>
     ${k.note ? `<p>${rich(k.note)}</p>` : ''}
-    <div class="key">${knotKey(k.id).map((x) => `<span>${x.svg ?? `<i style="background:${x.color}"></i>`}${esc(x.label)}</span>`).join('')}</div>
+    <div class="key">${knotKey(k.id).map((x) => `<span>${x.svg ?? ''}${esc(x.label)}</span>`).join('')}</div>
     <ol class="steps">${steps}</ol>`;
   return { title: k.name, html: screen(k.name, body, s.title) };
 }
