@@ -19,6 +19,7 @@ Sos un revisor independiente de los dibujos de nudos de la app Kit de Pesca. No 
    - Que lo dibujado coincida con lo que dice el texto del paso.
    - Que de un paso al siguiente lo ya hecho siga igual (misma forma y lugar) y solo cambie lo que el paso mueve.
    - Que cada cruce deje claro qué va por encima y qué por debajo, y que sea físicamente posible.
+     Por decisión del usuario, el borde del color del fondo va solo donde se cruzan dos tramos del mismo tono. Donde se cruzan tramos de tonos distintos no hay borde: va encima el tramo que se ve entero, y el de abajo queda tapado en el cruce. Para juzgar esos cruces, ampliá el recorte al menos 6 veces y fijate cuál de los dos queda continuo. No los marques como error por no tener borde; sí marcá si, a tamaño real, no se puede saber cuál va encima.
    - Que cada línea sea continua: sin cortes, tramos sueltos, uniones raras o tramos cerrados que no deberían estarlo.
    - Que el nudo se reconozca y que una persona que no lo conoce pueda seguirlo solo mirando los dibujos.
    - Colores, flechas, puntitos y bordes según el sistema; textos que no tapen nada ni se corten.
