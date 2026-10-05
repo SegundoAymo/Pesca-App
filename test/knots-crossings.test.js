@@ -24,7 +24,7 @@ const EXPECTED = {
     lazoStart, // the tip passes behind the line
     lazoSecond, // the second loop, in front
     lazoTip, // the tip between the loops
-    lazoTip, // the same, before the second loop goes through
+    lazoThrough, // the second loop halfway through the first
     lazoThrough,
     lazoThrough, // tightened: the same crossings
     lazoThrough,
