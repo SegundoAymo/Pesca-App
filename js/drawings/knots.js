@@ -470,7 +470,7 @@ const CARRETE = [
   scene(at(0, spool(70, 85)), caLine({ main: L1.still, around: L1.done, knot1: L1.done, knot2: L1.move }, 'knot2'), text(320, 162, 'otro nudo simple en la punta', 'end')),
   scene(caTight(L1.move, 'L240 20', 262), tip(240, 20, -15, L1.move), pull('M270 60 H296'),
     text(320, 162, 'el primero baja y el segundo lo traba', 'end'), drop(240, 110)),
-  scene(caTight(L1.done, 'L222 24'), scissors(238, 30)),
+  scene(caTight(L1.done, 'L240 20'), tip(240, 20, -15, L1.done), scissors(222, 40)),
 ];
 
 /* Uni: the tip comes back below the line (y = 99) and makes a loop over both. */
@@ -555,9 +555,9 @@ const PALOMAR = [
     tip(40, pIn[1] + 5, 180, L1.done), arrow('M170 150 C166 136 160 124 152 116'), text(320, 30, 'sube al ojo', 'end')),
   scene(PHOOK, paEnds(L1.move, L1.move, pTight, 3, 62, `M${pTight[0]} ${pTight[1] + 3} C98 58 88 64 78 72`),
     paDouble(L1.move, L1.move, L1.move, paNeck(96, 9, 120, 186), PKT, 3),
-    tip(78, 72, 140, L1.move), pull(`M54 ${pTight[1] - 3} H24`), pull('M72 77 L50 92'), hold(pEye[0], 122, 90), drop(250, 50), text(320, 160, 'tirar de las dos', 'end')),
-  scene(PHOOK, paEnds(L1.done, L1.done, pTight, 3, 10, `M${pTight[0]} ${pTight[1] + 3} C102 57 98 60 94 63`),
-    paDouble(L1.done, L1.done, L1.done, paNeck(96, 9, 120, 186), PKT, 3), scissors(80, 84)),
+    tip(78, 72, 140, L1.move), pull(`M54 ${pTight[1] - 3} H24`), pull('M68 82 L48 96'), hold(pEye[0], 131, 90), drop(250, 50), text(320, 160, 'tirar de las dos', 'end')),
+  scene(PHOOK, paEnds(L1.done, L1.done, pTight, 3, 10, `M${pTight[0]} ${pTight[1] + 3} C98 58 88 64 78 72`),
+    paDouble(L1.done, L1.done, L1.done, paNeck(96, 9, 120, 186), PKT, 3), tip(78, 72, 140, L1.done), scissors(96, 80)),
 ];
 
 /* Clinch mejorado: one strand from the left, through the eye at (230, 85), back in wraps
@@ -598,7 +598,7 @@ const CLINCH = [
     arrow('M174 112 C172 126 172 138 174 152'), text(16, 30, 'y por el lazo grande', 'start')),
   scene(HOOK, clTight(Dn, 80, 'M218 72 C226 70 228 80 224 92 C222 100 218 106 212 114', M), tip(212, 114, 115, Dn),
     hold(276, 85), text(276, 40, 'sostener'), pull('M72 85 H30'), text(50, 64, 'tirar'), drop(70, 130)),
-  scene(HOOK, clTight(Dn, 10, 'M218 72 C226 70 228 80 224 92 C223 98 221 102 218 106'), scissors(214, 128)),
+  scene(HOOK, clTight(Dn, 10, 'M218 72 C226 70 228 80 224 92 C222 100 218 106 212 114'), tip(212, 114, 115, Dn), scissors(196, 126)),
 ];
 
 /* Snell: hook without eye, shank along y = 60. */
@@ -700,9 +700,9 @@ const LAZO_PERFECTO = [
     tip(104, 66, 180, Dn), arrow('M262 70 C276 70 288 78 294 92'),
     text(130, 160, 'el 2.º lazo, por dentro del 1.º')),
   scene(lpThrough({ loop1: Dn, loop2: M, tip: Dn }), tip(104, 66, 180, Dn), text(110, 160, 'el 2.º lazo atraviesa el 1.º')),
-  scene(lpClosed({ main: M, knot: Dn }, 62, 'C171 124 173 134 176 142'), tip(176, 142, 72, Dn), pull('M54 112 H24'), pull('M294 108 H318'),
+  scene(lpClosed({ main: M, knot: Dn }, 62, 'C171 124 173 134 176 142'), tip(176, 142, 72, Dn), pull('M54 112 H24'), pull('M294 108 H310'),
     text(320, 40, 'el nudo cierra', 'end')),
-  scene(lpClosed({ main: Dn, knot: Dn }, 10, 'C171 122 172 127 173 132'), scissors(196, 146)),
+  scene(lpClosed({ main: Dn, knot: Dn }, 10, 'C171 124 173 134 176 142'), tip(176, 142, 72, Dn), scissors(196, 128)),
 ];
 
 /* Sangre: line 1 (green) from the left at y = 78, line 2 (orange) from the right at y = 92. */
