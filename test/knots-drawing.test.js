@@ -28,14 +28,15 @@ const origin = (s) => [s.m[4], s.m[5]];
 export function check(svg) {
   const shapes = readSvg(svg);
   const out = [];
-  const lineEnds = ends(shapes);
+  // Ends of the lines: marked by the drawings made as scenes, measured on the others.
+  const lineEnds = [...ends(shapes), ...shapes.filter((x) => x.attrs['data-end']).map((x) => x.points[0][0])];
   for (const s of shapes) {
     // Colors of the palette only (rule 9).
     for (const k of ['stroke', 'fill']) {
       if (s.attrs[k] && !ALLOWED.has(s.attrs[k])) out.push(`color fuera de la paleta: ${s.attrs[k]}`);
     }
     // Nothing outside the drawing (rule 10).
-    if (s.kind !== 'text' && !isEdge(s)) {
+    if (s.kind !== 'text' && !isEdge(s) && !s.attrs['data-end']) {
       const bad = s.points.flat().find(([x, y]) => x < MARGIN || x > W - MARGIN || y < MARGIN || y > H - MARGIN);
       if (bad) out.push(`se sale del borde cerca de (${bad.map(Math.round)})`);
     }
@@ -44,7 +45,7 @@ export function check(svg) {
     const [x0, y0, x1, y1] = t.box;
     if (x0 < 4 || x1 > W - 4 || y0 < 4 || y1 > H - 2) out.push(`texto cortado: "${t.text}"`);
     // Texts do not cover lines or objects (rule 10).
-    const hit = shapes.find((s) => s.kind !== 'text' && !isEdge(s) && s.points.flat().some(([x, y]) => x > x0 - 2 && x < x1 + 2 && y > y0 - 2 && y < y1 + 2));
+    const hit = shapes.find((s) => s.kind !== 'text' && !isEdge(s) && !s.attrs['data-end'] && s.points.flat().some(([x, y]) => x > x0 - 2 && x < x1 + 2 && y > y0 - 2 && y < y1 + 2));
     if (hit) out.push(`texto encima del dibujo: "${t.text}"`);
   }
   // The pull arrow comes out of the end of a line (rule 7).
