@@ -1,8 +1,8 @@
 // Step-by-step knot drawings, drawn in code (no third-party images).
 // Every drawing is a 330 x 170 schematic. The system (see docs/spec.md, Nudos):
 //  - Color says what something is. Lines: green is the line, orange the other line
-//    (in knots that join two), gray is metal (hooks, sinkers, steel wire, sleeves),
-//    black is tools. Red is movement, blue is force, light blue is water.
+//    (in knots that join two), dark gray the hook, blue-gray steel wire, brass the
+//    sleeve, black the tools. Red is movement, blue is force, light blue is water.
 //  - For each line, the shade says what happens to it in this step: dark, it stays
 //    still; strong, it moves now; light, it was placed in an earlier step.
 //  - The tip ends in a diamond. Dashed red arrow: where what moves goes. Blue: pull
@@ -14,8 +14,9 @@
 
 const L1 = { still: '#1E5A38', move: '#1FA34A', done: '#A9DBB5' }; // the line
 const L2 = { still: '#8A4300', move: '#F07C00', done: '#F7CC9E' }; // the other line
-const WIRE = { still: '#5E5E58', move: '#1F1F1C', done: '#C9C9C3' }; // steel wire
-const METAL = '#6B6B66';
+const WIRE = { still: '#7E8C96', move: '#2E4A5E', done: '#CDD5DA' }; // steel wire, blue-gray
+const METAL = '#4E4E49'; // hooks: dark gray
+const BRASS = '#B8902E'; // swivels and crimp sleeves
 const TOOL = '#0B0B0B';
 const R = '#C8102E'; // movement
 const F = '#1F6FD6'; // force
@@ -56,21 +57,22 @@ const hold = (x, y, rot = 0) => pair(x, y, rot, false, 'hold');
 const open = (x, y, rot = 0) => pair(x, y, rot, true, 'open');
 
 /** Wraps around a line along y, n turns of width d and half-height a, starting at x0 and
-    going left (dir -1) or right (dir 1). The halves behind go before the line, the halves
-    in front after it. end is where the last turn finishes, at the bottom. */
-function coil(x0, y, n, d, a, color, dir = -1) {
+    going left (dir -1) or right (dir 1). Like a spring: the front of each turn crosses the
+    line whole; the back is the same line, faded, drawn before the line. end is where the
+    last turn finishes, at the bottom. */
+function coil(x0, y, n, d, a, color, dir = -1, w = 5) {
   let back = '';
   let front = '';
   for (let i = 0; i < n; i++) {
     const x = x0 + dir * i * d;
-    back += path(`M${x} ${y + a} L${x + dir * d / 2} ${y - a}`, color);
-    front += path(`M${x + dir * d / 2} ${y - a} L${x + dir * d} ${y + a}`, color);
+    back += `<path d="M${x} ${y + a} L${x + dir * d / 2} ${y - a}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" opacity="0.4"/>`;
+    front += path(`M${x + dir * d / 2} ${y - a} L${x + dir * d} ${y + a}`, color, w);
   }
   return { back, front, end: [x0 + dir * n * d, y + a] };
 }
 
 /** Two strands twisted together between x0 and x1, swapping between y1 and y2 n times. */
-function twist(x0, x1, y1, y2, n, cA, cB, w = 4) {
+function twistV1(x0, x1, y1, y2, n, cA, cB, w = 4) {
   const step = (x1 - x0) / n;
   let s = '';
   for (let i = 0; i < n; i++) {
@@ -92,13 +94,116 @@ function place(d, x, y, s = 1, flip = 1) {
 /** Overhand knot around (x, y): the line comes in at (x - 34s, y) and leaves at
     (x + 36s, y - 14s); flip = -1 mirrors it. st draws a piece, ov a piece that crosses
     over the same line. */
-function overhand(x, y, color, { s = 1, flip = 1, st = seg, ov = over } = {}) {
+function overhandV1(x, y, color, { s = 1, flip = 1, st = seg, ov = over } = {}) {
   const p = (d) => place(d, x, y, s, flip);
   return st(p('M0 10 C7 11 11 4 11 -6'), color)
     + st(p('M-34 0 C-14 0 4 2 14 -8 C22 -16 16 -32 0 -32 C-16 -32 -20 -18 -14 -8'), color)
     + ov(p('M-14 -8 C-10 0 -6 8 0 10'), color)
     + ov(p('M11 -6 C12 -12 20 -14 36 -14'), color);
 }
+
+/** Overhand knot around (x, y), size s; flip = -1 mirrors it. The line comes in at
+    (x - 56s, y + 10s) and leaves at (x + 56s, y - 30s). Three crossings: over, under, over. */
+function overhand(x, y, color, { s = 1, flip = 1, w = 5 } = {}) {
+  const p = (d) => place(d, x, y, s, flip);
+  return path(p('M0 24 C10 26 14 16 10 6 C8 -2 6 -8 8 -16'), color, w)
+    + path(p('M-56 10 L-12 10 C0 10 18 4 22 -10 C26 -26 10 -36 -4 -34 C-18 -32 -26 -16 -18 -2'), color, w)
+    + over(p('M-18 -2 C-14 8 -10 22 0 24'), color, w)
+    + over(p('M8 -16 C10 -26 26 -32 56 -30'), color, w);
+}
+
+/** Two strands twisted together between x0 and x1 around y (half-height a), n crossings;
+    at each crossing the strand on top gets the paper edge, and the top alternates. */
+function twist(x0, x1, y, a, n, cA, cB, w = 5) {
+  const step = (x1 - x0) / n;
+  let s = '';
+  for (let i = 0; i < n; i++) {
+    const xa = x0 + i * step;
+    const xb = xa + step;
+    const u = i % 2 ? 1 : -1;
+    s += path(`M${xa} ${y - u * a} C${xa + step / 2} ${y - u * a} ${xa + step / 2} ${y + u * a} ${xb} ${y + u * a}`, cB, w)
+      + over(`M${xa} ${y + u * a} C${xa + step / 2} ${y + u * a} ${xa + step / 2} ${y - u * a} ${xb} ${y - u * a}`, cA, w);
+  }
+  return s;
+}
+
+/** Part of a line hidden behind an object: dots of the line's color, drawn on top of it. */
+const hidden = (d, color, w = 5) => `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-dasharray="0.1 ${w + 4}"/>`;
+
+/** Points along a path made of M, L, H, V and C commands. */
+function sample(d, step = 1.5) {
+  const t = d.match(/[MLHVC]|-?\d+(?:\.\d+)?/g);
+  const pts = [];
+  let i = 0;
+  let cx = 0;
+  let cy = 0;
+  let cmd = 'M';
+  const num = () => +t[i++];
+  const lineTo = (x, y) => {
+    const n = Math.max(1, Math.ceil(Math.hypot(x - cx, y - cy) / step));
+    for (let k = 1; k <= n; k++) pts.push([cx + (x - cx) * k / n, cy + (y - cy) * k / n]);
+    cx = x;
+    cy = y;
+  };
+  while (i < t.length) {
+    if (/[MLHVC]/.test(t[i])) cmd = t[i++];
+    if (cmd === 'M') {
+      cx = num();
+      cy = num();
+      pts.push([cx, cy]);
+      cmd = 'L';
+    } else if (cmd === 'L') lineTo(num(), num());
+    else if (cmd === 'H') lineTo(num(), cy);
+    else if (cmd === 'V') lineTo(cx, num());
+    else if (cmd === 'C') {
+      const [x1, y1, x2, y2, x, y] = [num(), num(), num(), num(), num(), num()];
+      const n = Math.max(2, Math.ceil((Math.hypot(x1 - cx, y1 - cy) + Math.hypot(x2 - x1, y2 - y1) + Math.hypot(x - x2, y - y2)) / step));
+      for (let k = 1; k <= n; k++) {
+        const u = k / n;
+        const v = 1 - u;
+        pts.push([v * v * v * cx + 3 * v * v * u * x1 + 3 * v * u * u * x2 + u * u * u * x, v * v * v * cy + 3 * v * v * u * y1 + 3 * v * u * u * y2 + u * u * u * y]);
+      }
+      cx = x;
+      cy = y;
+    }
+  }
+  return pts;
+}
+const poly = (pts) => 'M' + pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join(' L');
+
+/** Doubled line along d: two real strands g away from it on each side. With bend, they
+    join in a U at the end of d; the start stays open. Returns the whole outline as one
+    open path (d) and the two strands' last points (ea, eb). */
+function doubled(d, g = 5, bend = true) {
+  const p = sample(d);
+  const A = [];
+  const B = [];
+  for (let i = 0; i < p.length; i++) {
+    const [x0, y0] = p[Math.max(0, i - 1)];
+    const [x1, y1] = p[Math.min(p.length - 1, i + 1)];
+    const L = Math.hypot(x1 - x0, y1 - y0) || 1;
+    const [nx, ny] = [-(y1 - y0) / L, (x1 - x0) / L];
+    A.push([p[i][0] + nx * g, p[i][1] + ny * g]);
+    B.push([p[i][0] - nx * g, p[i][1] - ny * g]);
+  }
+  const U = [];
+  if (bend) {
+    const [ex, ey] = p[p.length - 1];
+    const [px, py] = p[p.length - 3];
+    const L = Math.hypot(ex - px, ey - py) || 1;
+    const [ux, uy] = [(ex - px) / L, (ey - py) / L];
+    for (let k = 1; k < 12; k++) {
+      const a = Math.PI * k / 12;
+      U.push([ex - uy * g * Math.cos(a) + ux * g * Math.sin(a), ey + ux * g * Math.cos(a) + uy * g * Math.sin(a)]);
+    }
+  }
+  return { d: poly([...A, ...U, ...[...B].reverse()]), ea: A[A.length - 1], eb: B[B.length - 1] };
+}
+/** Doubled line drawn in a color; over adds the paper edge to both strands. */
+const dline = (d, color, { bend = true, edged = false } = {}) => {
+  const o = doubled(d, 5, bend);
+  return (edged ? edge(o.d) : '') + path(o.d, color);
+};
 
 const ring = (x, y, r = 9) => `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="${METAL}" stroke-width="5"/>`;
 /** Front half of a ring, drawn after a line to show it going through. */
@@ -114,13 +219,14 @@ const drop = (x, y) => `<path d="M${x} ${y - 14} C${x + 9} ${y - 2} ${x + 9} ${y
 const scissors = (x, y) => `<g transform="translate(${x} ${y})"><circle cx="-9" cy="12" r="6" fill="none" stroke="${TOOL}" stroke-width="3"/><circle cx="9" cy="12" r="6" fill="none" stroke="${TOOL}" stroke-width="3"/><path d="M-5 7 L10 -16 M5 7 L-10 -16" stroke="${TOOL}" stroke-width="3" stroke-linecap="round"/></g>`;
 
 /** Spool of the reel seen from the side. */
-const spool = (x, y) => `<rect x="${x - 22}" y="${y - 50}" width="44" height="100" rx="6" fill="#E4E4DE" stroke="${METAL}" stroke-width="3"/><rect x="${x - 32}" y="${y - 58}" width="64" height="10" rx="4" fill="${METAL}"/><rect x="${x - 32}" y="${y + 48}" width="64" height="10" rx="4" fill="${METAL}"/>`;
+const spool = (x, y) => `<rect x="${x - 22}" y="${y - 50}" width="44" height="100" rx="6" fill="#E4E4DE" stroke="#8A8A84" stroke-width="3"/><rect x="${x - 32}" y="${y - 58}" width="64" height="10" rx="4" fill="#8A8A84"/><rect x="${x - 32}" y="${y + 48}" width="64" height="10" rx="4" fill="#8A8A84"/>`;
 
 /** Soft lure with its eye at (x, y), body to the right. */
 const lure = (x, y) => `${ring(x, y, 8)}<path d="M${x + 8} ${y} C${x + 22} ${y - 20} ${x + 58} ${y - 18} ${x + 70} ${y - 4} L${x + 82} ${y - 13} L${x + 79} ${y} L${x + 82} ${y + 13} L${x + 70} ${y + 4} C${x + 58} ${y + 18} ${x + 22} ${y + 20} ${x + 8} ${y}Z" fill="${YELLOW}" stroke="#0B0B0B" stroke-width="2"/><circle cx="${x + 24}" cy="${y - 4}" r="3" fill="#0B0B0B"/>`;
 
 /** Crimp sleeve, see-through so the wire inside shows. */
-const sleeve = (x, y, crushed = false) => `<rect x="${x - 18}" y="${y - (crushed ? 8 : 13)}" width="36" height="${crushed ? 16 : 26}" rx="4" fill="#C9C9C2" fill-opacity="0.55" stroke="${METAL}" stroke-width="2.5"/>`;
+/** Crimp sleeve (brass). Lines inside it are drawn with hidden() on top. */
+const sleeve = (x, y, crushed = false) => `<rect x="${x - 18}" y="${y - (crushed ? 8 : 13)}" width="36" height="${crushed ? 16 : 26}" rx="5" fill="${BRASS}" stroke="#7A5E18" stroke-width="2"/>`;
 
 const bead = (x, y) => `<circle cx="${x}" cy="${y}" r="8" fill="#FFFFFF" stroke="#0B0B0B" stroke-width="2"/>`;
 const float = (x, y) => `<path d="M${x - 22} ${y} C${x - 22} ${y - 16} ${x + 22} ${y - 16} ${x + 22} ${y}Z" fill="${YELLOW}" stroke="#0B0B0B" stroke-width="2"/><path d="M${x - 22} ${y} C${x - 22} ${y + 16} ${x + 22} ${y + 16} ${x + 22} ${y}Z" fill="#FFFFFF" stroke="#0B0B0B" stroke-width="2"/>`;
@@ -140,31 +246,31 @@ const RF = ringFront(EX, EY);
 /** Through the eye and back below it, clear of the shank, to x. */
 const eyeBack = (x, y = 99) => `M230 85 C238 85 242 ${y} 228 ${y} H${x}`;
 
-/* Nudo de carrete */
+/* Nudo de carrete: spool at (70, 85); the line comes from the right at y = 60, goes
+   around the spool (dotted behind it) and comes back in front, below. */
 const CA = {
-  around: 'M310 60 H120 C80 60 52 70 52 85',
-  back: 'M52 85 C52 100 80 110 120 110 H160',
-  behind: 'M160 110 H178 C194 110 198 84 196 60 C195 48 186 42 176 44', // around the line, behind it
-  front: 'M176 44 C162 48 160 70 176 80 C190 88 204 96 221 96',
+  around: 'M50 60 C40 60 32 70 32 85 C32 100 46 110 70 110 H100',
+  hitchBehind: 'M100 110 H158 C176 110 182 96 182 80 C182 66 178 52 168 46', // up, behind the line
+  hitchOver: 'M168 46 C156 40 144 50 146 64 C148 80 160 88 172 91', // down, over the line
+  hitchOut: 'M172 91 C178 93 184 95 192 96 C204 98 212 98 222 98', // over its own turn, and out
+  slid: 'M50 60 C40 60 32 70 32 85 C32 100 46 110 70 110 C90 110 100 96 104 68',
+};
+const caHitch = (c, cOut = c) => seg(CA.hitchBehind, c) + seg('M320 60 H92', L1.still) + seg(CA.hitchOver, c) + over(CA.hitchOut, cOut);
+const caSlid = () => {
+  const k = coil(104, 60, 2, 7, 8, L1.done, 1);
+  return spool(70, 85) + k.back + seg('M268 60 H92', L1.still) + hidden('M92 60 H50', L1.done) + seg(CA.slid, L1.done) + k.front
+    + overhand(135, 65, L1.done, { s: 0.3 });
 };
 const CARRETE = [
-  spool(70, 85) + seg(CA.around, L1.still) + seg('M52 85 C52 100 80 110 120 110 H222', L1.move) + tip(222, 110, 0, L1.move)
-    + arrow('M236 132 H300') + text(70, 160, 'bobina'),
-  spool(70, 85) + seg(CA.back, L1.done) + seg(CA.behind, L1.move) + seg(CA.around, L1.still) + over(CA.front, L1.move)
-    + tip(221, 96, 0, L1.move) + arrow('M236 34 C218 18 190 20 180 30') + text(205, 150, 'nudo simple alrededor de la línea'),
-  spool(70, 85) + seg(CA.back, L1.done) + seg(CA.behind, L1.done) + seg(CA.around, L1.still) + over(CA.front, L1.done)
-    + overhand(255, 96, L1.move) + tip(291, 82, -20, L1.move) + text(215, 150, 'otro nudo simple en la punta'),
-  st(() => {
-    const k = coil(126, 60, 3, 7, 9, L1.done);
-    return spool(70, 85) + k.back + seg('M268 60 H120 C80 60 52 70 52 85', L1.still) + seg('M52 85 C52 100 80 110 104 108 C112 104 112 80 106 69', L1.done)
-      + k.front + overhand(128, 96, L1.done, { s: 0.45 }) + seg('M106 69 C110 80 112 92 113 96', L1.done)
-      + pull('M276 60 H310') + text(290, 46, 'tirar') + arrow('M226 34 H140') + text(184, 24, 'el nudo baja a la bobina') + drop(240, 130);
-  }),
-  st(() => {
-    const k = coil(126, 60, 3, 7, 9, L1.done);
-    return spool(70, 85) + k.back + seg('M310 60 H120 C80 60 52 70 52 85', L1.still) + seg('M52 85 C52 100 80 110 104 108 C112 104 112 80 106 69', L1.done)
-      + k.front + overhand(128, 96, L1.done, { s: 0.45 }) + seg('M106 69 C110 80 112 92 113 96', L1.done) + scissors(170, 120);
-  }),
+  spool(70, 85) + seg('M320 60 H92', L1.still) + hidden('M92 60 H50', L1.move) + seg(`${CA.around} H214`, L1.move) + tip(214, 110, 0, L1.move)
+    + arrow('M24 44 C8 70 8 104 24 126') + text(70, 162, 'bobina'),
+  spool(70, 85) + hidden('M92 60 H50', L1.done) + seg(CA.around, L1.done) + caHitch(L1.move) + tip(222, 98, 0, L1.move)
+    + arrow('M196 30 C184 18 160 20 152 32') + text(214, 150, 'nudo simple en la línea'),
+  spool(70, 85) + hidden('M92 60 H50', L1.done) + seg(CA.around, L1.done) + caHitch(L1.done) + overhand(250, 93, L1.move, { s: 0.5 })
+    + tip(278, 78, -20, L1.move) + text(214, 150, 'otro nudo simple en la punta'),
+  caSlid() + tip(152, 56, -25, L1.done) + pull('M274 60 H300') + text(288, 46, 'tirar')
+    + arrow('M210 36 H140') + text(196, 22, 'los nudos bajan a la bobina') + drop(240, 130),
+  caSlid() + seg('M151 56 L164 49', L1.done) + scissors(184, 36),
 ];
 
 /* Uni: the tip comes back below the line (y = 99) and makes a loop over both. */
@@ -199,30 +305,40 @@ const UNI = [
   }),
 ];
 
-/* Palomar: the doubled line goes through the eye; its bend makes the loop. */
+/* Palomar: the line doubled (main above, tip below) goes through the eye; the bend of
+   the doubled line makes the loop. */
 const PA = {
-  standing: 'M80 85 H222',
-  eye: 'M222 85 H234 C254 85 256 112 236 118 H200',
-  behind: 'M200 118 C176 118 168 100 166 85 C164 66 150 58 138 62', // around the doubled line, behind it
-  front: 'M138 62 C122 66 120 92 136 104 C146 112 160 116 172 124',
-  bend: 'M172 124 C156 134 160 160 184 160 C208 160 212 136 192 126',
+  through: 'M100 85 H230 C238 85 242 94 240 106 C238 120 226 126 214 122',
+  behind: 'M214 122 C190 122 178 108 176 92 C175 78 170 66 160 62', // up, behind the doubled line
+  over: 'M160 62 C146 58 136 70 140 84 C143 96 150 102 162 106', // down, over it
+  out: 'M162 106 C168 110 172 114 176 120', // over its own turn, then down
 };
-const paStart = (cMain, cTag) => seg('M10 81 H82', cMain) + seg('M82 89 H44', cTag) + tip(44, 89, 180, cTag);
+const paStart = (cTag) => seg('M10 80 H100', L1.still) + seg('M100 90 H50', cTag) + tip(50, 90, 180, cTag);
+/** The loop at the end of the doubled line: its two strands open into a teardrop that
+    hangs below, big enough to pass the hook through. */
+function paLoop(c) {
+  const o = doubled(PA.out, 5, false);
+  const [ax, ay] = o.ea;
+  const [bx, by] = o.eb;
+  const [ux, uy] = [0.45, 0.9]; // direction the doubled line leaves in
+  const [nx, ny] = [(ax - bx) / 10, (ay - by) / 10];
+  return path(`M${ax} ${ay} C${ax + ux * 46 + nx * 30} ${ay + uy * 46 + ny * 30} ${bx + ux * 46 - nx * 30} ${by + uy * 46 - ny * 30} ${bx} ${by}`, c);
+}
+const paKnot = (cTurn) => H + paStart(L1.done) + dline(PA.behind, cTurn, { bend: false }) + dline(PA.through, L1.done, { bend: false }) + RF
+  + dline(PA.over, cTurn, { bend: false }) + dline(PA.out, cTurn, { bend: false, edged: true }) + paLoop(cTurn);
+const paTight = () => coil(196, 85, 3, 8, 13, L1.done, 1);
 const PALOMAR = [
-  H + paStart(L1.still, L1.move) + dbl('M80 85 H234 C254 85 258 110 246 124 C240 132 230 130 228 122', L1.move) + RF
-    + arrow('M140 130 H210') + text(130, 40, 'línea doblada, unos 15 cm'),
-  H + paStart(L1.still, L1.done) + dbl(PA.behind, L1.move) + dbl(PA.standing, L1.done) + dbl(PA.eye, L1.done) + RF
-    + dblOver(PA.front, L1.move) + seg(PA.bend, L1.move) + text(70, 150, 'nudo simple flojo'),
-  H + paStart(L1.still, L1.done) + dbl(PA.behind, L1.done) + dbl(PA.standing, L1.done) + dbl(PA.eye, L1.done) + RF
-    + dblOver(PA.front, L1.done) + seg(PA.bend, L1.done) + arrow('M304 136 C300 168 236 170 204 148') + text(120, 30, 'pasar el anzuelo por el lazo'),
+  H + paStart(L1.move) + dline(PA.through, L1.move) + RF + arrow('M120 142 H190') + text(120, 40, 'línea doblada, unos 15 cm'),
+  paKnot(L1.move) + arrow('M196 40 C186 28 160 30 150 42') + text(70, 150, 'nudo simple flojo'),
+  paKnot(L1.done) + arrow('M300 134 C298 160 250 166 214 150') + text(120, 30, 'pasar el anzuelo por el lazo'),
   st(() => {
-    const w = coil(222, 85, 4, 6, 12, L1.done);
-    return H + w.back + seg('M70 81 H222', L1.still) + seg('M150 89 H222', L1.done) + w.front + tip(150, 89, 180, L1.done) + RF
-      + pull('M62 81 H22') + pull('M142 92 L108 108') + text(60, 130, 'tirar de las dos') + hold(276, 85) + text(276, 40, 'sostener') + drop(150, 40);
+    const k = paTight();
+    return H + k.back + seg('M70 80 H220', L1.still) + seg('M150 90 H220', L1.done) + k.front + tip(150, 90, 180, L1.done) + RF
+      + pull('M62 80 H24') + pull('M142 90 H112') + hold(276, 85) + text(276, 40, 'sostener') + drop(60, 130);
   }),
   st(() => {
-    const w = coil(222, 85, 4, 6, 12, L1.done);
-    return H + w.back + seg('M10 81 H222', L1.still) + seg('M190 89 H222', L1.done) + w.front + RF + scissors(176, 116);
+    const k = paTight();
+    return H + k.back + seg('M10 80 H220', L1.still) + seg('M182 90 H220', L1.done) + k.front + RF + scissors(176, 116);
   }),
 ];
 
@@ -293,19 +409,19 @@ const RA = {
 };
 const raWraps = (c) => coil(70, 85, 3, 12, 12, c);
 const RAPALA = [
-  seg('M10 85 H76', L1.still) + overhand(110, 85, L1.move) + seg('M146 71 C164 66 184 70 204 76', L1.move) + tip(204, 76, 15, L1.move)
+  seg('M10 85 H76', L1.still) + overhandV1(110, 85, L1.move) + seg('M146 71 C164 66 184 70 204 76', L1.move) + tip(204, 76, 15, L1.move)
     + lure(240, 85) + text(150, 150, 'nudo simple flojo, a 10 cm de la punta'),
-  lure(240, 85) + seg('M10 85 H76', L1.still) + overhand(110, 85, L1.done) + seg(RA.toEye, L1.move) + seg(RA.back, L1.move)
+  lure(240, 85) + seg('M10 85 H76', L1.still) + overhandV1(110, 85, L1.done) + seg(RA.toEye, L1.move) + seg(RA.back, L1.move)
     + ringFront(240, 85, 8) + tip(110, 70, -95, L1.move) + arrow('M210 140 H140') + text(165, 160, 'volver por dentro del nudo simple'),
   st(() => {
     const w = raWraps(L1.move);
-    return lure(240, 85) + w.back + seg('M10 85 H76', L1.still) + w.front + overhand(110, 85, L1.done) + seg(RA.toEye, L1.done) + seg(RA.back, L1.done)
+    return lure(240, 85) + w.back + seg('M10 85 H76', L1.still) + w.front + overhandV1(110, 85, L1.done) + seg(RA.toEye, L1.done) + seg(RA.back, L1.done)
       + seg(RA.toWraps, L1.move) + seg('M34 97 C30 106 28 112 30 120', L1.move) + ringFront(240, 85, 8) + tip(30, 120, 95, L1.move)
       + text(52, 150, '3 vueltas');
   }),
   st(() => {
     const w = raWraps(L1.done);
-    return lure(240, 85) + w.back + seg('M10 85 H76', L1.still) + w.front + seg(RA.out, L1.move) + overhand(110, 85, L1.done) + seg(RA.toEye, L1.done)
+    return lure(240, 85) + w.back + seg('M10 85 H76', L1.still) + w.front + seg(RA.out, L1.move) + overhandV1(110, 85, L1.done) + seg(RA.toEye, L1.done)
       + seg(RA.back, L1.done) + seg(RA.toWraps, L1.done) + ringFront(240, 85, 8) + tip(160, 96, -20, L1.move)
       + arrow('M60 150 C100 162 150 150 170 124') + text(130, 30, 'por detrás del nudo y por el lazo');
   }),
@@ -317,26 +433,25 @@ const RAPALA = [
   }),
 ];
 
-/* Lazo perfecto. */
+/* Lazo perfecto: the line comes from the left at y = 120. */
 const LP = {
-  loop1: 'M140 100 C190 100 190 40 150 40 C120 40 120 70 150 80',
-  tail1: 'M150 80 H200',
-  loop2: 'M200 80 C230 80 230 120 200 120 C175 120 175 90 196 86',
+  loop1: 'M120 120 C150 120 200 110 200 75 C200 45 176 38 162 40 C140 44 132 66 140 86',
+  under: 'M140 86 C146 102 156 112 168 124 C176 132 190 140 214 140', // the tip, behind the line
+  loop2: 'M214 140 C240 136 236 92 214 82 C196 74 172 84 176 106 C178 120 192 126 206 122', // in front of the first
+  between: 'M206 122 C222 116 214 96 200 86 C190 78 178 70 170 62', // between the two loops
 };
+const lpBase = (c1) => seg(LP.under, c1) + seg('M10 120 H120', L1.still) + over(LP.loop1, c1);
 const LAZO_PERFECTO = [
-  seg('M150 80 H222', L1.move) + seg('M10 100 H140', L1.still) + over(LP.loop1, L1.move) + tip(222, 80, 0, L1.move)
-    + text(150, 150, 'lazo, con la punta por detrás'),
-  seg(LP.tail1, L1.done) + seg('M10 100 H140', L1.still) + over(LP.loop1, L1.done) + seg(LP.loop2, L1.move) + tip(196, 86, -20, L1.move)
-    + text(150, 158, 'segundo lazo, por delante'),
-  seg(LP.tail1, L1.done) + seg('M10 100 H140', L1.still) + over(LP.loop1, L1.done) + seg(LP.loop2, L1.done)
-    + seg('M196 86 C210 86 180 68 160 64', L1.move) + tip(160, 64, 190, L1.move) + arrow('M240 50 C220 40 196 48 190 58') + text(150, 158, 'la punta, entre los dos lazos'),
-  seg('M10 100 H140', L1.still) + seg('M140 100 C160 100 172 90 172 80 C172 60 150 50 140 60', L1.done) + tip(140, 60, 200, L1.done)
-    + seg('M168 82 C200 60 280 40 300 85 C310 120 230 120 200 92', L1.move) + arrow('M260 150 C290 140 304 120 300 100')
-    + text(120, 150, 'pasar el 2.º lazo por el 1.º'),
+  lpBase(L1.move) + tip(214, 140, 0, L1.move) + text(100, 160, 'la punta pasa por detrás'),
+  lpBase(L1.done) + seg(LP.loop2, L1.move) + tip(206, 122, -16, L1.move) + text(100, 160, 'segundo lazo, por delante'),
+  lpBase(L1.done) + seg(LP.between, L1.move) + seg(LP.loop2, L1.done) + tip(170, 62, -135, L1.move)
+    + arrow('M246 46 C230 36 206 40 192 52') + text(118, 160, 'la punta, entre los dos lazos'),
+  lpBase(L1.done) + seg(LP.between, L1.done) + seg(LP.loop2, L1.move) + tip(170, 62, -135, L1.done)
+    + arrow('M224 106 C198 92 180 72 176 28') + text(110, 160, 'pasar el 2.º lazo por el 1.º'),
   st(() => {
-    const w = coil(186, 85, 5, 7, 10, L1.done);
-    return w.back + seg('M62 85 H186', L1.still) + w.front + seg('M186 78 C230 40 280 50 280 85 C280 120 230 130 186 92', L1.done)
-      + seg('M151 94 L140 106', L1.done) + pull('M54 85 H24') + pull('M286 85 H306') + scissors(126, 124);
+    const k = coil(170, 100, 3, 7, 10, L1.done, 1);
+    return k.back + seg('M62 100 H191', L1.still) + k.front + seg('M191 94 C230 60 280 66 280 100 C280 134 230 140 191 106', L1.done)
+      + seg('M182 110 L174 124', L1.done) + pull('M54 100 H24') + pull('M286 100 H302') + scissors(156, 130);
   }),
 ];
 
@@ -407,7 +522,7 @@ const DU = [
 ];
 
 /* Cirujano: both lines tie one overhand together. */
-const cjOverhand = (c1, c2) => overhand(160, 76, c1) + overhand(166, 88, c2);
+const cjOverhand = (c1, c2) => overhandV1(160, 76, c1) + overhandV1(166, 88, c2);
 const CIRUJANO = [
   seg('M10 76 H80', L1.still) + seg('M80 76 H230', L1.move) + tip(230, 76, 0, L1.move)
     + seg('M320 88 H230', L2.still) + seg('M230 88 H80', L2.move) + tip(80, 88, 180, L2.move) + text(160, 140, 'superponer unos 15 cm'),
@@ -489,7 +604,7 @@ const FG = [
 
 /* Lazo de cirujano: the doubled end ties an overhand; its bend is the loop. */
 const lcStart = (cMain, cTag) => seg('M10 81 H126', cMain) + seg('M126 89 H90', cTag) + tip(90, 89, 180, cTag);
-const lcOverhand = (c) => overhand(160, 85, c, { st: dbl, ov: dblOver });
+const lcOverhand = (c) => overhandV1(160, 85, c, { st: dbl, ov: dblOver });
 const LAZO_CIRUJANO = [
   seg('M10 85 H120', L1.still) + seg('M120 85 H200 C240 85 240 110 200 110 H140', L1.move) + tip(140, 110, 180, L1.move) + text(150, 150, 'doblar la punta'),
   lcStart(L1.still, L1.done) + lcOverhand(L1.move) + dbl('M196 71 C226 60 252 80 240 100', L1.move)
@@ -511,19 +626,19 @@ const BIMINI = [
   seg('M10 75 H60', L1.still) + seg('M60 75 H260 C300 75 300 105 260 105 H60', L1.move) + tip(60, 105, 180, L1.move)
     + text(160, 140, 'lazo largo de unos 50 cm'),
   seg('M10 75 H80', L1.still) + seg('M80 105 H50', L1.done) + tip(50, 105, 180, L1.done)
-    + twist(80, 200, 75, 105, 12, L1.move, L1.move) + seg('M200 75 H260 C300 75 300 105 260 105 H200', L1.move)
+    + twistV1(80, 200, 75, 105, 12, L1.move, L1.move) + seg('M200 75 H260 C300 75 300 105 260 105 H200', L1.move)
     + arrow('M262 44 C290 28 318 50 306 72') + text(140, 140, 'girar unas 20 vueltas'),
   seg('M10 75 H80', L1.still) + seg('M80 100 H50', L1.done) + tip(50, 100, 180, L1.done)
-    + twist(80, 190, 78, 92, 14, L1.done, L1.done) + seg(BI_LOOP, L1.move) + open(260, 85, 0) + text(110, 140, 'abrir el lazo'),
+    + twistV1(80, 190, 78, 92, 14, L1.done, L1.done) + seg(BI_LOOP, L1.move) + open(260, 85, 0) + text(110, 140, 'abrir el lazo'),
   st(() => {
     const w = coil(80, 85, 6, 9, 13, L1.move, 1);
-    return w.back + seg('M10 75 H80', L1.still) + twist(80, 190, 78, 92, 14, L1.done, L1.done) + w.front
+    return w.back + seg('M10 75 H80', L1.still) + twistV1(80, 190, 78, 92, 14, L1.done, L1.done) + w.front
       + seg('M40 112 C56 112 70 104 80 98', L1.move) + seg(BI_LOOP, L1.done) + arrow('M70 140 H130') + text(110, 160, 'la punta se enrolla sola');
   }),
   st(() => {
     const w = coil(80, 85, 6, 9, 13, L1.done, 1);
     const r = coil(80, 85, 3, 8, 13, L1.move);
-    return w.back + r.back + seg('M10 75 H80', L1.still) + twist(80, 190, 78, 92, 14, L1.done, L1.done) + w.front + r.front
+    return w.back + r.back + seg('M10 75 H80', L1.still) + twistV1(80, 190, 78, 92, 14, L1.done, L1.done) + w.front + r.front
       + seg(BI_LOOP, L1.done) + seg('M56 98 L46 112', L1.move) + tip(46, 112, 125, L1.move) + text(110, 140, 'remate: medio nudo y vueltas');
   }),
 ];
@@ -588,17 +703,17 @@ const TOPE = [
 const HAYWIRE = [
   H + seg('M10 85 H230', WIRE.still, 4) + seg(eyeBack(140), WIRE.move, 4) + RF + tip(140, 99, 180, WIRE.move) + text(140, 140, 'pasar y doblar'),
   H + seg('M10 85 H150', WIRE.still, 4) + seg('M222 85 H230', WIRE.still, 4) + seg('M230 85 C238 85 242 99 228 99 H222', WIRE.done, 4)
-    + twist(150, 222, 85, 99, 5, WIRE.still, WIRE.move) + seg('M150 99 H130', WIRE.move, 4) + RF + tip(130, 99, 180, WIRE.move)
+    + twistV1(150, 222, 85, 99, 5, WIRE.still, WIRE.move) + seg('M150 99 H130', WIRE.move, 4) + RF + tip(130, 99, 180, WIRE.move)
     + text(170, 140, '4 o 5 vueltas en X'),
   st(() => {
     const w = coil(150, 85, 5, 7, 10, WIRE.move);
     return H + w.back + seg('M10 85 H150', WIRE.still, 4) + seg('M222 85 H230', WIRE.still, 4) + seg('M230 85 C238 85 242 99 228 99 H222', WIRE.done, 4)
-      + twist(150, 222, 85, 99, 5, WIRE.still, WIRE.done) + w.front + RF + tip(115, 95, 120, WIRE.move) + text(110, 130, '5 vueltas apretadas');
+      + twistV1(150, 222, 85, 99, 5, WIRE.still, WIRE.done) + w.front + RF + tip(115, 95, 120, WIRE.move) + text(110, 130, '5 vueltas apretadas');
   }),
   st(() => {
     const w = coil(150, 85, 5, 7, 10, WIRE.done);
     return H + w.back + seg('M10 85 H150', WIRE.still, 4) + seg('M222 85 H230', WIRE.still, 4) + seg('M230 85 C238 85 242 99 228 99 H222', WIRE.done, 4)
-      + twist(150, 222, 85, 99, 5, WIRE.still, WIRE.done) + w.front + seg('M115 95 V50 H86', WIRE.move, 4) + RF
+      + twistV1(150, 222, 85, 99, 5, WIRE.still, WIRE.done) + w.front + seg('M115 95 V50 H86', WIRE.move, 4) + RF
       + arrow('M70 64 C56 40 90 22 112 34') + text(150, 140, 'girar la manija hasta que se corte');
   }),
 ];
