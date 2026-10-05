@@ -87,8 +87,8 @@ function twistV1(x0, x1, y1, y2, n, cA, cB, w = 4) {
 }
 
 /** Moves and scales the points of a path drawn around (0, 0). */
-function place(d, x, y, s = 1, flip = 1) {
-  return d.replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, (_, px, py) => `${+(x + flip * s * px).toFixed(1)} ${+(y + s * py).toFixed(1)}`);
+function place(d, x, y, s = 1, flip = 1, flipY = 1) {
+  return d.replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, (_, px, py) => `${+(x + flip * s * px).toFixed(1)} ${+(y + flipY * s * py).toFixed(1)}`);
 }
 
 /** Overhand knot around (x, y): the line comes in at (x - 34s, y) and leaves at
@@ -306,46 +306,61 @@ const UNI = [
   }),
 ];
 
-/* Palomar: the line doubled (main above, tip below) goes through the eye; the bend of
-   the doubled line makes the loop. */
+/* Palomar. A hook hangs from its eye at (150, 64). The line comes from the left doubled
+   (main above, tip below), goes through the eye, comes back up behind itself and over it
+   (the loose overhand), and its bend opens into the loop that later goes around the hook. */
+const PEX = 150;
+const PEY = 64;
+/** Hook hanging from its eye at (x, y). */
+const hookDown = (x, y) => `${ring(x, y)}<path d="M${x} ${y + 9} V${y + 56} a18 18 0 0 1 -36 0 V${y + 42} l7 8" fill="none" stroke="${METAL}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
+const PH = hookDown(PEX, PEY);
+const PRF = ringFront(PEX, PEY);
 const PA = {
-  through: 'M100 85 H230 C238 85 242 94 240 106 C238 120 226 126 214 122',
-  behind: 'M214 122 C190 122 178 108 176 92 C175 78 170 66 160 62', // up, behind the doubled line
-  over: 'M160 62 C146 58 136 70 140 84 C143 96 150 102 162 106', // down, over it
-  out: 'M162 106 C168 110 172 114 176 120', // over its own turn, then down
+  toEye: 'M70 36 H118 C136 36 148 48 150 64', // doubled, down into the eye
+  bend1: 'M150 64 C152 78 160 88 174 90', // step 1: out of the eye, ending in the bend
+  up: 'M150 64 C152 80 166 92 182 90 C200 88 206 66 198 48 C190 30 168 20 146 20 C122 20 106 28 100 40', // around, behind the line
+  over: 'M100 40 C94 52 98 64 110 66 C124 68 134 58 140 50', // over the line
+  out: 'M140 50 C148 42 166 36 188 38', // through, and out to the right
 };
-const paStart = (cTag) => seg('M10 80 H100', L1.still) + seg('M100 90 H50', cTag) + tip(50, 90, 180, cTag);
-/** The loop at the end of the doubled line: its two strands open into a teardrop that
-    hangs below, big enough to pass the hook through. */
-function paLoop(c) {
+const paLines = (cTag) => seg('M10 31 H70', L1.still) + seg('M70 41 H40', cTag) + tip(40, 41, 180, cTag);
+const paKnot = (c) => dline(PA.up, c, { bend: false }) + dline(PA.toEye, L1.done, { bend: false }) + PRF
+  + dline(PA.over, c, { bend: false, edged: true }) + dline(PA.out, c, { bend: false, edged: true });
+/** The loop at the end of the doubled line, through the far point (fx, fy). It is split
+    in two halves so the hook can go between them: back before the hook, front after. */
+function paLoop(c, [c1x, c1y], [fx, fy], [c2x, c2y]) {
   const o = doubled(PA.out, 5, false);
-  const [ax, ay] = o.ea;
-  const [bx, by] = o.eb;
-  const [ux, uy] = [0.45, 0.9]; // direction the doubled line leaves in
-  const [nx, ny] = [(ax - bx) / 10, (ay - by) / 10];
-  return path(`M${ax} ${ay} C${ax + ux * 46 + nx * 30} ${ay + uy * 46 + ny * 30} ${bx + ux * 46 - nx * 30} ${by + uy * 46 - ny * 30} ${bx} ${by}`, c);
+  const [hx, hy] = o.ea[1] < o.eb[1] ? o.ea : o.eb; // upper strand
+  const [lx, ly] = o.ea[1] < o.eb[1] ? o.eb : o.ea; // lower strand
+  return {
+    back: path(`M${hx} ${hy} C${c1x} ${c1y - 6} ${fx + 10} ${fy - 20} ${fx} ${fy}`, c),
+    front: path(`M${fx} ${fy} C${fx - 10} ${fy + 20} ${c2x} ${c2y + 6} ${lx} ${ly}`, c),
+  };
 }
-const paKnot = (cTurn) => H + paStart(L1.done) + dline(PA.behind, cTurn, { bend: false }) + dline(PA.through, L1.done, { bend: false }) + RF
-  + dline(PA.over, cTurn, { bend: false }) + dline(PA.out, cTurn, { bend: false, edged: true }) + paLoop(cTurn);
-const paTight = () => coil(196, 85, 3, 8, 13, L1.done, 1);
-/** Tight knot: the doubled line goes through the eye and its loop hugs the shank. */
-const paEye = () => dline('M214 85 H240', L1.done, { bend: false }) + RF
-  + seg('M240 80 C254 70 266 74 266 85 C266 96 254 100 240 90', L1.done) + seg('M262 85 H272', METAL);
+const paTight = () => coil(110, 56, 3, 8, 13, L1.done, 1);
 const PALOMAR = [
-  H + paStart(L1.move) + dline(PA.through, L1.move) + RF + arrow('M120 142 H190') + text(120, 40, 'línea doblada, unos 15 cm'),
-  paKnot(L1.move) + arrow('M196 40 C186 28 160 30 150 42') + text(70, 150, 'nudo simple flojo'),
-  paKnot(L1.done) + arrow('M300 134 C298 160 250 166 214 150') + text(120, 30, 'pasar el anzuelo por el lazo'),
-  H + paStart(L1.done) + dline(PA.behind, L1.done, { bend: false }) + dline(PA.through, L1.done, { bend: false }) + RF
-    + dline(PA.over, L1.done, { bend: false }) + dline(PA.out, L1.done, { bend: false, edged: true }) + paLoop(L1.move)
-    + arrow('M236 152 C292 166 318 124 298 104 C286 92 270 80 254 72') + text(140, 30, 'el lazo, por encima del anzuelo'),
+  PH + paLines(L1.move) + dline(`${PA.toEye} C152 78 160 88 174 90`, L1.move) + PRF
+    + arrow('M200 108 C196 96 190 90 182 88') + text(318, 160, 'línea doblada, 15 cm', 'end'),
   st(() => {
-    const k = paTight();
-    return H + k.back + seg('M70 80 H214', L1.still) + seg('M150 90 H214', L1.done) + k.front + tip(150, 90, 180, L1.done) + paEye()
-      + pull('M62 80 H24') + pull('M142 90 H112') + hold(284, 85) + text(284, 40, 'sostener') + drop(60, 130);
+    const l = paLoop(L1.move, [240, 20], [292, 52], [250, 80]);
+    return PH + paLines(L1.done) + paKnot(L1.move) + l.back + l.front + arrow('M214 64 C222 40 206 16 180 10') + text(318, 160, 'nudo simple flojo', 'end');
+  }),
+  st(() => {
+    const l = paLoop(L1.move, [236, 60], [104, 150], [190, 140]);
+    return l.back + PH + paLines(L1.done) + paKnot(L1.done) + l.front + arrow('M300 60 C316 110 290 150 236 156') + text(318, 30, 'por el lazo', 'end');
+  }),
+  st(() => {
+    const l = paLoop(L1.move, [210, 60], [134, 92], [176, 104]);
+    return l.back + PH + paLines(L1.done) + paKnot(L1.done) + l.front + arrow('M176 150 C180 132 178 118 170 108') + text(318, 30, 'sube al ojo', 'end');
   }),
   st(() => {
     const k = paTight();
-    return H + k.back + seg('M10 80 H214', L1.still) + seg('M182 90 H214', L1.done) + k.front + paEye() + scissors(176, 116);
+    return PH + k.back + seg('M60 51 H110', L1.still) + seg('M110 61 C96 66 84 74 72 84', L1.done) + k.front + dline('M134 56 C142 56 148 60 150 64', L1.done, { bend: false }) + PRF
+      + tip(72, 84, 140, L1.done) + pull('M52 51 H22') + pull('M66 88 L44 102') + hold(PEX, 100, 90) + drop(240, 50) + text(318, 160, 'tirar de las dos', 'end');
+  }),
+  st(() => {
+    const k = paTight();
+    return PH + k.back + seg('M10 51 H110', L1.still) + seg('M110 61 L100 67', L1.done) + k.front + dline('M134 56 C142 56 148 60 150 64', L1.done, { bend: false }) + PRF
+      + scissors(86, 86);
   }),
 ];
 
@@ -451,16 +466,18 @@ const LP = {
 const lpBase = (c1) => seg(LP.under, c1) + seg('M10 120 H120', L1.still) + over(LP.loop1, c1);
 const LAZO_PERFECTO = [
   lpBase(L1.move) + tip(214, 140, 0, L1.move) + text(100, 160, 'la punta pasa por detrás'),
-  lpBase(L1.done) + seg(LP.loop2, L1.move) + tip(158, 128, 0, L1.move) + arrow('M262 120 C272 90 262 50 236 34')
+  lpBase(L1.done) + over(LP.loop2, L1.move) + tip(158, 128, 0, L1.move) + arrow('M262 120 C272 90 262 50 236 34')
     + text(165, 160, 'otra vuelta, encima del primer lazo'),
-  lpBase(L1.done) + seg(LP.between, L1.move) + seg(LP.loop2, L1.done) + tip(163, 32, -95, L1.move)
+  lpBase(L1.done) + seg(LP.between, L1.move) + over(LP.loop2, L1.done) + tip(163, 32, -95, L1.move)
     + text(110, 160, 'la punta, entre los dos lazos'),
-  lpBase(L1.done) + seg(LP.between, L1.done) + seg(LP.loop2, L1.move) + tip(163, 32, -95, L1.done)
-    + arrow('M234 52 C214 70 190 84 196 100 C204 116 240 112 270 100') + text(130, 160, 'el 2.º lazo, por dentro del 1.º'),
-  seg('M165 74 C150 74 150 122 165 122', L1.done) + seg('M10 122 H165', L1.still)
-    + seg('M150 92 C190 90 220 70 258 70 C298 70 300 126 258 126 C220 126 190 106 150 104', L1.move)
-    + seg('M165 74 C180 74 180 122 165 122', L1.done) + seg('M165 74 C166 62 168 52 172 42', L1.done) + tip(172, 42, -75, L1.done)
-    + text(120, 160, 'el 2.º lazo asoma por el 1.º'),
+  lpBase(L1.done) + seg(LP.between, L1.done) + over(LP.loop2, L1.move) + tip(163, 32, -95, L1.done)
+    + arrow('M250 40 C236 54 214 64 194 76') + text(130, 160, 'el 2.º lazo, por dentro del 1.º'),
+  // The second loop now goes in behind the first loop's right side and comes out in front
+  // at its bottom: everything else stays where it was.
+  seg('M226 62 C212 64 200 68 190 74', L1.move) + lpBase(L1.done) + seg(LP.between, L1.done)
+    + seg('M214 140 C250 142 300 124 300 96 C300 66 262 56 226 62', L1.move)
+    + seg('M190 74 C194 90 186 104 176 114 C170 122 164 127 158 128', L1.move) + tip(163, 32, -95, L1.done)
+    + text(110, 160, 'el 2.º lazo atraviesa el 1.º'),
   st(() => {
     const k = coil(170, 100, 3, 7, 10, L1.done, 1);
     return k.back + seg('M62 100 H191', L1.still) + k.front + seg('M191 94 C230 60 280 66 280 100 C280 134 230 140 191 106', L1.done)
