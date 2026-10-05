@@ -200,7 +200,7 @@ const CLINCH = [
   // 4. Back down through the big loop that formed.
   (() => {
     const w = clWraps(D);
-    return hook(EYE_X, EYE_Y) + w.back + seg(CL.bigUnder, O) + over(CL.small, D) + MAIN(10) + seg(CL.eye, D)
+    return hook(EYE_X, EYE_Y) + w.back + seg(CL.bigUnder, O) + over(CL.small, D) + MAIN(10) + over(CL.eye, D)
       + w.front + seg(CL.smallUp, D) + over(CL.bigOver, O) + ringFront(EYE_X, EYE_Y, 9) + tip(147, 152, 90)
       + arrow('M236 54 C236 22 192 14 176 24') + text(16, 30, 'y por el lazo grande', 'start');
   })(),
