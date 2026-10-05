@@ -4,7 +4,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { KNOTS } from '../js/data/knots.js';
-import { knotStepSvg, knotStepCount, KNOT_PALETTE as P } from '../js/drawings/knots.js';
+import { knotStepSvg, knotStepCount, knotCrossings, KNOT_PALETTE as P } from '../js/drawings/knots.js';
 import { readSvg, dist } from './svg-geom.js';
 
 // Knots already redrawn with the current system: their checks must pass. The others are
@@ -59,9 +59,18 @@ export function check(svg) {
   for (const s of shapes.filter((x) => (x.attrs.d || '').startsWith('M-3 0 L6 -7'))) {
     if (near(origin(s), lineEnds) > 4) out.push(`punta separada de su línea, en (${origin(s).map(Math.round)})`);
   }
-  // Scissors next to the end of a line: the bit that is cut (rule 8).
+  // Scissors next to the end of a line: the bit that is cut, still there with its tip
+  // (rules 8 and 15).
+  const tips = shapes.filter((x) => (x.attrs.d || '').startsWith('M-3 0 L6 -7'));
   for (const s of shapes.filter((x) => (x.attrs.d || '').startsWith('M-5 7 L10 -16'))) {
     if (near(origin(s), lineEnds) > 45) out.push(`tijera lejos de un sobrante, en (${origin(s).map(Math.round)})`);
+    if (near(origin(s), tips.map(origin)) > 45) out.push('al cortar no se ve el sobrante con su punta');
+  }
+  // Arrows do not cover the tip (rule 7): the middle of the diamond stays clear.
+  const tipMid = tips.map((t) => [t.points[0][0][0] + (t.points[0][2][0] - t.points[0][0][0]) / 2, t.points[0][0][1] + (t.points[0][2][1] - t.points[0][0][1]) / 2]);
+  for (const s of shapes.filter((x) => /kah|kph/.test(x.attrs['marker-end'] || ''))) {
+    const hit = tipMid.find((m) => near(m, s.points.flat()) < 9);
+    if (hit) out.push(`flecha encima de la punta, en (${hit.map(Math.round)})`);
   }
   // A line goes through every hook eye (rule 13).
   for (const r of shapes.filter((x) => x.kind === 'circle' && x.attrs.stroke === P.METAL && +x.attrs.r <= 9)) {
@@ -72,12 +81,26 @@ export function check(svg) {
   return [...new Set(out)];
 }
 
+/** Problems of the crossings of a step drawn in 3D (rule 5): none almost parallel, none
+    with the two lines at nearly the same depth. */
+export function checkCrossings(list) {
+  const out = [];
+  for (const c of list) {
+    if (c.angle < MIN_ANGLE) out.push(`cruce casi paralelo (${c.angle}°) en (${c.x},${c.y}): ${c.over} sobre ${c.under}`);
+    if (c.dz < MIN_DZ) out.push(`cruce sin profundidad clara en (${c.x},${c.y}): ${c.over} sobre ${c.under}`);
+  }
+  return out;
+}
+const MIN_ANGLE = 30;
+const MIN_DZ = 0.2;
+
 for (const id of Object.keys(KNOTS)) {
   const redrawn = REDRAWN.includes(id);
   test(`dibujos de ${KNOTS[id].name}`, { todo: redrawn ? false : 'todavía sin rehacer' }, () => {
     const problems = [];
     for (let i = 0; i < knotStepCount(id); i++) {
       for (const p of check(knotStepSvg(id, i))) problems.push(`paso ${i + 1}: ${p}`);
+      for (const p of checkCrossings(knotCrossings(id, i) ?? [])) problems.push(`paso ${i + 1}: ${p}`);
     }
     assert.deepEqual(problems, [], `\n${problems.join('\n')}`);
   });
