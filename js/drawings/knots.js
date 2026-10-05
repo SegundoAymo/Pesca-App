@@ -114,17 +114,22 @@ const EYE_Y = 85;
    orange what moves in this step; the tip ends in a diamond. Gray is only metal.
    Red: the path of the tip (thin dashed arrow). Blue: forces, a thick solid arrow
    to pull and two facing arrows to hold. Over/under is shown by drawing order: a line
-   drawn later with a paper-colored edge passes over what was drawn before. */
+   drawn later covers what was drawn before. Only where two lines of similar color
+   cross does the one on top get a paper-colored edge. */
 
 const D = '#F2C392'; // already placed in earlier steps: the tip's path, faded
 const F = '#1F6FD6'; // forces: pull and hold
 const PAPER = '#F5F5F2';
 
-/** Like line(), but the paper edge has square ends, so it does not cut into the
-    piece it continues from (no white gaps where a line changes color). */
-const seg = (d, color = K, w = 5) =>
-  `<path d="${d}" fill="none" stroke="${PAPER}" stroke-width="${w + 5}" stroke-linecap="butt" stroke-linejoin="round"/>`
+/** A line of the step system. No paper edge by default: a line drawn later simply
+    covers what was drawn before, like the hook's eye. edge = true adds the paper edge,
+    only where it crosses a line of the same or a similar color, so you can tell which
+    one goes on top. */
+const seg = (d, color = K, w = 5, edge = false) =>
+  (edge ? `<path d="${d}" fill="none" stroke="${PAPER}" stroke-width="${w + 5}" stroke-linecap="butt" stroke-linejoin="round"/>` : '')
   + `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+/** Crossing over a line of a similar color. */
+const over = (d, color) => seg(d, color, 5, true);
 
 /** A line with no paper edge: used for the half of a wrap that goes behind. */
 const bare = (d, color, w = 5) => `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
@@ -143,8 +148,7 @@ const pull = (d) => `<path d="${d}" fill="none" stroke="${F}" stroke-width="6" s
 
 /** Wraps around a horizontal line at y, from xRight leftwards, n turns of width d and
     half-height a. Returns the halves behind and in front of the line, to draw before
-    and after it. The front halves only get a paper edge in their middle, where they
-    cross the line, so the turns stay joined at the ends. */
+    and after it. */
 function coil(xRight, y, n, d, a, color) {
   let back = '';
   let front = '';
@@ -153,7 +157,6 @@ function coil(xRight, y, n, d, a, color) {
     back += bare(`M${x} ${y + a} L${x - d / 2} ${y - a}`, color);
     const fx0 = x - d / 2;
     const fx1 = x - d;
-    front += bare(`M${fx0 - d * 0.15} ${y - a * 0.4} L${fx1 + d * 0.15} ${y + a * 0.4}`, PAPER, 8);
     front += bare(`M${fx0} ${y - a} L${fx1} ${y + a}`, color);
   }
   return { back, front };
@@ -173,9 +176,8 @@ const CL = {
   bigOver: 'M207 58 C207 36 154 36 151 58 L148 128',
   bigUnder: 'M148 128 L147 152',
 };
-/** Main line from x to the eye. Near the eye it has no paper edge, so it does not
-    cut the ring; the front half of the ring drawn afterwards shows it going through. */
-const MAIN = (x) => seg(`M${x} 85 H212`) + bare('M212 85 H230', K);
+/** Main line from x into the eye; the front half of the ring drawn afterwards shows it going through. */
+const MAIN = (x) => seg(`M${x} 85 H230`);
 const clWraps = (color) => coil(180, 85, 5, 16, 13, color);
 
 const CLINCH = [
@@ -191,15 +193,15 @@ const CLINCH = [
   // 3. Through the small loop next to the eye.
   (() => {
     const w = clWraps(D);
-    return hook(EYE_X, EYE_Y) + w.back + seg(CL.small, O) + MAIN(10) + seg(CL.eye, D) + w.front
+    return hook(EYE_X, EYE_Y) + w.back + seg(CL.small, O) + MAIN(10) + over(CL.eye, D) + w.front
       + seg(CL.smallUp, O) + ringFront(EYE_X, EYE_Y, 9) + tip(207, 58, -90) + arrow('M110 160 H190')
       + text(130, 30, 'por el lazo chico, junto al ojo');
   })(),
   // 4. Back down through the big loop that formed.
   (() => {
     const w = clWraps(D);
-    return hook(EYE_X, EYE_Y) + w.back + seg(CL.bigUnder, O) + seg(CL.small, D) + MAIN(10) + seg(CL.eye, D)
-      + w.front + seg(CL.smallUp, D) + seg(CL.bigOver, O) + ringFront(EYE_X, EYE_Y, 9) + tip(147, 152, 90)
+    return hook(EYE_X, EYE_Y) + w.back + seg(CL.bigUnder, O) + over(CL.small, D) + MAIN(10) + seg(CL.eye, D)
+      + w.front + seg(CL.smallUp, D) + over(CL.bigOver, O) + ringFront(EYE_X, EYE_Y, 9) + tip(147, 152, 90)
       + arrow('M236 54 C236 22 192 14 176 24') + text(16, 30, 'y por el lazo grande', 'start');
   })(),
   // 5. Wet, pull and trim.
