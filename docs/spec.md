@@ -258,6 +258,9 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   11. Revisión: cada dibujo se mira al menos a 1,5× de tamaño antes de mostrarlo.
   12. Pasos suficientes: al rehacer un nudo, revisar si falta algún paso intermedio para que se entienda (por ejemplo, cómo queda algo antes de apretar) y agregarlo; no quedarse con los pasos que ya había.
   13. Por el ojo: si un nudo va atado a un ojo (anzuelo, emerillón, señuelo), en todos los pasos se ve la línea pasando por el ojo, también con el nudo apretado.
+- Cómo se controlan los dibujos de nudos:
+  - Prueba automática (`test/knots-drawing.test.js`, corre con `node --test` y en cada publicación): mide lo que no necesita criterio. Nada fuera del borde, textos enteros y sin tapar el dibujo, colores de la paleta, flecha de tirar saliendo de una línea, rombo pegado a su línea, tijera junto a un sobrante y una línea pasando por cada ojo. Los nudos todavía sin rehacer figuran como pendientes y no frenan la publicación; al rehacer uno, se agrega a la lista de rehechos.
+  - Revisión independiente: el agente `revisor-nudos` (`.claude/agents/revisor-nudos.md`) mira las imágenes de cada paso sin saber qué se quiso dibujar y las compara con las reglas y con cómo se ata el nudo de verdad. Las imágenes salen de `node tools/nudos/hoja.mjs` (usa Playwright, solo para desarrollo). Se usa después de dibujar o cambiar un nudo y antes de mostrarlo.
 - Publicación: un workflow de GitHub Actions corre las pruebas y publica en GitHub Pages en cada push a main.
 
 ## Pendientes y preguntas abiertas

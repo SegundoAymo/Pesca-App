@@ -372,7 +372,7 @@ const CL = {
   small: 'M100 98 C80 112 84 142 120 142 H180 C198 142 205 128 205 100', // down and around, then up through the small loop
   smallUp: 'M205 100 C206 90 207 75 207 58',
   bigOver: 'M207 58 C207 36 154 36 151 58 L148 128', // over the top and down through the big loop
-  bigUnder: 'M148 128 L147 152',
+  bigUnder: 'M148 128 L147 146',
 };
 const clWraps = (c) => coil(180, 85, 5, 16, 13, c);
 const CLINCH = [
@@ -390,7 +390,7 @@ const CLINCH = [
   st(() => {
     const w = clWraps(L1.done);
     return H + w.back + seg(CL.bigUnder, L1.move) + over(CL.small, L1.done) + seg('M10 85 H230', L1.still) + over(CL.eye, L1.done)
-      + w.front + seg(CL.smallUp, L1.done) + over(CL.bigOver, L1.move) + RF + tip(147, 152, 90, L1.move)
+      + w.front + seg(CL.smallUp, L1.done) + over(CL.bigOver, L1.move) + RF + tip(147, 146, 90, L1.move)
       + arrow('M236 54 C236 22 192 14 176 24') + text(16, 30, 'y por el lazo grande', 'start');
   }),
   st(() => {
@@ -469,7 +469,7 @@ const LAZO_PERFECTO = [
   lpBase(L1.done) + over(LP.loop2, L1.move) + tip(158, 128, 0, L1.move) + arrow('M262 120 C272 90 262 50 236 34')
     + text(165, 160, 'otra vuelta, encima del primer lazo'),
   lpBase(L1.done) + seg(LP.between, L1.move) + over(LP.loop2, L1.done) + tip(163, 32, -95, L1.move)
-    + text(110, 160, 'la punta, entre los dos lazos'),
+    + text(124, 160, 'la punta, entre los dos lazos'),
   lpBase(L1.done) + seg(LP.between, L1.done) + over(LP.loop2, L1.move) + tip(163, 32, -95, L1.done)
     + arrow('M250 40 C236 54 214 64 194 76') + text(130, 160, 'el 2.º lazo, por dentro del 1.º'),
   // The second loop now goes in behind the first loop's right side and comes out in front
@@ -481,7 +481,7 @@ const LAZO_PERFECTO = [
   st(() => {
     const k = coil(170, 100, 3, 7, 10, L1.done, 1);
     return k.back + seg('M62 100 H191', L1.still) + k.front + seg('M191 94 C230 60 280 66 280 100 C280 134 230 140 191 106', L1.done)
-      + seg('M182 110 L174 124', L1.done) + pull('M54 100 H24') + pull('M286 100 H302') + scissors(156, 130);
+      + seg('M182 110 L174 124', L1.done) + pull('M54 100 H24') + pull('M284 100 H302') + scissors(156, 130);
   }),
 ];
 
@@ -819,6 +819,9 @@ export function knotKey(id) {
   if (all.includes('url(#kph)')) items.push({ label: 'Tirar', svg: swatch(`<path d="M2 7 H17" stroke="${F}" stroke-width="5"/><path d="M16 1 L29 7 L16 13z" fill="${F}"/>`) });
   return items;
 }
+
+/** Colors of the drawing system, for the drawing checks. */
+export const KNOT_PALETTE = { L1, L2, WIRE, METAL, BRASS, TOOL, R, F, WATER, YELLOW, PAPER, INK };
 
 export function knotStepSvg(id, i) {
   const body = STEPS[id]?.[i];
