@@ -259,6 +259,10 @@ function crosses([a, b], [c, d]) {
 
 /** Draws a scene. Throws if a strand has a gap (a piece that does not start where the
     previous one ended). */
+/** Paper edge at crossings: 'same' (only two lines of the same shade) or 'all'. */
+const EDGE_MODE = 'same';
+const EDGE_REACH = 3; // segments on each side of a crossing that also get the edge
+
 function scene(...items) {
   const parts = [];
   let order = 0;
@@ -288,7 +292,8 @@ function scene(...items) {
         const zLane = p.zl && L.lane !== 2 ? p.zl[L.lane] : 0;
         for (let i = 0; i + 1 < L.pts.length; i++) {
           const tm = (L.t[i] + L.t[i + 1]) / 2;
-          parts.push({ z: za + (zb - za) * tm + zLane, order: order++, seg: [L.pts[i], L.pts[i + 1]], c: p.c, w: p.w ?? 5, sid, run: `${sid}:${order}`, piece: p, lane: L.lane });
+          const edgeOfLane = i === 0 || i + 2 === L.pts.length; // first or last segment: where pieces join
+          parts.push({ z: za + (zb - za) * tm + zLane, order: order++, seg: [L.pts[i], L.pts[i + 1]], c: p.c, w: p.w ?? 5, sid, piece: p, lane: L.lane, joint: edgeOfLane });
         }
         if (L.lane !== 2) last[key] = L.pts[L.pts.length - 1];
       }
@@ -303,11 +308,30 @@ function scene(...items) {
     s.edge = false;
     for (let j = 0; j < i && !s.edge; j++) {
       const o = segs[j];
-      if (o.c !== s.c || o.z === s.z && o.piece === s.piece && o.lane === s.lane) continue;
+      if ((EDGE_MODE === 'same' && o.c !== s.c) || (o.z === s.z && o.piece === s.piece && o.lane === s.lane)) continue;
+      // Segments that follow each other along the same line touch but do not cross.
       const touch = [o.seg[0], o.seg[1]].some((p) => [s.seg[0], s.seg[1]].some((q) => Math.hypot(p[0] - q[0], p[1] - q[1]) < 0.5));
-      if (!touch && crosses(s.seg, o.seg)) s.edge = true;
+      const next = touch && o.sid === s.sid && ((o.piece === s.piece && o.lane === s.lane && Math.abs(o.order - s.order) === 1) || (o.joint && s.joint));
+      if (!next && crosses(s.seg, o.seg)) s.edge = true;
     }
   });
+  // Spread the edge a little along the line, so it reads as a cut and not as a speck.
+  const byRun = new Map();
+  for (const x of segs) {
+    const k = byRun.get(x.piece)?.get(x.lane) ?? [];
+    if (!byRun.has(x.piece)) byRun.set(x.piece, new Map());
+    byRun.get(x.piece).set(x.lane, k);
+    k.push(x);
+  }
+  for (const lanesOf of byRun.values()) {
+    for (const list of lanesOf.values()) {
+      list.sort((a, b) => a.order - b.order);
+      const hit = list.map((x) => x.edge);
+      list.forEach((x, i) => {
+        for (let j = Math.max(0, i - EDGE_REACH); j <= Math.min(list.length - 1, i + EDGE_REACH); j++) if (hit[j]) x.edge = true;
+      });
+    }
+  }
   // Runs of consecutive segments of the same piece and lane, drawn as one polyline.
   let out = '';
   let run = null;
@@ -315,7 +339,7 @@ function scene(...items) {
     if (!run) return;
     const d = 'M' + run.pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join(' L');
     out += (run.edge ? `<path d="${d}" fill="none" stroke="${PAPER}" stroke-width="${run.w + 5}" stroke-linecap="butt" stroke-linejoin="round"/>` : '')
-      + `<path d="${d}" fill="none" stroke="${run.c}" stroke-width="${run.w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+      + `<path d="${d}" fill="none" stroke="${run.c}" stroke-width="${run.w}" stroke-linecap="round" stroke-linejoin="round"${run.piece.fade ? ' opacity="0.45"' : ''}/>`;
     run = null;
   };
   for (const x of parts) {
@@ -358,7 +382,7 @@ function coilPieces(x0, y, n, d, a, c, dir = -1) {
   const out = [];
   for (let i = 0; i < n; i++) {
     const x = x0 + dir * i * d;
-    out.push({ c, d: `M${x} ${y + a} L${x + dir * d / 2} ${y - a}`, z: -1 });
+    out.push({ c, d: `M${x} ${y + a} L${x + dir * d / 2} ${y - a}`, z: -1, fade: true });
     out.push({ c, d: `M${x + dir * d / 2} ${y - a} L${x + dir * d} ${y + a}`, z: 1 });
   }
   return out;
