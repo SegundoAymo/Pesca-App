@@ -6,7 +6,7 @@ const K = '#0B0B0B'; // main line
 const O = '#E07800'; // tag end / other line
 const R = '#C8102E'; // movement
 const G = '#6B6B66'; // metal
-const B = '#1D5FA8'; // water
+const B = '#5BB4E5'; // water
 
 export const KNOT_KEY = [
   { color: K, label: 'Línea principal' },
@@ -29,8 +29,8 @@ const STEP_KEY = [
   { label: 'Este paso', svg: swatch(`<path d="M2 7 H28" stroke="${O}" stroke-width="5" stroke-linecap="round"/>`) },
   { label: 'Punta', svg: swatch(`<path d="M2 7 H16" stroke="${O}" stroke-width="5" stroke-linecap="round"/><path d="M15 7 L22 1 L29 7 L22 13Z" fill="${O}"/>`) },
   { label: 'Pasar la punta', svg: swatch(`<path d="M2 7 H20" stroke="${R}" stroke-width="2.5" stroke-dasharray="5 3"/><path d="M20 2 L28 7 L20 12z" fill="${R}"/>`) },
-  { label: 'Sostener', svg: swatch(`<path d="M5 1 L13 7 L5 13Z M25 1 L17 7 L25 13Z" fill="#1B4F9C"/>`) },
-  { label: 'Tirar para apretar', svg: swatch(`<path d="M2 7 H17" stroke="#1B4F9C" stroke-width="5"/><path d="M16 1 L29 7 L16 13z" fill="#1B4F9C"/>`) },
+  { label: 'Sostener', svg: swatch(`<path d="M5 1 L13 7 L5 13Z M25 1 L17 7 L25 13Z" fill="#1F6FD6"/>`) },
+  { label: 'Tirar para apretar', svg: swatch(`<path d="M2 7 H17" stroke="#1F6FD6" stroke-width="5"/><path d="M16 1 L29 7 L16 13z" fill="#1F6FD6"/>`) },
 ];
 
 export function knotKey(id) {
@@ -100,7 +100,7 @@ function sleeve(x, y, crushed = false) {
   return `<rect x="${x - 18}" y="${y - (crushed ? 7 : 11)}" width="36" height="${crushed ? 14 : 22}" rx="4" fill="#C9C9C2" stroke="${G}" stroke-width="2.5"/>`;
 }
 
-const draw = (body) => `<svg viewBox="0 0 330 170" width="330" height="170" role="img" aria-hidden="true"><defs><marker id="kah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="${R}"/></marker><marker id="kph" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="3.4" markerHeight="3.4" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#1B4F9C"/></marker></defs>${body}</svg>`;
+const draw = (body) => `<svg viewBox="0 0 330 170" width="330" height="170" role="img" aria-hidden="true"><defs><marker id="kah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="${R}"/></marker><marker id="kph" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="3.4" markerHeight="3.4" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#1F6FD6"/></marker></defs>${body}</svg>`;
 
 /* ---------- Knots ---------- */
 
@@ -117,8 +117,14 @@ const EYE_Y = 85;
    drawn later with a paper-colored edge passes over what was drawn before. */
 
 const D = '#F2C392'; // already placed in earlier steps: the tip's path, faded
-const F = '#1B4F9C'; // forces: pull and hold
+const F = '#1F6FD6'; // forces: pull and hold
 const PAPER = '#F5F5F2';
+
+/** Like line(), but the paper edge has square ends, so it does not cut into the
+    piece it continues from (no white gaps where a line changes color). */
+const seg = (d, color = K, w = 5) =>
+  `<path d="${d}" fill="none" stroke="${PAPER}" stroke-width="${w + 5}" stroke-linecap="butt" stroke-linejoin="round"/>`
+  + `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
 
 /** A line with no paper edge: used for the half of a wrap that goes behind. */
 const bare = (d, color, w = 5) => `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
@@ -156,8 +162,9 @@ function coil(xRight, y, n, d, a, color) {
 // Clinch mejorado. Main line along y = 85 to the hook eye at (230, 85).
 // Path of the tip, piece by piece (each piece is drawn orange in its step, gray after):
 const CL = {
-  eye: 'M221 85 H232 C250 85 250 110 228 110 H198 C190 110 186 104 184 98', // through the eye and back
-  eyeShort: 'M221 85 H232 C250 85 250 110 228 110 H165', // step 1 ends here
+  // Through the eye and back down, clear of the hook's shank.
+  eye: 'M230 85 C236 85 240 94 238 102 C236 110 226 110 214 110 H198 C190 110 182 104 180 98',
+  eyeShort: 'M230 85 C236 85 240 94 238 102 C236 110 226 110 214 110 H165', // step 1 ends here
   tail2: 'M100 98 C96 104 92 110 88 114', // loose end after the wraps
   // Step 3: down and around, then up through the small loop next to the eye.
   small: 'M100 98 C80 112 84 142 120 142 H180 C198 142 205 128 205 100',
@@ -166,39 +173,42 @@ const CL = {
   bigOver: 'M207 58 C207 36 154 36 151 58 L148 128',
   bigUnder: 'M148 128 L147 152',
 };
+/** Main line from x to the eye. Near the eye it has no paper edge, so it does not
+    cut the ring; the front half of the ring drawn afterwards shows it going through. */
+const MAIN = (x) => seg(`M${x} 85 H212`) + bare('M212 85 H230', K);
 const clWraps = (color) => coil(180, 85, 5, 16, 13, color);
 
 const CLINCH = [
   // 1. Through the eye.
-  hook(EYE_X, EYE_Y) + line('M10 85 H221') + line(CL.eyeShort, O) + ringFront(EYE_X, EYE_Y, 9)
+  hook(EYE_X, EYE_Y) + MAIN(10) + seg(CL.eyeShort, O) + ringFront(EYE_X, EYE_Y, 9)
     + tip(165, 110, 180) + arrow('M150 132 H100'),
   // 2. Wraps around the main line.
   (() => {
     const w = clWraps(O);
-    return hook(EYE_X, EYE_Y) + w.back + line('M10 85 H221') + line(CL.eye, D) + w.front + line(CL.tail2, O)
+    return hook(EYE_X, EYE_Y) + w.back + MAIN(10) + seg(CL.eye, D) + w.front + seg(CL.tail2, O)
       + ringFront(EYE_X, EYE_Y, 9) + tip(88, 114, 135) + arrow('M190 52 C170 36 128 36 110 54') + text(140, 150, '5 a 7 vueltas');
   })(),
   // 3. Through the small loop next to the eye.
   (() => {
     const w = clWraps(D);
-    return hook(EYE_X, EYE_Y) + w.back + line(CL.small, O) + line('M10 85 H221') + line(CL.eye, D) + w.front
-      + line(CL.smallUp, O) + ringFront(EYE_X, EYE_Y, 9) + tip(207, 58, -90) + arrow('M110 160 H190')
+    return hook(EYE_X, EYE_Y) + w.back + seg(CL.small, O) + MAIN(10) + seg(CL.eye, D) + w.front
+      + seg(CL.smallUp, O) + ringFront(EYE_X, EYE_Y, 9) + tip(207, 58, -90) + arrow('M110 160 H190')
       + text(130, 30, 'por el lazo chico, junto al ojo');
   })(),
   // 4. Back down through the big loop that formed.
   (() => {
     const w = clWraps(D);
-    return hook(EYE_X, EYE_Y) + w.back + line(CL.bigUnder, O) + line(CL.small, D) + line('M10 85 H221') + line(CL.eye, D)
-      + w.front + line(CL.smallUp, D) + line(CL.bigOver, O) + ringFront(EYE_X, EYE_Y, 9) + tip(147, 152, 90)
+    return hook(EYE_X, EYE_Y) + w.back + seg(CL.bigUnder, O) + seg(CL.small, D) + MAIN(10) + seg(CL.eye, D)
+      + w.front + seg(CL.smallUp, D) + seg(CL.bigOver, O) + ringFront(EYE_X, EYE_Y, 9) + tip(147, 152, 90)
       + arrow('M236 54 C236 22 192 14 176 24') + text(16, 30, 'y por el lazo grande', 'start');
   })(),
   // 5. Wet, pull and trim.
   (() => {
     const w = coil(212, 85, 5, 8, 9, D);
-    return hook(EYE_X, EYE_Y) + w.back + line('M70 85 H221') + line('M212 94 C218 100 224 98 221 85', D) + w.front
-      + line('M172 94 L160 104', D) + ringFront(EYE_X, EYE_Y, 9)
+    return hook(EYE_X, EYE_Y) + w.back + MAIN(80) + seg('M230 85 C236 85 240 94 237 100 C233 106 220 102 212 94', D) + w.front
+      + seg('M172 94 L160 104', D) + ringFront(EYE_X, EYE_Y, 9)
       + hold(276, 85) + text(276, 40, 'sostener')
-      + pull('M72 85 H30') + text(46, 64, 'tirar') + drop(70, 130) + scissors(150, 124);
+      + pull('M70 85 H28') + text(50, 64, 'tirar') + drop(70, 130) + scissors(150, 124);
   })(),
 ];
 
