@@ -1,6 +1,6 @@
 // Service Worker: keeps the whole app on the phone so it works without a connection.
 // Bump VERSION on every release so phones pick up the new files.
-const VERSION = 'v5';
+const VERSION = 'v6';
 const CACHE = `kitpesca-${VERSION}`;
 const DATA_CACHE = 'kitpesca-data';
 
