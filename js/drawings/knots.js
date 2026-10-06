@@ -713,25 +713,60 @@ const UNI = [
   step3([...CL_HOOK, { fig: UN4, colors: unColors(UN4, Dn), fade: ['vueltas'] }], tipAt(UN4, null, Dn), scissors(128, 128), { tight: true }),
 ];
 
-/* Snell: hook without eye, shank along y = 60. */
+/* Snell, in 3D, following guía A p. 3 and Wilson p. 12 (docs/referencias-nudos.md): a hook
+   without an eye, the paddle at the left and the bend at the right. The line lies along the
+   shank: the tip toward the bend, then back to the paddle, a loop hanging below, and back
+   along the shank to the left (the main line). The loop wraps around the shank and the two
+   lines, from the paddle toward the bend (a helix: in front of all, then behind); pulling
+   the main line takes up the loop. */
+const SY = 80; // the shank
+const SN_HOOK = [{ fig: figure({ name: 'anzuelo', d: `M60 ${SY} H280 C304 ${SY} 304 ${SY + 40} 280 ${SY + 40} H268 L276 ${SY + 32}`, z: 0 }), colors: { anzuelo: METAL }, w: 6 }];
+const SN_PADDLE = { back: `<rect x="50" y="${SY - 13}" width="11" height="26" rx="2" fill="${METAL}"/>` };
+const SN_X0 = 84; // where the wraps start, next to the paddle
+const SN_TIP = 240; // the tip, toward the bend
+/** The wraps from x0 going right, starting and ending at the bottom: n turns. */
+function snWraps({ x0, n, pitch, a }) {
+  const steps = n * 24;
+  const pts = [];
+  const zs = [];
+  for (let k = 0; k <= steps; k++) {
+    const th = (k / steps) * n * 2 * Math.PI;
+    pts.push(`${(x0 + (pitch * th) / (2 * Math.PI)).toFixed(1)} ${(SY + a * Math.cos(th)).toFixed(1)}`);
+    zs.push([k / steps, Math.sin(th) * 1.2]);
+  }
+  return { name: 'vueltas', d: `M${pts[0]} L${pts.slice(1).join(' L')}`, z: zs };
+}
+/** The line: the tip along the shank (at y1), the loop, the main line back (at y0). */
+const snLine = (y0, y1, x1) => ({ name: 'línea', d: `M${x1} ${y0} H10`, z: 0.5 });
+const snTip = (y1) => ({ name: 'punta', d: `M${SN_TIP} ${y1} H${SN_X0}`, z: 0.5 });
+const SN_UP = 222; // where the loop goes back up to the main line
+const SN1 = figure(snTip(SY + 8),
+  { name: 'lazo', d: `M${SN_X0} ${SY + 8} C${SN_X0 - 22} ${SY + 8} ${SN_X0 - 24} ${SY + 40} ${SN_X0 - 8} ${SY + 46} C${SN_X0 + 20} ${SY + 66} ${SN_UP + 16} ${SY + 64} ${SN_UP + 18} ${SY + 40} C${SN_UP + 18} ${SY + 30} ${SN_UP + 8} ${SY - 8} ${SN_UP - 4} ${SY - 8}`,
+    z: [[0, 0.5], [0.75, 0.5], [0.82, 1], [0.97, 1], [1, 0.5]] },
+  snLine(SY - 8, SY + 8, SN_UP - 4));
+const SN_W = { x0: SN_X0, n: 5, pitch: 22, a: 22 }; // wide: each turn crosses three things (line, shank, tip)
+const snWrapsEnd = SN_W.x0 + SN_W.n * SN_W.pitch;
+const snTurn = (y1, a) => ({ name: 'vuelta', d: `M${SN_X0} ${y1} C${SN_X0 - 12} ${y1} ${SN_X0 - 12} ${SY + a} ${SN_X0} ${SY + a}`, z: [0.5, 0] });
+const SN2 = figure(snTip(SY + 8), snTurn(SY + 8, SN_W.a), snWraps(SN_W),
+  { name: 'lazo', d: `M${snWrapsEnd} ${SY + SN_W.a} C${snWrapsEnd + 12} ${SY + SN_W.a} ${snWrapsEnd + 10} ${SY + 40} ${snWrapsEnd + 8} ${SY + 44} C${snWrapsEnd + 6} ${SY + 64} ${SN_UP + 22} ${SY + 64} ${SN_UP + 20} ${SY + 44} C${SN_UP + 18} ${SY + 30} ${SN_UP + 8} ${SY - 8} ${SN_UP - 4} ${SY - 8}`,
+    z: [[0, 0], [0.3, 0.5], [0.7, 0.5], [0.8, 1], [0.97, 1], [1, 0.5]] },
+  snLine(SY - 8, SY + 8, SN_UP - 4));
+// Pulled: the wraps close on the shank, the loop is gone (a short bend up to the main line).
+const SN_T = { x0: SN_X0, n: 5, pitch: 14, a: 12 };
+const snTEnd = SN_T.x0 + SN_T.n * SN_T.pitch;
+const SN3 = figure(snTip(SY + 5), snTurn(SY + 5, SN_T.a), snWraps(SN_T),
+  { name: 'lazo', d: `M${snTEnd} ${SY + SN_T.a} C${snTEnd + 8} ${SY + SN_T.a} ${snTEnd + 10} ${SY + 6} ${snTEnd + 8} ${SY - 2} C${snTEnd + 6} ${SY - 5} ${snTEnd + 4} ${SY - 5} ${snTEnd + 2} ${SY - 5}`,
+    z: [[0, 0], [0.2, 1], [0.8, 1], [1, 0.5]] },
+  snLine(SY - 5, SY + 5, snTEnd + 2));
+const snColors = (fig, c, over = {}) => ({ ...allParts(fig, c), ...over });
 const SNELL = [
-  paddleHook(60) + seg('M10 66 H100', L1.still) + seg('M100 66 H206 C228 66 230 96 206 96 H124', L1.move) + tip(124, 96, 180, L1.move)
-    + text(80, 130, 'paleta') + text(240, 150, 'lazo hacia la curva'),
-  st(() => {
-    const w = coil(108, 63, 8, 11, 12, L1.move, 1);
-    return paddleHook(60) + w.back + seg('M10 66 H100', L1.still) + seg('M100 66 H200', L1.done) + w.front
-      + seg('M196 75 C214 90 232 106 214 122 C200 132 186 116 196 104', L1.move) + arrow('M110 30 H200') + text(140, 150, '7 a 10 vueltas hacia la curva');
-  }),
-  st(() => {
-    const w = coil(108, 63, 8, 11, 12, L1.done, 1);
-    return paddleHook(60) + w.back + seg('M62 66 H100', L1.still) + seg('M100 66 H200', L1.done) + w.front
-      + seg('M196 75 C204 84 210 90 206 98', L1.done) + hold(152, 63) + pull('M54 66 H24') + text(160, 150, 'sostener las vueltas y tirar');
-  }),
-  st(() => {
-    const w = coil(108, 63, 8, 10, 11, L1.done, 1);
-    return paddleHook(60) + w.back + seg('M10 66 H100', L1.still) + seg('M100 66 H190', L1.done) + w.front
-      + seg('M190 72 L204 86', L1.done) + scissors(222, 104);
-  }),
+  step3([...SN_HOOK, { fig: SN1, colors: snColors(SN1, M, { 'línea': L1.still }) }], SN_PADDLE, tip(SN_TIP, SY + 8, 0, M),
+    text(10, 30, 'la punta hacia la curva', 'start'), text(10, 158, 'y un lazo colgando', 'start')),
+  step3([...SN_HOOK, { fig: SN2, colors: snColors(SN2, Dn, { 'línea': L1.still, vueltas: M, lazo: M }), fade: ['vueltas'] }], SN_PADDLE, tip(SN_TIP, SY + 8, 0, Dn),
+    arrow(`M${SN_X0 + 2} ${SY + SN_W.a + 14} H${snWrapsEnd - 4}`), text(10, 30, '5 a 7 vueltas con el lazo, hacia la curva', 'start')),
+  step3([...SN_HOOK, { fig: SN3, colors: snColors(SN3, M), fade: ['vueltas'] }], SN_PADDLE, tip(SN_TIP, SY + 5, 0, M), pull(`M44 ${SY - 5} H18`),
+    hold(SN_X0 + 30, SY, 0), drop(250, 40), text(10, 158, 'sostener las vueltas y tirar de la línea', 'start'), { tight: true }),
+  step3([...SN_HOOK, { fig: SN3, colors: snColors(SN3, Dn), fade: ['vueltas'] }], SN_PADDLE, tip(SN_TIP, SY + 5, 0, Dn), scissors(236, 116), { tight: true }),
 ];
 
 /* Rapala: lure eye at (240, 85); a loose overhand at x = 110. */

@@ -74,7 +74,11 @@ const uniWraps = (n) => [...Array.from({ length: n + 1 }, () => ['vueltas > lín
 const uniStart = ['línea > ojo atrás', 'ojo adelante > por el ojo', 'lazo > línea'];
 const uniAll = [...uniStart, ...uniWraps(5)];
 
+const snellStart = ['lazo > anzuelo', 'lazo > punta']; // the loop goes down in front of the shank and the tip
+const snellAll = [...snellStart, ...['anzuelo', 'punta', 'línea'].flatMap((x) => Array.from({ length: 5 }, () => [`vueltas > ${x}`, `${x} > vueltas`]).flat())];
+
 const EXPECTED = {
+  snell: [snellStart, snellAll, snellAll, snellAll], // each wrap goes around the shank and both lines
   uni: [uniStart, uniAll, uniAll, uniAll, uniAll],
   clinch: [clinchStart, clinchSmall, clinchBig, clinchBig, clinchBig],
   palomar: [

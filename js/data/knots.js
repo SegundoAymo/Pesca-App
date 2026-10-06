@@ -79,10 +79,10 @@ export const KNOTS = {
     difficulty: 'Media',
     note: 'También sirve en anzuelos con ojo para que la carnada quede alineada.',
     steps: [
-      'Apoyar la línea sobre la pata del anzuelo dejando un lazo largo hacia la curva.',
-      'Con el lazo, dar 7 a 10 vueltas apretadas alrededor de la pata y de la línea, desde la paleta hacia la curva.',
-      'Sostener las vueltas con los dedos y tirar de la línea principal hasta cerrar el lazo.',
-      'Apretar y cortar el sobrante.',
+      'Apoyar la línea a lo largo de la pata, desde la paleta hacia la curva, dejar un lazo colgando que vuelva hasta la paleta y apoyar la punta otra vez sobre la pata, hacia la curva.',
+      'Con el lazo, dar 5 a 7 vueltas alrededor de la pata y de las dos líneas, desde la paleta hacia la curva.',
+      'Sostener las vueltas con los dedos, mojar y tirar de la línea hasta que el lazo desaparezca y las vueltas queden apretadas.',
+      'Cortar el sobrante.',
     ],
   },
   rapala: {
