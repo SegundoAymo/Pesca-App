@@ -34,7 +34,7 @@ export const KNOTS = {
     difficulty: 'Fácil',
     note: 'Para atar la línea al reel, los mismos pasos pasando la línea alrededor de la bobina en vez de por un ojo.',
     steps: [
-      'Pasar la punta por el ojo y volverla paralela a la línea, formando un lazo.',
+      'Pasar la punta por el ojo, volverla junto a la línea y hacer con ella un lazo por delante de las dos líneas.',
       'Dar 5 o 6 vueltas con la punta alrededor de las dos líneas, por dentro del lazo.',
       'Mojar y tirar de la punta para cerrar las vueltas.',
       'Tirar de la línea principal hasta que el nudo llegue al ojo.',

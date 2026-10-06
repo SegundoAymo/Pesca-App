@@ -65,7 +65,17 @@ const clinchStart = ['línea > ojo atrás', 'ojo adelante > por el ojo', ...wrap
 const clinchSmall = [...clinchStart, 'por el ojo > al lazo chico', 'al lazo chico > línea']; // in behind the strand back from the eye, out in front of the line
 const clinchBig = [...clinchSmall, 'por el lazo grande > línea', 'por el lazo grande > por el ojo', 'al lazo chico > por el lazo grande']; // in front, out behind its far side
 
+// Uni, from the references (guía A p. 1, Wilson p. 9; Netknots: "double back parallel to
+// standing line. Make a circle with the tag end over the doubled lines. Make 6 turns with
+// the tag end around the double line and through the circle"). The loop goes in front of
+// the line; each wrap goes in front of both lines and then behind them.
+// Five turns and a half: six passes in front, five behind.
+const uniWraps = (n) => [...Array.from({ length: n + 1 }, () => ['vueltas > línea', 'vueltas > por el ojo']).flat(), ...Array.from({ length: n }, () => ['línea > vueltas', 'por el ojo > vueltas']).flat()];
+const uniStart = ['línea > ojo atrás', 'ojo adelante > por el ojo', 'lazo > línea'];
+const uniAll = [...uniStart, ...uniWraps(5)];
+
 const EXPECTED = {
+  uni: [uniStart, uniAll, uniAll, uniAll, uniAll],
   clinch: [clinchStart, clinchSmall, clinchBig, clinchBig, clinchBig],
   palomar: [
     throughEye('doble'), // the fold through the eye: both strands
