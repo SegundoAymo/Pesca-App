@@ -60,6 +60,7 @@ Para mirar una página: `pdftoppm -r 110 -f <pág> -l <pág> -png <pdf> <salida>
   - `cjWraps`: alrededor de un par de líneas.
 - **Dos Uni enfrentados** (doble uni): `duWraps`, `duGreen` y `duTurn` (el segundo nudo es el primero girado media vuelta).
 - **Nudo doble con la línea doblada** (lazo de cirujano): `lcDoubled` sobre `cjKnot`; la doblez es el lazo final.
+- **Tramo doble retorcido** (brazolada): `brStretch` (vueltas en espejo a cada lado de un hueco); el paso apretado se arma con las mismas partes (regla 40).
 - **Línea doblada** (dos hebras de la misma línea): `doubledFig` (palomar).
 - **Dos líneas distintas juntas, como si fueran una**: `cjPair` (cirujano). Sus partes se llaman "(verde)" y "(naranja)".
 - **Anzuelos y objetos**:
@@ -83,19 +84,18 @@ Para mirar una página: `pdftoppm -r 110 -f <pág> -l <pág> -png <pdf> <salida>
 
 Al 6 de octubre de 2026:
 
-- **Dibujados en 3D y revisados:** Lazo perfecto (probado en la mano), Nudo de carrete, Palomar, Clinch mejorado, Uni, Snell, Cirujano, Doble uni y Lazo de cirujano.
-- **Pendiente del usuario:** atar en la mano el carrete, el palomar, el clinch, el uni, el snell, el cirujano, el doble uni y el lazo de cirujano, y contar si aguantan. Si alguno falla, volver a la fuente antes de tocar el dibujo.
+- **Dibujados en 3D y revisados:** Lazo perfecto (probado en la mano), Nudo de carrete, Palomar, Clinch mejorado, Uni, Snell, Cirujano, Doble uni, Lazo de cirujano y Brazolada.
+- **Pendiente del usuario:** atar en la mano el carrete, el palomar, el clinch, el uni, el snell, el cirujano, el doble uni, el lazo de cirujano y la brazolada, y contar si aguantan. Si alguno falla, volver a la fuente antes de tocar el dibujo.
 
 ## Lo que sigue, en este orden
 
 | Orden | Nudo | Referencia | Nota |
 |---|---|---|---|
-| 1 | Brazolada (dropper loop) | Wilson p. 14, abajo | |
-| 2 | Sangre | Wilson p. 23, arriba | Otro método que el de la app: elegir el más simple |
-| 3 | Albright | Wilson p. 25 | Wilson da 5 vueltas de ida y 5 de vuelta; la app da 10 |
-| 4 | Haywire | Wilson p. 69 | Acero: gris azulado |
-| 5 | Manguito (crimp) | Wilson p. 64, arriba | Manguito en bronce |
-| 6 | Bimini, Rapala | referencia débil | Buscar mejor fuente antes |
-| 7 | FG, Tope corredizo | sin referencia ilustrada | Pedirle una imagen al usuario |
+| 1 | Sangre | Wilson p. 23, arriba | Otro método que el de la app: elegir el más simple |
+| 2 | Albright | Wilson p. 25 | Wilson da 5 vueltas de ida y 5 de vuelta; la app da 10 |
+| 3 | Haywire | Wilson p. 69 | Acero: gris azulado |
+| 4 | Manguito (crimp) | Wilson p. 64, arriba | Manguito en bronce |
+| 5 | Bimini, Rapala | referencia débil | Buscar mejor fuente antes |
+| 6 | FG, Tope corredizo | sin referencia ilustrada | Pedirle una imagen al usuario |
 
 Después: pasar los armados (aparejos) al mismo sistema (emerillón en bronce, brazolada de acero).
