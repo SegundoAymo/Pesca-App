@@ -9,7 +9,7 @@ import { readSvg, dist } from './svg-geom.js';
 
 // Knots already redrawn with the current system: their checks must pass. The others are
 // reported as pending until they are redrawn.
-const REDRAWN = ['carrete', 'uni', 'palomar', 'clinch', 'lazo-perfecto', 'snell'];
+const REDRAWN = ['carrete', 'uni', 'palomar', 'clinch', 'lazo-perfecto', 'snell', 'cirujano'];
 
 const W = 330;
 const H = 170;
@@ -102,9 +102,10 @@ export function checkCrossings(list, close = [], tight = false) {
     if (c.dz < MIN_DZ) out.push(`cruce sin profundidad clara en (${c.x},${c.y}): ${c.over} sobre ${c.under}`);
   }
   // Crossings apart, so each one reads on its own (rule 24). A doubled line (two strands
-  // side by side, "(ida)" and "(vuelta)") crossing itself or something else makes two or
+  // side by side, "(ida)" and "(vuelta)", or two lines tied together as one, "(verde)" and
+  // "(naranja)") crossing itself or something else makes two or
   // four crossings that read as one: those are not counted against each other.
-  const base = (n) => n.replace(/ \((ida|vuelta)\)$/, '');
+  const base = (n) => n.replace(/ \((ida|vuelta|verde|naranja)\)$/, '');
   const sameDoubled = (a, b) => (a.over !== b.over || a.under !== b.under) && base(a.over) === base(b.over) && base(a.under) === base(b.under)
     && Math.hypot(a.x - b.x, a.y - b.y) < 14;
   list.forEach((a, i) => list.slice(i + 1).forEach((b) => {

@@ -915,23 +915,94 @@ const DU = [
   }),
 ];
 
-/* Cirujano: both lines tie one overhand together. */
-const cjOverhand = (c1, c2) => overhandV1(160, 76, c1) + overhandV1(166, 88, c2);
+/* Cirujano, in 3D, following guía A p. 4 (docs/referencias-nudos.md): the two lines side by
+   side, the green one from the left and the orange one from the right, tie a double overhand
+   together, as if they were one line. The knot is drawn on the middle of the pair (a line
+   along y = CJ_Y, a loop above it, then the end wraps around the pair inside the loop, once
+   or twice, and goes out over the loop's right side); each line runs g to one side of it. */
+const CJ_Y = 100;
+const CJ_X = 118; // where the end first goes down over the pair
+const CJ_A = 24; // half height of the wraps
+const CJ_P = 48; // length of a whole wrap
+const CJ_G = 4;
+/** The end wrapping around the pair: a helix seen from the side, half turns of the given count. */
+function cjWraps(halves) {
+  const pts = [];
+  const zs = [];
+  const n = halves * 24;
+  for (let k = 0; k <= n; k++) {
+    const th = -Math.PI / 2 + (k / n) * halves * Math.PI;
+    pts.push(`${(CJ_X + (CJ_P * th) / (2 * Math.PI)).toFixed(1)} ${(CJ_Y + CJ_A * Math.sin(th)).toFixed(1)}`);
+    zs.push([k / n, Math.cos(th)]);
+  }
+  return { name: 'pasadas', d: `M${pts[0]} L${pts.slice(1).join(' L')}`, z: zs };
+}
+const cjWrapsEnd = (halves) => CJ_X - CJ_P / 4 + (halves * CJ_P) / 2;
+const CJ_TOP = CJ_Y - CJ_A;
+const cjKnot = (halves) => [
+  { name: 'juntas', d: `M70 ${CJ_Y} H214`, z: 0 },
+  { name: 'lazo', d: `M214 ${CJ_Y} C232 ${CJ_Y} 240 84 240 66 C240 42 216 30 180 30 C136 30 96 34 90 52 C86 66 94 ${CJ_TOP} ${CJ_X - CJ_P / 4} ${CJ_TOP}`, z: 0 },
+  cjWraps(halves),
+  // Out over the loop's right side, going up to the right (from the last wrap, wherever it ends).
+  { name: 'salida', d: halves === 2 ? `M154 ${CJ_TOP} C176 ${CJ_TOP} 212 52 232 46 C246 42 258 40 272 40` : `M202 ${CJ_TOP} C214 ${CJ_TOP} 226 62 236 56 C248 50 260 42 272 40`,
+    z: [[0, 0], [0.4, 1], [0.85, 1], [1, 0.5]] },
+];
+/** The two lines along a middle line (a figure's parts): green on one side, its line coming
+    from the left (to x = 10); orange on the other, its line going out to the right (to
+    x = 322). The ends open a little apart, so the two tips can be told apart. move: warps the
+    middle line first (to pull it tight). Returns [green, orange]: the orange one in the order
+    its line goes, from the right to its tip at the left. */
+function cjPair(parts, move = null) {
+  const c0 = figure(...parts).pts;
+  const c = move ? c0.map((p) => { const [x, y] = move(p.x, p.y); return { ...p, x, y }; }) : c0;
+  const s = [0];
+  for (let i = 1; i < c.length; i++) s.push(s[i - 1] + Math.hypot(c[i].x - c[i - 1].x, c[i].y - c[i - 1].y));
+  const S = s[s.length - 1];
+  const lane = (sign, tag) => c.map((p, i) => {
+    const a = c[Math.max(0, i - 2)];
+    const b = c[Math.min(c.length - 1, i + 2)];
+    const L = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+    const gg = CJ_G + Math.max(0, 20 - s[i]) * 0.25 + Math.max(0, 20 - (S - s[i])) * 0.25;
+    return { x: p.x - ((b.y - a.y) / L) * gg * sign, y: p.y + ((b.x - a.x) / L) * gg * sign, z: p.z, part: `${p.part} (${tag})` };
+  });
+  const G = lane(1, 'verde');
+  const O = lane(-1, 'naranja');
+  const g0 = G[0];
+  const head = figure({ name: 'línea verde', d: `M10 ${g0.y.toFixed(1)} H${g0.x.toFixed(1)}`, z: g0.z }).pts.slice(0, -1);
+  const o1 = O[O.length - 1];
+  const o0 = O[O.length - 3];
+  const [ux, uy] = [o1.x - o0.x, o1.y - o0.y];
+  const U = Math.hypot(ux, uy) || 1;
+  const tail = figure({ name: 'línea naranja', d: `M${o1.x.toFixed(1)} ${o1.y.toFixed(1)} C${(o1.x + (ux / U) * 16).toFixed(1)} ${(o1.y + (uy / U) * 16).toFixed(1)} ${Math.max(o1.x + 20, 300)} ${o1.y.toFixed(1)} 322 ${o1.y.toFixed(1)}`, z: o1.z }).pts.slice(1);
+  const fig = (pts) => ({ pts, parts: [...new Set(pts.map((p) => p.part))] });
+  return [fig([...head, ...G]), fig([...O, ...tail].reverse())];
+}
+const CJ1 = cjPair([{ name: 'juntas', d: `M70 ${CJ_Y} H262`, z: 0 }]);
+const CJ2 = cjPair(cjKnot(2)); // the overhand: through the loop once
+const CJ3 = cjPair(cjKnot(4)); // and once more
+// Pulled tight: the knot closes, more across the lines than along them (the wraps keep apart).
+const CJ_PINCH = (x, y) => {
+  const [cx, cy] = [165, CJ_Y - 12];
+  const r = Math.hypot(x - cx, y - cy);
+  const w = 1 - Math.min(1, Math.max(0, (r - 60) / 70)) ** 2 * (3 - 2 * Math.min(1, Math.max(0, (r - 60) / 70)));
+  return [cx + (x - cx) * (1 - 0.25 * w), cy + (y - cy) * (1 - 0.45 * w)];
+};
+const CJ4 = cjPair(cjKnot(4), CJ_PINCH);
+const cjColors = (fig, c, still, over = {}) => ({ ...allParts(fig, c), ...over, 'línea verde': still, 'línea naranja': still });
+const cjItems = ([g, o], cg, co, overG = {}, overO = {}) => [{ fig: g, colors: cjColors(g, cg, L1.still, overG) }, { fig: o, colors: cjColors(o, co, L2.still, overO) }];
+const cjTips = ([g, o], cg, co) => tipAt(g, null, cg) + tipAt(o, null, co);
+/** Pull on the orange line, where it leaves to the right. */
+const cjPullOut = (f) => { const p = [...f.pts].reverse().find((q) => q.x >= 262); return pull(`M${p.x.toFixed(1)} ${p.y.toFixed(1)} H${(p.x + 24).toFixed(1)}`); };
+/** Scissors next to each tip, on the leftover. */
+const cjCut = (pair) => pair.map((f) => { const [x, y] = endOf(f); return (x < 165 ? scissors(x + 6, y - 30) : scissors(x - 18, y + 24)); }).join('');
 const CIRUJANO = [
-  seg('M10 76 H80', L1.still) + seg('M80 76 H230', L1.move) + tip(230, 76, 0, L1.move)
-    + seg('M320 88 H230', L2.still) + seg('M230 88 H80', L2.move) + tip(80, 88, 180, L2.move) + text(160, 140, 'superponer unos 15 cm'),
-  seg('M10 76 H126', L1.still) + seg('M320 88 H240 C222 88 212 76 202 74', L2.still) + cjOverhand(L1.move, L2.move)
-    + seg('M196 62 C210 58 220 60 230 64', L1.move) + tip(230, 64, 20, L1.move) + seg('M132 88 H100', L2.move) + tip(100, 88, 180, L2.move)
-    + arrow('M250 130 C226 150 196 150 186 130') + text(90, 150, 'nudo simple con las dos'),
-  seg('M10 76 H126', L1.still) + seg('M320 88 H240 C222 88 212 76 202 74', L2.still) + cjOverhand(L1.done, L2.done)
-    + seg('M196 62 C226 50 222 22 186 26 C156 30 150 52 170 58', L1.move) + tip(170, 58, 30, L1.move) + seg('M132 88 H100', L2.done)
-    + arrow('M100 30 C130 14 170 12 196 22') + text(250, 140, 'pasar otra vez'),
-  st(() => {
-    const a = coil(176, 82, 6, 6, 12, L1.done);
-    return a.back + seg('M62 78 H176', L1.still) + seg('M268 86 H140', L2.still) + a.front
-      + seg('M176 76 L190 64', L1.done) + seg('M142 92 L128 104', L2.done)
-      + pull('M54 78 H24') + pull('M276 86 H306') + drop(60, 140) + scissors(210, 120);
-  }),
+  step3(cjItems(CJ1, M, L2.move), cjTips(CJ1, M, L2.move), text(165, 150, 'juntas unos 15 cm, en sentidos contrarios')),
+  step3(cjItems(CJ2, M, L2.move), cjTips(CJ2, M, L2.move), text(10, 158, 'nudo simple con las dos juntas', 'start')),
+  step3(cjItems(CJ3, Dn, L2.done, { 'pasadas (verde)': M, 'salida (verde)': M }, { 'pasadas (naranja)': L2.move, 'salida (naranja)': L2.move }), cjTips(CJ3, M, L2.move),
+    text(10, 158, 'pasar otra vez por el lazo', 'start')),
+  step3(cjItems(CJ4, M, L2.move), cjTips(CJ4, M, L2.move), pull(`M44 ${CJ_Y + CJ_G} H18`), cjPullOut(CJ4[1]), drop(60, 40),
+    text(10, 158, 'mojar y tirar de las dos líneas', 'start'), { tight: true }),
+  step3(cjItems(CJ4, Dn, L2.done), cjTips(CJ4, Dn, L2.done), cjCut(CJ4), { tight: true }),
 ];
 
 /* Albright: thick line (green) makes the loop; thin line (orange) wraps it. */

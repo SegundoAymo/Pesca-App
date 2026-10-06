@@ -155,10 +155,11 @@ export const KNOTS = {
     difficulty: 'Fácil',
     note: '',
     steps: [
-      'Superponer las dos líneas unos 15 cm.',
-      'Con las dos juntas, hacer un nudo simple pasando todo el tramo corto por el lazo.',
-      'Pasarlo una vez más (nudo doble).',
-      'Mojar, tirar de las cuatro puntas y cortar.',
+      'Poner las dos líneas juntas unos 15 cm, cada una con su punta hacia el lado contrario.',
+      'Con las dos juntas, como si fueran una sola, hacer un nudo simple: un lazo y pasar por dentro el extremo de las dos.',
+      'Pasar las dos otra vez por el mismo lazo (nudo doble).',
+      'Mojar y tirar de las dos líneas, y después de las dos puntas, hasta que el nudo quede apretado.',
+      'Cortar las dos puntas sobrantes.',
     ],
   },
   albright: {

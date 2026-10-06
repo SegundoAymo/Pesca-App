@@ -77,7 +77,14 @@ const uniAll = [...uniStart, ...uniWraps(5)];
 const snellStart = ['lazo > anzuelo', 'lazo > punta']; // the loop goes down in front of the shank and the tip
 const snellAll = [...snellStart, ...['anzuelo', 'punta', 'línea'].flatMap((x) => Array.from({ length: 5 }, () => [`vueltas > ${x}`, `${x} > vueltas`]).flat())];
 
+// Cirujano: the two lines tied as one; each crossing of the pair is four (green and orange
+// over green and orange).
+const pairX = (over, under, n = 1) => Array.from({ length: n }, () => ['verde', 'naranja'].flatMap((a) => ['verde', 'naranja'].map((b) => `${over} (${a}) > ${under} (${b})`))).flat();
+const cirujanoOnce = [...pairX('pasadas', 'juntas'), ...pairX('juntas', 'pasadas'), ...pairX('salida', 'lazo')]; // over, under, and out over the loop
+const cirujanoTwice = [...pairX('pasadas', 'juntas', 2), ...pairX('juntas', 'pasadas', 2), ...pairX('salida', 'lazo')];
+
 const EXPECTED = {
+  cirujano: [[], cirujanoOnce, cirujanoTwice, cirujanoTwice, cirujanoTwice],
   snell: [snellStart, snellAll, snellAll, snellAll], // each wrap goes around the shank and both lines
   uni: [uniStart, uniAll, uniAll, uniAll, uniAll],
   clinch: [clinchStart, clinchSmall, clinchBig, clinchBig, clinchBig],
