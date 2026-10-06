@@ -102,7 +102,7 @@ Líneas: nylon con nylon de grosor parecido · Resistencia: sin dato · Media. C
 Método de Wilson p. 23 (el más simple: las dos líneas se retuercen juntas).
 
 1. Poner las dos líneas juntas unos 10 cm, cada una con su punta hacia el lado contrario.
-2. Retorcer juntas las dos líneas girando el hueco del medio 4 vueltas completas (mantenerlo abierto con un dedo): de cada lado quedan 8 cruces, en espejo.
+2. Retorcer juntas las dos líneas girando el hueco del medio 4 vueltas completas (mantenerlo abierto con un dedo): quedan 4 vueltas de cada lado, en espejo.
 3. Volver cada punta al medio y pasarla por el hueco, en sentidos contrarios: la de la derecha, por arriba, baja de adelante hacia atrás; la de la izquierda, por abajo, sube de atrás hacia adelante. Las dos pasan por delante de la línea de arriba y por detrás de la de abajo.
 4. Mojar y tirar despacio de las dos líneas: las vueltas se juntan a cada lado del medio y las puntas quedan saliendo, una para cada lado.
 5. Cortar las dos puntas sobrantes.

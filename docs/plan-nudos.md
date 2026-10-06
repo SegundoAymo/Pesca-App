@@ -86,6 +86,7 @@ Para mirar una página: `pdftoppm -r 110 -f <pág> -l <pág> -png <pdf> <salida>
 Al 6 de octubre de 2026:
 
 - **Dibujados en 3D y revisados:** Lazo perfecto (probado en la mano), Nudo de carrete, Palomar, Clinch mejorado, Uni, Snell, Cirujano, Doble uni, Lazo de cirujano, Brazolada y Sangre.
+- **Sangre, lo leve que quedó de la revisión:** el tramo verde de arriba del hueco se ve como un guion corto entre las dos puntas (lo mismo pasa en la Brazolada: es el borde de arriba del hueco). En el paso 3, las puntas pasan por detrás del tramo de abajo, que está en tono claro, y eso se ve poco; el texto lo dice. Wilson usa 4 vueltas por lado y otras fuentes, 5 a 7: si en la mano se desliza, subir a 5.
 - **Pendiente del usuario:** atar en la mano el carrete, el palomar, el clinch, el uni, el snell, el cirujano, el doble uni, el lazo de cirujano, la brazolada y la sangre, y contar si aguantan. Si alguno falla, volver a la fuente antes de tocar el dibujo.
 
 ## Lo que sigue, en este orden

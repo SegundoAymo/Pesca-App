@@ -1385,15 +1385,16 @@ const SG3 = sgPair(true, sgThrough);
 // Pulled tight: the turns gather on each side of the opening and each tip, pulled through,
 // lies over its own turns (green over the top, orange under the bottom) and sticks out of
 // the middle, one to each side (rule 40: the same parts in their tight shape).
-const SGT = { t0: 104, t1: 150, g: 5, eye: 9, lead: 14 };
+const SGT = { t0: 104, t1: 150, g: 5, eye: 9, lead: 6 };
+const SG_H = 19; // how far above (green) or below (orange) the turns each tip lies
 const sgTight = {
   g: (x, y) => [
-    { name: 'punta verde', d: `M${x} ${y} C${x + 8} ${y} ${x + 10} ${BR_C - 10} ${x + 8} ${BR_C - 12} C${x} ${BR_C - 16} 190 ${BR_C - 16} 176 ${BR_C - 16} C175 ${BR_C - 15} 175 ${BR_C - 13} 175 ${BR_C - 12}`, z: 0 },
-    { name: 'punta verde', d: `M175 ${BR_C - 12} V${BR_C + 40}`, z: sgLegZ(BR_C - 12, BR_C + 40, SGT.eye) },
+    { name: 'punta verde', d: `M${x} ${y} C${x + 7} ${y} ${x + 9} ${BR_C - SG_H + 4} ${x + 4} ${BR_C - SG_H} C${x} ${BR_C - SG_H - 1} 190 ${BR_C - SG_H - 1} 180 ${BR_C - SG_H} C177 ${BR_C - SG_H} 175 ${BR_C - SG_H + 2} 175 ${BR_C - SG_H + 5}`, z: 0 },
+    { name: 'punta verde', d: `M175 ${BR_C - SG_H + 5} V${BR_C + 40}`, z: sgLegZ(BR_C - SG_H + 5, BR_C + 40, SGT.eye) },
   ],
   o: (x, y) => [
-    { name: 'punta naranja', d: `M155 ${BR_C - 40} V${BR_C + 12}`, z: sgUpZ(BR_C - 40, BR_C + 12, SGT.eye) },
-    { name: 'punta naranja', d: `M155 ${BR_C + 12} C155 ${BR_C + 13} 155 ${BR_C + 15} 154 ${BR_C + 16} C140 ${BR_C + 16} ${x} ${BR_C + 16} ${x - 8} ${BR_C + 12} C${x - 10} ${BR_C + 10} ${x - 8} ${y} ${x} ${y}`, z: 0 },
+    { name: 'punta naranja', d: `M155 ${BR_C - 40} V${BR_C + SG_H - 5}`, z: sgUpZ(BR_C - 40, BR_C + SG_H - 5, SGT.eye) },
+    { name: 'punta naranja', d: `M155 ${BR_C + SG_H - 5} C155 ${BR_C + SG_H - 2} 153 ${BR_C + SG_H} 150 ${BR_C + SG_H} C140 ${BR_C + SG_H + 1} ${x} ${BR_C + SG_H + 1} ${x - 4} ${BR_C + SG_H} C${x - 9} ${BR_C + SG_H - 4} ${x - 7} ${y} ${x} ${y}`, z: 0 },
   ],
 };
 const SG4 = sgPair(true, sgTight, SGT);
@@ -1404,11 +1405,11 @@ const sgTips = ([g, o], cg, co) => tipAt(g, null, cg) + tipAt(o, null, co);
 const SANGRE = [
   step3(sgItems(SG1, M, L2.move), sgTips(SG1, M, L2.move), text(165, 156, 'juntas unos 10 cm, en sentidos contrarios')),
   step3(sgItems(SG2, M, L2.move, L1.still, L2.still, Dn, L2.done), sgTips(SG2, Dn, L2.done), arrow('M158 70 C140 74 140 126 158 130'), text(10, 162, 'girar el hueco 4 vueltas', 'start')),
-  step3(sgItems(SG3, Dn, L2.done, L1.still, L2.still, M, L2.move), sgTips(SG3, M, L2.move), arrow('M190 64 V128'), arrow('M140 136 V72'),
+  step3(sgItems(SG3, Dn, L2.done, L1.still, L2.still, M, L2.move), sgTips(SG3, M, L2.move), arrow('M196 58 V112'), arrow('M134 142 V88'),
     text(10, 22, 'cada punta por el hueco', 'start')),
-  step3(sgItems(SG4, M, L2.move, M, L2.move), sgTips(SG4, M, L2.move), pull(`M70 ${BR_C - SGT.g} H40`), pull(`M262 ${BR_C + SGT.g} H292`), drop(252, 30),
+  step3(sgItems(SG4, M, L2.move, M, L2.move), sgTips(SG4, M, L2.move), pull(`M70 ${BR_C - SGT.g - 9} H40`), pull(`M262 ${BR_C + SGT.g + 9} H292`), drop(252, 30),
     text(10, 30, 'mojar y tirar de las dos líneas', 'start'), { tight: true }),
-  step3(sgItems(SG4, Dn, L2.done), sgTips(SG4, Dn, L2.done), scissors(194, 128), scissors(136, 70), { tight: true }),
+  step3(sgItems(SG4, Dn, L2.done), sgTips(SG4, Dn, L2.done), scissors(200, 134), scissors(136, 70), { tight: true }),
 ];
 
 /* Tope corredizo: line (green) and the stop thread (orange). */
