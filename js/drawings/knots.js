@@ -445,7 +445,7 @@ const overhandMid = (k) => { const q = sample(overhandPieces(null, k)[2].d); ret
    stopper. Pulled, the first knot slides down to the spool, the turn closes on it and the
    stopper jams against the first knot: the same figure, moved and squeezed. */
 const CK1 = { x: 172, y: 64 }; // first overhand, around the line (it passes through its loop, at its y - 4)
-const CK2 = { x: 236, y: 30, k: 0.6 }; // second overhand, the stopper, clear above the line
+const CK2 = { x: 236, y: 32, k: 0.6 }; // second overhand, the stopper, clear above the line
 const CA_START = [
   { name: 'línea', d: 'M316 60 H92', z: 0 },
   { name: 'detrás de la bobina', d: 'M92 60 H50', z: 0 }, // dotted: behind the spool (an object, not a line)
@@ -472,8 +472,8 @@ const CA4 = caKnots(316);
     knot comes down to the spool), the knots shrink, the stretch between them too (the
     stopper jams against the first knot). Along y: the turn closes on the spool. Both maps
     keep the order of points, so the crossings do not change. */
-const CA_K1 = 99 + (caK1out[0] - caK1in[0]) * 0.72; // where the first knot ends, pulled
-const CA_X = [[70, 70], [96, 96], [caK1in[0], 99], [caK1out[0], CA_K1],
+const CA_K1 = 105 + (caK1out[0] - caK1in[0] - 34) * 0.72; // where the first knot ends, pulled
+const CA_X = [[70, 70], [96, 96], [caK1in[0], 99], [caK1in[0] + 34, 105], [caK1out[0], CA_K1],
   [caK2in[0], CA_K1 + 3], [caK2out[0] + 24, CA_K1 + 3 + (caK2out[0] + 24 - caK2in[0]) * 0.8]];
 const caMapX = (x) => {
   for (let i = 1; i < CA_X.length; i++) {
@@ -487,7 +487,7 @@ const caMapX = (x) => {
 const caPull = (fig) => warp(fig, (x, y) => {
   // How much each part closes toward the line (y = 60): the turn hugs the spool, the
   // stretch up to the knot lies along it, the knots close a little.
-  const h = x < 96 ? 0.82 : x < caK1in[0] ? 0.82 + ((x - 96) / (caK1in[0] - 96)) * 0.08 : 0.9;
+  const h = x < 70 ? 0.82 : x < 96 ? 0.82 - ((x - 70) / 26) * 0.22 : x < caK1in[0] ? 0.6 + ((x - 96) / (caK1in[0] - 96)) * 0.3 : 0.9;
   const nx = x < 70 ? 70 + (x - 70) * 0.66 : caMapX(x); // the turn closes on the spool
   return [nx, 60 + (y - 60) * h];
 });
@@ -499,9 +499,9 @@ const caDone = { 'línea': L1.still, 'detrás de la bobina': L1.done, 'vuelta a 
 const CARRETE = [
   step3([{ fig: CA1, colors: caColors(CA1, L1.move, { 'línea': L1.still }) }], tipAt(CA1, null, L1.move), arrow('M24 44 C8 70 8 104 24 126'), text(70, 162, 'bobina'), { back: SPOOL }),
   step3([{ fig: CA2, colors: caColors(CA2, L1.move, caDone) }], tipAt(CA2, null, L1.move),
-    arrow('M206 92 C214 72 210 44 194 30'), text(320, 162, 'por debajo y por encima', 'end'), { back: SPOOL }),
+    arrow('M206 92 C214 72 210 44 194 30'), text(320, 162, 'por detrás y por delante', 'end'), { back: SPOOL }),
   step3([{ fig: CA3, colors: caColors(CA3, L1.done, { ...caDone, 'por el lazo': L1.move, 'punta': L1.move }) }], tipAt(CA3, null, L1.move),
-    arrow(`M${caK1mid[0] - 2} ${caK1mid[1] + 22} C${caK1mid[0] - 2} ${caK1mid[1] + 12} ${caK1mid[0]} ${caK1mid[1] + 6} ${caK1mid[0] + 2} ${caK1mid[1] - 2}`),
+    arrow('M198 106 C196 96 192 86 188 78'),
     text(320, 162, 'la punta, por el lazo', 'end'), { back: SPOOL }),
   step3([{ fig: CA4, colors: caColors(CA4, L1.done, { ...caDone, 'entre nudos': L1.move, 'tope': L1.move, 'sobrante': L1.move }) }],
     tipAt(CA4, null, L1.move), text(320, 162, 'otro nudo simple: el tope', 'end'), { back: SPOOL }),
