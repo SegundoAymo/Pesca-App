@@ -99,11 +99,13 @@ Ver situación 6. Se ata en la punta y el lazo se pasa por el ojo del señuelo.
 
 Líneas: nylon con nylon de grosor parecido · Resistencia: sin dato · Media. Con grosores muy distintos puede fallar.
 
-1. Cruzar las dos puntas unos 10 cm.
-2. Dar 5 o 6 vueltas con una punta alrededor de la otra línea.
-3. Pasar esa punta por el centro del cruce.
-4. Repetir con la otra punta hacia el lado contrario, pasando por el mismo centro en sentido opuesto.
-5. Mojar, tirar de las dos líneas y cortar.
+Método de Wilson p. 23 (el más simple: las dos líneas se retuercen juntas).
+
+1. Poner las dos líneas juntas unos 10 cm, cada una con su punta hacia el lado contrario.
+2. Retorcer juntas las dos líneas girando el hueco del medio 4 vueltas completas (mantenerlo abierto con un dedo): quedan 4 vueltas de cada lado, en espejo.
+3. Volver cada punta al medio y pasarla por el hueco, en sentidos contrarios: la de la derecha, por arriba, baja de adelante hacia atrás; la de la izquierda, por abajo, sube de atrás hacia adelante. Las dos pasan por delante de la línea de arriba y por detrás de la de abajo.
+4. Mojar y tirar despacio de las dos líneas: las vueltas se juntan a cada lado del medio y las puntas quedan saliendo, una para cada lado.
+5. Cortar las dos puntas sobrantes.
 
 ### Doble uni
 

@@ -125,11 +125,11 @@ export const KNOTS = {
     difficulty: 'Media',
     note: 'Con grosores muy distintos puede fallar.',
     steps: [
-      'Cruzar las dos puntas unos 10 cm.',
-      'Dar 5 o 6 vueltas con una punta alrededor de la otra línea.',
-      'Pasar esa punta por el centro del cruce.',
-      'Repetir con la otra punta hacia el lado contrario, pasando por el mismo centro en sentido opuesto.',
-      'Mojar, tirar de las dos líneas y cortar.',
+      'Poner las dos líneas juntas unos 10 cm, cada una con su punta hacia el lado contrario.',
+      'Retorcer juntas las dos líneas girando el hueco del medio 4 vueltas completas (mantenerlo abierto con un dedo): quedan 4 vueltas de cada lado, en espejo.',
+      'Volver cada punta al medio y pasarla por el hueco, en sentidos contrarios: la de la derecha, por arriba, baja de adelante hacia atrás; la de la izquierda, por abajo, sube de atrás hacia adelante. Las dos pasan por delante de la línea de arriba y por detrás de la de abajo.',
+      'Mojar y tirar despacio de las dos líneas: las vueltas se juntan a cada lado del medio y las puntas quedan saliendo, una para cada lado.',
+      'Cortar las dos puntas sobrantes.',
     ],
   },
   'doble-uni': {
@@ -232,7 +232,7 @@ export const KNOTS = {
     note: 'Hace un lazo fijo a mitad de la línea, que sale en ángulo recto, para colgar una brazolada sin cortar la línea.',
     steps: [
       'Donde va la brazolada, formar un lazo amplio: la línea se cruza por delante de sí misma y queda un tramo doble.',
-      'Retorcer el tramo doble girando el hueco del medio 4 vueltas completas (mantenerlo abierto con un dedo): de cada lado quedan 8 cruces, en espejo.',
+      'Retorcer el tramo doble girando el hueco del medio 4 vueltas completas (mantenerlo abierto con un dedo): quedan 4 vueltas de cada lado, en espejo.',
       'Pasar el lazo por el hueco del medio, de adelante hacia atrás.',
       'Mojar, sostener el lazo y tirar despacio de los dos extremos: las vueltas se agrupan a cada lado y el lazo sale en ángulo recto.',
     ],

@@ -9,7 +9,7 @@ import { readSvg, dist } from './svg-geom.js';
 
 // Knots already redrawn with the current system: their checks must pass. The others are
 // reported as pending until they are redrawn.
-const REDRAWN = ['carrete', 'uni', 'palomar', 'clinch', 'lazo-perfecto', 'snell', 'cirujano', 'doble-uni', 'lazo-cirujano', 'brazolada'];
+const REDRAWN = ['carrete', 'uni', 'palomar', 'clinch', 'lazo-perfecto', 'snell', 'cirujano', 'doble-uni', 'lazo-cirujano', 'brazolada', 'sangre'];
 
 const W = 330;
 const H = 170;

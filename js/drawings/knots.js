@@ -849,43 +849,6 @@ const LAZO_PERFECTO = [
   step3([{ fig: LPD, colors: allParts(LPD, Dn) }], tipAt(LPD, null, Dn), scissors(190, 40), { tight: true }),
 ];
 
-/* Sangre: line 1 (green) from the left at y = 78, line 2 (orange) from the right at y = 92. */
-const SG = {
-  l1Out: 'M130 78 H210 C216 78 218 90 210 101',
-  l2Out: 'M130 92 H56 C46 92 44 98 50 101',
-};
-const sgW1 = (c) => coil(210, 85, 5, 12, 16, c);
-const sgW2 = (c) => coil(50, 85, 5, 12, 16, c, 1);
-const SANGRE = [
-  seg('M10 78 H120', L1.still) + seg('M120 78 H210', L1.move) + tip(210, 78, 0, L1.move)
-    + seg('M320 92 H210', L2.still) + seg('M210 92 H120', L2.move) + tip(120, 92, 180, L2.move) + text(165, 140, 'cruzar las puntas unos 10 cm'),
-  st(() => {
-    const w = sgW1(L1.move);
-    return w.back + seg('M320 92 H130', L2.still) + seg('M130 92 H70', L2.still) + tip(70, 92, 180, L2.still) + seg('M10 78 H130', L1.still)
-      + seg(SG.l1Out, L1.move) + w.front + seg('M150 101 L142 112', L1.move) + tip(142, 112, 125, L1.move) + text(180, 150, '5 o 6 vueltas');
-  }),
-  st(() => {
-    const w = sgW1(L1.done);
-    return w.back + seg('M320 92 H130', L2.still) + seg('M130 92 H70', L2.still) + tip(70, 92, 180, L2.still) + seg('M10 78 H130', L1.still)
-      + seg(SG.l1Out, L1.done) + w.front + seg('M150 101 C140 112 128 106 128 88', L1.move) + tip(128, 88, -90, L1.move)
-      + arrow('M110 140 C122 134 126 124 126 112') + text(210, 150, 'por el centro del cruce');
-  }),
-  st(() => {
-    const w1 = sgW1(L1.done);
-    const w2 = sgW2(L2.move);
-    return w1.back + w2.back + seg('M320 92 H130', L2.still) + seg('M10 78 H130', L1.still) + seg(SG.l1Out, L1.done) + seg(SG.l2Out, L2.move)
-      + w1.front + w2.front + seg('M150 101 C140 112 128 106 128 88', L1.done) + seg('M110 101 C120 108 128 104 132 90', L2.move)
-      + tip(132, 88, -80, L2.move) + text(165, 150, 'la otra punta, al revés, por el mismo centro');
-  }),
-  st(() => {
-    const a = coil(166, 85, 5, 6, 10, L1.done);
-    const b = coil(134, 85, 5, 6, 10, L2.done);
-    return a.back + b.back + seg('M62 82 H166', L1.still) + seg('M268 88 H104', L2.still) + a.front + b.front
-      + seg('M136 95 L130 108', L1.done) + seg('M134 75 L140 62', L2.done)
-      + pull('M54 82 H24') + pull('M276 88 H306') + drop(60, 140) + scissors(200, 120);
-  }),
-];
-
 /* Doble uni, in 3D, following Wilson p. 22 (docs/referencias-nudos.md) and Wired2Fish: the two
    lines overlapped, the green one from the left and the orange one from the right. The green
    end ties a Uni around both lines (a loop that crosses in front of them, 4 wraps around
@@ -1363,6 +1326,90 @@ const BRAZOLADA = [
     arrow('M186 60 V136'), text(10, 164, 'por el hueco', 'start')),
   step3([{ fig: BR4, colors: brColors(BR4, M, { línea: M, 'sigue la línea': M }) }], pull(`M70 ${BR_C + BRT.g + 8} H40`), pull(`M262 ${BR_C - BRT.g + 9} H292`), hold(165, 140, 90), drop(252, 30),
     text(10, 30, 'sostener el lazo y tirar', 'start'), { tight: true }),
+];
+
+/* Sangre (blood knot), in 3D, following Wilson p. 23 ("doble nudo barril de cuatro vueltas",
+   docs/referencias-nudos.md): of the ways to tie it, the simplest, and the same twist as the
+   Brazolada. The two lines overlap, the green one from the left above the orange one from
+   the right; the overlap is twisted 4 turns on each side of an opening in the middle, and
+   each tip goes back through the opening the opposite way: the green one over the top and
+   down, in front of the green stretch and behind the orange one; the orange one under the
+   bottom and up, the same, so they come out to opposite sides. */
+const SG_HI = BR_C - BR_G;
+const SG_LO = BR_C + BR_G;
+/** The orange line is drawn from its tip to where it comes in at the right: turned around,
+    it ends at its tip (for the tip mark and the scissors). */
+const sgBack = (f) => ({ ...f, pts: [...f.pts].reverse(), parts: [...f.parts].reverse() });
+/** The two lines; tips: { g, o }, each tip's way from the end of the overlap, with its depth. */
+function sgPair(twisted, tips, o = {}) {
+  const t = { t0: BR_T0, lead: 20, ...o };
+  const a0 = t.t0 - t.lead;
+  const a1 = 330 - a0;
+  const hi = BR_C - (o.g ?? BR_G);
+  const lo = BR_C + (o.g ?? BR_G);
+  const g = figure({ name: 'línea verde', d: `M${BR_X0} ${hi} H${a0}`, z: 0 }, brStretch('verde', -1, twisted, o), ...tips.g(a1, hi));
+  const r = figure(...tips.o(a0, lo), brStretch('naranja', 1, twisted, o), { name: 'línea naranja', d: `M${a1} ${lo} H${330 - BR_X0}`, z: 0 });
+  return [g, sgBack(r)];
+}
+// Through the opening, from yTop down to yBot (from the front to the back): in front of the
+// green stretch at the top of the opening, behind the orange one at the bottom.
+const sgLegZ = (yTop, yBot, eye) => {
+  const tHi = (BR_C - eye - yTop) / (yBot - yTop);
+  const tLo = (BR_C + eye - yTop) / (yBot - yTop);
+  return [[0, 0], [tHi, 1], [tLo, -1], [1, -1]];
+};
+// The orange tip, drawn from its end down to where it comes up through the opening: in
+// front of the green stretch, behind the orange one.
+const sgUpZ = (yTop, yBot, eye) => [[0, 1], [(BR_C - eye - yTop) / (yBot - yTop), 1], [(BR_C + eye - yTop) / (yBot - yTop), -1], [1, 0]];
+const sgStraight = {
+  g: (x, y) => [{ name: 'punta verde', d: `M${x} ${y} H${x + 22}`, z: 0 }],
+  o: (x, y) => [{ name: 'punta naranja', d: `M${x - 22} ${y} H${x}`, z: 0 }],
+};
+// Loose: the green tip over the top, down at x = 174; the orange one under the bottom, up at
+// x = 156 (drawn from its end: down, then around to the left end of the overlap).
+const SG_TOP = 52;
+const SG_BOT = 148;
+const sgThrough = {
+  g: (x, y) => [
+    { name: 'punta verde', d: `M${x} ${y} C${x + 18} ${y} ${x + 20} ${y - 20} ${x + 18} ${y - 34} C${x + 14} 24 182 22 174 ${SG_TOP}`, z: 0 },
+    { name: 'punta verde', d: `M174 ${SG_TOP} V${SG_BOT - 8}`, z: sgLegZ(SG_TOP, SG_BOT - 8, BR_EYE) },
+  ],
+  o: (x, y) => [
+    { name: 'punta naranja', d: `M156 60 V140`, z: sgUpZ(60, 140, BR_EYE) },
+    { name: 'punta naranja', d: `M156 140 C152 160 ${x - 14} 160 ${x - 18} ${y + 26} C${x - 20} ${y + 14} ${x - 18} ${y} ${x} ${y}`, z: 0 },
+  ],
+};
+const SG1 = sgPair(false, sgStraight);
+const SG2 = sgPair(true, sgStraight);
+const SG3 = sgPair(true, sgThrough);
+// Pulled tight: the turns gather on each side of the opening and each tip, pulled through,
+// lies over its own turns (green over the top, orange under the bottom) and sticks out of
+// the middle, one to each side (rule 40: the same parts in their tight shape).
+const SGT = { t0: 104, t1: 150, g: 5, eye: 9, lead: 6 };
+const SG_H = 19; // how far above (green) or below (orange) the turns each tip lies
+const sgTight = {
+  g: (x, y) => [
+    { name: 'punta verde', d: `M${x} ${y} C${x + 7} ${y} ${x + 9} ${BR_C - SG_H + 4} ${x + 4} ${BR_C - SG_H} C${x} ${BR_C - SG_H - 1} 190 ${BR_C - SG_H - 1} 180 ${BR_C - SG_H} C177 ${BR_C - SG_H} 175 ${BR_C - SG_H + 2} 175 ${BR_C - SG_H + 5}`, z: 0 },
+    { name: 'punta verde', d: `M175 ${BR_C - SG_H + 5} V${BR_C + 40}`, z: sgLegZ(BR_C - SG_H + 5, BR_C + 40, SGT.eye) },
+  ],
+  o: (x, y) => [
+    { name: 'punta naranja', d: `M155 ${BR_C - 40} V${BR_C + SG_H - 5}`, z: sgUpZ(BR_C - 40, BR_C + SG_H - 5, SGT.eye) },
+    { name: 'punta naranja', d: `M155 ${BR_C + SG_H - 5} C155 ${BR_C + SG_H - 2} 153 ${BR_C + SG_H} 150 ${BR_C + SG_H} C140 ${BR_C + SG_H + 1} ${x} ${BR_C + SG_H + 1} ${x - 4} ${BR_C + SG_H} C${x - 9} ${BR_C + SG_H - 4} ${x - 7} ${y} ${x} ${y}`, z: 0 },
+  ],
+};
+const SG4 = sgPair(true, sgTight, SGT);
+const sgItems = ([g, o], cg, co, gLine = L1.still, oLine = L2.still, tg = cg, to = co) => [
+  { fig: g, colors: { ...allParts(g, cg), 'línea verde': gLine, 'punta verde': tg } },
+  { fig: o, colors: { ...allParts(o, co), 'línea naranja': oLine, 'punta naranja': to } }];
+const sgTips = ([g, o], cg, co) => tipAt(g, null, cg) + tipAt(o, null, co);
+const SANGRE = [
+  step3(sgItems(SG1, M, L2.move), sgTips(SG1, M, L2.move), text(165, 156, 'juntas unos 10 cm, en sentidos contrarios')),
+  step3(sgItems(SG2, M, L2.move, L1.still, L2.still, Dn, L2.done), sgTips(SG2, Dn, L2.done), arrow('M158 70 C140 74 140 126 158 130'), text(10, 162, 'girar el hueco 4 vueltas', 'start')),
+  step3(sgItems(SG3, Dn, L2.done, L1.still, L2.still, M, L2.move), sgTips(SG3, M, L2.move), arrow('M196 58 V112'), arrow('M134 142 V88'),
+    text(10, 22, 'cada punta por el hueco', 'start')),
+  step3(sgItems(SG4, M, L2.move, M, L2.move), sgTips(SG4, M, L2.move), pull(`M70 ${BR_C - SGT.g - 9} H40`), pull(`M262 ${BR_C + SGT.g + 9} H292`), drop(252, 30),
+    text(10, 30, 'mojar y tirar de las dos líneas', 'start'), { tight: true }),
+  step3(sgItems(SG4, Dn, L2.done), sgTips(SG4, Dn, L2.done), scissors(200, 134), scissors(136, 70), { tight: true }),
 ];
 
 /* Tope corredizo: line (green) and the stop thread (orange). */

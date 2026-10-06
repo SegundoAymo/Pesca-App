@@ -121,7 +121,22 @@ const lcTwice = [...lcOnce, ...pairD('segunda pasada', 'juntas'), ...pairD('junt
 const brTwist = Array.from({ length: 8 }, () => ['de abajo > de arriba', 'de arriba > de abajo']).flat();
 const brThrough = ['lazo derecho > sigue la línea', ...brTwist, 'lazo baja > de arriba', 'de abajo > lazo baja', 'lazo sube > de arriba', 'de abajo > lazo sube'];
 
+// Sangre (blood knot), from the references (Wilson p. 23, top: "superponga las dos líneas",
+// "retuerza juntos ambos extremos", "realice éste ocho o nueve veces; después pase cada
+// extremo a través del bucle central en direcciones opuestas"; Wilson p. 23, bottom, the same
+// knot with more turns: "pase el extremo a través de lo que se ha convertido ahora en el
+// bucle o vuelta central ... en dirección contraria"; the app's earlier text, from the sources
+// in docs/nudos.md: "pasar esa punta por el centro del cruce", "la otra punta ... pasando por
+// el mismo centro en sentido opuesto"). Of the two ways (one end and then the other, or both
+// twisted together and then both ends through the middle), Wilson's is the simplest and the
+// same twist as the Brazolada: 4 turns a side ("cuatro vueltas"), 8 crossings, half each way.
+// Each tip goes through the opening, one down from the front and the other up from the back:
+// both pass in front of the green stretch (above the opening) and behind the orange one.
+const sgTwist = Array.from({ length: 8 }, () => ['naranja > verde', 'verde > naranja']).flat();
+const sgThrough = [...sgTwist, 'punta verde > verde', 'naranja > punta verde', 'punta naranja > verde', 'naranja > punta naranja'];
+
 const EXPECTED = {
+  sangre: [[], sgTwist, sgThrough, sgThrough, sgThrough], // tight: the same crossings
   brazolada: [['lazo > sigue la línea'], ['lazo > sigue la línea', ...brTwist], brThrough, brThrough], // tight: the same crossings
   'lazo-cirujano': [[], lcOnce, lcTwice, lcTwice, lcTwice],
   'doble-uni': [[], duKnot('verde', 'naranja'), duKnot('verde', 'naranja'), duBoth, duBoth, duBoth, duBoth], // sliding them together adds no crossing
