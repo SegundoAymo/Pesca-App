@@ -54,7 +54,19 @@ const both = (over, under) => [`${over} (ida) > ${under} (ida)`, `${over} (ida) 
 const throughEye = (part) => [`ojo adelante > ${part} (ida)`, `${part} (ida) > ojo atrás`, `ojo adelante > ${part} (vuelta)`, `${part} (vuelta) > ojo atrás`];
 const palomarKnot = [...both('nudo', 'nudo'), ...both('nudo', 'nudo'), ...both('nudo', 'nudo'), ...throughEye('nudo')]; // an overhand: three crossings
 
+// Clinch mejorado, from the references (Wilson p. 5 "medio nudo barril asegurado", in
+// docs/referencias-nudos.md; Netknots: "thread the line through the eye, make five or more
+// twists around the standing line, pass the end through the small loop next to the eye,
+// then through the big loop"). The line goes through the eye; each turn of the wraps goes
+// once in front of the line and once behind it; through a loop is in behind one side of
+// it and out in front of the other (or the other way).
+const wraps = (n) => Array.from({ length: n }, () => ['vueltas > línea', 'línea > vueltas']).flat();
+const clinchStart = ['línea > ojo atrás', 'ojo adelante > por el ojo', ...wraps(5)]; // through the eye: behind its back half, under its front half
+const clinchSmall = [...clinchStart, 'por el ojo > al lazo chico', 'al lazo chico > línea']; // in behind the strand back from the eye, out in front of the line
+const clinchBig = [...clinchSmall, 'por el lazo grande > línea', 'por el lazo grande > por el ojo', 'al lazo chico > por el lazo grande']; // in front, out behind its far side
+
 const EXPECTED = {
+  clinch: [clinchStart, clinchSmall, clinchBig, clinchBig, clinchBig],
   palomar: [
     throughEye('doble'), // the fold through the eye: both strands
     palomarKnot, // the overhand with the doubled line, its loop through the eye

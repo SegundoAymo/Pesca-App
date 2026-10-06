@@ -627,45 +627,60 @@ const PALOMAR = [
   step3([...PHOOK, { fig: PA4, colors: paColors(PA4, L1.done) }], tipAt(PA4, null, L1.done), scissors(160, 30), { tight: true }),
 ];
 
-/* Clinch mejorado: one strand from the left, through the eye at (230, 85), back in wraps
-   around itself, through the small loop by the eye and back through the big loop. */
-const hookBody = (x, y) => at(0, `<path d="M${x + 9} ${y} H${x + 70} a22 22 0 0 1 0 44 H${x + 52} l8 -9" fill="none" stroke="${METAL}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`);
-const HOOK = [hookBody(EX, EY), ...eyeParts(EX, EY)];
-const CL = {
-  eye: 'M230 85 C236 85 240 94 238 102 C236 110 226 110 214 110 H198 C190 110 182 104 180 98', // through the eye and back
-  small: 'M100 98 C80 112 84 142 120 142 H180 C198 142 205 128 205 100', // around, up under the small loop's bottom
-  smallUp: 'M205 100 C206 90 207 75 207 58', // out over the line
-  bigOver: 'M207 58 C207 42 192 40 190 58 L190 124', // back down next to the small loop, into the big loop
-  bigUnder: 'M190 124 L190 146', // out under its bottom
-};
-/** The line as one strand. c: colors { main, eye, wraps, small, big }; upTo: last part drawn. */
-function clLine(c, upTo) {
-  const parts = [{ d: 'M10 85 H230', c: c.main, z: 0 }];
-  if (upTo === 'eye') return strand(...parts, { d: 'M230 85 C236 85 240 94 238 102 C236 110 226 110 214 110 H165', c: c.eye, z: 0 });
-  parts.push({ d: CL.eye, c: c.eye, z: 0 }, ...coilPieces(180, 85, 5, 16, 13, c.wraps));
-  if (upTo === 'wraps') return strand(...parts, { d: 'M100 98 C96 104 92 110 88 114', c: c.wraps, z: 1 });
-  parts.push({ d: CL.small, c: c.small, z: -0.5 }, { d: CL.smallUp, c: c.small, z: 0.5 });
-  if (upTo === 'small') return strand(...parts);
-  return strand(...parts, { d: CL.bigOver, c: c.big, z: 0.5 }, { d: CL.bigUnder, c: c.big, z: -1 });
+/* Clinch mejorado, in 3D, following Wilson p. 5 (docs/referencias-nudos.md): the line from
+   the left through the eye at (250, 80), back below it and around the line in wraps (a
+   real helix: each turn in front of the line and then behind it), then through the small
+   loop next to the eye and through the big loop that forms. Pulled, the wraps close up
+   against the eye. */
+const CE = { x: 250, y: 80, r: 8 }; // the hook's eye
+const CL_HOOK = [{ fig: eyeRing(CE), colors: { 'ojo atrás': METAL, 'ojo adelante': METAL } },
+  { fig: figure({ name: 'anzuelo', d: `M${CE.x + CE.r + 1} ${CE.y} H298 C322 ${CE.y} 322 ${CE.y + 40} 298 ${CE.y + 40} H286 L294 ${CE.y + 32}`, z: 0 }), colors: { anzuelo: METAL } }];
+const CL_W = { x: 210, n: 5, pitch: 17, a: 14 }; // the wraps: start, turns, length of a turn, half height
+/** The wraps around the line (y = CE.y), from x going left: a helix seen from the side. */
+function wrapsPart({ x, n, pitch, a }) {
+  const steps = n * 24;
+  const pts = [];
+  const zs = [];
+  for (let k = 0; k <= steps; k++) {
+    const th = (k / steps) * n * 2 * Math.PI;
+    pts.push(`${(x - (pitch * th) / (2 * Math.PI)).toFixed(1)} ${(CE.y + a * Math.cos(th)).toFixed(1)}`);
+    zs.push([k / steps, Math.sin(th) * 1.2]);
+  }
+  return { name: 'vueltas', d: `M${pts[0]} L${pts.slice(1).join(' L')}`, z: zs };
 }
-/** Pulled tight: the wraps next to the eye; the tip comes back under them, up through the
-    small loop by the eye and down through the big one. */
-const clTight = (c, x0, end, main = c) => strand(
-  { d: `M${x0} 85 H230`, c: main, z: 0 }, { d: 'M230 85 C236 85 240 94 237 100 C233 106 222 104 214 94', c, z: 0 },
-  ...coilPieces(214, 85, 5, 7, 9, c), { d: 'M179 94 C188 106 206 106 214 100', c, z: 1.5 },
-  { d: 'M214 100 C219 94 221 82 218 72', c, z: 2 }, { d: end, c, z: 2 },
-);
+const clWrapsEnd = CL_W.x - CL_W.n * CL_W.pitch;
+const CL_START = [
+  { name: 'línea', d: `M10 ${CE.y} H${CE.x}`, z: 0 },
+  { name: 'por el ojo', d: `M${CE.x} ${CE.y} H${CE.x + 6} C${CE.x + 16} ${CE.y} ${CE.x + 16} ${CE.y + CL_W.a} ${CE.x + 2} ${CE.y + CL_W.a} H${CL_W.x}`, z: 0 },
+  wrapsPart(CL_W),
+];
+const CL_SX = 232; // where the tip goes up through the small loop (between the wraps and the eye)
+const CL_BX = 220; // where it goes down through the big loop
+const clSmall = { name: 'al lazo chico', d: `M${clWrapsEnd} ${CE.y + CL_W.a} C${clWrapsEnd - 10} ${CE.y + 34} ${clWrapsEnd} ${CE.y + 46} ${clWrapsEnd + 30} ${CE.y + 46} H${CL_SX - 12} C${CL_SX - 2} ${CE.y + 46} ${CL_SX} ${CE.y + 36} ${CL_SX} ${CE.y + 24} C${CL_SX} ${CE.y + 6} ${CL_SX} ${CE.y - 8} ${CL_SX} ${CE.y - 22}`,
+  z: [[0, 0], [0.7, 0], [0.8, -1], [0.88, 1], [1, 1]] };
+const clBig = { name: 'por el lazo grande', d: `M${CL_SX} ${CE.y - 22} C${CL_SX} ${CE.y - 34} ${CL_BX} ${CE.y - 34} ${CL_BX} ${CE.y - 22} V${CE.y + 62}`, z: [[0, 1], [0.25, 0.5], [0.7, 0.5], [0.8, -1], [1, -1]] };
+const CL1 = figure(...CL_START);
+const CL2 = figure(...CL_START, clSmall);
+const CL3 = figure(...CL_START, clSmall, clBig);
+// Pulled: the wraps close up against the eye and the loops close around the line.
+// The passes through the loops keep their order between the wraps and the eye.
+const CL_SHIFT = 218 - CL_W.x - (CL_W.x - clWrapsEnd) * -0.2; // how far the wraps move toward the eye
+const CL_STOPS = [[clWrapsEnd, clWrapsEnd + CL_SHIFT], [CL_W.x, 218], [CL_BX, 225], [CL_SX, 233], [CE.x, CE.x]];
+const clPull = pullAlong(CL_STOPS, CE.y, (x) => (x < clWrapsEnd - 30 ? 1 : 0.6));
+const CL4 = warp(figure({ ...CL_START[0], d: `M${30 - CL_SHIFT} ${CE.y} H${CE.x}` }, ...CL_START.slice(1), clSmall, clBig), clPull);
+const clColors = (fig, c, over = {}) => ({ ...allParts(fig, c), ...over });
 const M = L1.move;
 const Dn = L1.done;
 const CLINCH = [
-  scene(HOOK, clLine({ main: L1.still, eye: M }, 'eye'), tip(165, 110, 180, M), arrow('M150 122 H104')),
-  scene(HOOK, clLine({ main: L1.still, eye: Dn, wraps: M }, 'wraps'), tip(88, 114, 135, M), arrow('M190 52 C170 36 128 36 110 54'), text(140, 150, '5 a 7 vueltas')),
-  scene(HOOK, clLine({ main: L1.still, eye: Dn, wraps: Dn, small: M }, 'small'), tip(207, 58, -90, M), arrow('M110 160 H190'), text(130, 30, 'por el lazo chico, junto al ojo')),
-  scene(HOOK, clLine({ main: L1.still, eye: Dn, wraps: Dn, small: Dn, big: M }, 'big'), tip(190, 146, 90, M),
-    arrow('M174 112 C172 126 172 138 174 152'), text(16, 30, 'y por el lazo grande', 'start')),
-  scene(HOOK, clTight(Dn, 80, 'M218 72 C226 70 228 80 224 92 C222 100 218 106 212 114', M), tip(212, 114, 115, Dn),
-    hold(276, 85), text(276, 40, 'sostener'), pull('M72 85 H30'), text(50, 64, 'tirar'), drop(70, 130)),
-  scene(HOOK, clTight(Dn, 10, 'M218 72 C226 70 228 80 224 92 C222 100 218 106 212 114'), tip(212, 114, 115, Dn), scissors(196, 126)),
+  step3([...CL_HOOK, { fig: CL1, colors: clColors(CL1, M, { 'línea': L1.still }) }], tipAt(CL1, null, M),
+    arrow(`M${CL_W.x + 4} ${CE.y + 30} H${clWrapsEnd + 6}`), text(10, 158, '5 a 7 vueltas', 'start')),
+  step3([...CL_HOOK, { fig: CL2, colors: clColors(CL2, Dn, { 'línea': L1.still, 'al lazo chico': M }) }], tipAt(CL2, null, M),
+    text(10, 158, 'por el lazo chico, junto al ojo', 'start')),
+  step3([...CL_HOOK, { fig: CL3, colors: clColors(CL3, Dn, { 'línea': L1.still, 'por el lazo grande': M }) }], tipAt(CL3, null, M),
+    text(10, 158, 'y por el lazo grande', 'start')),
+  step3([...CL_HOOK, { fig: CL4, colors: clColors(CL4, M) }], tipAt(CL4, null, M), pull(`M54 ${CE.y} H28`), hold(276, CE.y, 0), drop(90, 130),
+    text(10, 158, 'tirar de la línea', 'start'), { tight: true }),
+  step3([...CL_HOOK, { fig: CL4, colors: clColors(CL4, Dn) }], tipAt(CL4, null, Dn), scissors(250, 122), { tight: true }),
 ];
 
 /* Snell: hook without eye, shank along y = 60. */
