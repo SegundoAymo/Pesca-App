@@ -723,7 +723,8 @@ const SY = 80; // the shank
 const SN_HOOK = [{ fig: figure({ name: 'anzuelo', d: `M60 ${SY} H280 C304 ${SY} 304 ${SY + 40} 280 ${SY + 40} H268 L276 ${SY + 32}`, z: 0 }), colors: { anzuelo: METAL }, w: 6 }];
 const SN_PADDLE = { back: `<rect x="50" y="${SY - 13}" width="11" height="26" rx="2" fill="${METAL}"/>` };
 const SN_X0 = 84; // where the wraps start, next to the paddle
-const SN_TIP = 240; // the tip, toward the bend
+const SN_TIP = 252; // the tip, toward the bend (well past where the loop crosses it)
+const SN_TIP_T = 200; // tight: the tip, short past the wraps
 /** The wraps from x0 going right, starting and ending at the bottom: n turns. */
 function snWraps({ x0, n, pitch, a }) {
   const steps = n * 24;
@@ -738,7 +739,7 @@ function snWraps({ x0, n, pitch, a }) {
 }
 /** The line: the tip along the shank (at y1), the loop, the main line back (at y0). */
 const snLine = (y0, y1, x1) => ({ name: 'línea', d: `M${x1} ${y0} H10`, z: 0.5 });
-const snTip = (y1) => ({ name: 'punta', d: `M${SN_TIP} ${y1} H${SN_X0}`, z: 0.5 });
+const snTip = (y1, x = SN_TIP) => ({ name: 'punta', d: `M${x} ${y1} H${SN_X0}`, z: 0.5 });
 const SN_UP = 222; // where the loop goes back up to the main line
 const SN1 = figure(snTip(SY + 8),
   { name: 'lazo', d: `M${SN_X0} ${SY + 8} C${SN_X0 - 22} ${SY + 8} ${SN_X0 - 24} ${SY + 40} ${SN_X0 - 8} ${SY + 46} C${SN_X0 + 20} ${SY + 66} ${SN_UP + 16} ${SY + 64} ${SN_UP + 18} ${SY + 40} C${SN_UP + 18} ${SY + 30} ${SN_UP + 8} ${SY - 8} ${SN_UP - 4} ${SY - 8}`,
@@ -754,19 +755,19 @@ const SN2 = figure(snTip(SY + 8), snTurn(SY + 8, SN_W.a), snWraps(SN_W),
 // Pulled: the wraps close on the shank, the loop is gone (a short bend up to the main line).
 const SN_T = { x0: SN_X0, n: 5, pitch: 14, a: 12 };
 const snTEnd = SN_T.x0 + SN_T.n * SN_T.pitch;
-const SN3 = figure(snTip(SY + 5), snTurn(SY + 5, SN_T.a), snWraps(SN_T),
-  { name: 'lazo', d: `M${snTEnd} ${SY + SN_T.a} C${snTEnd + 8} ${SY + SN_T.a} ${snTEnd + 10} ${SY + 6} ${snTEnd + 8} ${SY - 2} C${snTEnd + 6} ${SY - 5} ${snTEnd + 4} ${SY - 5} ${snTEnd + 2} ${SY - 5}`,
+const SN3 = figure(snTip(SY + 5, SN_TIP_T), snTurn(SY + 5, SN_T.a), snWraps(SN_T),
+  { name: 'lazo', d: `M${snTEnd} ${SY + SN_T.a} C${snTEnd + 5} ${SY + SN_T.a} ${snTEnd + 6} ${SY + 4} ${snTEnd + 5} ${SY - 1} C${snTEnd + 4} ${SY - 5} ${snTEnd + 3} ${SY - 5} ${snTEnd + 1} ${SY - 5}`,
     z: [[0, 0], [0.2, 1], [0.8, 1], [1, 0.5]] },
-  snLine(SY - 5, SY + 5, snTEnd + 2));
+  snLine(SY - 5, SY + 5, snTEnd + 1));
 const snColors = (fig, c, over = {}) => ({ ...allParts(fig, c), ...over });
 const SNELL = [
   step3([...SN_HOOK, { fig: SN1, colors: snColors(SN1, M, { 'línea': L1.still }) }], SN_PADDLE, tip(SN_TIP, SY + 8, 0, M),
     text(10, 30, 'la punta hacia la curva', 'start'), text(10, 158, 'y un lazo colgando', 'start')),
   step3([...SN_HOOK, { fig: SN2, colors: snColors(SN2, Dn, { 'línea': L1.still, vueltas: M, lazo: M }), fade: ['vueltas'] }], SN_PADDLE, tip(SN_TIP, SY + 8, 0, Dn),
-    arrow(`M${SN_X0 + 2} ${SY + SN_W.a + 14} H${snWrapsEnd - 4}`), text(10, 30, '5 a 7 vueltas con el lazo, hacia la curva', 'start')),
-  step3([...SN_HOOK, { fig: SN3, colors: snColors(SN3, M), fade: ['vueltas'] }], SN_PADDLE, tip(SN_TIP, SY + 5, 0, M), pull(`M44 ${SY - 5} H18`),
+    arrow(`M${SN_X0 + 2} ${SY + SN_W.a + 14} H${snWrapsEnd - 4}`), arrow(`M${SN_UP + 34} ${SY + 56} C${SN_UP + 72} ${SY + 30} ${SN_UP + 50} ${SY - 38} ${SN_UP - 6} ${SY - 30}`), text(10, 30, '5 a 7 vueltas con el lazo, hacia la curva', 'start')),
+  step3([...SN_HOOK, { fig: SN3, colors: snColors(SN3, M, { punta: Dn }), fade: ['vueltas'] }], SN_PADDLE, tip(SN_TIP_T, SY + 5, 0, Dn), pull(`M48 ${SY - 5} H24`),
     hold(SN_X0 + 30, SY, 0), drop(250, 40), text(10, 158, 'sostener las vueltas y tirar de la línea', 'start'), { tight: true }),
-  step3([...SN_HOOK, { fig: SN3, colors: snColors(SN3, Dn), fade: ['vueltas'] }], SN_PADDLE, tip(SN_TIP, SY + 5, 0, Dn), scissors(236, 116), { tight: true }),
+  step3([...SN_HOOK, { fig: SN3, colors: snColors(SN3, Dn), fade: ['vueltas'] }], SN_PADDLE, tip(SN_TIP_T, SY + 5, 0, Dn), scissors(184, 106), { tight: true }),
 ];
 
 /* Rapala: lure eye at (240, 85); a loose overhand at x = 110. */
