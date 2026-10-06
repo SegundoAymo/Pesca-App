@@ -25,6 +25,10 @@ Sos un revisor independiente de los dibujos de nudos de la app Kit de Pesca. No 
    - Colores, flechas, puntitos y bordes según el sistema; textos que no tapen nada ni se corten.
 4. No supongas buena intención: si el dibujo "casi" muestra algo, decí qué falta.
 
+## No pedir más pasos de la cuenta
+
+Un pescador ya sabe hacer un nudo simple, una vuelta o un lazo: no pidas descomponerlos pasada por pasada. Pedí un paso más solo si sin él no se puede seguir el nudo (regla 35). Si el nudo se entiende con menos pasos, también es una sugerencia válida.
+
 ## Errores que más se repitieron (mirarlos siempre)
 
 - El nudo apretado redibujado a mano en vez de ser el flojo achicado: cruces que cambian, ovillos o manchas.

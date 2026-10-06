@@ -73,8 +73,13 @@ export function check(svg) {
     const gap = Math.min(...s.points.flat().map((p) => near(p, linePts)));
     if (gap > 24) out.push(`flecha de mover suelta, en (${s.points[0][0].map(Math.round)})`);
   }
-  // Arrows do not cover the tip (rule 7): the middle of the diamond stays clear.
   const tipMid = tips.map((t) => [t.points[0][0][0] + (t.points[0][2][0] - t.points[0][0][0]) / 2, t.points[0][0][1] + (t.points[0][2][1] - t.points[0][0][1]) / 2]);
+  // The scissors go next to the tip of the bit that is cut, not on top of it (rule 23).
+  for (const sc of shapes.filter((x) => (x.attrs.d || '').startsWith('M-5 7 L10 -16'))) {
+    const hit = tipMid.find((m) => dist(m, origin(sc)) < 14);
+    if (hit) out.push(`tijera encima de la punta, en (${hit.map(Math.round)})`);
+  }
+  // Arrows do not cover the tip (rule 7): the middle of the diamond stays clear.
   for (const s of shapes.filter((x) => /kah|kph/.test(x.attrs['marker-end'] || ''))) {
     const hit = tipMid.find((m) => near(m, s.points.flat()) < 9);
     if (hit) out.push(`flecha encima de la punta, en (${hit.map(Math.round)})`);
@@ -107,6 +112,14 @@ export function checkCrossings(list, close = []) {
 const MIN_ANGLE = 30;
 const MIN_DZ = 0.2;
 const MIN_GAP = 8;
+
+// Step texts of the redrawn knots say front and back ("por delante", "por detrás"), not
+// "por debajo" / "por encima", which read as down and up on the screen (rule 31).
+test('textos de los nudos rehechos: por delante y por detrás', () => {
+  const bad = REDRAWN.flatMap((id) => KNOTS[id].steps.map((t, i) => [id, i + 1, t]))
+    .filter(([, , t]) => /por (debajo|encima)/i.test(t)).map(([id, n, t]) => `${id} paso ${n}: ${t}`);
+  assert.deepEqual(bad, []);
+});
 
 for (const id of Object.keys(KNOTS)) {
   const redrawn = REDRAWN.includes(id);

@@ -100,6 +100,24 @@ export const pinch = (cx, cy, s, r0, r1) => (x, y) => {
   return [cx + (x - cx) * k, cy + (y - cy) * k];
 };
 
+/** Pulling a knot tight along a line at height y0: the points move along x by stops
+    ([[x, new x], ...], increasing: what is between two stops stretches or shrinks evenly;
+    outside, it keeps its length) and close toward the line by k(x) (1: stays, 0: on the
+    line). Both keep the order of points, so the crossings do not change. */
+export const pullAlong = (stops, y0, k = () => 1) => (x, y) => {
+  let nx;
+  if (x <= stops[0][0]) nx = stops[0][1] + (x - stops[0][0]);
+  else if (x >= stops[stops.length - 1][0]) nx = stops[stops.length - 1][1] + (x - stops[stops.length - 1][0]);
+  else {
+    for (let i = 1; i < stops.length; i++) {
+      const [a0, b0] = stops[i - 1];
+      const [a1, b1] = stops[i];
+      if (x <= a1) { nx = b0 + ((x - a0) * (b1 - b0)) / (a1 - a0); break; }
+    }
+  }
+  return [nx, y0 + (y - y0) * k(x)];
+};
+
 /** Visible part of a figure: up to and including part upTo. */
 function visible(fig, upTo) {
   if (!upTo) return fig.pts;
