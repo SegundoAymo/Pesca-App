@@ -619,33 +619,35 @@ const RAPALA = [
   }),
 ];
 
-/* Lazo perfecto, in 3D (see knot3d.js). One line from the left at y = 120: the first loop
-   with the tip passing behind the line; the second loop in front of the first; the tip
-   between them (in front of the first, behind the second). Then the second loop goes
-   through the first: each of its legs crosses the first loop once over (at the bottom)
-   and once under (on the right), and the bend comes out on the right as the final loop. Pulled tight, it
-   is the same figure with its middle squeezed. */
+/* Lazo perfecto, in 3D (see knot3d.js), following the references (Orvis, Netknots): one
+   line from the left at y = 120. The first loop, with the tip passing behind the line.
+   The second loop is a turn around the line: up in front of the first loop and back
+   down behind the line (without this, it is a slip loop). The tip goes back up between
+   the two loops (in front of the first, behind the second) and points up. Then the
+   second loop is pulled through the first, out to the right, as the final loop; pulled
+   tight, it is the same figure with its middle squeezed. */
 const LP_START = [
   { name: 'línea', d: 'M10 120 H120', z: 0 },
   { name: 'primer lazo', d: 'M120 120 C150 120 200 110 200 75 C200 45 176 38 162 40 C140 44 132 66 140 86', z: [[0, 0], [0.85, 0], [1, -0.6]] },
-  { name: 'punta por detrás', d: 'M140 86 C146 102 156 112 168 124 C176 132 190 140 214 140', z: [[0, -0.6], [0.2, -1], [0.75, -1], [1, 0.6]] },
+  { name: 'punta por detrás', d: 'M140 86 C146 102 156 112 166 122 C172 128 176 136 178 146', z: [[0, -0.6], [0.2, -1], [1, -1]] },
 ];
-const LP_TIP = { name: 'punta entre lazos', d: 'M184 147 C198 150 202 138 196 130 C190 122 181 114 179 106 C177 92 172 78 160 66 C150 56 138 44 124 32', z: [[0, 1], [0.08, 0.5], [1, 0.5]] };
+const LP_TIP = { name: 'punta entre lazos', d: 'M156 146 C166 150 174 140 173 128 C172 118 170 104 168 90 C166 70 166 40 166 22', z: [[0, -2], [0.14, 0.5], [1, 0.5]] };
 const LPA = figure(...LP_START,
-  { name: 'segundo lazo', d: 'M214 140 C240 134 246 104 236 78 C226 54 196 46 176 56 C154 66 150 86 146 98 C142 108 134 116 136 124 C138 134 160 144 184 147', z: [[0, 0.6], [0.1, 1], [1, 1]] },
+  { name: 'segundo lazo', d: 'M178 146 C184 136 190 120 190 106 C190 94 190 82 186 72 C180 58 168 54 160 60 C152 66 150 84 149 100 C148 110 140 118 138 128 C136 138 144 146 156 146',
+    z: [[0, -1], [0.12, 1], [0.55, 1], [0.72, -2], [1, -2]] },
   LP_TIP);
 /** After the second loop went through the first; the line starts at x0. loop: the final
     loop (shorter while it is being pulled out). */
 const lpThrough = (x0 = 10, loop = 'M214 80 C250 84 300 90 304 70 C308 46 256 52 214 60') => figure({ ...LP_START[0], d: `M${x0} 120 H120` }, ...LP_START.slice(1),
-  { name: 'pata de abajo', d: 'M214 140 C228 140 228 120 214 110 C204 103 198 100 195 94 C193 89 194 85 198 83 C202 81 207 80 214 80', z: [[0, 0.6], [0.15, 1], [0.68, 1], [0.88, -1.5], [1, -1.5]] },
+  { name: 'pata de abajo', d: 'M178 146 C188 134 196 116 186 104 C182 98 184 90 190 87 C194 85 197 84 200 83 C204 81 208 80 214 80', z: [[0, -1], [0.15, 1], [0.68, 1], [0.88, -1.5], [1, -1.5]] },
   { name: 'lazo final', d: loop, z: -1.5 },
-  { name: 'pata de arriba', d: 'M214 60 C206 60 200 60 194 58 C188 56 182 54 176 56 C154 66 150 86 146 98 C142 108 134 116 136 124 C138 134 160 144 184 147', z: [[0, -1.5], [0.1, -1.5], [0.22, 1], [1, 1]] },
+  { name: 'pata de arriba', d: 'M214 60 C206 60 200 60 194 58 C188 56 182 54 176 56 C168 58 160 62 156 70 C151 80 149 92 149 102 C148 110 140 118 138 128 C136 138 144 146 156 146', z: [[0, -1.5], [0.12, -1.5], [0.3, 1], [0.42, 1], [0.6, -2], [1, -2]] },
   LP_TIP);
 const LPB = lpThrough();
 const LPH = lpThrough(10, 'M214 80 C228 82 240 80 241 70 C242 61 228 59 214 60'); // halfway through
 // Squeezed in the middle; the final loop also shorter (x only, keeping the order of
 // points, so no crossing changes).
-const lpTight = (x0) => warp(warp(lpThrough(x0), pinch(184, 104, 0.7, 30, 110)), (x, y) => [x > 200 ? 200 + (x - 200) * 0.75 : x, y]);
+const lpTight = (x0) => warp(warp(lpThrough(x0), pinch(172, 104, 0.7, 30, 110)), (x, y) => [x > 200 ? 200 + (x - 200) * 0.75 : x, y]);
 const LPC = lpTight(62);
 const LPD = lpTight(62);
 const lpAll = (fig, c) => Object.fromEntries(fig.parts.map((n) => [n, c]));
@@ -658,9 +660,9 @@ const step3 = (items, ...rest) => {
 const tipAt = (fig, upTo, c) => { const [x, y, a] = endOf(fig, upTo); return tip(x, y, a, c); };
 const LAZO_PERFECTO = [
   step3([{ fig: LPA, upTo: 'punta por detrás', colors: { 'línea': L1.still, 'primer lazo': M, 'punta por detrás': M } }],
-    tipAt(LPA, 'punta por detrás', M), text(100, 165, 'la punta pasa por detrás')),
+    tipAt(LPA, 'punta por detrás', M), text(10, 24, 'la punta pasa por detrás', 'start')),
   step3([{ fig: LPA, upTo: 'segundo lazo', colors: { 'línea': L1.still, 'primer lazo': Dn, 'punta por detrás': Dn, 'segundo lazo': M } }],
-    tipAt(LPA, 'segundo lazo', M), arrow('M258 126 C268 100 264 72 246 56'), text(10, 24, 'otra vuelta, por delante', 'start')),
+    tipAt(LPA, 'segundo lazo', M), arrow('M206 140 C214 124 212 104 202 92'), text(10, 24, 'una vuelta alrededor de la línea', 'start')),
   step3([{ fig: LPA, colors: { ...lpAll(LPA, Dn), 'línea': L1.still, 'punta entre lazos': M } }],
     tipAt(LPA, null, M), text(124, 165, 'la punta, entre los dos lazos')),
   step3([{ fig: LPH, colors: { ...lpAll(LPH, Dn), 'línea': L1.still, 'pata de abajo': M, 'lazo final': M, 'pata de arriba': M } }],
@@ -668,7 +670,7 @@ const LAZO_PERFECTO = [
   step3([{ fig: LPB, colors: { ...lpAll(LPB, Dn), 'línea': L1.still, 'pata de abajo': M, 'lazo final': M, 'pata de arriba': M } }],
     tipAt(LPB, null, Dn), text(130, 165, 'sale a la derecha: lazo final')),
   step3([{ fig: LPC, colors: lpAll(LPC, M) }], tipAt(LPC, null, M), pull('M54 120 H30'), pull('M286 76 H298'), text(320, 30, 'cerrar', 'end')),
-  step3([{ fig: LPD, colors: lpAll(LPD, Dn) }], tipAt(LPD, null, Dn), scissors(124, 66)),
+  step3([{ fig: LPD, colors: lpAll(LPD, Dn) }], tipAt(LPD, null, Dn), scissors(190, 40)),
 ];
 
 /* Sangre: line 1 (green) from the left at y = 78, line 2 (orange) from the right at y = 92. */

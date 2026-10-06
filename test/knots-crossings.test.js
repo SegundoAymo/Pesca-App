@@ -6,24 +6,34 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { knotCrossings, knotStepCount } from '../js/drawings/knots.js';
 
-const lazoStart = ['primer lazo > punta por detrás'];
-// The second loop goes in front of everything: of the first loop (twice) and of the tip
-// that went behind.
-const lazoSecond = [...lazoStart, 'segundo lazo > primer lazo', 'segundo lazo > primer lazo', 'segundo lazo > punta por detrás'];
+// Lazo perfecto, from the references (Orvis: "form a second, smaller loop in front of
+// the first one by rolling the tag end around the front of the first loop, then behind
+// it"; Netknots: "take a turn around the standing line, forming a second loop"; Orvis:
+// "passing it between the two loops"; "reach behind the first loop and pull the second
+// loop through it"). The second loop is a turn AROUND the line: over it on one side and
+// under it on the other. Without that, the knot is a slip loop and comes undone.
+const lazoStart = ['primer lazo > punta por detrás']; // the tip passes behind the line
+const lazoSecond = [...lazoStart,
+  'segundo lazo > primer lazo', // the turn goes in front of the first loop...
+  'primer lazo > segundo lazo', // ...and comes back behind the line
+  'punta por detrás > segundo lazo'];
+// The tip between the loops: in front of the first loop (at the base and at the top),
+// behind the second.
 const lazoTip = [...lazoSecond, 'punta entre lazos > primer lazo', 'punta entre lazos > primer lazo',
   'segundo lazo > punta entre lazos', 'punta entre lazos > punta por detrás'];
-// The second loop went through the first: each leg once over it and once under it; the
-// tip stays in front of the first loop and behind the second.
-const lazoThrough = [...lazoStart, 'pata de abajo > primer lazo', 'primer lazo > pata de abajo',
-  'pata de arriba > primer lazo', 'primer lazo > pata de arriba',
-  'punta entre lazos > primer lazo', 'punta entre lazos > primer lazo', 'pata de arriba > punta entre lazos',
-  'pata de arriba > punta por detrás', 'punta entre lazos > punta por detrás'];
+// The second loop pulled through the first: each leg once over the first loop and once
+// under it; the back leg still goes around behind the line; the tip stays trapped.
+const lazoThrough = [...lazoStart,
+  'pata de abajo > primer lazo', 'primer lazo > pata de abajo',
+  'primer lazo > pata de arriba', 'primer lazo > pata de arriba', 'punta por detrás > pata de arriba',
+  'pata de arriba > punta entre lazos',
+  'punta entre lazos > primer lazo', 'punta entre lazos > primer lazo', 'punta entre lazos > punta por detrás'];
 
 const EXPECTED = {
   'lazo-perfecto': [
-    lazoStart, // the tip passes behind the line
-    lazoSecond, // the second loop, in front
-    lazoTip, // the tip between the loops
+    lazoStart,
+    lazoSecond, // the turn around the line
+    lazoTip,
     lazoThrough, // the second loop halfway through the first
     lazoThrough,
     lazoThrough, // tightened: the same crossings

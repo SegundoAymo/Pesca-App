@@ -14,7 +14,7 @@ Sos un revisor independiente de los dibujos de nudos de la app Kit de Pesca. No 
 ## Cómo revisar
 
 1. Generá las imágenes: `node tools/nudos/hoja.mjs <ids>` (sin ids, todos los nudos). Quedan en `tools/nudos/salida/<id>.png`, con cada paso, su texto y la leyenda.
-2. Antes de mirar los dibujos de un nudo, escribí para vos cómo se ata ese nudo de verdad, paso a paso, con lo que sabés de nudos de pesca. No uses los textos de la app para eso. Después compará: si los textos o los dibujos se apartan de cómo se ata el nudo, o falta un paso intermedio para entenderlo, es un problema.
+2. Antes de mirar los dibujos de un nudo, escribí para vos cómo se ata ese nudo de verdad, paso a paso. No uses los textos de la app ni solo tu memoria: usá la referencia citada en `test/knots-crossings.test.js` (o buscá una fuente de nudos de pesca reconocida) y fijate en cada pasada si va por delante, por detrás o alrededor de algo. Un error de memoria hizo que el Lazo perfecto se aprobara dibujado como un nudo corredizo. Después compará: si los textos o los dibujos se apartan de cómo se ata el nudo, o falta un paso intermedio para entenderlo, es un problema.
 3. Abrí la imagen y revisá cada paso con todas las reglas. Además:
    - Que lo dibujado coincida con lo que dice el texto del paso.
    - Que de un paso al siguiente lo ya hecho siga igual (misma forma y lugar) y solo cambie lo que el paso mueve.

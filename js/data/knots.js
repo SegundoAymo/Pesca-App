@@ -112,9 +112,9 @@ export const KNOTS = {
     note: 'El lazo queda alineado con la línea. Para un señuelo, se ata en la punta, el lazo se pasa por el ojo del señuelo y después el señuelo por adentro del lazo.',
     steps: [
       'Hacer un lazo pasando la punta por detrás de la línea.',
-      'Dar otra vuelta con la punta, por delante del primer lazo.',
-      'Pasar la punta entre los dos lazos.',
-      'Tomar el segundo lazo y pasarlo por dentro del primero.',
+      'Dar una vuelta con la punta alrededor de la línea: sube por delante del primer lazo y baja por detrás de la línea. Queda un segundo lazo, más chico, delante del primero.',
+      'Volver a subir la punta entre los dos lazos: por delante del primero y por detrás del segundo.',
+      'Por detrás del primer lazo, tomar el segundo y pasarlo por dentro del primero, hacia la derecha.',
       'El segundo lazo queda asomando por el primero: ese es el lazo final.',
       'Tirar del lazo y de la línea para cerrar el nudo.',
       'Cortar el sobrante.',
