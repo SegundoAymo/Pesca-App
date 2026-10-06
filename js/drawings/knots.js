@@ -926,23 +926,23 @@ const CJ_A = 24; // half height of the wraps
 const CJ_P = 48; // length of a whole wrap
 const CJ_G = 4;
 /** The end wrapping around the pair: a helix seen from the side, half turns of the given count. */
-function cjWraps(halves) {
+function cjWraps(from, to, name) {
   const pts = [];
   const zs = [];
-  const n = halves * 24;
+  const n = (to - from) * 24;
   for (let k = 0; k <= n; k++) {
-    const th = -Math.PI / 2 + (k / n) * halves * Math.PI;
+    const th = -Math.PI / 2 + (from + (k / n) * (to - from)) * Math.PI;
     pts.push(`${(CJ_X + (CJ_P * th) / (2 * Math.PI)).toFixed(1)} ${(CJ_Y + CJ_A * Math.sin(th)).toFixed(1)}`);
     zs.push([k / n, Math.cos(th)]);
   }
-  return { name: 'pasadas', d: `M${pts[0]} L${pts.slice(1).join(' L')}`, z: zs };
+  return { name, d: `M${pts[0]} L${pts.slice(1).join(' L')}`, z: zs };
 }
 const cjWrapsEnd = (halves) => CJ_X - CJ_P / 4 + (halves * CJ_P) / 2;
 const CJ_TOP = CJ_Y - CJ_A;
 const cjKnot = (halves) => [
   { name: 'juntas', d: `M70 ${CJ_Y} H214`, z: 0 },
   { name: 'lazo', d: `M214 ${CJ_Y} C232 ${CJ_Y} 240 84 240 66 C240 42 216 30 180 30 C136 30 96 34 90 52 C86 66 94 ${CJ_TOP} ${CJ_X - CJ_P / 4} ${CJ_TOP}`, z: 0 },
-  cjWraps(halves),
+  cjWraps(0, 2, 'pasada'), ...(halves > 2 ? [cjWraps(2, halves, 'segunda pasada')] : []),
   // Out over the loop's right side, going up to the right (from the last wrap, wherever it ends).
   { name: 'salida', d: halves === 2 ? `M154 ${CJ_TOP} C176 ${CJ_TOP} 212 52 232 46 C246 42 258 40 272 40` : `M202 ${CJ_TOP} C214 ${CJ_TOP} 226 62 236 56 C248 50 260 42 272 40`,
     z: [[0, 0], [0.4, 1], [0.85, 1], [1, 0.5]] },
@@ -985,22 +985,25 @@ const CJ_PINCH = (x, y) => {
   const [cx, cy] = [165, CJ_Y - 12];
   const r = Math.hypot(x - cx, y - cy);
   const w = 1 - Math.min(1, Math.max(0, (r - 60) / 70)) ** 2 * (3 - 2 * Math.min(1, Math.max(0, (r - 60) / 70)));
-  return [cx + (x - cx) * (1 - 0.25 * w), cy + (y - cy) * (1 - 0.45 * w)];
+  return [cx + (x - cx) * (1 - 0.22 * w), cy + (y - cy) * (1 - 0.5 * w)];
 };
 const CJ4 = cjPair(cjKnot(4), CJ_PINCH);
-const cjColors = (fig, c, still, over = {}) => ({ ...allParts(fig, c), ...over, 'línea verde': still, 'línea naranja': still });
-const cjItems = ([g, o], cg, co, overG = {}, overO = {}) => [{ fig: g, colors: cjColors(g, cg, L1.still, overG) }, { fig: o, colors: cjColors(o, co, L2.still, overO) }];
+const cjColors = (fig, c, line, over = {}) => ({ ...allParts(fig, c), ...over, 'línea verde': line, 'línea naranja': line });
+/** The two lines: the green line from the left stays still until it is pulled (green); the
+    orange one goes through the loop with the end (orange: its color while it moves). */
+const cjItems = ([g, o], cg, co, overG = {}, overO = {}, gLine = L1.still, oLine = co) => [{ fig: g, colors: cjColors(g, cg, gLine, overG) }, { fig: o, colors: cjColors(o, co, oLine, overO) }];
 const cjTips = ([g, o], cg, co) => tipAt(g, null, cg) + tipAt(o, null, co);
 /** Pull on the orange line, where it leaves to the right. */
 const cjPullOut = (f) => { const p = [...f.pts].reverse().find((q) => q.x >= 262); return pull(`M${p.x.toFixed(1)} ${p.y.toFixed(1)} H${(p.x + 24).toFixed(1)}`); };
 /** Scissors next to each tip, on the leftover. */
-const cjCut = (pair) => pair.map((f) => { const [x, y] = endOf(f); return (x < 165 ? scissors(x + 6, y - 30) : scissors(x - 18, y + 24)); }).join('');
+const cjCut = (pair) => pair.map((f) => { const [x, y] = endOf(f); return x < 165 ? scissors(x - 4, y - 24) : scissors(x - 14, y + 18); }).join('');
 const CIRUJANO = [
-  step3(cjItems(CJ1, M, L2.move), cjTips(CJ1, M, L2.move), text(165, 150, 'juntas unos 15 cm, en sentidos contrarios')),
-  step3(cjItems(CJ2, M, L2.move), cjTips(CJ2, M, L2.move), text(10, 158, 'nudo simple con las dos juntas', 'start')),
-  step3(cjItems(CJ3, Dn, L2.done, { 'pasadas (verde)': M, 'salida (verde)': M }, { 'pasadas (naranja)': L2.move, 'salida (naranja)': L2.move }), cjTips(CJ3, M, L2.move),
+  step3(cjItems(CJ1, M, L2.move, {}, {}, L1.still, L2.still), cjTips(CJ1, M, L2.move), text(165, 150, 'juntas unos 15 cm, en sentidos contrarios')),
+  step3(cjItems(CJ2, M, L2.move), cjTips(CJ2, M, L2.move), arrow('M100 130 C124 144 156 140 170 122'), text(10, 158, 'nudo simple con las dos juntas', 'start')),
+  step3(cjItems(CJ3, Dn, L2.done, { 'segunda pasada (verde)': M, 'salida (verde)': M }, { 'segunda pasada (naranja)': L2.move, 'salida (naranja)': L2.move }, L1.still, L2.move),
+    cjTips(CJ3, M, L2.move), arrow('M150 130 C174 144 206 140 220 122'),
     text(10, 158, 'pasar otra vez por el lazo', 'start')),
-  step3(cjItems(CJ4, M, L2.move), cjTips(CJ4, M, L2.move), pull(`M44 ${CJ_Y + CJ_G} H18`), cjPullOut(CJ4[1]), drop(60, 40),
+  step3(cjItems(CJ4, M, L2.move, {}, {}, M, L2.move), cjTips(CJ4, M, L2.move), pull(`M44 ${CJ_Y + CJ_G} H18`), cjPullOut(CJ4[1]), drop(60, 40),
     text(10, 158, 'mojar y tirar de las dos líneas', 'start'), { tight: true }),
   step3(cjItems(CJ4, Dn, L2.done), cjTips(CJ4, Dn, L2.done), cjCut(CJ4), { tight: true }),
 ];

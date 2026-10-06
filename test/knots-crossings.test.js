@@ -78,10 +78,13 @@ const snellStart = ['lazo > anzuelo', 'lazo > punta']; // the loop goes down in 
 const snellAll = [...snellStart, ...['anzuelo', 'punta', 'línea'].flatMap((x) => Array.from({ length: 5 }, () => [`vueltas > ${x}`, `${x} > vueltas`]).flat())];
 
 // Cirujano: the two lines tied as one; each crossing of the pair is four (green and orange
-// over green and orange).
+// over green and orange). Guía A p. 4: "haz una lazada con los dos hilos / pasa las dos
+// hebras por dentro de la lazada. Repite la operación 2 veces"; Wilson p. 45: "medio nudo"
+// and then "una segunda vuelta". Each pass goes once around the pair inside the loop (over
+// it, then under it), and the end goes out over the loop.
 const pairX = (over, under, n = 1) => Array.from({ length: n }, () => ['verde', 'naranja'].flatMap((a) => ['verde', 'naranja'].map((b) => `${over} (${a}) > ${under} (${b})`))).flat();
-const cirujanoOnce = [...pairX('pasadas', 'juntas'), ...pairX('juntas', 'pasadas'), ...pairX('salida', 'lazo')]; // over, under, and out over the loop
-const cirujanoTwice = [...pairX('pasadas', 'juntas', 2), ...pairX('juntas', 'pasadas', 2), ...pairX('salida', 'lazo')];
+const cirujanoOnce = [...pairX('pasada', 'juntas'), ...pairX('juntas', 'pasada'), ...pairX('salida', 'lazo')];
+const cirujanoTwice = [...cirujanoOnce, ...pairX('segunda pasada', 'juntas'), ...pairX('juntas', 'segunda pasada')];
 
 const EXPECTED = {
   cirujano: [[], cirujanoOnce, cirujanoTwice, cirujanoTwice, cirujanoTwice],
