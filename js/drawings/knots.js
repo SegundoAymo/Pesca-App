@@ -1337,20 +1337,20 @@ const brTA1 = 330 - brTA0;
 const BR4 = (() => {
   const lo = BR_C + BRT.g;
   const hi = BR_C - BRT.g;
-  const hump = BR_C - 22;
+  const hump = BR_C - 12; // just over the turns: the barrel
   const yTop = BR_C - 12;
-  const yBot = 150;
+  const yBot = 160;
   const tHi = (BR_C - BRT.eye - yTop) / (yBot - yTop);
   const tLo = (BR_C + BRT.eye - yTop) / (yBot - yTop);
   return figure(
     { name: 'línea', d: `M${BR_X0} ${lo} H${brTA0}`, z: 0 },
     brStretch('de abajo', 1, true, BRT),
-    { name: 'lazo derecho', d: `M${brTA1} ${lo} C${brTA1 + 10} ${lo} ${brTA1 + 14} ${hi - 6} ${brTA1 + 14} ${hump + 8}`, z: [[0, 0], [0.5, 1], [1, 0]] },
-    { name: 'lazo derecho', d: `M${brTA1 + 14} ${hump + 8} C${brTA1 + 14} ${hump - 6} 180 ${hump - 4} 172 ${hump + 2} C170 ${hump + 4} 170 ${yTop - 6} 170 ${yTop}`, z: 0 },
-    { name: 'lazo baja', d: `M170 ${yTop} V${yBot - 8}`, z: [[0, 0], [tHi, 1], [tLo, -1], [1, -1]] },
-    { name: 'punta del lazo', d: `M170 ${yBot - 8} C170 ${yBot + 2} 160 ${yBot + 2} 160 ${yBot - 8}`, z: -1 },
-    { name: 'lazo sube', d: `M160 ${yBot - 8} V${yTop}`, z: [[0, -1], [1 - tLo, -1], [1 - tHi, 1], [1, 0]] },
-    { name: 'lazo izquierdo', d: `M160 ${yTop} C160 ${yTop - 6} 160 ${hump + 4} 158 ${hump + 2} C150 ${hump - 4} ${brTA0 - 14} ${hump - 6} ${brTA0 - 14} ${hump + 8} C${brTA0 - 14} ${hi - 6} ${brTA0 - 8} ${hi} ${brTA0} ${hi}`, z: 0 },
+    { name: 'lazo derecho', d: `M${brTA1} ${lo} C${brTA1 + 8} ${lo} ${brTA1 + 10} ${hi - 2} ${brTA1 + 8} ${hump}`, z: [[0, 0], [0.5, 1], [1, 0]] },
+    { name: 'lazo derecho', d: `M${brTA1 + 8} ${hump} C${brTA1} ${hump - 4} 190 ${hump - 4} 176 ${yTop - 4} C175 ${yTop - 3} 175 ${yTop - 1} 175 ${yTop}`, z: 0 },
+    { name: 'lazo baja', d: `M175 ${yTop} V${yBot - 8}`, z: [[0, 0], [tHi, 1], [tLo, -1], [1, -1]] },
+    { name: 'punta del lazo', d: `M175 ${yBot - 8} C175 ${yBot + 3} 155 ${yBot + 3} 155 ${yBot - 8}`, z: -1 },
+    { name: 'lazo sube', d: `M155 ${yBot - 8} V${yTop}`, z: [[0, -1], [1 - tLo, -1], [1 - tHi, 1], [1, 0]] },
+    { name: 'lazo izquierdo', d: `M155 ${yTop} C155 ${yTop - 1} 155 ${yTop - 3} 154 ${yTop - 4} C140 ${hump - 4} ${brTA0} ${hump - 4} ${brTA0 - 8} ${hump} C${brTA0 - 10} ${hi - 2} ${brTA0 - 6} ${hi} ${brTA0} ${hi}`, z: 0 },
     brStretch('de arriba', -1, true, BRT),
     { name: 'sigue la línea', d: `M${brTA1} ${hi} H${330 - BR_X0}`, z: 0 },
   );
@@ -1358,10 +1358,10 @@ const BR4 = (() => {
 const brColors = (fig, c, over = {}) => ({ ...allParts(fig, c), línea: L1.still, 'sigue la línea': L1.still, ...over });
 const BRAZOLADA = [
   step3([{ fig: BR1, colors: brColors(BR1, M) }], text(165, 160, 'un lazo amplio, cruzado sobre la línea')),
-  step3([{ fig: BR2, colors: brColors(BR2, Dn, { 'de abajo': M, 'de arriba': M }) }], open(165, BR_C, 0), text(10, 162, '4 vueltas a cada lado', 'start')),
+  step3([{ fig: BR2, colors: brColors(BR2, Dn, { 'de abajo': M, 'de arriba': M }) }], arrow('M158 70 C140 74 140 126 158 130'), text(10, 162, 'girar el hueco 4 vueltas', 'start')),
   step3([{ fig: BR3, colors: brColors(BR3, Dn, Object.fromEntries(BR3.parts.filter((n) => n.startsWith('lazo') || n === 'punta del lazo').map((n) => [n, M]))) }],
-    arrow('M190 66 C196 90 196 120 188 144'), text(10, 164, 'por el hueco', 'start')),
-  step3([{ fig: BR4, colors: brColors(BR4, M, { línea: M, 'sigue la línea': M }) }], pull(`M70 ${BR_C + BRT.g + 8} H40`), pull(`M260 ${BR_C - BRT.g - 8} H290`), hold(165, 138, 90), drop(252, 30),
+    arrow('M186 60 V136'), text(10, 164, 'por el hueco', 'start')),
+  step3([{ fig: BR4, colors: brColors(BR4, M, { línea: M, 'sigue la línea': M }) }], pull(`M70 ${BR_C + BRT.g + 8} H40`), pull(`M262 ${BR_C - BRT.g + 9} H292`), hold(165, 140, 90), drop(252, 30),
     text(10, 30, 'sostener el lazo y tirar', 'start'), { tight: true }),
 ];
 

@@ -232,7 +232,7 @@ export const KNOTS = {
     note: 'Hace un lazo fijo a mitad de la línea, que sale en ángulo recto, para colgar una brazolada sin cortar la línea.',
     steps: [
       'Donde va la brazolada, formar un lazo amplio: la línea se cruza por delante de sí misma y queda un tramo doble.',
-      'Retorcer el tramo doble 4 vueltas a cada lado, dejando un hueco en el medio (mantenerlo abierto con un dedo).',
+      'Retorcer el tramo doble girando el hueco del medio 4 vueltas completas (mantenerlo abierto con un dedo): de cada lado quedan 8 cruces, en espejo.',
       'Pasar el lazo por el hueco del medio, de adelante hacia atrás.',
       'Mojar, sostener el lazo y tirar despacio de los dos extremos: las vueltas se agrupan a cada lado y el lazo sale en ángulo recto.',
     ],
