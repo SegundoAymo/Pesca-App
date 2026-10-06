@@ -3,13 +3,12 @@
 // the rest is for the independent review (tools/nudos/).
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { KNOTS } from '../js/data/knots.js';
+import { KNOTS, REDRAWN } from '../js/data/knots.js';
 import { knotStepSvg, knotStepCount, knotCrossings, knotCloseRuns, knotStepTight, KNOT_PALETTE as P } from '../js/drawings/knots.js';
 import { readSvg, dist } from './svg-geom.js';
 
-// Knots already redrawn with the current system: their checks must pass. The others are
-// reported as pending until they are redrawn.
-const REDRAWN = ['carrete', 'uni', 'palomar', 'clinch', 'lazo-perfecto', 'snell', 'cirujano', 'doble-uni', 'lazo-cirujano', 'brazolada', 'sangre'];
+// Knots already redrawn with the current system (REDRAWN, from the data): their checks must
+// pass. The others are reported as pending until they are redrawn.
 
 const W = 330;
 const H = 170;

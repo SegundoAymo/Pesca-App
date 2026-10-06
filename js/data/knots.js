@@ -11,6 +11,10 @@ export const SITUATIONS = [
   { id: 'acero', n: 9, title: 'Alambre de acero (tararira)', knots: ['haywire', 'manguito'], recommended: [], note: 'Según el alambre que compres.' },
 ];
 
+// Nudos con el dibujo nuevo (en 3D y revisados), en el orden en que se terminaron. En cada
+// situación van primero (docs/spec.md, Nudos). Las pruebas de dibujo usan esta misma lista.
+export const REDRAWN = ['lazo-perfecto', 'carrete', 'palomar', 'clinch', 'uni', 'snell', 'cirujano', 'doble-uni', 'lazo-cirujano', 'brazolada', 'sangre'];
+
 export const KNOTS = {
   carrete: {
     id: 'carrete',
