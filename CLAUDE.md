@@ -8,3 +8,4 @@
 - No inventar datos: sin presión, el puntaje se recalcula sin presión; sin pronóstico, se dice que no hay.
 - En Hábitat no recomendar lugares puntuales.
 - Dibujos de nudos: seguir el "Proceso para dibujar un nudo" de `docs/spec.md` (referencia ilustrada en `docs/referencias-nudos.md`, tabla de cruces, 3D, `node --test`, una revisión con `revisor-nudos`, prueba en la mano del usuario) y actualizar la tabla de estado.
+- Obligatorio, sin que el usuario lo pida: cada vez que se termina algo (un nudo, una corrección, una regla nueva, la tabla de estado o el plan actualizados), hacer commit, push a la rama del chat, abrir un pull request a `main` y unirlo enseguida (merge, sin squash). Antes de unir, `node --test` tiene que pasar y no puede haber conflictos con `main`; si hay conflictos, traer `main` a la rama, resolverlos y volver a probar. El usuario ya dio permiso para esto: no preguntarle cada vez. Así el chat siguiente arranca con todo desde `main`.
