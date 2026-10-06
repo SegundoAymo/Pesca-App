@@ -101,12 +101,19 @@ export function checkCrossings(list, close = [], tight = false) {
     if (c.angle < MIN_ANGLE) out.push(`cruce casi paralelo (${c.angle}°) en (${c.x},${c.y}): ${c.over} sobre ${c.under}`);
     if (c.dz < MIN_DZ) out.push(`cruce sin profundidad clara en (${c.x},${c.y}): ${c.over} sobre ${c.under}`);
   }
-  // Crossings apart, so each one reads on its own (rule 24).
+  // Crossings apart, so each one reads on its own (rule 24). A doubled line (two strands
+  // side by side, "(ida)" and "(vuelta)") crossing itself or something else makes two or
+  // four crossings that read as one: those are not counted against each other.
+  const base = (n) => n.replace(/ \((ida|vuelta)\)$/, '');
+  const sameDoubled = (a, b) => (a.over !== b.over || a.under !== b.under) && base(a.over) === base(b.over) && base(a.under) === base(b.under)
+    && Math.hypot(a.x - b.x, a.y - b.y) < 14;
   list.forEach((a, i) => list.slice(i + 1).forEach((b) => {
+    if (sameDoubled(a, b)) return;
     if (Math.hypot(a.x - b.x, a.y - b.y) < (tight ? MIN_GAP_TIGHT : MIN_GAP)) out.push(`cruces pegados en (${a.x},${a.y}) y (${b.x},${b.y})`);
   }));
-  // No stretch running on top of another without crossing it (rule 25).
-  for (const c of close) out.push(`tramos montados en (${c.x},${c.y}): ${c.a} y ${c.b}`);
+  // No stretch running on top of another without crossing it (rule 25); the two strands of
+  // a doubled line go together on purpose.
+  for (const c of close) if (base(c.a) !== base(c.b) || c.a === c.b) out.push(`tramos montados en (${c.x},${c.y}): ${c.a} y ${c.b}`);
   return out;
 }
 const MIN_ANGLE = 30;

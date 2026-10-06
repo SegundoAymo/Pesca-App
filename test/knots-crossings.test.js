@@ -43,7 +43,25 @@ const carreteFirst = ['línea > primer nudo', 'primer nudo > línea', 'línea > 
   'primer nudo > primer nudo', 'primer nudo > primer nudo', 'primer nudo > primer nudo'];
 const carreteBoth = [...carreteFirst, 'tope > tope', 'tope > tope', 'tope > tope'];
 
+// Palomar, from the references (guía A p. 2 and Wilson p. 6 in docs/referencias-nudos.md;
+// Netknots: "double about 6 inches of line and pass through eye of hook. Tie a simple
+// overhand knot in the doubled line, letting hook hang loose... pull loop of line far
+// enough to pass it over the hook. Pull both tag end and standing line to tighten").
+// The doubled line is two strands side by side ("ida", toward the fold, and "vuelta", back
+// to the tip): each crossing of the doubled line with itself is four crossings of the
+// strands, the upper pair over the lower pair. Both strands go through the eye.
+const both = (over, under) => [`${over} (ida) > ${under} (ida)`, `${over} (ida) > ${under} (vuelta)`, `${over} (vuelta) > ${under} (ida)`, `${over} (vuelta) > ${under} (vuelta)`];
+const throughEye = (part) => [`ojo adelante > ${part} (ida)`, `${part} (ida) > ojo atrás`, `ojo adelante > ${part} (vuelta)`, `${part} (vuelta) > ojo atrás`];
+const palomarKnot = [...both('nudo', 'nudo'), ...both('nudo', 'nudo'), ...both('nudo', 'nudo'), ...throughEye('nudo')]; // an overhand: three crossings
+
 const EXPECTED = {
+  palomar: [
+    throughEye('doble'), // the fold through the eye: both strands
+    palomarKnot, // the overhand with the doubled line, its loop through the eye
+    [...palomarKnot, 'lazo > anzuelo'], // the hook through the loop: the loop passes in front of the shank
+    [...palomarKnot, 'lazo > anzuelo', 'anzuelo > lazo'], // tight: the loop around the shank, in front and behind
+    [...palomarKnot, 'lazo > anzuelo', 'anzuelo > lazo'],
+  ],
   carrete: [
     carreteFirst, // around the spool (behind its flange: no crossings) and the first knot
     carreteBoth,
