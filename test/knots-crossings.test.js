@@ -86,7 +86,21 @@ const pairX = (over, under, n = 1) => Array.from({ length: n }, () => ['verde', 
 const cirujanoOnce = [...pairX('pasada', 'juntas'), ...pairX('juntas', 'pasada'), ...pairX('salida', 'lazo')];
 const cirujanoTwice = [...cirujanoOnce, ...pairX('segunda pasada', 'juntas'), ...pairX('juntas', 'segunda pasada')];
 
+
+// Doble uni, from the references (Wilson p. 22: "rodee ambas líneas por el interior del
+// bucle", "normalmente se hacen cuatro vueltas", "haga lo mismo con la otra línea";
+// Wired2Fish: "create a loop ... wrap the tag end around the two lines inside of the loop
+// ... 4 times", "repeat with the second line"). Each end ties a Uni around both lines: its
+// loop crosses in front of the other line (it rises from its own), and each wrap goes in
+// front of both lines and back behind them. Three turns and a half: four passes in front
+// (the 4 turns the guides count), three behind. The second knot is the first one turned half around.
+const duKnot = (me, other) => [`lazo ${me} > ${other}`,
+  ...Array.from({ length: 4 }, () => [`vueltas ${me} > ${me}`, `vueltas ${me} > ${other}`]).flat(),
+  ...Array.from({ length: 3 }, () => [`${me} > vueltas ${me}`, `${other} > vueltas ${me}`]).flat()];
+const duBoth = [...duKnot('verde', 'naranja'), ...duKnot('naranja', 'verde')];
+
 const EXPECTED = {
+  'doble-uni': [[], duKnot('verde', 'naranja'), duKnot('verde', 'naranja'), duBoth, duBoth, duBoth, duBoth], // sliding them together adds no crossing
   cirujano: [[], cirujanoOnce, cirujanoTwice, cirujanoTwice, cirujanoTwice],
   snell: [snellStart, snellAll, snellAll, snellAll], // each wrap goes around the shank and both lines
   uni: [uniStart, uniAll, uniAll, uniAll, uniAll],

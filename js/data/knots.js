@@ -140,11 +140,13 @@ export const KNOTS = {
     difficulty: 'Fácil',
     note: '',
     steps: [
-      'Superponer las dos puntas.',
-      'Hacer un Uni con una punta alrededor de la otra línea.',
-      'Hacer otro Uni con la otra punta.',
-      'Tirar de las dos líneas: los nudos se juntan.',
-      'Cortar.',
+      'Poner las dos líneas juntas unos 20 cm, cada una con su punta hacia el lado contrario.',
+      'Con la punta de una línea, hacer un lazo que cruce por delante de la otra línea y dar 4 vueltas alrededor de las dos, por dentro del lazo (un Uni).',
+      'Mojar y tirar de esa punta para cerrar el nudo, sin apretarlo del todo.',
+      'Con la punta de la otra línea, hacer lo mismo hacia el otro lado: un lazo por delante de la otra línea y 4 vueltas alrededor de las dos.',
+      'Tirar de esa punta para cerrar el segundo nudo.',
+      'Mojar y tirar de las dos líneas: los nudos se deslizan hasta juntarse y quedan apretados.',
+      'Cortar las dos puntas sobrantes.',
     ],
   },
   cirujano: {

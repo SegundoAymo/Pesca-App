@@ -61,7 +61,7 @@ Navegación por situación: elegís qué querés unir, ves los nudos que sirven 
 
 Ilustraciones (obligatorias en la app):
 
-- Nudos: un dibujo por paso, con el sistema de colores y flechas de "Decisiones tomadas al programar" (dibujos de nudos y armados). Son 18 nudos y 86 pasos.
+- Nudos: un dibujo por paso, con el sistema de colores y flechas de "Decisiones tomadas al programar" (dibujos de nudos y armados). Son 18 nudos y 88 pasos.
 - Armados de línea: un dibujo vertical de cada armado, de la madre al anzuelo, con cada pieza nombrada y las medidas (largo de brazolada, separación, distancia boya–carnada) marcadas al costado. Son 8 armados y los 3 de plomada.
 - Cómo se hacen: dibujos vectoriales propios dentro del código de la app, con un mismo estilo. Funcionan sin conexión, se ven nítidos en cualquier pantalla y no dependen de imágenes con permisos de terceros.
 - Se dibujan durante la programación, a partir de los pasos de las pestañas Nudos y Armados.
@@ -253,7 +253,7 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   6. `node --test` hasta que pase todo; mirar la hoja (`node tools/nudos/hoja.mjs <id>`) al lado de la referencia.
   7. Una revisión con el agente `revisor-nudos` (le pasa la referencia); arreglar lo grave y lo medio (regla 36).
   8. Mostrarle la hoja al usuario y que lo ate. Con eso el nudo queda terminado (regla 32).
-- Pendiente del usuario: probar en la mano el Nudo de carrete, el Palomar, el Clinch mejorado, el Uni, el Snell y el Cirujano (ya dibujados y revisados) y contar si aguantan.
+- Pendiente del usuario: probar en la mano el Nudo de carrete, el Palomar, el Clinch mejorado, el Uni, el Snell, el Cirujano y el Doble uni (ya dibujados y revisados) y contar si aguantan.
 - Estado de cada nudo (se actualiza al terminar cada etapa):
 
   | Nudo | Referencia | Dibujo 3D | Revisión | Probado en la mano |
@@ -265,7 +265,8 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   | Uni | guía A p. 1, Wilson p. 9 | sí | sí | falta |
   | Snell | guía A p. 3, Wilson p. 12 | sí | sí | falta |
   | Cirujano | guía A p. 4, Wilson p. 45 | sí | sí | falta |
-  | Doble uni, Lazo de cirujano, Haywire, Manguito, Brazolada, Sangre, Albright | ver `docs/referencias-nudos.md` | no | — | — |
+  | Doble uni | Wilson p. 22 | sí | sí | falta |
+  | Lazo de cirujano, Haywire, Manguito, Brazolada, Sangre, Albright | ver `docs/referencias-nudos.md` | no | — | — |
   | Bimini, Rapala | referencia débil | no | — | — |
   | FG, Tope corredizo | sin referencia ilustrada: pedirla | no | — | — |
 
@@ -307,6 +308,10 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   35. Pocos pasos, con piezas que el pescador ya conoce: un nudo simple, una vuelta o un lazo se muestran de una vez ("hacer un nudo simple alrededor de la línea"), no pasada por pasada. Se descompone un paso solo si la prueba en la mano muestra que no se entiende. La regla 12 (pasos suficientes) no es para sumar pasos: es para no saltear uno que haga falta.
   36. Una sola revisión por nudo: primero se corrige todo lo que marca la prueba automática; después una revisión; se arregla lo grave y lo medio y no se vuelve a revisar salvo que el arreglo cambie el nudo. Lo leve se anota.
   33. La forma más simple: muchos nudos se pueden atar o mostrar de varias maneras (otro orden de pasos, otra orientación, la vuelta hacia un lado o hacia el otro). Se elige la que resulte más simple y fácil de seguir, aunque el nudo terminado sea el mismo, y se anota en la tabla de cruces cuál se eligió y por qué.
+  Reglas que salieron de la revisión del Doble uni:
+  37. Apretado no es corrido: si un paso dice que el nudo queda apretado, se ve más chico y con el lazo pegado a las vueltas que en el paso anterior. Deslizar un nudo sin achicarlo no cuenta como apretarlo.
+  38. Las vueltas que dice el texto son las pasadas que se ven por delante: "4 vueltas" son 4 tramos por delante, no 5.
+  39. El texto dice qué cruza el lazo de verdad: si el lazo sale de una línea, cruza solo la otra ("por delante de la otra línea").
   31. Textos completos: el texto de cada paso dice todas las pasadas, con "por delante", "por detrás" o "alrededor de". Una pasada que el texto omite es la que después se dibuja mal.
   32. Prueba en la mano: un nudo no está terminado hasta que alguien lo ata siguiendo solo los dibujos y prueba los extremos (el Lazo perfecto ya pasó esta prueba): tirar de la línea y del lazo (o del anzuelo) no lo hace correr, y tirar del sobrante no lo desarma. Las pruebas automáticas y el revisor no reemplazan esto: comprueban que el dibujo es coherente, no que el nudo aguanta.
 - Nudos dibujados en 3D (`js/drawings/knot3d.js`; por ahora el Lazo perfecto, después el resto): el nudo es una línea en el espacio, con partes con nombre ("primer lazo", "punta entre lazos"…) y una profundidad en cada punto que cambia de a poco. El programa la aplana al dibujo de siempre (mismos colores, rombo, flechas y borde solo entre tramos del mismo tono), calcula los cruces y dibuja encima, en cada uno, lo que está más cerca. El nudo apretado sale del flojo apretando su centro.

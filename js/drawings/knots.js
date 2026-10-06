@@ -886,33 +886,116 @@ const SANGRE = [
   }),
 ];
 
-/* Doble uni. */
-const DU = [
-  seg('M10 78 H90', L1.still) + seg('M90 78 H230', L1.move) + tip(230, 78, 0, L1.move)
-    + seg('M320 92 H230', L2.still) + seg('M230 92 H90', L2.move) + tip(90, 92, 180, L2.move) + text(160, 140, 'superponer las puntas'),
-  st(() => {
-    const w = coil(226, 85, 5, 11, 16, L1.move);
-    return w.back + seg('M320 92 H90', L2.still) + tip(90, 92, 180, L2.still) + seg('M10 78 H226', L1.still) + w.front
-      + seg('M171 101 L162 114', L1.move) + tip(162, 114, 125, L1.move) + text(200, 150, 'un Uni con una punta');
-  }),
-  st(() => {
-    const a = coil(226, 85, 5, 11, 16, L1.done);
-    const b = coil(94, 85, 5, 11, 16, L2.move, 1);
-    return a.back + b.back + seg('M320 92 H94', L2.still) + seg('M10 78 H226', L1.still) + a.front + b.front
-      + seg('M171 101 L162 114', L1.done) + seg('M149 101 L158 114', L2.move) + tip(158, 114, 55, L2.move) + text(120, 150, 'otro Uni con la otra');
-  }),
-  st(() => {
-    const a = coil(196, 85, 5, 6, 12, L1.done);
-    const b = coil(134, 85, 5, 6, 12, L2.done, 1);
-    return a.back + b.back + seg('M320 90 H134', L2.still) + seg('M10 80 H196', L1.still) + a.front + b.front
-      + seg('M166 97 L160 110', L1.done) + seg('M164 97 L170 110', L2.done)
-      + pull('M100 50 H60') + pull('M230 50 H270') + arrow('M120 130 H150') + arrow('M210 130 H180') + text(165, 158, 'los nudos se juntan');
-  }),
-  st(() => {
-    const a = coil(196, 85, 5, 6, 12, L1.done);
-    const b = coil(134, 85, 5, 6, 12, L2.done, 1);
-    return a.back + b.back + seg('M320 90 H134', L2.still) + seg('M10 80 H196', L1.still) + a.front + b.front + scissors(150, 120) + scissors(190, 120);
-  }),
+/* Doble uni, in 3D, following Wilson p. 22 (docs/referencias-nudos.md) and Wired2Fish: the two
+   lines overlapped, the green one from the left and the orange one from the right. The green
+   end ties a Uni around both lines (a loop that crosses in front of them, 4 wraps around
+   both inside the loop, then closed); the orange end ties the same knot the other way: it is
+   the green knot turned half around, so it is the same knot. Pulling the two lines slides
+   the knots together. */
+const DU_C = 86; // the axis of the pair
+const DU_OY = DU_C - 7; // the orange line
+const DU_GY = DU_C + 7; // the green line
+const DU_W = { x: 172, n: 3, pitch: 20, a: 17 }; // the green wraps: start, turns (and a half: 4 passes in front), length of a turn, half height
+const duWrapsEnd = DU_W.x + (DU_W.n + 0.5) * DU_W.pitch;
+const DU_R = 262;
+const DU_X0 = 44; // where the green line starts (the orange one ends at 330 - DU_X0): room for the pull arrows // where the green end turns back into its loop
+/** Wraps from the top, moving right: down in front of both lines, up behind them; n turns
+    and a half, ending at the bottom. */
+function duWraps({ x, n, pitch, a }, name) {
+  const steps = n * 24 + 12;
+  const pts = [];
+  const zs = [];
+  for (let k = 0; k <= steps; k++) {
+    const th = Math.PI + (k / steps) * (n * 2 + 1) * Math.PI;
+    pts.push(`${(x + (pitch * (th - Math.PI)) / (2 * Math.PI)).toFixed(1)} ${(DU_C + a * Math.cos(th)).toFixed(1)}`);
+    zs.push([k / steps, -Math.sin(th) * 1.2]);
+  }
+  return { name, d: `M${pts[0]} L${pts.slice(1).join(' L')}`, z: zs };
+}
+const duGreen = (upTo) => {
+  const parts = [
+    { name: 'verde', d: `M${DU_X0} ${DU_GY} H${DU_R}`, z: 0 },
+    { name: 'lazo verde', d: `M${DU_R} ${DU_GY} C${DU_R + 18} ${DU_GY} ${DU_R + 18} ${DU_C - 32} ${DU_R - 6} ${DU_C - 33} C${DU_R - 40} ${DU_C - 34} ${DU_W.x + 14} ${DU_C - 34} ${DU_W.x + 4} ${DU_C - 28} C${DU_W.x + 1} ${DU_C - 26} ${DU_W.x} ${DU_C - 22} ${DU_W.x} ${DU_C - DU_W.a}`,
+      z: [[0, 0], [0.06, 1], [0.2, 1], [0.32, 0], [1, 0]] },
+    duWraps(DU_W, 'vueltas verde'),
+    { name: 'punta verde', d: `M${duWrapsEnd} ${DU_C + DU_W.a} C${duWrapsEnd + 4} ${DU_C + DU_W.a + 10} ${duWrapsEnd + 12} ${DU_C + DU_W.a + 16} ${duWrapsEnd + 30} ${DU_C + DU_W.a + 20}`, z: 0 },
+  ];
+  return figure(...parts.slice(0, upTo));
+};
+/** Half a turn around the middle of the drawing: the orange knot is the green one turned. */
+const duTurn = (x, y) => [330 - x, 2 * DU_C - y];
+const duOrange = (g) => {
+  const name = (n) => n.replace('verde', 'naranja');
+  return { pts: g.pts.map((p) => { const [x, y] = duTurn(p.x, p.y); return { ...p, x, y, part: name(p.part) }; }), parts: g.parts.map(name) };
+};
+// Pulling the end closes the wraps on the two lines: shorter, closer to the lines, and the
+// loop lies down along them (the same squeeze as the Uni; it keeps everything in order).
+const duRamp = (x, x0, x1) => Math.min(1, Math.max(0, (x - x0) / (x1 - x0)));
+const DU_K = DU_W.x + 4 + (duWrapsEnd - DU_W.x) * 0.75; // where the closed wraps end
+const duAlong = pullAlong([[DU_W.x - 12, DU_W.x - 12], [DU_W.x, DU_W.x + 4], [duWrapsEnd, DU_K], [DU_R, DU_K + 14], [DU_R + 30, DU_K + 34], [330 - DU_X0, 330 - DU_X0]], DU_C); // away from the knot the line stays
+const duAcross = (x, y) => {
+  const d = y - DU_C;
+  const k = duRamp(x, DU_W.x - 12, DU_W.x - 2) * (1 - duRamp(x, DU_R + 16, DU_R + 22)); // only around the knot
+  const near = Math.min(Math.abs(d), 12) * 0.55 + Math.max(0, Math.abs(d) - 12) * 0.32;
+  return DU_C + Math.sign(d) * ((1 - k) * Math.abs(d) + k * near);
+};
+const duCloseG = (x, y) => [duAlong(x, y)[0], duAcross(x, y)];
+const duCloseO = (x, y) => duTurn(...duCloseG(...duTurn(x, y)));
+const duClose = (fig, f) => warp(fig, f);
+const DU_G1 = duGreen(1);
+const DU_O1 = duOrange(DU_G1);
+const DU_G2 = duGreen(4);
+const DU_G3 = duClose(DU_G2, duCloseG);
+const DU_O3 = duClose(DU_O1, duCloseG);
+const DU_O4 = duClose(duOrange(DU_G2), duCloseG);
+const DU_G5 = duClose(DU_G3, duCloseO);
+const DU_O5 = duClose(DU_O4, duCloseO);
+// Pulling the two lines tightens each knot: shorter, and its loop pulled down onto the wraps
+// (only far from the lines: the wraps and the lines keep their places across).
+const DU_KA = DU_W.x - 4; // the closed green knot, from here
+const DU_KB = DU_R + 22; // to here (with its tip)
+const DU_KM = (DU_W.x + 4 + DU_K) / 2;
+const duTightAlong = pullAlong([[DU_KA - 10, DU_KA - 10], [DU_KA, DU_KM + (DU_KA - DU_KM) * 0.95], [DU_KB, DU_KM + (DU_KB - DU_KM) * 0.95], [DU_KB + 10, DU_KB + 10]], DU_C);
+const duTightG = (x, y) => {
+  const d = y - DU_C;
+  const k = duRamp(x, DU_KA - 10, DU_KA) * (1 - duRamp(x, DU_KB, DU_KB + 10));
+  const m = Math.abs(d) <= 9 ? Math.abs(d) : 9 + (Math.abs(d) - 9) * (1 - 0.6 * k);
+  return [duTightAlong(x, y)[0], DU_C + Math.sign(d) * m];
+};
+const duTightO = (x, y) => duTurn(...duTightG(...duTurn(x, y)));
+const duTight = (fig) => duClose(duClose(fig, duTightG), duTightO);
+const DU_G6T = duTight(DU_G5);
+const DU_O6T = duTight(DU_O5);
+// Then they slide together (in order: nothing crosses anything new), leaving a little air.
+const duKnotX = (fig, line, f) => f(...fig.pts.filter((p) => p.part !== line).map((p) => p.x));
+const DU_GAP = duKnotX(DU_G6T, 'verde', Math.min) - duKnotX(DU_O6T, 'naranja', Math.max);
+const DU_S = Math.max(0, (DU_GAP - 8) / 2);
+const duSlide = pullAlong([[DU_X0, DU_X0], [DU_X0 + 16, DU_X0 + 16 + DU_S], [155, 155 + DU_S], [175, 175 - DU_S], [330 - DU_X0 - 16, 330 - DU_X0 - 16 - DU_S], [330 - DU_X0, 330 - DU_X0]], DU_C);
+const DU_G6 = duClose(DU_G6T, duSlide);
+const DU_O6 = duClose(DU_O6T, duSlide);
+const duItems = (g, o, cg, co, fade = true) => [
+  { fig: g, colors: { ...allParts(g, cg.knot), verde: cg.line }, fade: fade ? ['vueltas verde'] : [] },
+  { fig: o, colors: { ...allParts(o, co.knot), naranja: co.line }, fade: fade ? ['vueltas naranja'] : [] },
+];
+/** Pull on a tip, out of its end in its direction. */
+const duPullTip = (fig) => { const [x, y, a] = endOf(fig); const c = Math.cos((a * Math.PI) / 180); const s = Math.sin((a * Math.PI) / 180); return pull(`M${(x + 15.5 * c).toFixed(1)} ${(y + 15.5 * s).toFixed(1)} L${(x + 36 * c).toFixed(1)} ${(y + 36 * s).toFixed(1)}`); };
+/** Scissors on the leftover of each tip. */
+const duCut = (g, o) => { const [gx, gy] = endOf(g); const [ox, oy] = endOf(o); return scissors(gx - 6, gy + 20) + scissors(ox + 6, oy - 30); }; // beside each tip, away from the knots
+const duTips = (g, o, cg, co) => (g.parts.includes('punta verde') ? tipAt(g, null, cg) : '') + (o.parts.includes('punta naranja') ? tipAt(o, null, co) : '');
+const DOBLE_UNI = [
+  step3(duItems(DU_G1, DU_O1, { knot: M, line: M }, { knot: L2.move, line: L2.move }),
+    tipAt(DU_G1, null, M), tipAt(DU_O1, null, L2.move), text(165, 150, 'superpuestas unos 20 cm')),
+  step3(duItems(DU_G2, DU_O1, { knot: M, line: L1.still }, { knot: L2.still, line: L2.still }), tipAt(DU_G2, null, M), tipAt(DU_O1, null, L2.still),
+    arrow(`M${DU_W.x - 4} ${DU_C + DU_W.a + 14} H${duWrapsEnd - 12}`), text(10, 158, 'lazo y 4 vueltas alrededor de las dos', 'start')),
+  step3(duItems(DU_G3, DU_O3, { knot: M, line: L1.still }, { knot: L2.still, line: L2.still }), tipAt(DU_G3, null, M), tipAt(DU_O3, null, L2.still),
+    duPullTip(DU_G3), drop(40, 40), text(10, 158, 'tirar de la punta, sin apretar del todo', 'start'), { tight: true }),
+  step3(duItems(DU_G3, DU_O4, { knot: Dn, line: L1.still }, { knot: L2.move, line: L2.still }), tipAt(DU_G3, null, Dn), tipAt(DU_O4, null, L2.move),
+    arrow(`M${330 - DU_W.x + 4} ${DU_C - DU_W.a - 14} H${330 - duWrapsEnd + 12}`), text(10, 158, 'lo mismo con la otra punta', 'start'), { tight: true }), // the green knot is already closed
+  step3(duItems(DU_G5, DU_O5, { knot: Dn, line: L1.still }, { knot: L2.move, line: L2.still }), tipAt(DU_G5, null, Dn), tipAt(DU_O5, null, L2.move),
+    duPullTip(DU_O5), text(10, 158, 'cerrar el segundo nudo', 'start'), { tight: true }),
+  step3(duItems(DU_G6, DU_O6, { knot: M, line: M }, { knot: L2.move, line: L2.move }), tipAt(DU_G6, null, M), tipAt(DU_O6, null, L2.move),
+    pull(`M${DU_X0 - 4} ${DU_GY} H${DU_X0 - 20}`), pull(`M${334 - DU_X0} ${DU_OY} H${350 - DU_X0}`), drop(40, 40), text(10, 158, 'los nudos se juntan', 'start'), { tight: true }),
+  step3(duItems(DU_G6, DU_O6, { knot: Dn, line: Dn }, { knot: L2.done, line: L2.done }), tipAt(DU_G6, null, Dn), tipAt(DU_O6, null, L2.done), duCut(DU_G6, DU_O6), { tight: true }),
 ];
 
 /* Cirujano, in 3D, following guía A p. 4 (docs/referencias-nudos.md): the two lines side by
@@ -1207,7 +1290,7 @@ const STEPS = {
   rapala: RAPALA,
   'lazo-perfecto': LAZO_PERFECTO,
   sangre: SANGRE,
-  'doble-uni': DU,
+  'doble-uni': DOBLE_UNI,
   cirujano: CIRUJANO,
   albright: ALBRIGHT,
   fg: FG,
