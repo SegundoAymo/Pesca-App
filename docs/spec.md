@@ -61,7 +61,7 @@ Navegación por situación: elegís qué querés unir, ves los nudos que sirven 
 
 Ilustraciones (obligatorias en la app):
 
-- Nudos: un dibujo por paso, con la línea principal y la punta en colores distintos y una flecha que marca el movimiento de ese paso. Son 18 nudos y unos 84 pasos.
+- Nudos: un dibujo por paso, con el sistema de colores y flechas de "Decisiones tomadas al programar" (dibujos de nudos y armados). Son 18 nudos y 86 pasos.
 - Armados de línea: un dibujo vertical de cada armado, de la madre al anzuelo, con cada pieza nombrada y las medidas (largo de brazolada, separación, distancia boya–carnada) marcadas al costado. Son 8 armados y los 3 de plomada.
 - Cómo se hacen: dibujos vectoriales propios dentro del código de la app, con un mismo estilo. Funcionan sin conexión, se ven nítidos en cualquier pantalla y no dependen de imágenes con permisos de terceros.
 - Se dibujan durante la programación, a partir de los pasos de las pestañas Nudos y Armados.
@@ -234,7 +234,86 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
 - En Clima la hora actual va en amarillo (en la muestra era celeste), para usar los colores del estilo Señal.
 - El GPS se vuelve a pedir cada 30 minutos como mucho.
 - Checklist: se tilda con un toque en el ítem. Ordenar y borrar van en un modo aparte ("Ordenar o borrar"), para que los botones chicos no estorben; al borrar aparece "Deshacer".
-- Los dibujos de nudos son esquemas de 330 × 170 con la línea principal en negro, la punta en naranja y el movimiento en rojo. En los nudos que unen dos líneas, el naranja es la otra línea.
+- Dibujos de nudos y armados: esquemas de 330 × 170 (los armados, verticales). Sistema de dibujo:
+  - El color dice qué es cada cosa. Tanzas: verde la línea; naranja la otra línea (en los nudos que unen dos, el hilo del tope y las brazoladas de los armados). Metal en gris: anzuelo, emerillón, plomada, manguito y alambre de acero. Herramientas (tijera, pinza) en negro. Objetos con su color: boya amarilla y blanca, señuelo amarillo, perla blanca.
+  - En cada tanza el tono dice qué le pasa en ese paso: oscuro, queda quieta; fuerte, se mueve en este paso; claro, ya se hizo en un paso anterior. Los armados no tienen pasos y van en el tono oscuro.
+  - La punta termina en un rombo.
+  - Indicaciones: en rojo el movimiento (flecha fina de trazos que marca por dónde va lo que se mueve: la punta, un lazo o el anzuelo; en forma de giro para "girar"). En azul las fuerzas: tirar (flecha gruesa y llena, separada del final de la línea que se tira), sostener (dos flechitas enfrentadas que aprietan, también para la pinza) y abrir (dos flechitas hacia afuera, para mantener un lazo abierto). La gota de "mojar" en celeste.
+  - Superposición: la línea que se dibuja después tapa a la de abajo, sin borde. El borde del color del fondo va solo donde se cruzan dos líneas del mismo tono, en la que pasa por encima. El borde es parte del cruce, no del paso: se mantiene en los pasos siguientes.
+  - La línea pasa por el ojo del anzuelo sin taparle el borde y vuelve por debajo, lejos de la pata. Los nudos (también los terminados) se dibujan con sus vueltas y cruces, sin bloques ni pelotitas.
+  - La leyenda de cada nudo se arma con lo que usan sus dibujos.
+  - Piezas base: línea doble (dos hebras de verdad, abiertas donde se separan y unidas solo en el doblez); nudo simple (tres cruces: encima, debajo, encima); vueltas (el frente entero cruza la línea y la parte de atrás va más clara, como un resorte); torsión de dos hebras (en cada cruce la de arriba lleva borde y se alterna); lo que pasa por detrás de un objeto (bobina, señuelo, manguito, boya) va en puntitos del color de la línea, para no confundirse con la flecha de trazos.
+  - Metales separados: anzuelo en gris oscuro; acero (alambre y brazoladas de acero) en gris azulado, con sus tres tonos cuando se mueve; emerillón y manguito en bronce.
+- Proceso para dibujar un nudo (el orden importa; las reglas numeradas de abajo son el detalle):
+  1. Referencia: buscar el nudo en `docs/referencias-nudos.md` (páginas de las guías ilustradas que pasó el usuario) y mirar esas páginas. Copiar la disposición de la más simple: cuántos pasos, desde dónde se ve, qué muestra cada paso (reglas 34 y 35). Si no hay referencia ilustrada, pedírsela al usuario antes de dibujar.
+  2. Cómo se ata: confirmarlo con al menos dos fuentes (las guías y las páginas de nudos reconocidas), sin usar la memoria (regla 30).
+  3. Textos de los pasos: pocos pasos, con piezas conocidas ("hacer un nudo simple alrededor de la línea"), y "por delante / por detrás" cuando haga falta (reglas 31 y 35).
+  4. Tabla de cruces en `test/knots-crossings.test.js`, citando la fuente, antes de dibujar (regla 18).
+  5. Dibujo en 3D con las piezas base (nudo simple, vueltas, bobina, anzuelo) y `pullAlong` para el paso de apretar (reglas 17 y 19).
+  6. `node --test` hasta que pase todo; mirar la hoja (`node tools/nudos/hoja.mjs <id>`) al lado de la referencia.
+  7. Una revisión con el agente `revisor-nudos` (le pasa la referencia); arreglar lo grave y lo medio (regla 36).
+  8. Mostrarle la hoja al usuario y que lo ate. Con eso el nudo queda terminado (regla 32).
+- Pendiente del usuario: probar en la mano el Nudo de carrete, el Palomar, el Clinch mejorado, el Uni, el Snell y el Cirujano (ya dibujados y revisados) y contar si aguantan.
+- Estado de cada nudo (se actualiza al terminar cada etapa):
+
+  | Nudo | Referencia | Dibujo 3D | Revisión | Probado en la mano |
+  |---|---|---|---|---|
+  | Lazo perfecto | fuentes web | sí | sí | sí |
+  | Nudo de carrete | imagen del usuario | sí | sí | falta |
+  | Palomar | guía A p. 2, Wilson p. 6 | sí | sí | falta |
+  | Clinch mejorado | Wilson p. 5 (arriba) | sí | sí | falta |
+  | Uni | guía A p. 1, Wilson p. 9 | sí | sí | falta |
+  | Snell | guía A p. 3, Wilson p. 12 | sí | sí | falta |
+  | Cirujano | guía A p. 4, Wilson p. 45 | sí | sí | falta |
+  | Doble uni, Lazo de cirujano, Haywire, Manguito, Brazolada, Sangre, Albright | ver `docs/referencias-nudos.md` | no | — | — |
+  | Bimini, Rapala | referencia débil | no | — | — |
+  | FG, Tope corredizo | sin referencia ilustrada: pedirla | no | — | — |
+
+- Control de cada dibujo de nudo, antes de darlo por bueno (salió de revisar los errores de la primera versión):
+  1. Continuidad: cada línea es un solo recorrido de punta a punta. Los tramos se tocan en el mismo punto; no hay tramos sueltos, huecos ni corrimientos (por ejemplo, la línea a otra altura que el nudo al que entra).
+  2. Igual entre pasos: lo ya hecho se dibuja con la misma forma y en el mismo lugar que en el paso anterior; solo cambia de tono.
+  3. Fiel al texto: el dibujo muestra lo que dice el paso. Si dice "cruzar", las líneas se cruzan; si dice "alrededor de la otra línea", las vueltas envuelven solo a esa; si dice "al revés", va en sentido contrario; si dice "por el lazo", se ve cuál lazo.
+  4. Se reconoce el nudo: un nudo simple, una vuelta o un lazo se dibujan con la forma de la pieza base, nunca como un rulo, una mancha o un bloque. El nudo terminado deja ver sus vueltas.
+  5. Delante y detrás: cada cruce dice qué va encima. Lo que va detrás de un objeto, en puntitos; ninguna línea pasa por encima de un objeto si en la realidad va por detrás.
+  6. Línea doble: nunca un tramo cerrado salvo el doblez del lazo.
+  7. Flechas: la de tirar sale del extremo de la línea que se tira, en su misma dirección; la de mover va junto a lo que se mueve y no lo tapa. Nada de flechas sueltas.
+  8. Herramientas al lado de lo que tocan: la tijera, junto al sobrante que se corta (y el sobrante se ve); la pinza o el sostener, sobre la pieza.
+  9. Colores: cada cosa con su color de material; el tono de la tanza según el paso; metales que no se confunden entre sí.
+  10. Bordes y textos: nada a menos de 8 px del borde del dibujo; los textos no tapan líneas ni objetos y entran enteros.
+  11. Revisión: cada dibujo se mira al menos a 1,5× de tamaño antes de mostrarlo.
+  12. Pasos suficientes: al rehacer un nudo, revisar si falta algún paso intermedio para que se entienda (por ejemplo, cómo queda algo antes de apretar) y agregarlo; no quedarse con los pasos que ya había.
+  13. Por el ojo: si un nudo va atado a un ojo (anzuelo, emerillón, señuelo), en todos los pasos se ve la línea pasando por el ojo, también con el nudo apretado.
+  14. Lo que se tira se mueve: en los pasos de apretar, la línea de la que se tira y el nudo que se cierra van en tono fuerte; lo que se sostiene, con la flecha de sostener.
+  15. Apretar y cortar, en pasos separados: primero se ve el nudo cerrado y después, en su propio paso, la tijera junto al sobrante.
+  16. El nudo terminado con su forma: cada nudo apretado se dibuja con su estructura propia (sus vueltas, cruces y pasadas), no con un resorte que sirve para cualquiera.
+  Reglas que salieron de las revisiones de Carrete, Palomar, Clinch y Lazo perfecto (los errores que más se repitieron):
+  17. Un cruce se decide una sola vez: qué va encima sale de la profundidad de la línea en ese punto (dibujo en 3D), no de elegirlo tramo por tramo. Así no cambia entre pasos ni se contradice.
+  18. Los cruces se escriben primero desde el nudo real: antes de dibujar, una tabla de qué parte pasa por encima de cuál en cada paso (`test/knots-crossings.test.js`). El dibujo tiene que dar esa misma tabla.
+  19. El nudo apretado es el flojo achicado: se aprieta el centro del mismo dibujo (sin que nada pase a través de nada), no se redibuja a mano. Tiene los mismos cruces que el flojo.
+  20. Tamaño mínimo: el nudo apretado no se achica hasta volverse una mancha; entre dos tramos paralelos queda al menos el ancho de una línea de papel.
+  21. Cruces legibles: ninguno casi paralelo (al menos 30°) ni con las dos líneas a casi la misma profundidad.
+  22. Si una línea pasa alrededor de un objeto (el anzuelo por el lazo del Palomar), el lazo se dibuja bien abierto, con el objeto adentro; recién después se cierra.
+  23. Al cortar se ve el sobrante, con su punta, y la tijera encima. Ninguna flecha tapa la punta.
+  Reglas que salieron de rehacer el Lazo perfecto en 3D:
+  24. Cruces separados: entre dos cruces, al menos 8 unidades. En el paso de apretar el nudo se ve cerrado, como en las guías: ahí alcanzan 5 unidades y los tramos pueden ir juntos, porque los cruces ya se comprobaron en el nudo flojo.
+  25. Sin tramos montados: dos tramos que no se cruzan no corren pegados (a menos de un ancho de línea más papel). Vale también para una vuelta en U demasiado cerrada.
+  26. Flecha de mover junto a lo que se mueve, nunca en el vacío. Si el movimiento pasa por detrás de algo (un lazo que atraviesa a otro), se dibuja a medio camino, no solo con una flecha.
+  27. Medir, no estimar: para que una parte cruce a otra se toman las coordenadas reales de la otra, y se confirma con la lista de cruces. Después de cada cambio, `node --test`.
+  28. Lo que el paso no mueve no cambia de largo ni de lugar: por ejemplo, la línea arranca en el mismo punto en dos pasos seguidos.
+  29. Si un arreglo choca con una regla, no se la saltea: o se busca otro arreglo, o se cambia la regla acá, con el motivo. (Pasó con la regla 14 en el Clinch apretado: el nudo quedó en tono claro; se corrige al pasarlo a 3D.)
+  Reglas que salieron de atar el Lazo perfecto de verdad (el dibujo se podía seguir, pero el nudo salía corredizo y se desarmaba: la segunda vuelta estaba dibujada "por delante" del primer lazo, cuando en el nudo real rodea la línea, por delante y por detrás):
+  30. Referencia externa, nunca de memoria: cada nudo se arma comparando varias fuentes de nudos de pesca reconocidas (al menos dos o tres, por ejemplo Orvis, Netknots, Animated Knots, Wikipedia), y la tabla de cruces cita la frase de la fuente que justifica cada pasada. Si las fuentes no coinciden en una pasada, se busca otra fuente hasta despejar la duda; si no se despeja, se pregunta. Ni quien dibuja ni el revisor usan solo lo que recuerdan del nudo.
+  34. Copiar la disposición de una guía ilustrada: antes de dibujar, mirar cómo lo dibujan las guías de nudos reconocidas (imágenes, no solo texto) y copiar la de la más simple: cuántos pasos, desde dónde se mira y qué se ve en cada paso. Se redibuja con el estilo de la app (colores, rombo, flechas). Si en este entorno no se pueden abrir las imágenes, se le pide al usuario una de referencia antes de dibujar.
+  35. Pocos pasos, con piezas que el pescador ya conoce: un nudo simple, una vuelta o un lazo se muestran de una vez ("hacer un nudo simple alrededor de la línea"), no pasada por pasada. Se descompone un paso solo si la prueba en la mano muestra que no se entiende. La regla 12 (pasos suficientes) no es para sumar pasos: es para no saltear uno que haga falta.
+  36. Una sola revisión por nudo: primero se corrige todo lo que marca la prueba automática; después una revisión; se arregla lo grave y lo medio y no se vuelve a revisar salvo que el arreglo cambie el nudo. Lo leve se anota.
+  33. La forma más simple: muchos nudos se pueden atar o mostrar de varias maneras (otro orden de pasos, otra orientación, la vuelta hacia un lado o hacia el otro). Se elige la que resulte más simple y fácil de seguir, aunque el nudo terminado sea el mismo, y se anota en la tabla de cruces cuál se eligió y por qué.
+  31. Textos completos: el texto de cada paso dice todas las pasadas, con "por delante", "por detrás" o "alrededor de". Una pasada que el texto omite es la que después se dibuja mal.
+  32. Prueba en la mano: un nudo no está terminado hasta que alguien lo ata siguiendo solo los dibujos y prueba los extremos (el Lazo perfecto ya pasó esta prueba): tirar de la línea y del lazo (o del anzuelo) no lo hace correr, y tirar del sobrante no lo desarma. Las pruebas automáticas y el revisor no reemplazan esto: comprueban que el dibujo es coherente, no que el nudo aguanta.
+- Nudos dibujados en 3D (`js/drawings/knot3d.js`; por ahora el Lazo perfecto, después el resto): el nudo es una línea en el espacio, con partes con nombre ("primer lazo", "punta entre lazos"…) y una profundidad en cada punto que cambia de a poco. El programa la aplana al dibujo de siempre (mismos colores, rombo, flechas y borde solo entre tramos del mismo tono), calcula los cruces y dibuja encima, en cada uno, lo que está más cerca. El nudo apretado sale del flojo apretando su centro.
+- Cómo se controlan los dibujos de nudos:
+  - Prueba automática (`test/knots-drawing.test.js`, corre con `node --test` y en cada publicación): mide lo que no necesita criterio. Nada fuera del borde, textos enteros y sin tapar el dibujo, colores de la paleta, flecha de tirar saliendo de una línea, rombo pegado a su línea, tijera junto a un sobrante con su punta, ninguna flecha encima de la punta y una línea pasando por cada ojo. Flecha de mover junto a una línea. En los nudos en 3D, además: cruces de al menos 30°, con profundidad clara y separados entre sí, y ningún tramo montado sobre otro.
+  - Prueba de cruces (`test/knots-crossings.test.js`): en los nudos en 3D, los cruces de cada paso son los de la tabla escrita desde el nudo real (regla 18). Los nudos todavía sin rehacer figuran como pendientes y no frenan la publicación; al rehacer uno, se agrega a la lista de rehechos.
+  - Revisión independiente: el agente `revisor-nudos` (`.claude/agents/revisor-nudos.md`) mira las imágenes de cada paso sin saber qué se quiso dibujar y las compara con las reglas y con cómo se ata el nudo de verdad. Las imágenes salen de `node tools/nudos/hoja.mjs` (usa Playwright, solo para desarrollo). Qué va por encima en cada cruce no lo juzga mirando: lo lee de `node tools/nudos/cruces.mjs <id>` (en los nudos en 3D) y lo compara con cómo se ata el nudo. Separa lo que está mal (enseña mal el nudo) de lo que se puede leer mal (claridad). Se usa después de dibujar o cambiar un nudo y antes de mostrarlo.
 - Publicación: un workflow de GitHub Actions corre las pruebas y publica en GitHub Pages en cada push a main.
 
 ## Pendientes y preguntas abiertas

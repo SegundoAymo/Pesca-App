@@ -5,9 +5,9 @@ const X = 66; // the line runs down this x
 const LABEL_X = 112;
 const W = 330;
 const C = {
-  line: '#0B0B0B',
-  leader: '#1D5FA8',
-  wire: '#7A7A72',
+  line: '#1E5A38', // the line: green, still shade
+  leader: '#8A4300', // the other line: orange, still shade
+  wire: '#6B6B66', // metal
   yellow: '#FFC400',
   red: '#C8102E',
   lead: '#6B6B66',
@@ -33,16 +33,16 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 // Glyphs drawn centered at (x, y0..y0+h). Each returns { h, svg }.
 const GLYPH = {
   line: () => ({ h: 34, svg: '' }),
-  stop: (x, y) => ({ h: 24, svg: `<path d="M${x - 9} ${y + 12} h18" stroke="${C.red}" stroke-width="5" stroke-linecap="round"/><path d="M${x + 8} ${y + 12} l9 -6 M${x + 8} ${y + 12} l9 5" stroke="${C.red}" stroke-width="2" stroke-linecap="round"/>` }),
-  bead: (x, y) => ({ h: 22, svg: `<circle cx="${x}" cy="${y + 11}" r="6.5" fill="${C.red}" stroke="#0B0B0B" stroke-width="1.5"/>` }),
+  stop: (x, y) => ({ h: 24, svg: `<path d="M${x - 9} ${y + 12} h18" stroke="${C.leader}" stroke-width="5" stroke-linecap="round"/><path d="M${x + 8} ${y + 12} l9 -6 M${x + 8} ${y + 12} l9 5" stroke="${C.leader}" stroke-width="2" stroke-linecap="round"/>` }),
+  bead: (x, y) => ({ h: 22, svg: `<circle cx="${x}" cy="${y + 11}" r="6.5" fill="#FFFFFF" stroke="#0B0B0B" stroke-width="1.5"/>` }),
   float: (x, y) => ({ h: 70, svg: `<path d="M${x} ${y + 4} C${x + 16} ${y + 14} ${x + 17} ${y + 42} ${x} ${y + 66} C${x - 17} ${y + 42} ${x - 16} ${y + 14} ${x} ${y + 4}Z" fill="#FFFFFF" stroke="#0B0B0B" stroke-width="2"/><path d="M${x - 13.5} ${y + 28} C${x - 13} ${y + 18} ${x - 8} ${y + 10} ${x} ${y + 4} C${x + 8} ${y + 10} ${x + 13} ${y + 18} ${x + 13.5} ${y + 28}Z" fill="${C.yellow}" stroke="#0B0B0B" stroke-width="2"/><path d="M${x} ${y} v70" stroke="#0B0B0B" stroke-width="1" stroke-dasharray="2 3"/>` }),
   plop: (x, y) => ({ h: 64, svg: `<path d="M${x - 15} ${y + 8} Q${x} ${y + 18} ${x + 15} ${y + 8} L${x + 7} ${y + 58} Q${x} ${y + 62} ${x - 7} ${y + 58} Z" fill="${C.yellow}" stroke="#0B0B0B" stroke-width="2" stroke-linejoin="round"/><path d="M${x - 15} ${y + 8} Q${x} ${y - 2} ${x + 15} ${y + 8}" fill="#FFFFFF" stroke="#0B0B0B" stroke-width="2"/>` }),
-  'float-small': (x, y) => ({ h: 64, svg: `<path d="M${x} ${y + 4} C${x + 7} ${y + 18} ${x + 7} ${y + 44} ${x} ${y + 60} C${x - 7} ${y + 44} ${x - 7} ${y + 18} ${x} ${y + 4}Z" fill="#FFFFFF" stroke="#0B0B0B" stroke-width="2"/><path d="M${x - 5.6} ${y + 22} C${x - 5} ${y + 14} ${x - 2} ${y + 8} ${x} ${y + 4} C${x + 2} ${y + 8} ${x + 5} ${y + 14} ${x + 5.6} ${y + 22}Z" fill="${C.red}" stroke="#0B0B0B" stroke-width="1.5"/>` }),
+  'float-small': (x, y) => ({ h: 64, svg: `<path d="M${x} ${y + 4} C${x + 7} ${y + 18} ${x + 7} ${y + 44} ${x} ${y + 60} C${x - 7} ${y + 44} ${x - 7} ${y + 18} ${x} ${y + 4}Z" fill="#FFFFFF" stroke="#0B0B0B" stroke-width="2"/><path d="M${x - 5.6} ${y + 22} C${x - 5} ${y + 14} ${x - 2} ${y + 8} ${x} ${y + 4} C${x + 2} ${y + 8} ${x + 5} ${y + 14} ${x + 5.6} ${y + 22}Z" fill="${C.yellow}" stroke="#0B0B0B" stroke-width="1.5"/>` }),
   'sinker-sliding': (x, y) => ({ h: 44, svg: `<ellipse cx="${x}" cy="${y + 22}" rx="11" ry="18" fill="${C.lead}" stroke="#0B0B0B" stroke-width="2"/><path d="M${x} ${y + 2} v40" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="3 3"/>` }),
   'sinker-fixed': (x, y) => ({ h: 52, svg: `<circle cx="${x}" cy="${y + 6}" r="4" fill="none" stroke="#0B0B0B" stroke-width="2"/><path d="M${x} ${y + 10} C${x + 15} ${y + 22} ${x + 16} ${y + 44} ${x} ${y + 50} C${x - 16} ${y + 44} ${x - 15} ${y + 22} ${x} ${y + 10}Z" fill="${C.lead}" stroke="#0B0B0B" stroke-width="2"/>` }),
-  swivel: (x, y) => ({ h: 40, svg: `<circle cx="${x}" cy="${y + 7}" r="5" fill="none" stroke="#0B0B0B" stroke-width="2.4"/><rect x="${x - 5}" y="${y + 12}" width="10" height="16" rx="3" fill="${C.yellow}" stroke="#0B0B0B" stroke-width="2"/><circle cx="${x}" cy="${y + 33}" r="5" fill="none" stroke="#0B0B0B" stroke-width="2.4"/>` }),
+  swivel: (x, y) => ({ h: 40, svg: `<circle cx="${x}" cy="${y + 7}" r="5" fill="none" stroke="${C.lead}" stroke-width="2.4"/><rect x="${x - 5}" y="${y + 12}" width="10" height="16" rx="3" fill="${C.lead}" stroke="${C.lead}" stroke-width="2"/><circle cx="${x}" cy="${y + 33}" r="5" fill="none" stroke="${C.lead}" stroke-width="2.4"/>` }),
   'split-shot': (x, y) => ({ h: 24, svg: `<circle cx="${x}" cy="${y + 12}" r="6" fill="${C.lead}" stroke="#0B0B0B" stroke-width="1.5"/>` }),
-  hook: (x, y) => ({ h: 56, svg: `<circle cx="${x}" cy="${y + 5}" r="4" fill="none" stroke="#0B0B0B" stroke-width="2.4"/><path d="M${x} ${y + 9} V${y + 38} a11 11 0 0 1 -22 0 v-6" fill="none" stroke="#0B0B0B" stroke-width="3" stroke-linecap="round"/><path d="M${x - 22} ${y + 32} l5 6" stroke="#0B0B0B" stroke-width="2.6" stroke-linecap="round"/>` }),
+  hook: (x, y) => ({ h: 56, svg: `<circle cx="${x}" cy="${y + 5}" r="4" fill="none" stroke="${C.lead}" stroke-width="2.4"/><path d="M${x} ${y + 9} V${y + 38} a11 11 0 0 1 -22 0 v-6" fill="none" stroke="${C.lead}" stroke-width="3" stroke-linecap="round"/><path d="M${x - 22} ${y + 32} l5 6" stroke="${C.lead}" stroke-width="2.6" stroke-linecap="round"/>` }),
   dough: (x, y) => ({ h: 52, svg: `<circle cx="${x}" cy="${y + 26}" r="22" fill="#E8C98A" stroke="#0B0B0B" stroke-width="2"/><circle cx="${x - 8}" cy="${y + 19}" r="2" fill="#B08A48"/><circle cx="${x + 7}" cy="${y + 31}" r="2" fill="#B08A48"/><circle cx="${x + 9}" cy="${y + 16}" r="1.6" fill="#B08A48"/>` }),
   popup: (x, y) => ({ h: 26, svg: `<circle cx="${x - 11}" cy="${y + 12}" r="8" fill="${C.yellow}" stroke="#0B0B0B" stroke-width="2"/>` }),
 };
@@ -86,7 +86,7 @@ export function rigSvg(rig) {
       const h = Math.max(92, lb.h);
       const by = y + 14;
       const color = leader?.kind === 'wire' ? C.wire : C.leader;
-      body += `<circle cx="${X}" cy="${by}" r="5" fill="none" stroke="#0B0B0B" stroke-width="2.2"/>`
+      body += `<circle cx="${X}" cy="${by}" r="5" fill="none" stroke="${C.line}" stroke-width="2.2"/>`
         + `<path d="M${X - 5} ${by} C${X - 30} ${by} ${X - 40} ${by + 6} ${X - 52} ${by + 22} L${X - 52} ${by + 40}" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round"/>`
         + GLYPH.hook(X - 52, by + 36).svg;
       body += lb.svg;
