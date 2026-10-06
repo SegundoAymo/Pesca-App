@@ -1250,32 +1250,119 @@ const BIMINI = [
   }),
 ];
 
-/* Nudo de brazolada. */
-const BZ_LOOP = 'M120 110 C130 40 190 40 200 110';
+/* Nudo de brazolada (dropper loop), in 3D, following Wilson p. 14 ("bucle colgante",
+   docs/referencias-nudos.md) and Wikipedia ("twist up the overlap... dropping the loop
+   through the central twist"). Two stretches of the line overlap, one above the other,
+   joined by a big loop over the top: the lower one comes from the left and turns up at the
+   right, over the line, into the loop; the loop comes down at the left into the upper one,
+   which goes on to the right. The overlap is twisted 4 turns on each side of an opening in
+   the middle (the two sides mirror each other); the loop goes down through the opening, in
+   front of the upper stretch and behind the lower one, and pulling the two ends gathers
+   the turns on each side, with the loop hanging below. */
+const BR_C = 100; // the axis of the overlap
+const BR_X0 = 10; // where the line starts (and ends at 330 - BR_X0)
+const BR_T0 = 70; // the left turns, from here
+const BR_T1 = 140; // to here; the right ones mirror them about x = 165
+const BR_N = 4; // turns on each side
+const BR_G = 7; // half gap of the two stretches in the turns
+const BR_EYE = 18; // half height of the opening
+/** One stretch of the overlap from x0 to x1, as a part: sign 1 the lower one, -1 the upper
+    one; twisted: with the turns and the opening, or straight. Depth comes from the twist:
+    where one stretch is in front, the other is behind. */
+function brStretch(name, sign, twisted, { t0 = BR_T0, t1 = BR_T1, g = BR_G, eye = BR_EYE, lead = 20 } = {}) {
+  const xs = [];
+  for (let x = t0 - lead; x <= 330 - t0 + lead; x += 0.5) xs.push(x);
+  const ramp = (x, a, b) => Math.min(1, Math.max(0, (x - a) / (b - a)));
+  const phase = (x) => {
+    const m = x <= 165 ? x : 330 - x; // mirrored
+    return twisted ? 2 * Math.PI * BR_N * ramp(m, t0, t1) : 0;
+  };
+  const gap = (x) => {
+    const m = x <= 165 ? x : 330 - x;
+    const u = twisted ? ramp(m, t1, t1 + (eye > 10 ? 16 : 8)) : 0;
+    return g + (eye - g) * u * u * (3 - 2 * u);
+  };
+  const pts = xs.map((x) => [x, BR_C + sign * gap(x) * Math.cos(phase(x)), sign * Math.sin(phase(x)) * 1.2]);
+  const len = [0];
+  for (let i = 1; i < pts.length; i++) len.push(len[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  const total = len[len.length - 1];
+  return { name, d: `M${pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join(' L')}`, z: pts.map((p, i) => [len[i] / total, p[2]]) };
+}
+const BR_A0 = BR_T0 - 20; // where the overlap starts
+const BR_A1 = 330 - BR_T0 + 20; // and ends
+const BR_LO = BR_C + BR_G;
+const BR_HI = BR_C - BR_G;
+/** The loop, from the end of the lower stretch (turning up over the line at the right) to
+    the start of the upper one (coming down at the left). through: down through the opening. */
+function brLoop(through) {
+  const up = { name: 'lazo', d: `M${BR_A1} ${BR_LO} C${BR_A1 + 14} ${BR_LO} ${BR_A1 + 20} ${BR_HI - 8} ${BR_A1 + 20} ${BR_HI - 26}`, z: [[0, 0], [0.45, 1], [1, 0]] };
+  const down = { name: 'lazo', d: `M${BR_A0 - 20} ${BR_HI - 26} C${BR_A0 - 20} ${BR_HI - 6} ${BR_A0 - 10} ${BR_HI} ${BR_A0} ${BR_HI}`, z: 0 };
+  if (!through) {
+    return [up, { name: 'lazo', d: `M${BR_A1 + 20} ${BR_HI - 26} C${BR_A1 + 20} 18 ${BR_A0 - 20} 18 ${BR_A0 - 20} ${BR_HI - 26}`, z: 0 }, { ...down, name: 'lazo' }];
+  }
+  // Down through the opening: each leg in front of the upper stretch, behind the lower one.
+  const yTop = 50;
+  const yBot = 142;
+  const tHi = (BR_C - BR_EYE - yTop) / (yBot - yTop);
+  const tLo = (BR_C + BR_EYE - yTop) / (yBot - yTop);
+  const leg = (name, x, dir) => ({ name, d: dir > 0 ? `M${x} ${yTop} V${yBot - 8}` : `M${x} ${yBot - 8} V${yTop}`,
+    z: dir > 0 ? [[0, 0], [tHi, 1], [tLo, -1], [1, -1]] : [[0, -1], [1 - tLo, -1], [1 - tHi, 1], [1, 0]] });
+  return [
+    { ...up, name: 'lazo derecho' },
+    { name: 'lazo derecho', d: `M${BR_A1 + 20} ${BR_HI - 26} C${BR_A1 + 20} 22 182 24 174 ${yTop}`, z: 0 },
+    leg('lazo baja', 174, 1),
+    { name: 'punta del lazo', d: `M174 ${yBot - 8} C174 ${yBot + 2} 156 ${yBot + 2} 156 ${yBot - 8}`, z: -1 },
+    leg('lazo sube', 156, -1),
+    { name: 'lazo izquierdo', d: `M156 ${yTop} C148 24 ${BR_A0 - 20} 22 ${BR_A0 - 20} ${BR_HI - 26}`, z: 0 },
+    { ...down, name: 'lazo izquierdo' },
+  ];
+}
+const brFig = (twisted, through) => figure(
+  { name: 'línea', d: `M${BR_X0} ${BR_LO} H${BR_A0}`, z: 0 },
+  brStretch('de abajo', 1, twisted),
+  ...brLoop(through),
+  brStretch('de arriba', -1, twisted),
+  { name: 'sigue la línea', d: `M${BR_A1} ${BR_HI} H${330 - BR_X0}`, z: 0 },
+);
+const BR1 = brFig(false, false);
+const BR2 = brFig(true, false);
+const BR3 = brFig(true, true);
+// Pulled tight, holding the loop: the turns gather on each side of the opening, the two
+// stretches close on the axis, and the loop is pulled down through the opening: what was
+// above the knot is now two short humps over it, and the loop hangs long below. It is the
+// same line along the same way (the crossings test checks they are the same), only slid.
+const BRT = { t0: 104, t1: 150, g: 5, eye: 9, lead: 14 };
+const brTA0 = BRT.t0 - BRT.lead;
+const brTA1 = 330 - brTA0;
+const BR4 = (() => {
+  const lo = BR_C + BRT.g;
+  const hi = BR_C - BRT.g;
+  const hump = BR_C - 22;
+  const yTop = BR_C - 12;
+  const yBot = 150;
+  const tHi = (BR_C - BRT.eye - yTop) / (yBot - yTop);
+  const tLo = (BR_C + BRT.eye - yTop) / (yBot - yTop);
+  return figure(
+    { name: 'línea', d: `M${BR_X0} ${lo} H${brTA0}`, z: 0 },
+    brStretch('de abajo', 1, true, BRT),
+    { name: 'lazo derecho', d: `M${brTA1} ${lo} C${brTA1 + 10} ${lo} ${brTA1 + 14} ${hi - 6} ${brTA1 + 14} ${hump + 8}`, z: [[0, 0], [0.5, 1], [1, 0]] },
+    { name: 'lazo derecho', d: `M${brTA1 + 14} ${hump + 8} C${brTA1 + 14} ${hump - 6} 180 ${hump - 4} 172 ${hump + 2} C170 ${hump + 4} 170 ${yTop - 6} 170 ${yTop}`, z: 0 },
+    { name: 'lazo baja', d: `M170 ${yTop} V${yBot - 8}`, z: [[0, 0], [tHi, 1], [tLo, -1], [1, -1]] },
+    { name: 'punta del lazo', d: `M170 ${yBot - 8} C170 ${yBot + 2} 160 ${yBot + 2} 160 ${yBot - 8}`, z: -1 },
+    { name: 'lazo sube', d: `M160 ${yBot - 8} V${yTop}`, z: [[0, -1], [1 - tLo, -1], [1 - tHi, 1], [1, 0]] },
+    { name: 'lazo izquierdo', d: `M160 ${yTop} C160 ${yTop - 6} 160 ${hump + 4} 158 ${hump + 2} C150 ${hump - 4} ${brTA0 - 14} ${hump - 6} ${brTA0 - 14} ${hump + 8} C${brTA0 - 14} ${hi - 6} ${brTA0 - 8} ${hi} ${brTA0} ${hi}`, z: 0 },
+    brStretch('de arriba', -1, true, BRT),
+    { name: 'sigue la línea', d: `M${brTA1} ${hi} H${330 - BR_X0}`, z: 0 },
+  );
+})();
+const brColors = (fig, c, over = {}) => ({ ...allParts(fig, c), línea: L1.still, 'sigue la línea': L1.still, ...over });
 const BRAZOLADA = [
-  seg('M10 110 H120', L1.still) + seg('M200 110 H310', L1.still) + seg(BZ_LOOP, L1.move) + text(160, 150, 'formar un lazo amplio'),
-  st(() => {
-    const w = coil(198, 110, 5, 15, 12, L1.move);
-    return w.back + seg('M10 110 H310', L1.still) + w.front + seg('M126 98 C138 44 182 44 192 98', L1.done)
-      + open(160, 70, 90) + text(160, 152, '5 vueltas, con el lazo abierto');
-  }),
-  st(() => {
-    const w = coil(198, 110, 5, 15, 12, L1.done);
-    return w.back + seg('M10 110 H310', L1.still) + w.front + seg('M126 98 C138 44 182 44 192 98', L1.move)
-      + arrow('M160 52 C160 80 160 90 160 106') + text(200, 30, 'pasar el lazo por el centro');
-  }),
-  st(() => {
-    const a = coil(158, 110, 4, 5, 9, L1.done);
-    const b = coil(182, 110, 4, 5, 9, L1.done);
-    return a.back + b.back + seg('M70 110 H250', L1.still) + a.front + b.front + seg('M158 104 C146 60 174 60 162 104', L1.done)
-      + pull('M64 110 H22') + pull('M256 110 H296') + drop(240, 50);
-  }),
-  st(() => {
-    const a = coil(158, 110, 4, 5, 9, L1.done);
-    const b = coil(182, 110, 4, 5, 9, L1.done);
-    return a.back + b.back + seg('M10 110 H310', L1.still) + a.front + b.front + seg('M158 104 C142 20 178 20 162 104', L1.done)
-      + text(160, 150, 'el lazo sale en ángulo recto');
-  }),
+  step3([{ fig: BR1, colors: brColors(BR1, M) }], text(165, 160, 'un lazo amplio, cruzado sobre la línea')),
+  step3([{ fig: BR2, colors: brColors(BR2, Dn, { 'de abajo': M, 'de arriba': M }) }], open(165, BR_C, 0), text(10, 162, '4 vueltas a cada lado', 'start')),
+  step3([{ fig: BR3, colors: brColors(BR3, Dn, Object.fromEntries(BR3.parts.filter((n) => n.startsWith('lazo') || n === 'punta del lazo').map((n) => [n, M]))) }],
+    arrow('M190 66 C196 90 196 120 188 144'), text(10, 164, 'por el hueco', 'start')),
+  step3([{ fig: BR4, colors: brColors(BR4, M, { línea: M, 'sigue la línea': M }) }], pull(`M70 ${BR_C + BRT.g + 8} H40`), pull(`M260 ${BR_C - BRT.g - 8} H290`), hold(165, 138, 90), drop(252, 30),
+    text(10, 30, 'sostener el lazo y tirar', 'start'), { tight: true }),
 ];
 
 /* Tope corredizo: line (green) and the stop thread (orange). */

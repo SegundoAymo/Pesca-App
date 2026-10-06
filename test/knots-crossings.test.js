@@ -109,7 +109,20 @@ const pairD = (over, under) => ['ida', 'vuelta'].flatMap((a) => ['ida', 'vuelta'
 const lcOnce = [...pairD('pasada', 'juntas'), ...pairD('juntas', 'pasada'), ...pairD('salida', 'lazo')];
 const lcTwice = [...lcOnce, ...pairD('segunda pasada', 'juntas'), ...pairD('juntas', 'segunda pasada')];
 
+
+// Nudo de brazolada (dropper loop), from the references (Wilson p. 14: "haga un bucle amplio
+// ... que se cruce sobre la línea principal", "dé cuatro vueltas completas", "pase después el
+// bucle mayor a través del bucle pequeño"; Wikipedia: "twist up the overlap ... dropping the
+// loop through the central twist"). The loop crosses over the line where it goes on; the
+// overlap is twisted 4 turns on each side of the opening: a twist of two strands, so at each
+// crossing the other one is in front (8 crossings a side, 16 in all, half each way). The loop
+// goes through the opening from the front: each leg in front of the upper stretch and behind
+// the lower one.
+const brTwist = Array.from({ length: 8 }, () => ['de abajo > de arriba', 'de arriba > de abajo']).flat();
+const brThrough = ['lazo derecho > sigue la línea', ...brTwist, 'lazo baja > de arriba', 'de abajo > lazo baja', 'lazo sube > de arriba', 'de abajo > lazo sube'];
+
 const EXPECTED = {
+  brazolada: [['lazo > sigue la línea'], ['lazo > sigue la línea', ...brTwist], brThrough, brThrough], // tight: the same crossings
   'lazo-cirujano': [[], lcOnce, lcTwice, lcTwice, lcTwice],
   'doble-uni': [[], duKnot('verde', 'naranja'), duKnot('verde', 'naranja'), duBoth, duBoth, duBoth, duBoth], // sliding them together adds no crossing
   cirujano: [[], cirujanoOnce, cirujanoTwice, cirujanoTwice, cirujanoTwice],

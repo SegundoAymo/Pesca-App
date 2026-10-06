@@ -231,11 +231,10 @@ export const KNOTS = {
     difficulty: 'Media',
     note: 'Hace un lazo fijo a mitad de la línea, que sale en ángulo recto, para colgar una brazolada sin cortar la línea.',
     steps: [
-      'Donde va la brazolada, formar un lazo amplio en la línea.',
-      'Dar 5 o más vueltas manteniendo el lazo abierto con un dedo.',
-      'Pasar el lazo por el centro de las vueltas.',
-      'Mojar y tirar despacio de los dos extremos de la línea.',
-      'Las vueltas se agrupan a cada lado y el lazo sale en ángulo recto.',
+      'Donde va la brazolada, formar un lazo amplio: la línea se cruza por delante de sí misma y queda un tramo doble.',
+      'Retorcer el tramo doble 4 vueltas a cada lado, dejando un hueco en el medio (mantenerlo abierto con un dedo).',
+      'Pasar el lazo por el hueco del medio, de adelante hacia atrás.',
+      'Mojar, sostener el lazo y tirar despacio de los dos extremos: las vueltas se agrupan a cada lado y el lazo sale en ángulo recto.',
     ],
   },
   tope: {
