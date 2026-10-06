@@ -253,7 +253,7 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   6. `node --test` hasta que pase todo; mirar la hoja (`node tools/nudos/hoja.mjs <id>`) al lado de la referencia.
   7. Una revisión con el agente `revisor-nudos` (le pasa la referencia); arreglar lo grave y lo medio (regla 36).
   8. Mostrarle la hoja al usuario y que lo ate. Con eso el nudo queda terminado (regla 32).
-- Pendiente del usuario: probar en la mano el Nudo de carrete, el Palomar, el Clinch mejorado, el Uni, el Snell, el Cirujano, el Doble uni, el Lazo de cirujano y la Brazolada (ya dibujados y revisados) y contar si aguantan.
+- Pendiente del usuario: probar en la mano el Nudo de carrete, el Palomar, el Clinch mejorado, el Uni, el Snell, el Cirujano, el Doble uni, el Lazo de cirujano, la Brazolada y la Sangre (ya dibujados y revisados) y contar si aguantan.
 - Estado de cada nudo (se actualiza al terminar cada etapa):
 
   | Nudo | Referencia | Dibujo 3D | Revisión | Probado en la mano |
@@ -268,7 +268,8 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   | Doble uni | Wilson p. 22 | sí | sí | falta |
   | Lazo de cirujano | Wilson p. 16 (centro) | sí | sí | falta |
   | Brazolada | Wilson p. 14 (abajo) | sí | sí | falta |
-  | Haywire, Manguito, Sangre, Albright | ver `docs/referencias-nudos.md` | no | — | — |
+  | Sangre | Wilson p. 23 (arriba) | sí | sí | falta |
+  | Haywire, Manguito, Albright | ver `docs/referencias-nudos.md` | no | — | — |
   | Bimini, Rapala | referencia débil | no | — | — |
   | FG, Tope corredizo | sin referencia ilustrada: pedirla | no | — | — |
 
