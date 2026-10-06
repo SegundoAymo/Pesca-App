@@ -270,7 +270,7 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   22. Si una línea pasa alrededor de un objeto (el anzuelo por el lazo del Palomar), el lazo se dibuja bien abierto, con el objeto adentro; recién después se cierra.
   23. Al cortar se ve el sobrante, con su punta, y la tijera encima. Ninguna flecha tapa la punta.
   Reglas que salieron de rehacer el Lazo perfecto en 3D:
-  24. Cruces separados: entre dos cruces, al menos 8 unidades (en el nudo apretado también). Si en el nudo flojo ya están cerca, al apretarlo quedan pegados: se separan en el flojo.
+  24. Cruces separados: entre dos cruces, al menos 8 unidades. En el paso de apretar el nudo se ve cerrado, como en las guías: ahí alcanzan 5 unidades y los tramos pueden ir juntos, porque los cruces ya se comprobaron en el nudo flojo.
   25. Sin tramos montados: dos tramos que no se cruzan no corren pegados (a menos de un ancho de línea más papel). Vale también para una vuelta en U demasiado cerrada.
   26. Flecha de mover junto a lo que se mueve, nunca en el vacío. Si el movimiento pasa por detrás de algo (un lazo que atraviesa a otro), se dibuja a medio camino, no solo con una flecha.
   27. Medir, no estimar: para que una parte cruce a otra se toman las coordenadas reales de la otra, y se confirma con la lista de cruces. Después de cada cambio, `node --test`.

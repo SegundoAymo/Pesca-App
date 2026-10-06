@@ -406,7 +406,8 @@ const step3 = (items, ...rest) => {
   const back = rest.filter((x) => x?.back).map((x) => x.back).join('');
   const dotted = r.svg.match(/<path[^>]*stroke-dasharray="0\.1[^>]*>/g)?.join('') ?? '';
   const svg = back ? back + r.svg.replace(/<path[^>]*stroke-dasharray="0\.1[^>]*>/g, '') + dotted : r.svg;
-  return { svg: scene(svg, ...rest.filter((x) => !x?.back)), crossings: r.crossings, close: r.close };
+  // { tight: true }: the knot pulled tight (its crossings closer together, rule 24).
+  return { svg: scene(svg, ...rest.filter((x) => !x?.back && !x?.tight)), crossings: r.crossings, close: r.close, tight: rest.some((x) => x?.tight) };
 };
 const tipAt = (fig, upTo, c) => { const [x, y, a] = endOf(fig, upTo); return tip(x, y, a, c); };
 /** The overhand base piece as parts of a figure: its five pieces with their depths (over,
@@ -466,23 +467,24 @@ const caKnots = (x0) => figure(...caLine(x0),
   ...overhand3('tope', CK2, 1, 1),
   { name: 'sobrante', d: `M${caK2out[0]} ${caK2out[1]} C${caK2out[0] + 8} ${caK2out[1] - 2} ${caK2out[0] + 16} ${caK2out[1]} ${caK2out[0] + 22} ${caK2out[1] + 3}`, z: 1 });
 const CA2 = caKnots(316);
-// Pulled: the stretch to the first knot shrinks to almost nothing, the knots shrink a
-// little, the stopper stays against the first knot; the knots close toward the line.
-const CA_STOPS = [[CA_EDGE, CA_EDGE], [caK1in[0], CA_EDGE + 3], [caK1in[0] + 34, CA_EDGE + 9], [caK1out[0], CA_EDGE + 9 + (caK1out[0] - caK1in[0] - 34) * 0.75],
-  [caK2in[0], CA_EDGE + 11 + (caK1out[0] - caK1in[0] - 34) * 0.75], [caK2out[0] + 22, CA_EDGE + 11 + (caK1out[0] - caK1in[0] - 34) * 0.75 + (caK2out[0] + 22 - caK2in[0]) * 0.8]];
-const caPull = pullAlong(CA_STOPS, CA_Y, (x) => (x < CA_EDGE ? 1 : 0.85));
+// Pulled: the stretch to the first knot shrinks, the knots close to half their size
+// around the line and the stopper ends up against the first knot.
+const CA_KS = 0.5; // how much the knots shrink
+const CA_STOPS = [[CA_EDGE, CA_EDGE], [caK1in[0], CA_EDGE + 12], [caK1out[0], CA_EDGE + 12 + (caK1out[0] - caK1in[0]) * CA_KS],
+  [caK2in[0], CA_EDGE + 13 + (caK1out[0] - caK1in[0]) * CA_KS], [caK2out[0] + 22, CA_EDGE + 13 + (caK1out[0] - caK1in[0]) * CA_KS + (caK2out[0] + 22 - caK2in[0]) * 0.65]];
+const caPull = pullAlong(CA_STOPS, CA_Y, (x) => (x < CA_EDGE ? 1 : x < caK1in[0] ? 1 - ((x - CA_EDGE) / (caK1in[0] - CA_EDGE)) * 0.5 : 0.5));
 const caEnd = CA_STOPS[CA_STOPS.length - 1];
-const CA3 = warp(caKnots(caEnd[0] + (288 - caEnd[1])), caPull); // the line still ends at x = 288
+const CA3 = warp(caKnots(caEnd[0] + (296 - caEnd[1])), caPull); // the line still ends at x = 296
 const caColors = (fig, c, over = {}) => ({ ...allParts(fig, c), ...over, 'alrededor de la bobina': `dotted:${over['alrededor de la bobina'] ?? c}` });
 const REEL_SVG = reel(REEL);
 const CARRETE = [
   step3([{ fig: CA1, colors: caColors(CA1, L1.move, { 'línea': L1.still }) }], tipAt(CA1, null, L1.move),
-    text(320, 162, 'nudo simple alrededor de la línea', 'end'), { back: REEL_SVG }),
+    text(320, 158, 'nudo simple alrededor de la línea', 'end'), { back: REEL_SVG }),
   step3([{ fig: CA2, colors: caColors(CA2, L1.done, { 'línea': L1.still, 'entre nudos': L1.move, 'tope': L1.move, 'sobrante': L1.move }) }],
-    tipAt(CA2, null, L1.move), text(320, 162, 'otro nudo simple: el tope', 'end'), { back: REEL_SVG }),
-  step3([{ fig: CA3, colors: caColors(CA3, L1.move) }], tipAt(CA3, null, L1.move), pull(`M294 ${CA_Y} H302`), drop(250, 120),
-    text(320, 162, 'baja a la bobina y el tope lo traba', 'end'), { back: REEL_SVG }),
-  step3([{ fig: CA3, colors: caColors(CA3, L1.done) }], tipAt(CA3, null, L1.done), scissors(200, 32), { back: REEL_SVG }),
+    tipAt(CA2, null, L1.move), text(320, 158, 'otro nudo simple: el tope', 'end'), { back: REEL_SVG }),
+  step3([{ fig: CA3, colors: caColors(CA3, L1.move) }], tipAt(CA3, null, L1.move), pull(`M300 ${CA_Y} H304`), drop(250, 120),
+    text(320, 158, 'baja a la bobina y el tope lo traba', 'end'), { back: REEL_SVG }, { tight: true }),
+  step3([{ fig: CA3, colors: caColors(CA3, L1.done) }], tipAt(CA3, null, L1.done), scissors(240, 36), { back: REEL_SVG }, { tight: true }),
 ];
 
 /* Uni: the tip comes back below the line (y = 99) and makes a loop over both. */
@@ -709,8 +711,8 @@ const LAZO_PERFECTO = [
     tipAt(LPH, null, Dn), arrow('M250 70 H298'), text(130, 165, 'el 2.º lazo, por dentro del 1.º')),
   step3([{ fig: LPB, colors: { ...allParts(LPB, Dn), 'línea': L1.still, 'pata de abajo': M, 'lazo final': M, 'pata de arriba': M } }],
     tipAt(LPB, null, Dn), text(130, 165, 'sale a la derecha: lazo final')),
-  step3([{ fig: LPC, colors: allParts(LPC, M) }], tipAt(LPC, null, M), pull('M54 120 H30'), pull('M286 76 H298'), text(320, 30, 'cerrar', 'end')),
-  step3([{ fig: LPD, colors: allParts(LPD, Dn) }], tipAt(LPD, null, Dn), scissors(190, 40)),
+  step3([{ fig: LPC, colors: allParts(LPC, M) }], tipAt(LPC, null, M), pull('M54 120 H30'), pull('M286 76 H298'), text(320, 30, 'cerrar', 'end'), { tight: true }),
+  step3([{ fig: LPD, colors: allParts(LPD, Dn) }], tipAt(LPD, null, Dn), scissors(190, 40), { tight: true }),
 ];
 
 /* Sangre: line 1 (green) from the left at y = 78, line 2 (orange) from the right at y = 92. */
@@ -1027,7 +1029,7 @@ const shades = (c) => swatch(`<path d="M2 7 H10" stroke="${c.still}" stroke-widt
 
 /** Key for a knot, built from what its drawings use. */
 export function knotKey(id) {
-  const all = (STEPS[id] || []).join('');
+  const all = (STEPS[id] || []).map((b) => b.svg ?? b).join('');
   const uses = (c) => all.includes(c.still) || all.includes(c.move) || all.includes(c.done);
   const items = [];
   if (all.includes(WIRE.move)) {
@@ -1062,6 +1064,10 @@ export function knotCrossings(id, i) {
 }
 
 /** Places of a step drawn in 3D where two stretches run against each other ({ x, y, a, b }). */
+export function knotStepTight(id, i) {
+  return STEPS[id]?.[i]?.tight ?? false;
+}
+
 export function knotCloseRuns(id, i) {
   return STEPS[id]?.[i]?.close ?? null;
 }
