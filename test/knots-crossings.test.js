@@ -12,6 +12,9 @@ import { knotCrossings, knotStepCount } from '../js/drawings/knots.js';
 // "passing it between the two loops"; "reach behind the first loop and pull the second
 // loop through it"). The second loop is a turn AROUND the line: over it on one side and
 // under it on the other. Without that, the knot is a slip loop and comes undone.
+// Of the ways the sources show it, the simplest: the line along the bottom, the tip ending
+// up at a right angle, the final loop out to the right. Tied by hand from the drawings: it
+// holds (the loop does not slide, pulling the tag does not undo it).
 const lazoStart = ['primer lazo > punta por detrás']; // the tip passes behind the line
 const lazoSecond = [...lazoStart,
   'segundo lazo > primer lazo', // the turn goes in front of the first loop...
