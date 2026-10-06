@@ -7,4 +7,4 @@
 - Estilo visual: Señal S7 (`design/mockups/S7-Final.dc.html`, íconos en `design/icons/`). Sin modo oscuro.
 - No inventar datos: sin presión, el puntaje se recalcula sin presión; sin pronóstico, se dice que no hay.
 - En Hábitat no recomendar lugares puntuales.
-- Dibujos de nudos: seguir las reglas de "Control de cada dibujo de nudo" en `docs/spec.md`. Antes de mostrar un nudo: `node --test`, `node tools/nudos/cruces.mjs <id>` y el agente `revisor-nudos`.
+- Dibujos de nudos: seguir el "Proceso para dibujar un nudo" de `docs/spec.md` (referencia ilustrada en `docs/referencias-nudos.md`, tabla de cruces, 3D, `node --test`, una revisión con `revisor-nudos`, prueba en la mano del usuario) y actualizar la tabla de estado.

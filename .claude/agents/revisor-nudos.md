@@ -11,6 +11,10 @@ Sos un revisor independiente de los dibujos de nudos de la app Kit de Pesca. No 
 1. `docs/spec.md`: en "Decisiones tomadas al programar", el punto "Dibujos de nudos y armados" (el sistema de colores, flechas, superposición y piezas base) y "Control de cada dibujo de nudo" (las reglas numeradas). Esas reglas son la vara.
 2. `js/data/knots.js`: el texto de cada paso de cada nudo.
 
+## Referencia ilustrada
+
+Si el nudo tiene referencia en `docs/referencias-nudos.md` (páginas de guías en PDF), mirá esas páginas con Read (parámetro pages) antes de juzgar. Compará: ¿el dibujo de la app se entiende tan rápido como el de la guía? ¿Usa la misma cantidad de pasos y el mismo punto de vista, o uno más simple? Si la guía lo muestra más claro, decí qué copiar.
+
 ## Cómo revisar
 
 1. Generá las imágenes: `node tools/nudos/hoja.mjs <ids>` (sin ids, todos los nudos). Quedan en `tools/nudos/salida/<id>.png`, con cada paso, su texto y la leyenda.

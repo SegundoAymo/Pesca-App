@@ -244,6 +244,24 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   - La leyenda de cada nudo se arma con lo que usan sus dibujos.
   - Piezas base: línea doble (dos hebras de verdad, abiertas donde se separan y unidas solo en el doblez); nudo simple (tres cruces: encima, debajo, encima); vueltas (el frente entero cruza la línea y la parte de atrás va más clara, como un resorte); torsión de dos hebras (en cada cruce la de arriba lleva borde y se alterna); lo que pasa por detrás de un objeto (bobina, señuelo, manguito, boya) va en puntitos del color de la línea, para no confundirse con la flecha de trazos.
   - Metales separados: anzuelo en gris oscuro; acero (alambre y brazoladas de acero) en gris azulado, con sus tres tonos cuando se mueve; emerillón y manguito en bronce.
+- Proceso para dibujar un nudo (el orden importa; las reglas numeradas de abajo son el detalle):
+  1. Referencia: buscar el nudo en `docs/referencias-nudos.md` (páginas de las guías ilustradas que pasó el usuario) y mirar esas páginas. Copiar la disposición de la más simple: cuántos pasos, desde dónde se ve, qué muestra cada paso (reglas 34 y 35). Si no hay referencia ilustrada, pedírsela al usuario antes de dibujar.
+  2. Cómo se ata: confirmarlo con al menos dos fuentes (las guías y las páginas de nudos reconocidas), sin usar la memoria (regla 30).
+  3. Textos de los pasos: pocos pasos, con piezas conocidas ("hacer un nudo simple alrededor de la línea"), y "por delante / por detrás" cuando haga falta (reglas 31 y 35).
+  4. Tabla de cruces en `test/knots-crossings.test.js`, citando la fuente, antes de dibujar (regla 18).
+  5. Dibujo en 3D con las piezas base (nudo simple, vueltas, bobina, anzuelo) y `pullAlong` para el paso de apretar (reglas 17 y 19).
+  6. `node --test` hasta que pase todo; mirar la hoja (`node tools/nudos/hoja.mjs <id>`) al lado de la referencia.
+  7. Una revisión con el agente `revisor-nudos` (le pasa la referencia); arreglar lo grave y lo medio (regla 36).
+  8. Mostrarle la hoja al usuario y que lo ate. Con eso el nudo queda terminado (regla 32).
+- Estado de cada nudo (se actualiza al terminar cada etapa):
+
+  | Nudo | Referencia | Dibujo 3D | Revisión | Probado en la mano |
+  |---|---|---|---|---|
+  | Lazo perfecto | fuentes web | sí | sí | sí |
+  | Nudo de carrete | imagen del usuario | sí | sí | falta |
+  | Palomar, Clinch | — | no (escenas viejas) | — | — |
+  | Los otros 14 | — | no | — | — |
+
 - Control de cada dibujo de nudo, antes de darlo por bueno (salió de revisar los errores de la primera versión):
   1. Continuidad: cada línea es un solo recorrido de punta a punta. Los tramos se tocan en el mismo punto; no hay tramos sueltos, huecos ni corrimientos (por ejemplo, la línea a otra altura que el nudo al que entra).
   2. Igual entre pasos: lo ya hecho se dibuja con la misma forma y en el mismo lugar que en el paso anterior; solo cambia de tono.
