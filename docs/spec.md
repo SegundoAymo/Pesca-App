@@ -259,8 +259,11 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   |---|---|---|---|---|
   | Lazo perfecto | fuentes web | sí | sí | sí |
   | Nudo de carrete | imagen del usuario | sí | sí | falta |
-  | Palomar, Clinch | — | no (escenas viejas) | — | — |
-  | Los otros 14 | — | no | — | — |
+  | Palomar | guía A p. 2, Wilson p. 6 | no (escena vieja) | — | — |
+  | Clinch mejorado | Wilson p. 5 (arriba) | no (escena vieja) | — | — |
+  | Uni, Snell, Doble uni, Cirujano, Lazo de cirujano, Haywire, Manguito, Brazolada, Sangre, Albright | ver `docs/referencias-nudos.md` | no | — | — |
+  | Bimini, Rapala | referencia débil | no | — | — |
+  | FG, Tope corredizo | sin referencia ilustrada: pedirla | no | — | — |
 
 - Control de cada dibujo de nudo, antes de darlo por bueno (salió de revisar los errores de la primera versión):
   1. Continuidad: cada línea es un solo recorrido de punta a punta. Los tramos se tocan en el mismo punto; no hay tramos sueltos, huecos ni corrimientos (por ejemplo, la línea a otra altura que el nudo al que entra).
