@@ -1153,22 +1153,78 @@ const FG = [
   }),
 ];
 
-/* Lazo de cirujano: the doubled end ties an overhand; its bend is the loop. */
-const lcStart = (cMain, cTag) => seg('M10 81 H126', cMain) + seg('M126 89 H90', cTag) + tip(90, 89, 180, cTag);
-const lcOverhand = (c) => overhandV1(160, 85, c, { st: dbl, ov: dblOver });
+/* Lazo de cirujano, in 3D, following Wilson p. 16 ("bucle de medio nudo doble",
+   docs/referencias-nudos.md): the same double overhand as the Cirujano, tied with the line
+   doubled on itself. The lower strand goes on to the left as the main line, the upper one
+   ends in the tip, and the bend is what passes through the loop: it ends up as the loop of
+   the knot. The knot is drawn on the middle line of the doubled line (cjKnot, as in the
+   Cirujano); its last stretch opens up into the loop. */
+const LC_G = 4; // half gap between the two strands
+const LC_OPEN = 40; // the last stretch, where the strands open into the loop
+const LC_SPREAD = 12; // how much it opens
+/** The doubled line along a middle line (a figure's parts): the main line strand ("ida")
+    from x = 10, the bend (the loop), and the strand back ("vuelta") to the tip. move: warps
+    the middle line first (to pull it tight). */
+function lcDoubled(parts, move = null) {
+  const c0 = figure(...parts).pts;
+  const c = move ? c0.map((p) => { const [x, y] = move(p.x, p.y); return { ...p, x, y }; }) : c0;
+  const s = [0];
+  for (let i = 1; i < c.length; i++) s.push(s[i - 1] + Math.hypot(c[i].x - c[i - 1].x, c[i].y - c[i - 1].y));
+  const S = s[s.length - 1];
+  const gap = (i) => LC_G + Math.max(0, 20 - s[i]) * 0.3 + (Math.max(0, s[i] - (S - LC_OPEN)) / LC_OPEN) * LC_SPREAD;
+  const lane = (sign, tag) => c.map((p, i) => {
+    const a = c[Math.max(0, i - 2)];
+    const b = c[Math.min(c.length - 1, i + 2)];
+    const L = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+    return { x: p.x - ((b.y - a.y) / L) * gap(i) * sign, y: p.y + ((b.x - a.x) / L) * gap(i) * sign, z: p.z, part: `${p.part} (${tag})` };
+  });
+  const A = lane(1, 'ida');
+  const B = lane(-1, 'vuelta').reverse();
+  // The bend: half a circle around the end of the middle line, from one strand to the other.
+  const e = c[c.length - 1];
+  const q = c[c.length - 4];
+  const U = Math.hypot(e.x - q.x, e.y - q.y) || 1;
+  const [ux, uy] = [(e.x - q.x) / U, (e.y - q.y) / U];
+  const g = gap(c.length - 1);
+  const bend = Array.from({ length: 15 }, (_, k) => {
+    const t = (Math.PI * (k + 1)) / 16;
+    return { x: e.x - uy * g * Math.cos(t) + ux * g * Math.sin(t), y: e.y + ux * g * Math.cos(t) + uy * g * Math.sin(t), z: e.z, part: 'lazo final' };
+  });
+  const head = figure({ name: 'línea', d: `M10 ${A[0].y.toFixed(1)} H${A[0].x.toFixed(1)}`, z: A[0].z }).pts.slice(0, -1);
+  const pts = [...head, ...A, ...bend, ...B];
+  return { pts, parts: [...new Set(pts.map((p) => p.part))] };
+}
+/** The tip of the bend (the far end of the loop) and its direction, for the pull. */
+const lcLoopEnd = (fig) => {
+  const b = fig.pts.filter((p) => p.part === 'lazo final');
+  const m = b[Math.floor(b.length / 2)];
+  const i = fig.pts.indexOf(b[0]);
+  const a = fig.pts[i - 6];
+  return [m.x, m.y, Math.atan2(m.y - a.y, m.x - a.x)];
+};
+const lcPullLoop = (fig) => { const [x, y, a] = lcLoopEnd(fig); return pull(`M${(x + 6 * Math.cos(a)).toFixed(1)} ${(y + 6 * Math.sin(a)).toFixed(1)} L${(x + 16 * Math.cos(a)).toFixed(1)} ${(y + 16 * Math.sin(a)).toFixed(1)}`); };
+const LC1 = lcDoubled([{ name: 'doble', d: `M70 ${CJ_Y} H180 C214 ${CJ_Y} 236 80 258 66`, z: 0 }]);
+const LC2 = lcDoubled(cjKnot(2)); // the overhand with the doubled line: the bend through the loop once
+const LC3 = lcDoubled(cjKnot(4)); // and once more
+// Pulled tight: closed more than the Cirujano (Wilson shows a small barrel), across more than
+// along, so the overhand's loop lies on the wraps.
+const LC_PINCH = (x, y) => {
+  const [cx, cy] = [165, CJ_Y - 12];
+  const u = Math.min(1, Math.max(0, (Math.hypot(x - cx, y - cy) - 60) / 70));
+  const w = 1 - u * u * (3 - 2 * u);
+  return [cx + (x - cx) * (1 - 0.22 * w), cy + (y - cy) * (1 - 0.54 * w)];
+};
+const LC4 = lcDoubled(cjKnot(4), LC_PINCH);
+const lcColors = (fig, c, over = {}) => ({ ...allParts(fig, c), línea: L1.still, ...over });
+const lcCut = (fig) => { const [x, y] = endOf(fig); return scissors(x + 4, y - 24); };
 const LAZO_CIRUJANO = [
-  seg('M10 85 H120', L1.still) + seg('M120 85 H200 C240 85 240 110 200 110 H140', L1.move) + tip(140, 110, 180, L1.move) + text(150, 150, 'doblar la punta'),
-  lcStart(L1.still, L1.done) + lcOverhand(L1.move) + dbl('M196 71 C226 60 252 80 240 100', L1.move)
-    + arrow('M110 140 C150 150 180 140 190 120') + text(110, 30, 'nudo simple con la línea doble'),
-  lcStart(L1.still, L1.done) + lcOverhand(L1.done) + dbl('M196 71 C226 60 252 80 240 100', L1.done)
-    + dbl('M238 104 C216 136 150 120 150 60 C152 40 176 36 186 50', L1.move) + arrow('M250 40 C220 26 196 30 186 38')
-    + text(84, 150, 'pasar el lazo otra vez'),
-  st(() => {
-    const w = coil(176, 85, 5, 7, 12, L1.done);
-    return w.back + seg('M70 81 H176', L1.still) + seg('M140 89 H176', L1.done) + w.front
-      + seg('M176 85 C220 50 278 60 278 88 C278 116 220 126 176 90', L1.done) + tip(140, 89, 180, L1.done)
-      + pull('M62 81 H22') + pull('M284 88 H306') + drop(220, 150) + scissors(128, 118);
-  }),
+  step3([{ fig: LC1, colors: lcColors(LC1, M) }], tipAt(LC1, null, M), text(165, 150, 'la punta doblada unos 15 cm')),
+  step3([{ fig: LC2, colors: lcColors(LC2, M) }], tipAt(LC2, null, M), arrow('M100 130 C124 144 156 140 170 122'), text(10, 158, 'nudo simple con la línea doble', 'start')),
+  step3([{ fig: LC3, colors: lcColors(LC3, Dn, Object.fromEntries(LC3.parts.filter((n) => /^(segunda pasada|salida)|^lazo final/.test(n)).map((n) => [n, M]))) }],
+    tipAt(LC3, null, Dn), arrow('M150 130 C174 144 206 140 220 122'), text(10, 158, 'pasar otra vez por el lazo', 'start')),
+  step3([{ fig: LC4, colors: lcColors(LC4, M, { línea: M }) }], tipAt(LC4, null, M), pull(`M44 ${LC4.pts[0].y.toFixed(1)} H18`), lcPullLoop(LC4), drop(60, 40),
+    text(10, 158, 'mojar y tirar del lazo y de la línea', 'start'), { tight: true }),
+  step3([{ fig: LC4, colors: lcColors(LC4, Dn) }], tipAt(LC4, null, Dn), lcCut(LC4), { tight: true }),
 ];
 
 /* Bimini. */

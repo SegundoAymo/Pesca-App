@@ -99,7 +99,18 @@ const duKnot = (me, other) => [`lazo ${me} > ${other}`,
   ...Array.from({ length: 3 }, () => [`${me} > vueltas ${me}`, `${other} > vueltas ${me}`]).flat()];
 const duBoth = [...duKnot('verde', 'naranja'), ...duKnot('naranja', 'verde')];
 
+
+// Lazo de cirujano: the Cirujano's double overhand, tied with the line doubled on itself
+// (Wilson p. 16: "forme un bucle en el extremo", "haga un medio nudo en el bucle", "añada otra
+// vuelta"; Saltwater Sportsman / Cast & Spear: "with the doubled line, tie a loose overhand
+// knot", "pass the loop end through that same overhand knot one more time"). The two strands
+// ("ida", the main line, and "vuelta", to the tip) go together: each crossing is four.
+const pairD = (over, under) => ['ida', 'vuelta'].flatMap((a) => ['ida', 'vuelta'].map((b) => `${over} (${a}) > ${under} (${b})`));
+const lcOnce = [...pairD('pasada', 'juntas'), ...pairD('juntas', 'pasada'), ...pairD('salida', 'lazo')];
+const lcTwice = [...lcOnce, ...pairD('segunda pasada', 'juntas'), ...pairD('juntas', 'segunda pasada')];
+
 const EXPECTED = {
+  'lazo-cirujano': [[], lcOnce, lcTwice, lcTwice, lcTwice],
   'doble-uni': [[], duKnot('verde', 'naranja'), duKnot('verde', 'naranja'), duBoth, duBoth, duBoth, duBoth], // sliding them together adds no crossing
   cirujano: [[], cirujanoOnce, cirujanoTwice, cirujanoTwice, cirujanoTwice],
   snell: [snellStart, snellAll, snellAll, snellAll], // each wrap goes around the shank and both lines

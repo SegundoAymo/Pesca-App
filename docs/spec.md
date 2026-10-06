@@ -61,7 +61,7 @@ Navegación por situación: elegís qué querés unir, ves los nudos que sirven 
 
 Ilustraciones (obligatorias en la app):
 
-- Nudos: un dibujo por paso, con el sistema de colores y flechas de "Decisiones tomadas al programar" (dibujos de nudos y armados). Son 18 nudos y 88 pasos.
+- Nudos: un dibujo por paso, con el sistema de colores y flechas de "Decisiones tomadas al programar" (dibujos de nudos y armados). Son 18 nudos y 89 pasos.
 - Armados de línea: un dibujo vertical de cada armado, de la madre al anzuelo, con cada pieza nombrada y las medidas (largo de brazolada, separación, distancia boya–carnada) marcadas al costado. Son 8 armados y los 3 de plomada.
 - Cómo se hacen: dibujos vectoriales propios dentro del código de la app, con un mismo estilo. Funcionan sin conexión, se ven nítidos en cualquier pantalla y no dependen de imágenes con permisos de terceros.
 - Se dibujan durante la programación, a partir de los pasos de las pestañas Nudos y Armados.
@@ -253,7 +253,7 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   6. `node --test` hasta que pase todo; mirar la hoja (`node tools/nudos/hoja.mjs <id>`) al lado de la referencia.
   7. Una revisión con el agente `revisor-nudos` (le pasa la referencia); arreglar lo grave y lo medio (regla 36).
   8. Mostrarle la hoja al usuario y que lo ate. Con eso el nudo queda terminado (regla 32).
-- Pendiente del usuario: probar en la mano el Nudo de carrete, el Palomar, el Clinch mejorado, el Uni, el Snell, el Cirujano y el Doble uni (ya dibujados y revisados) y contar si aguantan.
+- Pendiente del usuario: probar en la mano el Nudo de carrete, el Palomar, el Clinch mejorado, el Uni, el Snell, el Cirujano, el Doble uni y el Lazo de cirujano (ya dibujados y revisados) y contar si aguantan.
 - Estado de cada nudo (se actualiza al terminar cada etapa):
 
   | Nudo | Referencia | Dibujo 3D | Revisión | Probado en la mano |
@@ -266,7 +266,8 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   | Snell | guía A p. 3, Wilson p. 12 | sí | sí | falta |
   | Cirujano | guía A p. 4, Wilson p. 45 | sí | sí | falta |
   | Doble uni | Wilson p. 22 | sí | sí | falta |
-  | Lazo de cirujano, Haywire, Manguito, Brazolada, Sangre, Albright | ver `docs/referencias-nudos.md` | no | — | — |
+  | Lazo de cirujano | Wilson p. 16 (centro) | sí | sí | falta |
+  | Haywire, Manguito, Brazolada, Sangre, Albright | ver `docs/referencias-nudos.md` | no | — | — |
   | Bimini, Rapala | referencia débil | no | — | — |
   | FG, Tope corredizo | sin referencia ilustrada: pedirla | no | — | — |
 
