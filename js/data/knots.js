@@ -21,8 +21,8 @@ export const KNOTS = {
     note: '',
     steps: [
       'Pasar la línea alrededor de la bobina (con nylon alcanza una vuelta; con trenzado, dos).',
-      'Con la punta, hacer un nudo simple alrededor de la línea principal.',
-      'Hacer otro nudo simple en la punta.',
+      'Con la punta, hacer un nudo simple alrededor de la línea principal: pasar la punta por debajo de la línea, volver por encima y meterla por el lazo que se formó.',
+      'Hacer otro nudo simple en la punta, a unos 3 cm del primero: es el tope.',
       'Mojar y tirar de la línea principal: el primer nudo baja a la bobina y el segundo lo traba.',
       'Cortar el sobrante.',
     ],

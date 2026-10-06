@@ -198,7 +198,10 @@ export function render(items, paper) {
   });
   items.forEach((it, k) => lines[k].pts.forEach((p) => { if (!it.colors[p.part]) throw new Error(`Parte sin color: ${p.part}`); }));
   const crossings = findCrossings(lines);
-  const path = (pts, color, w) => `<path d="${fmt(pts)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  // A color 'dotted:#xxxxxx' draws that part in dots: it goes behind an object.
+  const path = (pts, color, w) => color.startsWith('dotted:')
+    ? `<path d="${fmt(pts)}" fill="none" stroke="${color.slice(7)}" stroke-width="${w}" stroke-linecap="round" stroke-dasharray="0.1 ${w + 4}"/>`
+    : `<path d="${fmt(pts)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
   let svg = '';
   // Under everything, each line in its colors.
   for (const L of lines) for (const r of runs(L, L.pts.map((p, i) => ({ ...p, i })))) svg += path(r.pts, r.color, L.w);

@@ -32,7 +32,25 @@ const lazoThrough = [...lazoStart,
   'pata de arriba > punta entre lazos',
   'punta entre lazos > primer lazo', 'punta entre lazos > primer lazo', 'punta entre lazos > punta por detrás'];
 
+// Nudo de carrete (arbor knot), from the references (Netknots: "tie a simple overhand
+// knot around the standing part with the tag end", "tie a second overhand knot in the
+// tag end"; Wired2Fish: "pass it under the standing end. Bring it back over and through
+// the loop you've created"; Wikipedia and EsPesca agree). An overhand knot is three
+// crossings of the line with itself, alternating; the first one goes around the line:
+// under it first, then back over it, and the tip, going through the loop, passes under it
+// again (the line and the tip both go through the loop, side by side).
+const carreteFirst = ['línea > primer nudo', 'primer nudo > línea', 'línea > primer nudo',
+  'primer nudo > primer nudo', 'primer nudo > primer nudo', 'primer nudo > primer nudo'];
+const carreteBoth = [...carreteFirst, 'segundo nudo > segundo nudo', 'segundo nudo > segundo nudo', 'segundo nudo > segundo nudo'];
+
 const EXPECTED = {
+  carrete: [
+    [], // around the spool: the line only goes behind it
+    carreteFirst,
+    carreteBoth,
+    carreteBoth, // pulled: the first knot slides down to the spool, the same knots
+    carreteBoth,
+  ],
   'lazo-perfecto': [
     lazoStart,
     lazoSecond, // the turn around the line
