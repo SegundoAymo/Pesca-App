@@ -30,7 +30,12 @@ Se nombran en `docs/referencias-nudos.md`:
 - **A** = "Cómo hacer bien sus nudos": un documento de Google, de 1 MB.
 - **B** = "Guía Completa de Nudos y Aparejos de Pesca" (Wilson): un libro, de 22 MB. La página del PDF es la del libro menos 1.
 
-Los PDF no están en el repositorio, que es público. **Al empezar un chat nuevo, el usuario los vuelve a adjuntar.** Están en `docs/fuentes/` solo si el repositorio pasa a ser privado.
+Están en el repositorio, en `docs/fuentes/`:
+
+- `guia-A-como-hacer-bien-sus-nudos.pdf`
+- `guia-B-wilson-nudos-y-aparejos.pdf`
+
+El usuario aclaró que el libro es gratuito y ya está publicado en internet.
 
 Para mirar una página: `pdftoppm -r 110 -f <pág> -l <pág> -png <pdf> <salida>`, y leer la imagen.
 

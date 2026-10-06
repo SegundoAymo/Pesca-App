@@ -1,6 +1,6 @@
 # Referencias ilustradas para los dibujos de nudos
 
-Índice para dibujar los 18 nudos de la app (`js/data/knots.js`). Acá no se copia nada de los PDF: solo se anota dónde está cada nudo, cómo lo dibujan y qué tan cerca está de lo que hace la app.
+Índice para dibujar los 18 nudos de la app (`js/data/knots.js`). Los dos PDF están en `docs/fuentes/` (A: `guia-A-como-hacer-bien-sus-nudos.pdf`; B: `guia-B-wilson-nudos-y-aparejos.pdf`). Acá se anota dónde está cada nudo, cómo lo dibujan y qué tan cerca está de lo que hace la app.
 
 ## Las dos fuentes
 
