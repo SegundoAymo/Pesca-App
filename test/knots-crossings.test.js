@@ -58,7 +58,7 @@ const EXPECTED = {
   palomar: [
     throughEye('doble'), // the fold through the eye: both strands
     palomarKnot, // the overhand with the doubled line, its loop through the eye
-    [...palomarKnot, 'lazo > anzuelo'], // the hook through the loop: the loop passes in front of the shank
+    [...palomarKnot, 'lazo > anzuelo', 'anzuelo > lazo', 'anzuelo > lazo'], // the hook through the loop: in front of the shank, behind the bend
     [...palomarKnot, 'lazo > anzuelo', 'anzuelo > lazo'], // tight: the loop around the shank, in front and behind
     [...palomarKnot, 'lazo > anzuelo', 'anzuelo > lazo'],
   ],

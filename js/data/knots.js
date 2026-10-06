@@ -52,7 +52,7 @@ export const KNOTS = {
       'Doblar unos 15 cm de línea y pasar el doblez por el ojo del anzuelo.',
       'Con la línea doble, hacer un nudo simple sin apretar: el anzuelo queda colgando del nudo y el doblez sobra, como un lazo.',
       'Pasar el anzuelo (o el emerillón) por adentro del lazo.',
-      'Mojar y tirar de la línea y de la punta a la vez: el nudo se cierra sobre el ojo.',
+      'Mojar y tirar de la línea y de la punta a la vez, sosteniendo el anzuelo: el nudo se cierra sobre el ojo.',
       'Cortar el sobrante.',
     ],
   },

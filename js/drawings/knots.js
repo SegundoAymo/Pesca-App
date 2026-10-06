@@ -589,8 +589,8 @@ const PA2 = doubledFig([...paKnot, { name: 'nudo', d: `M${pkOut[0]} ${pkOut[1]} 
 // The loop around the hook: from the end of "ida", down in front of the shank, around
 // below the bend and back up to the end of "vuelta".
 const paRoundFold = (A, B) => ({
-  d: `M${A[0]} ${A[1]} C${A[0] - 6} ${A[1] + 20} ${PE.x + 14} ${PE.y + 14} ${PE.x} ${PE.y + 18} C${PE.x - 32} ${PE.y + 22} ${PE.x - 50} ${PE.y + 32} ${PE.x - 50} ${PE.y + 46} C${PE.x - 50} ${PE.y + 66} ${PE.x} ${PE.y + 68} ${PE.x + 26} ${PE.y + 60} C${PE.x + 50} ${PE.y + 54} ${B[0] + 16} ${B[1] + 16} ${B[0]} ${B[1]}`,
-  z: [[0, 0], [0.12, 2], [0.3, 2], [0.45, 0], [1, 0]],
+  d: `M${A[0]} ${A[1]} C${A[0] - 6} ${A[1] + 20} ${PE.x + 14} ${PE.y + 14} ${PE.x} ${PE.y + 18} C${PE.x - 32} ${PE.y + 22} ${PE.x - 52} ${PE.y + 30} ${PE.x - 52} ${PE.y + 40} C${PE.x - 52} ${PE.y + 48} ${PE.x - 40} ${PE.y + 46} ${PE.x} ${PE.y + 46} C${PE.x + 44} ${PE.y + 46} ${PE.x + 86} ${PE.y + 44} ${PE.x + 92} ${PE.y + 30} C${PE.x + 96} ${PE.y + 20} ${B[0] + 6} ${B[1] + 8} ${B[0]} ${B[1]}`,
+  z: [[0, 0], [0.12, 2], [0.28, 2], [0.42, 0], [0.5, -2], [0.75, -2], [0.85, 0], [1, 0]],
 });
 const paEndsOf = (fig) => {
   const iA = fig.pts.findIndex((p) => p.part === 'lazo') - 1;
@@ -603,25 +603,28 @@ const PA3 = (() => {
   return doubledFig([...paKnot, { name: 'nudo', d: `M${pkOut[0]} ${pkOut[1]} C${pkOut[0] + 6} ${pkOut[1] + 2} ${pkOut[0] + 10} ${pkOut[1] + 6} ${pkOut[0] + 12} ${pkOut[1] + 12}`, z: 0 }], 4,
     paRoundFold([+a.x.toFixed(1), +a.y.toFixed(1)], [+b.x.toFixed(1), +b.y.toFixed(1)]), null, PA_L);
 })();
-// Pulled: the knot closes on the eye (squeezed toward it; the two ends stay where they
-// were) and the loop, which went over the whole hook, ends up around the shank just under
-// the eye: in front of it on one side and behind it on the other.
-const paTightKnot = [...paKnot, { name: 'nudo', d: `M${pkOut[0]} ${pkOut[1]} C${pkOut[0] + 6} ${pkOut[1] + 2} ${pkOut[0] + 10} ${pkOut[1] + 6} ${pkOut[0] + 12} ${pkOut[1] + 12}`, z: 0 }];
-const paSqueeze = pinch(PE.x, PE.y, 0.75, 20, 200);
-const PA4 = (() => {
-  const [a, b] = paEndsOf(doubledFig(paTightKnot, 3, null, paSqueeze, PA_L + 40)).map((p) => [+p.x.toFixed(1), +p.y.toFixed(1)]);
-  return doubledFig(paTightKnot, 3, {
-    d: `M${a[0]} ${a[1]} C${a[0] + 2} ${a[1] + 12} ${PE.x + 12} ${PE.y + 9} ${PE.x} ${PE.y + 10} C${PE.x - 10} ${PE.y + 11} ${PE.x - 12} ${PE.y + 14} ${PE.x - 11} ${PE.y + 17} C${PE.x - 10} ${PE.y + 20} ${PE.x - 6} ${PE.y + 21} ${PE.x} ${PE.y + 21} C${PE.x + 10} ${PE.y + 21} ${b[0] + 6} ${b[1] + 14} ${b[0]} ${b[1]}`,
-    z: [[0, 0], [0.18, 2], [0.4, 2], [0.5, 0], [0.6, -2], [0.8, -2], [1, 0]],
-  }, paSqueeze, PA_L + 40);
-})();
+// Pulled: the same knot, small (its loop still at the eye) and the fold, which went over
+// the whole hook, now short around the shank just under the eye: in front of it on one
+// side and behind it on the other.
+const PKT_K = 0.7;
+const PKT = { x: PE.x + 4 * PKT_K + 3, y: PE.y - 34 * PKT_K, k: PKT_K, fy: -1 }; // a little to the right: its crossings clear of the eye's front
+const pktIn = overhandAt(PKT).in;
+const paTight = (x0) => {
+  const parts = [{ name: 'doble', d: `M${pktIn[0] - 40} ${pktIn[1]} H${pktIn[0]}`, z: 0 }, ...overhand3('nudo', PKT, 0, 0, 26)];
+  const [a, b] = paEndsOf(doubledFig(parts, 3, null, null, x0)).map((p) => [+p.x.toFixed(1), +p.y.toFixed(1)]);
+  return doubledFig(parts, 3, {
+    d: `M${a[0]} ${a[1]} C${a[0] + 2} ${a[1] + 8} ${PE.x + 10} ${PE.y + 13} ${PE.x} ${PE.y + 14} C${PE.x - 8} ${PE.y + 15} ${PE.x - 10} ${PE.y + 18} ${PE.x - 9} ${PE.y + 21} C${PE.x - 8} ${PE.y + 24} ${PE.x - 4} ${PE.y + 25} ${PE.x} ${PE.y + 25} C${PE.x + 10} ${PE.y + 25} ${b[0] + 10} ${b[1] + 10} ${b[0]} ${b[1]}`,
+    z: [[0, 0], [0.18, 2], [0.38, 2], [0.5, 0], [0.62, -2], [0.82, -2], [1, 0]],
+  }, null, x0);
+};
+const PA4 = paTight(PA_L + 40);
 const paColors = (fig, c, over = {}) => ({ ...allParts(fig, c), ...over });
 const PALOMAR = [
-  step3([...PHOOK, { fig: PA1, colors: paColors(PA1, L1.move) }], tipAt(PA1, null, L1.move), arrow(`M196 ${PE.y - 22} H246`), text(10, 158, 'línea doblada, 15 cm', 'start')),
+  step3([...PHOOK, { fig: PA1, colors: paColors(PA1, L1.move) }], tipAt(PA1, null, L1.move), arrow(`M190 ${PE.y - 12} H240`), text(10, 158, 'línea doblada, 15 cm', 'start')),
   step3([...PHOOK, { fig: PA2, colors: paColors(PA2, L1.move) }], tipAt(PA2, null, L1.move), text(10, 158, 'nudo simple con la línea doble', 'start')),
-  step3([...PHOOK, { fig: PA3, colors: paColors(PA3, L1.done, { lazo: L1.move }) }], tipAt(PA3, null, L1.done), arrow(`M${PE.x + 66} ${PE.y + 12} C${PE.x + 72} ${PE.y + 36} ${PE.x + 56} ${PE.y + 60} ${PE.x + 30} ${PE.y + 68}`), text(10, 120, 'por el lazo', 'start')),
-  step3([...PHOOK, { fig: PA4, colors: paColors(PA4, L1.move) }], pull('M54 59.7 H28'), pull('M155 26 L135 15'), hold(PE.x, PE.y + 30, 90), drop(110, 128), text(10, 158, 'tirar de las dos', 'start'), { tight: true }),
-  step3([...PHOOK, { fig: PA4, colors: paColors(PA4, L1.done) }], tipAt(PA4, null, L1.done), scissors(188, 30), { tight: true }),
+  step3([...PHOOK, { fig: PA3, colors: paColors(PA3, L1.done, { lazo: L1.move }) }], tipAt(PA3, null, L1.done), text(10, 120, 'por el lazo', 'start')),
+  step3([...PHOOK, { fig: PA4, colors: paColors(PA4, L1.move) }], pull('M54 74.2 H28'), pull('M133 40 L113 30'), hold(PE.x, PE.y + 30, 90), drop(110, 128), text(10, 158, 'tirar de las dos', 'start'), { tight: true }),
+  step3([...PHOOK, { fig: PA4, colors: paColors(PA4, L1.done) }], tipAt(PA4, null, L1.done), scissors(160, 30), { tight: true }),
 ];
 
 /* Clinch mejorado: one strand from the left, through the eye at (230, 85), back in wraps
