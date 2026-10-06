@@ -12,7 +12,7 @@ test('cada paso de cada nudo tiene su dibujo', () => {
     k.steps.forEach((_, i) => assert.match(knotStepSvg(k.id, i), /^<svg/));
     total += k.steps.length;
   }
-  assert.equal(total, 88);
+  assert.equal(total, 89);
 });
 
 test('cada armado tiene su dibujo', () => {

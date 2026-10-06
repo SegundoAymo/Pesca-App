@@ -39,13 +39,17 @@ const lazoThrough = [...lazoStart,
 // crossings of the line with itself, alternating; the first one goes around the line:
 // under it first, then back over it, and the tip, going through the loop, passes under it
 // again (the line and the tip both go through the loop, side by side).
-const carreteFirst = ['línea > primer nudo', 'primer nudo > línea', 'línea > primer nudo',
-  'primer nudo > primer nudo', 'primer nudo > primer nudo', 'primer nudo > primer nudo'];
-const carreteBoth = [...carreteFirst, 'segundo nudo > segundo nudo', 'segundo nudo > segundo nudo', 'segundo nudo > segundo nudo'];
+const carreteAround = ['línea > alrededor de la línea', 'alrededor de la línea > línea', // under it, back over it
+  'alrededor de la línea > alrededor de la línea']; // crossing itself: the loop around the line
+const carreteFirst = [...carreteAround,
+  'línea > por el lazo', // through the loop, beside the line
+  'por el lazo > alrededor de la línea', 'alrededor de la línea > por el lazo']; // the other two crossings of the overhand
+const carreteBoth = [...carreteFirst, 'tope > tope', 'tope > tope', 'tope > tope'];
 
 const EXPECTED = {
   carrete: [
     [], // around the spool: the line only goes behind it
+    carreteAround,
     carreteFirst,
     carreteBoth,
     carreteBoth, // pulled: the first knot slides down to the spool, the same knots

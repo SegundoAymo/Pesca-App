@@ -409,71 +409,102 @@ const step3 = (items, ...rest) => {
   return { svg: scene(svg, ...rest.filter((x) => !x?.back)), crossings: r.crossings, close: r.close };
 };
 const tipAt = (fig, upTo, c) => { const [x, y, a] = endOf(fig, upTo); return tip(x, y, a, c); };
-/** The overhand base piece as one part of a figure: its five pieces with their depths
-    (over, under, over), blended smoothly where one piece meets the next. */
-function overhand3(name, k, zIn = 0, zOut = 1) {
+/** The overhand base piece as parts of a figure: its five pieces with their depths (over,
+    under, over), blended smoothly where one piece meets the next. names: one name for the
+    whole knot, or two: [going around (the first three pieces, up to the tip crossing over
+    itself), through the loop (the last two)]. */
+function overhand3(names, k, zIn = 0, zOut = 1) {
   const pcs = overhandPieces(null, k);
-  const lens = pcs.map((p) => { const q = sample(p.d); let l = 0; for (let i = 1; i < q.length; i++) l += Math.hypot(q[i][0] - q[i - 1][0], q[i][1] - q[i - 1][1]); return l; });
-  const total = lens.reduce((a, b) => a + b, 0);
-  const stops = [[0, zIn]];
-  let at0 = 0;
-  pcs.forEach((p, i) => {
-    stops.push([(at0 + lens[i] * 0.3) / total, p.z], [(at0 + lens[i] * 0.7) / total, p.z]);
-    at0 += lens[i];
-  });
-  stops.push([1, zOut]);
-  return { name, d: pcs.map((p, i) => (i ? p.d.replace(/^M[^A-Z]*/, '') : p.d)).join(' '), z: stops };
+  const len = (d) => { const q = sample(d); let l = 0; for (let i = 1; i < q.length; i++) l += Math.hypot(q[i][0] - q[i - 1][0], q[i][1] - q[i - 1][1]); return l; };
+  const part = (name, list, z0, z1) => {
+    const lens = list.map((p) => len(p.d));
+    const total = lens.reduce((x, y) => x + y, 0);
+    const stops = [[0, z0]];
+    let at0 = 0;
+    list.forEach((p, i) => {
+      stops.push([(at0 + lens[i] * 0.3) / total, p.z], [(at0 + lens[i] * 0.7) / total, p.z]);
+      at0 += lens[i];
+    });
+    stops.push([1, z1]);
+    return { name, d: list.map((p, i) => (i ? p.d.replace(/^M[^A-Z]*/, '') : p.d)).join(' '), z: stops };
+  };
+  if (typeof names === 'string') return [part(names, pcs, zIn, zOut)];
+  const mid = (pcs[2].z + pcs[3].z) / 2;
+  return [part(names[0], pcs.slice(0, 3), zIn, mid), part(names[1], pcs.slice(3), mid, zOut)];
 }
+/** Where the overhand base piece's tip is after going around (end of the third piece). */
+const overhandMid = (k) => { const q = sample(overhandPieces(null, k)[2].d); return q[q.length - 1]; };
 
 /* Nudo de carrete (arbor knot), in 3D, following the references (Netknots, Wired2Fish):
    spool at (70, 85); the line comes from the right at y = 60, goes behind the spool
-   (dotted) and comes back in front, below. The tip ties an overhand around the line
-   (under it, back over it and through the loop: the line runs through the knot) and a
-   second overhand at its end, the stopper. Pulled, the first knot slides down to the
-   spool and the stopper jams against it: the same figure, moved and squeezed. */
-const CK1 = { x: 180, y: 64 }; // first overhand, around the line (it passes through its loop, at its y - 4)
-const CK2 = { x: 266, y: 28, k: 0.5 }; // second overhand, at the tip, clear above the line
+   (dotted) and comes back in front, below. The tip goes around the line (under it, back
+   over it, crossing itself: a loop around the line) and then through that loop: an
+   overhand around the line, which runs through it. A second overhand at the tip is the
+   stopper. Pulled, the first knot slides down to the spool, the turn closes on it and the
+   stopper jams against the first knot: the same figure, moved and squeezed. */
+const CK1 = { x: 172, y: 64 }; // first overhand, around the line (it passes through its loop, at its y - 4)
+const CK2 = { x: 270, y: 30, k: 0.55 }; // second overhand, the stopper, clear above the line
 const CA_START = [
-  { name: 'línea', d: 'M320 60 H92', z: 0 },
+  { name: 'línea', d: 'M316 60 H92', z: 0 },
   { name: 'detrás de la bobina', d: 'M92 60 H50', z: 0 }, // dotted: behind the spool (an object, not a line)
-  { name: 'vuelta', d: 'M50 60 C40 60 32 70 32 85 C32 100 46 110 70 110 H100', z: 0 },
+  { name: 'vuelta a la bobina', d: 'M50 60 C40 60 32 70 32 85 C32 100 46 110 70 110 H100', z: 0 },
 ];
 const caK1in = overhandAt(CK1).in;
 const caK1out = overhandAt(CK1).out;
+const caK1mid = overhandMid(CK1);
 const caK2in = overhandAt(CK2).in;
 const caK2out = overhandAt(CK2).out;
-const CA1 = figure(...CA_START, { name: 'punta', d: 'M100 110 H214', z: 0 });
 const caTo = { name: 'al nudo', d: `M100 110 C112 110 118 ${caK1in[1]} ${caK1in[0]} ${caK1in[1]}`, z: 0 };
-const CA2 = figure(...CA_START, caTo, overhand3('primer nudo', CK1, 0, 1),
+const caFirst = overhand3(['alrededor de la línea', 'por el lazo'], CK1, 0, 1);
+const CA1 = figure(...CA_START, { name: 'punta', d: 'M100 110 H214', z: 0 });
+const CA2 = figure(...CA_START, caTo, caFirst[0]);
+const CA3 = figure(...CA_START, caTo, ...caFirst,
   { name: 'punta', d: `M${caK1out[0]} ${caK1out[1]} C${caK1out[0] + 14} ${caK1out[1]} ${caK1out[0] + 26} ${caK1out[1]} ${caK1out[0] + 40} ${caK1out[1]}`, z: 1 });
-const caKnots = (x0) => figure({ ...CA_START[0], d: `M${x0} 60 H92` }, ...CA_START.slice(1), caTo, overhand3('primer nudo', CK1, 0, 1),
+const caKnots = (x0) => figure({ ...CA_START[0], d: `M${x0} 60 H92` }, ...CA_START.slice(1), caTo, ...caFirst,
   { name: 'entre nudos', d: `M${caK1out[0]} ${caK1out[1]} C${caK1out[0] + 5} ${caK1out[1]} ${caK2in[0] - 5} ${caK2in[1]} ${caK2in[0]} ${caK2in[1]}`, z: 1 },
-  overhand3('segundo nudo', CK2, 1, 1),
-  { name: 'sobrante', d: `M${caK2out[0]} ${caK2out[1]} L${caK2out[0] + 8} ${caK2out[1] + 1}`, z: 1 });
-const CA3 = caKnots(320);
-/** Pulled: the knots slide down the line to the spool (x squeezed toward it) and close
-    around it (y squeezed toward the line, away from the spool). Both maps keep the order
-    of points, so the crossings do not change. */
-const CA_K = 0.75; // how much the knots move toward the spool (x)
-const CA_KY = 0.9; // and close around the line (y)
+  ...overhand3('tope', CK2, 1, 1),
+  { name: 'sobrante', d: `M${caK2out[0]} ${caK2out[1]} C${caK2out[0] + 3} ${caK2out[1] - 1} ${caK2out[0] + 6} ${caK2out[1]} ${caK2out[0] + 8} ${caK2out[1] + 1}`, z: 1 });
+const CA4 = caKnots(316);
+/** Pulled. Along x: the stretch from the turn to the first knot shrinks to nothing (the
+    knot comes down to the spool), the knots shrink, the stretch between them too (the
+    stopper jams against the first knot). Along y: the turn closes on the spool. Both maps
+    keep the order of points, so the crossings do not change. */
+const CA_K1 = 106 + (caK1out[0] - caK1in[0]) * 0.72; // where the first knot ends, pulled
+const CA_X = [[70, 70], [96, 94], [caK1in[0], 106], [caK1out[0], CA_K1],
+  [caK2in[0], CA_K1 + 16], [caK2out[0] + 8, CA_K1 + 16 + (caK2out[0] + 8 - caK2in[0]) * 0.8]];
+const caMapX = (x) => {
+  for (let i = 1; i < CA_X.length; i++) {
+    const [a0, b0] = CA_X[i - 1];
+    const [a1, b1] = CA_X[i];
+    if (x <= a1) return b0 + ((x - a0) * (b1 - b0)) / (a1 - a0);
+  }
+  const [a, b] = CA_X[CA_X.length - 1];
+  return b + (x - a);
+};
 const caPull = (fig) => warp(fig, (x, y) => {
-  const t = Math.min(1, Math.max(0, (x - 96) / 24)); // 0 at the spool, 1 a little to its right
-  const k = 1 - (1 - CA_KY) * t * t * (3 - 2 * t);
-  return [x <= 96 ? x : 96 + (x - 96) * CA_K, 60 + (y - 60) * k];
+  // How much each part closes toward the line (y = 60): the turn hugs the spool, the
+  // stretch up to the knot lies along it, the knots close a little.
+  const h = x < 40 ? 0.85 : x < 96 ? 0.85 - ((x - 40) / 56) * 0.35 : x < caK1in[0] ? 0.5 + ((x - 96) / (caK1in[0] - 96)) * 0.4 : 0.9;
+  const nx = x < 70 ? 70 + (x - 70) * 0.8 : caMapX(x);
+  return [nx, 60 + (y - 60) * h];
 });
-// The line starts further right before pulling, so it still reaches the edge after.
-const CA4 = caPull(caKnots(96 + (304 - 96) / CA_K));
+// The line starts further right before pulling, so it ends near the edge after.
+const CA5 = caPull(caKnots(316 + 284 - caMapX(316)));
 const caColors = (fig, c, over = {}) => ({ ...allParts(fig, c), 'detrás de la bobina': `dotted:${over['detrás de la bobina'] ?? c}`, ...Object.fromEntries(Object.entries(over).filter(([k]) => k !== 'detrás de la bobina')) });
 const SPOOL = spool(70, 85);
+const caDone = { 'línea': L1.still, 'detrás de la bobina': L1.done, 'vuelta a la bobina': L1.done };
 const CARRETE = [
   step3([{ fig: CA1, colors: caColors(CA1, L1.move, { 'línea': L1.still }) }], tipAt(CA1, null, L1.move), arrow('M24 44 C8 70 8 104 24 126'), text(70, 162, 'bobina'), { back: SPOOL }),
-  step3([{ fig: CA2, colors: caColors(CA2, L1.move, { 'línea': L1.still, 'detrás de la bobina': L1.done, 'vuelta': L1.done }) }],
-    tipAt(CA2, null, L1.move), text(320, 162, 'nudo simple alrededor de la línea', 'end'), { back: SPOOL }),
-  step3([{ fig: CA3, colors: caColors(CA3, L1.done, { 'línea': L1.still, 'entre nudos': L1.move, 'segundo nudo': L1.move, 'sobrante': L1.move }) }],
-    tipAt(CA3, null, L1.move), text(320, 162, 'otro nudo simple: el tope', 'end'), { back: SPOOL }),
-  step3([{ fig: CA4, colors: caColors(CA4, L1.move) }], tipAt(CA4, null, L1.move), pull('M310 60 H318'), drop(250, 116),
+  step3([{ fig: CA2, colors: caColors(CA2, L1.move, caDone) }], tipAt(CA2, null, L1.move),
+    arrow('M190 112 C218 94 218 36 190 22'), text(320, 162, 'por debajo y por encima', 'end'), { back: SPOOL }),
+  step3([{ fig: CA3, colors: caColors(CA3, L1.done, { ...caDone, 'por el lazo': L1.move, 'punta': L1.move }) }], tipAt(CA3, null, L1.move),
+    arrow(`M${caK1mid[0] + 22} ${caK1mid[1] + 4} C${caK1mid[0] + 30} ${caK1mid[1] - 8} ${caK1mid[0] + 30} ${caK1mid[1] - 26} ${caK1mid[0] + 28} ${caK1mid[1] - 40}`),
+    text(320, 162, 'la punta, por el lazo', 'end'), { back: SPOOL }),
+  step3([{ fig: CA4, colors: caColors(CA4, L1.done, { ...caDone, 'entre nudos': L1.move, 'tope': L1.move, 'sobrante': L1.move }) }],
+    tipAt(CA4, null, L1.move), text(320, 162, 'otro nudo simple: el tope', 'end'), { back: SPOOL }),
+  step3([{ fig: CA5, colors: caColors(CA5, L1.move) }], tipAt(CA5, null, L1.move), pull('M290 60 H300'), drop(250, 116),
     text(320, 162, 'el primero baja y el tope lo traba', 'end'), { back: SPOOL }),
-  step3([{ fig: CA4, colors: caColors(CA4, L1.done) }], tipAt(CA4, null, L1.done), scissors(274, 36), { back: SPOOL }),
+  step3([{ fig: CA5, colors: caColors(CA5, L1.done) }], tipAt(CA5, null, L1.done), scissors(264, 26), { back: SPOOL }),
 ];
 
 /* Uni: the tip comes back below the line (y = 99) and makes a loop over both. */
