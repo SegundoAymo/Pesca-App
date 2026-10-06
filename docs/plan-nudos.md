@@ -1,7 +1,7 @@
 # Plan de los dibujos de nudos — empezar acá
 
 Este archivo es para arrancar un chat nuevo sin perder nada. Leerlo entero antes de tocar un nudo.
-Al terminar cada nudo, actualizar la sección "Estado" y la tabla de estado de `docs/spec.md`.
+Al terminar cada nudo, actualizar la sección "Estado" y la tabla de estado de `docs/spec.md`, y pasarlo todo a `main` con un pull request unido enseguida (regla obligatoria de `CLAUDE.md`).
 
 ## Qué leer y en qué orden
 
