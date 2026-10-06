@@ -202,9 +202,9 @@ export const KNOTS = {
     note: 'Para hacer un lazo en la punta y unir brazoladas lazo con lazo.',
     steps: [
       'Doblar unos 15 cm de la punta: la línea queda doble.',
-      'Con la línea doble, hacer un nudo simple: un lazo y pasar por dentro la punta doblada.',
-      'Pasar la punta doblada otra vez por el mismo lazo (nudo doble).',
-      'Mojar y tirar a la vez del lazo y de la línea, con su punta, hasta que el nudo quede apretado.',
+      'Con la línea doble, hacer un nudo simple: un lazo y pasar por dentro el doblez.',
+      'Pasar el doblez otra vez por el mismo lazo (nudo doble).',
+      'Mojar y tirar a la vez del lazo y de la línea hasta que el nudo quede apretado.',
       'Cortar el sobrante de la punta.',
     ],
   },

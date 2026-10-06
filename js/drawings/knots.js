@@ -1160,7 +1160,7 @@ const FG = [
    the knot. The knot is drawn on the middle line of the doubled line (cjKnot, as in the
    Cirujano); its last stretch opens up into the loop. */
 const LC_G = 4; // half gap between the two strands
-const LC_OPEN = 60; // the last stretch, where the strands open into the loop
+const LC_OPEN = 40; // the last stretch, where the strands open into the loop
 const LC_SPREAD = 12; // how much it opens
 /** The doubled line along a middle line (a figure's parts): the main line strand ("ida")
     from x = 10, the bend (the loop), and the strand back ("vuelta") to the tip. move: warps
@@ -1202,11 +1202,19 @@ const lcLoopEnd = (fig) => {
   const a = fig.pts[i - 6];
   return [m.x, m.y, Math.atan2(m.y - a.y, m.x - a.x)];
 };
-const lcPullLoop = (fig) => { const [x, y, a] = lcLoopEnd(fig); return pull(`M${(x + 6 * Math.cos(a)).toFixed(1)} ${(y + 6 * Math.sin(a)).toFixed(1)} L${(x + 20 * Math.cos(a)).toFixed(1)} ${(y + 20 * Math.sin(a)).toFixed(1)}`); };
+const lcPullLoop = (fig) => { const [x, y, a] = lcLoopEnd(fig); return pull(`M${(x + 6 * Math.cos(a)).toFixed(1)} ${(y + 6 * Math.sin(a)).toFixed(1)} L${(x + 16 * Math.cos(a)).toFixed(1)} ${(y + 16 * Math.sin(a)).toFixed(1)}`); };
 const LC1 = lcDoubled([{ name: 'doble', d: `M70 ${CJ_Y} H180 C214 ${CJ_Y} 236 80 258 66`, z: 0 }]);
 const LC2 = lcDoubled(cjKnot(2)); // the overhand with the doubled line: the bend through the loop once
 const LC3 = lcDoubled(cjKnot(4)); // and once more
-const LC4 = lcDoubled(cjKnot(4), CJ_PINCH);
+// Pulled tight: closed more than the Cirujano (Wilson shows a small barrel), across more than
+// along, so the overhand's loop lies on the wraps.
+const LC_PINCH = (x, y) => {
+  const [cx, cy] = [165, CJ_Y - 12];
+  const u = Math.min(1, Math.max(0, (Math.hypot(x - cx, y - cy) - 60) / 70));
+  const w = 1 - u * u * (3 - 2 * u);
+  return [cx + (x - cx) * (1 - 0.22 * w), cy + (y - cy) * (1 - 0.54 * w)];
+};
+const LC4 = lcDoubled(cjKnot(4), LC_PINCH);
 const lcColors = (fig, c, over = {}) => ({ ...allParts(fig, c), línea: L1.still, ...over });
 const lcCut = (fig) => { const [x, y] = endOf(fig); return scissors(x + 4, y - 24); };
 const LAZO_CIRUJANO = [
