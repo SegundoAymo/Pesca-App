@@ -41,7 +41,7 @@ Para mirar una página: `pdftoppm -r 110 -f <pág> -l <pág> -png <pdf> <salida>
 
 ## Herramientas
 
-- `node --test`: todas las pruebas. Los nudos rehechos (lista `REDRAWN` en `test/knots-drawing.test.js`) tienen que pasar sin problemas.
+- `node --test`: todas las pruebas. Los nudos rehechos (lista `REDRAWN` en `js/data/knots.js`: la usan las pruebas y la app, que los muestra primero con "Dibujo nuevo") tienen que pasar sin problemas. Al terminar un nudo, agregarlo al final de esa lista y subir `VERSION` en `sw.js` para que el teléfono baje los dibujos nuevos.
 - `node tools/nudos/chequeo.mjs <id> > /dev/null`: solo los problemas de dibujo de ese nudo, paso por paso.
 - `node tools/nudos/pasos.mjs <id> [pasos]`: pasos en grande, en `tools/nudos/salida/pasos.png`, para mirar mientras se dibuja.
 - `node tools/nudos/hoja.mjs <id>`: la hoja completa (todos los pasos con su texto) en `tools/nudos/salida/<id>.png`. Es la que se le manda al usuario.

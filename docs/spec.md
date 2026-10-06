@@ -57,7 +57,7 @@ Datos tomados de resúmenes de búsqueda, sin leer cada artículo completo: veri
 
 ## Nudos
 
-Navegación por situación: elegís qué querés unir, ves los nudos que sirven (el recomendado para tu kit primero) y abrís el tutorial con diagrama paso a paso, sin video. Son 9 situaciones, 18 nudos y 3 armados de plomada; la clasificación completa, con resistencia, dificultad y pasos de cada uno, está en Nudos.
+Navegación por situación: elegís qué querés unir, ves los nudos que sirven (primero los que ya tienen el dibujo nuevo, en 3D y revisado, marcados "Dibujo nuevo"; el recomendado para tu kit, en amarillo) y abrís el tutorial con diagrama paso a paso, sin video. Son 9 situaciones, 18 nudos y 3 armados de plomada; la clasificación completa, con resistencia, dificultad y pasos de cada uno, está en Nudos.
 
 Ilustraciones (obligatorias en la app):
 
@@ -321,7 +321,7 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
 - Nudos dibujados en 3D (`js/drawings/knot3d.js`; por ahora el Lazo perfecto, después el resto): el nudo es una línea en el espacio, con partes con nombre ("primer lazo", "punta entre lazos"…) y una profundidad en cada punto que cambia de a poco. El programa la aplana al dibujo de siempre (mismos colores, rombo, flechas y borde solo entre tramos del mismo tono), calcula los cruces y dibuja encima, en cada uno, lo que está más cerca. El nudo apretado sale del flojo apretando su centro.
 - Cómo se controlan los dibujos de nudos:
   - Prueba automática (`test/knots-drawing.test.js`, corre con `node --test` y en cada publicación): mide lo que no necesita criterio. Nada fuera del borde, textos enteros y sin tapar el dibujo, colores de la paleta, flecha de tirar saliendo de una línea, rombo pegado a su línea, tijera junto a un sobrante con su punta, ninguna flecha encima de la punta y una línea pasando por cada ojo. Flecha de mover junto a una línea. En los nudos en 3D, además: cruces de al menos 30°, con profundidad clara y separados entre sí, y ningún tramo montado sobre otro.
-  - Prueba de cruces (`test/knots-crossings.test.js`): en los nudos en 3D, los cruces de cada paso son los de la tabla escrita desde el nudo real (regla 18). Los nudos todavía sin rehacer figuran como pendientes y no frenan la publicación; al rehacer uno, se agrega a la lista de rehechos.
+  - Prueba de cruces (`test/knots-crossings.test.js`): en los nudos en 3D, los cruces de cada paso son los de la tabla escrita desde el nudo real (regla 18). Los nudos todavía sin rehacer figuran como pendientes y no frenan la publicación; al rehacer uno, se agrega a la lista de rehechos (`REDRAWN` en `js/data/knots.js`), que también los pone primero en la app, y se sube `VERSION` en `sw.js`.
   - Revisión independiente: el agente `revisor-nudos` (`.claude/agents/revisor-nudos.md`) mira las imágenes de cada paso sin saber qué se quiso dibujar y las compara con las reglas y con cómo se ata el nudo de verdad. Las imágenes salen de `node tools/nudos/hoja.mjs` (usa Playwright, solo para desarrollo). Qué va por encima en cada cruce no lo juzga mirando: lo lee de `node tools/nudos/cruces.mjs <id>` (en los nudos en 3D) y lo compara con cómo se ata el nudo. Separa lo que está mal (enseña mal el nudo) de lo que se puede leer mal (claridad). Se usa después de dibujar o cambiar un nudo y antes de mostrarlo.
 - Publicación: un workflow de GitHub Actions corre las pruebas y publica en GitHub Pages en cada push a main.
 

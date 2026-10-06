@@ -1,29 +1,32 @@
 import { screen, esc, rich, bigLink, sourcesBlock } from '../ui.js';
-import { SITUATIONS, KNOTS, KNOT_SOURCES } from '../data/knots.js';
+import { SITUATIONS, KNOTS, KNOT_SOURCES, REDRAWN } from '../data/knots.js';
 import { RIGS } from '../data/rigs.js';
 import { rigCard } from './fish.js';
 import { knotStepSvg, knotKey } from '../drawings/knots.js';
 
 function situations() {
-  const body = `<p>Elegí qué querés unir. El recomendado para tu kit (nylon 0,30 mm) va primero.</p>`
+  const body = `<p>Elegí qué querés unir. Los nudos con dibujo nuevo van primero; el recomendado para tu kit (nylon 0,30 mm) va en amarillo.</p>`
     + SITUATIONS.map((s) => bigLink(`#/nudos/${s.id}`, s.title, { num: s.n })).join('')
     + sourcesBlock(KNOT_SOURCES);
   return { title: 'Nudos', html: screen('Nudos', body) };
 }
 
 function situation(s) {
+  // Rigs: the recommended first. Knots: the ones with the new drawing first, then the
+  // recommended (sort is stable: otherwise the order of the situation stays).
   const order = (ids) => [...ids].sort((a, b) => s.recommended.includes(b) - s.recommended.includes(a));
+  const knotOrder = (ids) => order(ids).sort((a, b) => REDRAWN.includes(b) - REDRAWN.includes(a));
   let body = s.note ? `<div class="card note"><p>${rich(s.note)}</p></div>` : '';
   if (s.rigs?.length) {
     body += `<p>La plomada no lleva un nudo propio: depende de cómo se arma la línea.</p>`;
     body += order(s.rigs).map((id) => rigCard({ ...RIGS[id], recommended: s.recommended.includes(id) })).join('');
   }
-  body += order(s.knots).map((id) => {
+  body += knotOrder(s.knots).map((id) => {
     const k = KNOTS[id];
     const rec = s.recommended.includes(id);
     return bigLink(`#/nudos/${s.id}/${id}`, k.name, {
       cls: rec ? 'yellow' : '',
-      small: `${rec ? '**Recomendado** · ' : ''}${k.difficulty}${k.strength ? ` · ${k.strength}` : ''}`,
+      small: `${rec ? '**Recomendado** · ' : ''}${REDRAWN.includes(id) ? 'Dibujo nuevo · ' : ''}${k.difficulty}${k.strength ? ` · ${k.strength}` : ''}`,
     });
   }).join('');
   return { title: s.title, html: screen(s.title, body, `Situación ${s.n}`) };
