@@ -27,6 +27,7 @@ Si el nudo tiene referencia en `docs/referencias-nudos.md` (páginas de guías e
    - Que cada línea sea continua: sin cortes, tramos sueltos, uniones raras o tramos cerrados que no deberían estarlo.
    - Que el nudo se reconozca y que una persona que no lo conoce pueda seguirlo solo mirando los dibujos.
    - Colores, flechas, puntitos y bordes según el sistema; textos que no tapen nada ni se corten.
+   - Si el texto dice "apretado", que el nudo se vea más chico y con el lazo pegado a las vueltas que en el paso anterior, no solo corrido (regla 37). Contá las pasadas por delante y comparalas con las vueltas del texto (regla 38).
 4. No supongas buena intención: si el dibujo "casi" muestra algo, decí qué falta.
 
 ## No pedir más pasos de la cuenta
