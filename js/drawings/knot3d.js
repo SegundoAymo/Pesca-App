@@ -219,5 +219,29 @@ export function render(items, paper) {
   return {
     svg,
     crossings: crossings.map((c) => ({ x: Math.round(c.x), y: Math.round(c.y), over: c.over, under: c.under, angle: c.angle, dz: +c.dz.toFixed(2) })),
+    close: closeRuns(lines, crossings),
   };
+}
+
+/** Places where two stretches of line run against each other without crossing (closer
+    than a line width plus a little paper): they read as one thick line, a fork or a
+    blob. Tight bends of one line count too. Away from crossings, where lines meet on
+    purpose. Returns [{ x, y, a, b }] (part names), one per 10 x 10 cell. */
+function closeRuns(lines, crossings) {
+  const out = new Map();
+  const pts = lines.flatMap((L, li) => L.pts.map((p, i) => ({ ...p, li, s: L.s[i], w: L.w })));
+  for (let m = 0; m < pts.length; m += 2) {
+    for (let n = m + 1; n < pts.length; n += 2) {
+      const P = pts[m];
+      const Q = pts[n];
+      if (P.li === Q.li && Math.abs(P.s - Q.s) < 4 * P.w) continue; // the same stretch
+      if (Math.hypot(P.x - Q.x, P.y - Q.y) >= (P.w + Q.w) / 2 + 2) continue;
+      const mx = (P.x + Q.x) / 2;
+      const my = (P.y + Q.y) / 2;
+      if (crossings.some((c) => Math.hypot(c.x - mx, c.y - my) < 3 * P.w)) continue;
+      const key = `${Math.round(mx / 10)},${Math.round(my / 10)}`;
+      if (!out.has(key)) out.set(key, { x: Math.round(mx), y: Math.round(my), a: P.part, b: Q.part });
+    }
+  }
+  return [...out.values()];
 }

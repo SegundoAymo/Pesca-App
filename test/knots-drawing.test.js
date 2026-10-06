@@ -4,7 +4,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { KNOTS } from '../js/data/knots.js';
-import { knotStepSvg, knotStepCount, knotCrossings, KNOT_PALETTE as P } from '../js/drawings/knots.js';
+import { knotStepSvg, knotStepCount, knotCrossings, knotCloseRuns, KNOT_PALETTE as P } from '../js/drawings/knots.js';
 import { readSvg, dist } from './svg-geom.js';
 
 // Knots already redrawn with the current system: their checks must pass. The others are
@@ -66,6 +66,13 @@ export function check(svg) {
     if (near(origin(s), lineEnds) > 45) out.push(`tijera lejos de un sobrante, en (${origin(s).map(Math.round)})`);
     if (near(origin(s), tips.map(origin)) > 45) out.push('al cortar no se ve el sobrante con su punta');
   }
+  // The movement arrow goes next to what moves (rule 26): somewhere along it, close to a
+  // line, not out in empty space.
+  for (const s of shapes.filter((x) => (x.attrs['marker-end'] || '').includes('kah'))) {
+    const linePts = [...shapes.filter(isLine).flatMap((x) => x.points.flat()), ...lineEnds];
+    const gap = Math.min(...s.points.flat().map((p) => near(p, linePts)));
+    if (gap > 24) out.push(`flecha de mover suelta, en (${s.points[0][0].map(Math.round)})`);
+  }
   // Arrows do not cover the tip (rule 7): the middle of the diamond stays clear.
   const tipMid = tips.map((t) => [t.points[0][0][0] + (t.points[0][2][0] - t.points[0][0][0]) / 2, t.points[0][0][1] + (t.points[0][2][1] - t.points[0][0][1]) / 2]);
   for (const s of shapes.filter((x) => /kah|kph/.test(x.attrs['marker-end'] || ''))) {
@@ -83,16 +90,23 @@ export function check(svg) {
 
 /** Problems of the crossings of a step drawn in 3D (rule 5): none almost parallel, none
     with the two lines at nearly the same depth. */
-export function checkCrossings(list) {
+export function checkCrossings(list, close = []) {
   const out = [];
   for (const c of list) {
     if (c.angle < MIN_ANGLE) out.push(`cruce casi paralelo (${c.angle}°) en (${c.x},${c.y}): ${c.over} sobre ${c.under}`);
     if (c.dz < MIN_DZ) out.push(`cruce sin profundidad clara en (${c.x},${c.y}): ${c.over} sobre ${c.under}`);
   }
+  // Crossings apart, so each one reads on its own (rule 24).
+  list.forEach((a, i) => list.slice(i + 1).forEach((b) => {
+    if (Math.hypot(a.x - b.x, a.y - b.y) < MIN_GAP) out.push(`cruces pegados en (${a.x},${a.y}) y (${b.x},${b.y})`);
+  }));
+  // No stretch running on top of another without crossing it (rule 25).
+  for (const c of close) out.push(`tramos montados en (${c.x},${c.y}): ${c.a} y ${c.b}`);
   return out;
 }
 const MIN_ANGLE = 30;
 const MIN_DZ = 0.2;
+const MIN_GAP = 8;
 
 for (const id of Object.keys(KNOTS)) {
   const redrawn = REDRAWN.includes(id);
@@ -100,7 +114,7 @@ for (const id of Object.keys(KNOTS)) {
     const problems = [];
     for (let i = 0; i < knotStepCount(id); i++) {
       for (const p of check(knotStepSvg(id, i))) problems.push(`paso ${i + 1}: ${p}`);
-      for (const p of checkCrossings(knotCrossings(id, i) ?? [])) problems.push(`paso ${i + 1}: ${p}`);
+      for (const p of checkCrossings(knotCrossings(id, i) ?? [], knotCloseRuns(id, i) ?? [])) problems.push(`paso ${i + 1}: ${p}`);
     }
     assert.deepEqual(problems, [], `\n${problems.join('\n')}`);
   });

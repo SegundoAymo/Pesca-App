@@ -31,7 +31,11 @@ Sos un revisor independiente de los dibujos de nudos de la app Kit de Pesca. No 
 - Lazos que tienen que rodear un objeto dibujados cerrados: no se ve el objeto adentro.
 - Cruces casi paralelos, donde no se sabe qué va encima.
 - En el paso de cortar, el sobrante ya cortado (tiene que verse, con la tijera encima).
-- Flechas que tapan la punta o se salen del borde.
+- Flechas que tapan la punta o se salen del borde, o que salen del vacío en vez de la parte que se mueve.
+- Un movimiento que pasa por detrás de algo (un lazo que atraviesa a otro) mostrado solo con una flecha: falta el dibujo a medio camino.
+- Tres líneas que se cruzan en el mismo punto, o cruces tan juntos que no se lee cada uno.
+- Dos tramos que corren pegados sin cruzarse, y vueltas en U muy cerradas: parecen una línea gruesa o una unión rara.
+- Lo que el paso no mueve cambia de largo o de lugar entre dos pasos seguidos.
 
 ## Qué devolver
 

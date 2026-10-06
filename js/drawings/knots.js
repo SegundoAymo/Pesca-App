@@ -512,7 +512,7 @@ const PALOMAR = [
     { d: `M${pEye[0].toFixed(1)} ${pEye[1].toFixed(1)} C126 78 120 74 118 68`, c: L1.move, dbl: true, bend: true, z: 0.5 }),
   tip(40, pIn[1] + 5, 180, L1.move), arrow('M196 40 C186 56 172 66 160 72'), text(320, 160, 'línea doblada, 15 cm', 'end')),
   scene(PHOOK, paEnds(L1.still, L1.done, pIn), paDouble(L1.done, L1.move, L1.move, 'C232 72 262 84 286 108'),
-    tip(40, pIn[1] + 5, 180, L1.done), arrow('M182 14 C206 8 224 18 226 38'), text(10, 160, 'nudo simple flojo', 'start')),
+    tip(40, pIn[1] + 5, 180, L1.done), arrow('M298 98 C308 78 298 54 272 46'), text(10, 160, 'nudo simple flojo', 'start')),
   scene(PHOOK, paEnds(L1.still, L1.done, pIn), paDouble(L1.done, L1.done, L1.move, paRound),
     tip(40, pIn[1] + 5, 180, L1.done), arrow('M276 150 C262 164 226 166 196 162'), text(320, 30, 'por el lazo', 'end')),
   scene(PHOOK, paEnds(L1.still, L1.done, pIn), paDouble(L1.done, L1.done, L1.move, paNeck(94, 12, 108, 224)),
@@ -555,7 +555,7 @@ const clTight = (c, x0, end, main = c) => strand(
 const M = L1.move;
 const Dn = L1.done;
 const CLINCH = [
-  scene(HOOK, clLine({ main: L1.still, eye: M }, 'eye'), tip(165, 110, 180, M), arrow('M150 132 H100')),
+  scene(HOOK, clLine({ main: L1.still, eye: M }, 'eye'), tip(165, 110, 180, M), arrow('M150 122 H104')),
   scene(HOOK, clLine({ main: L1.still, eye: Dn, wraps: M }, 'wraps'), tip(88, 114, 135, M), arrow('M190 52 C170 36 128 36 110 54'), text(140, 150, '5 a 7 vueltas')),
   scene(HOOK, clLine({ main: L1.still, eye: Dn, wraps: Dn, small: M }, 'small'), tip(207, 58, -90, M), arrow('M110 160 H190'), text(130, 30, 'por el lazo chico, junto al ojo')),
   scene(HOOK, clLine({ main: L1.still, eye: Dn, wraps: Dn, small: Dn, big: M }, 'big'), tip(190, 146, 90, M),
@@ -637,7 +637,7 @@ const LPA = figure(...LP_START,
 /** After the second loop went through the first; the line starts at x0. loop: the final
     loop (shorter while it is being pulled out). */
 const lpThrough = (x0 = 10, loop = 'M214 80 C250 84 300 90 304 70 C308 46 256 52 214 60') => figure({ ...LP_START[0], d: `M${x0} 120 H120` }, ...LP_START.slice(1),
-  { name: 'pata de abajo', d: 'M214 140 C226 140 226 122 210 114 C198 108 190 104 188 98 C186 90 188 86 194 84 C198 82 204 80 214 80', z: [[0, 0.6], [0.15, 1], [0.6, 1], [0.85, -1.5], [1, -1.5]] },
+  { name: 'pata de abajo', d: 'M214 140 C228 140 228 120 214 110 C204 103 198 100 195 94 C193 89 194 85 198 83 C202 81 207 80 214 80', z: [[0, 0.6], [0.15, 1], [0.68, 1], [0.88, -1.5], [1, -1.5]] },
   { name: 'lazo final', d: loop, z: -1.5 },
   { name: 'pata de arriba', d: 'M214 60 C206 60 200 60 194 58 C188 56 182 54 176 56 C154 66 150 86 146 98 C142 108 134 116 136 124 C138 134 160 144 184 147', z: [[0, -1.5], [0.1, -1.5], [0.22, 1], [1, 1]] },
   LP_TIP);
@@ -645,7 +645,7 @@ const LPB = lpThrough();
 const LPH = lpThrough(10, 'M214 80 C228 82 240 80 241 70 C242 61 228 59 214 60'); // halfway through
 // Squeezed in the middle; the final loop also shorter (x only, keeping the order of
 // points, so no crossing changes).
-const lpTight = (x0) => warp(warp(lpThrough(x0), pinch(184, 104, 0.62, 30, 110)), (x, y) => [x > 200 ? 200 + (x - 200) * 0.75 : x, y]);
+const lpTight = (x0) => warp(warp(lpThrough(x0), pinch(184, 104, 0.7, 30, 110)), (x, y) => [x > 200 ? 200 + (x - 200) * 0.75 : x, y]);
 const LPC = lpTight(62);
 const LPD = lpTight(62);
 const lpAll = (fig, c) => Object.fromEntries(fig.parts.map((n) => [n, c]));
@@ -653,14 +653,14 @@ const lpAll = (fig, c) => Object.fromEntries(fig.parts.map((n) => [n, c]));
     kept for the tests and the review. */
 const step3 = (items, ...rest) => {
   const r = render(items, PAPER);
-  return { svg: scene(r.svg, ...rest), crossings: r.crossings };
+  return { svg: scene(r.svg, ...rest), crossings: r.crossings, close: r.close };
 };
 const tipAt = (fig, upTo, c) => { const [x, y, a] = endOf(fig, upTo); return tip(x, y, a, c); };
 const LAZO_PERFECTO = [
   step3([{ fig: LPA, upTo: 'punta por detrás', colors: { 'línea': L1.still, 'primer lazo': M, 'punta por detrás': M } }],
     tipAt(LPA, 'punta por detrás', M), text(100, 165, 'la punta pasa por detrás')),
   step3([{ fig: LPA, upTo: 'segundo lazo', colors: { 'línea': L1.still, 'primer lazo': Dn, 'punta por detrás': Dn, 'segundo lazo': M } }],
-    tipAt(LPA, 'segundo lazo', M), arrow('M266 124 C278 96 270 62 246 46'), text(10, 24, 'otra vuelta, por delante', 'start')),
+    tipAt(LPA, 'segundo lazo', M), arrow('M258 126 C268 100 264 72 246 56'), text(10, 24, 'otra vuelta, por delante', 'start')),
   step3([{ fig: LPA, colors: { ...lpAll(LPA, Dn), 'línea': L1.still, 'punta entre lazos': M } }],
     tipAt(LPA, null, M), text(124, 165, 'la punta, entre los dos lazos')),
   step3([{ fig: LPH, colors: { ...lpAll(LPH, Dn), 'línea': L1.still, 'pata de abajo': M, 'lazo final': M, 'pata de arriba': M } }],
@@ -1017,6 +1017,11 @@ export function knotStepSvg(id, i) {
 /** Crossings of a step drawn in 3D ({ x, y, over, under, angle, dz }), or null. */
 export function knotCrossings(id, i) {
   return STEPS[id]?.[i]?.crossings ?? null;
+}
+
+/** Places of a step drawn in 3D where two stretches run against each other ({ x, y, a, b }). */
+export function knotCloseRuns(id, i) {
+  return STEPS[id]?.[i]?.close ?? null;
 }
 
 export function knotStepCount(id) {
