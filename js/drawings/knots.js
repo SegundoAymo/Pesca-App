@@ -658,7 +658,7 @@ const CLINCH = [
    pulling the line slides the knot to the eye. */
 const UN_Y = CE.y + 14; // the strand back from the eye
 const UN_C = (CE.y + UN_Y) / 2; // the middle of the two lines: the axis of the wraps
-const UN_W = { x: 228, n: 5, pitch: 22, a: 17 };
+const UN_W = { x: 196, n: 5, pitch: 20, a: 17 }; // tied away from the eye, so it can be seen sliding down to it
 const unWrapsEnd = UN_W.x - (UN_W.n + 0.5) * UN_W.pitch;
 function unWraps({ x, n, pitch, a }) {
   const steps = n * 24 + 12;
@@ -676,40 +676,41 @@ const UN_L = unWrapsEnd - 22; // where the strand back from the eye turns up int
 const UN_START = [
   { name: 'línea', d: `M10 ${CE.y} H${CE.x}`, z: 0 },
   { name: 'por el ojo', d: `M${CE.x} ${CE.y} H${CE.x + 6} C${CE.x + 16} ${CE.y} ${CE.x + 16} ${UN_Y} ${CE.x + 2} ${UN_Y} H${UN_L}`, z: 0 },
-  { name: 'lazo', d: `M${UN_L} ${UN_Y} C${UN_L - 22} ${UN_Y} ${UN_L - 24} ${CE.y - 30} ${UN_L + 2} ${CE.y - 32} H${UN_W.x - 10} C${UN_W.x - 2} ${CE.y - 32} ${UN_W.x} ${CE.y - 26} ${UN_W.x} ${UN_C - UN_W.a}`,
-    z: [[0, 0], [0.12, 1], [0.3, 1], [0.4, 0], [1, 0]] },
+  { name: 'lazo', d: `M${UN_L} ${UN_Y} C${UN_L - 22} ${UN_Y} ${UN_L - 24} ${CE.y - 30} ${UN_L + 6} ${CE.y - 32} C${UN_L + 40} ${CE.y - 34} ${UN_W.x - 20} ${CE.y - 34} ${UN_W.x - 6} ${CE.y - 28}`,
+    z: [[0, 0], [0.12, 1], [0.3, 1], [0.45, 0], [1, 0]] },
+  { name: 'a las vueltas', d: `M${UN_W.x - 6} ${CE.y - 28} C${UN_W.x - 1} ${CE.y - 26} ${UN_W.x} ${CE.y - 22} ${UN_W.x} ${UN_C - UN_W.a}`, z: 0 },
 ];
-const unOut = { name: 'punta', d: `M${unWrapsEnd} ${UN_C + UN_W.a} C${unWrapsEnd - 4} ${UN_C + UN_W.a + 10} ${unWrapsEnd - 14} ${UN_C + UN_W.a + 16} ${unWrapsEnd - 28} ${UN_C + UN_W.a + 18}`, z: 0 };
-const UN1 = figure(...UN_START);
+const unOut = { name: 'punta', d: `M${unWrapsEnd} ${UN_C + UN_W.a} C${unWrapsEnd - 4} ${UN_C + UN_W.a + 10} ${unWrapsEnd - 14} ${UN_C + UN_W.a + 16} ${unWrapsEnd - 40} ${UN_C + UN_W.a + 18}`, z: 0 };
+const UN1 = figure(...UN_START.slice(0, 3)); // the loop ends out to the right, the tip clear of the line
 const UN2 = figure(...UN_START, unWraps(UN_W), unOut);
 // Pulling the tip: the wraps close on the two lines (squeezed toward their middle, which
 // keeps everything in its order) and get a little shorter; the loop shrinks with them.
 const unRamp = (x, x0, x1) => Math.min(1, Math.max(0, (x - x0) / (x1 - x0)));
-const UN_K3 = unWrapsEnd + 30 + (UN_W.x - unWrapsEnd) * 0.72; // where the wraps end, closed
-const unAlong = pullAlong([[UN_L - 40, UN_L - 30], [UN_L, unWrapsEnd + 24], [unWrapsEnd, unWrapsEnd + 30], [UN_W.x, UN_K3], [CE.x, CE.x]], UN_C);
+const UN_K3 = unWrapsEnd + 30 + (UN_W.x - unWrapsEnd) * 0.75; // where the wraps end, closed
+const unAlong = pullAlong([[30, 30], [UN_L - 24, unWrapsEnd + 16], [UN_L, unWrapsEnd + 24], [unWrapsEnd, unWrapsEnd + 30], [UN_W.x, UN_K3], [CE.x, CE.x]], UN_C);
 // Across the lines: what is far from them closes much more than what is near (still in
 // order, so nothing crosses anything new): the loop ends up lying along the wraps.
 const unAcross = (x, y) => {
   const d = y - UN_C;
-  const k = unRamp(x, UN_L - 70, UN_L - 20) * (1 - unRamp(x, CE.x - 12, CE.x - 4)); // only around the knot
-  const near = Math.min(Math.abs(d), 12) * 0.55 + Math.max(0, Math.abs(d) - 12) * 0.18;
+  const k = unRamp(x, UN_L - 50, UN_L - 26) * (1 - unRamp(x, CE.x - 12, CE.x - 4)); // only around the knot
+  const near = Math.min(Math.abs(d), 12) * 0.55 + Math.max(0, Math.abs(d) - 12) * 0.32;
   return UN_C + Math.sign(d) * ((1 - k) * Math.abs(d) + k * near);
 };
 const unClose = (x, y) => { const [nx] = unAlong(x, y); return [nx, unAcross(x, y)]; };
 const UN3 = warp(figure(...UN_START, unWraps(UN_W), unOut), unClose);
 // Pulling the line: the knot slides along the two lines up to the eye.
 const UN_SLIDE = CE.x - 18 - UN_K3;
-const UN4 = warp(UN3, pullAlong([[20, 62], [UN_L - 20, UN_L - 20 + UN_SLIDE], [UN_K3, UN_K3 + UN_SLIDE], [CE.x - 4, CE.x - 2], [CE.x, CE.x]], UN_C, () => 1));
+const UN4 = warp(UN3, pullAlong([[10, 62], [UN_L - 20, UN_L - 20 + UN_SLIDE], [UN_K3, UN_K3 + UN_SLIDE], [CE.x - 4, CE.x - 2], [CE.x, CE.x]], UN_C, () => 1));
 const unColors = (fig, c, over = {}) => ({ ...allParts(fig, c), ...over });
 const UNI = [
-  step3([...CL_HOOK, { fig: UN1, colors: unColors(UN1, M, { 'línea': L1.still }) }], tipAt(UN1, null, M), text(10, 158, 'un lazo sobre las dos líneas', 'start')),
+  step3([...CL_HOOK, { fig: UN1, colors: unColors(UN1, M, { 'línea': L1.still }) }], tipAt(UN1, null, M), text(10, 158, 'un lazo que cruza la línea', 'start')),
   step3([...CL_HOOK, { fig: UN2, colors: unColors(UN2, Dn, { 'línea': L1.still, vueltas: M, punta: M }), fade: ['vueltas'] }], tipAt(UN2, null, M),
     arrow(`M${UN_W.x + 6} ${UN_C + UN_W.a + 12} H${unWrapsEnd + 10}`), text(10, 158, '5 o 6 vueltas, por dentro del lazo', 'start')),
   step3([...CL_HOOK, { fig: UN3, colors: unColors(UN3, Dn, { 'línea': L1.still, vueltas: M, lazo: M, punta: M }), fade: ['vueltas'] }],
-    pull('M112 101 L92 111'), drop(60, 40), text(10, 158, 'tirar de la punta', 'start'), { tight: true }),
+    tipAt(UN3, null, M), pull('M88 101 H70'), drop(60, 40), text(10, 158, 'tirar de la punta', 'start'), { tight: true }),
   step3([...CL_HOOK, { fig: UN4, colors: unColors(UN4, M), fade: ['vueltas'] }], tipAt(UN4, null, M), pull(`M54 ${CE.y} H28`), hold(276, CE.y, 0),
     text(10, 158, 'el nudo baja al ojo', 'start'), { tight: true }),
-  step3([...CL_HOOK, { fig: UN4, colors: unColors(UN4, Dn), fade: ['vueltas'] }], tipAt(UN4, null, Dn), scissors(112, 124), { tight: true }),
+  step3([...CL_HOOK, { fig: UN4, colors: unColors(UN4, Dn), fade: ['vueltas'] }], tipAt(UN4, null, Dn), scissors(128, 128), { tight: true }),
 ];
 
 /* Snell: hook without eye, shank along y = 60. */
