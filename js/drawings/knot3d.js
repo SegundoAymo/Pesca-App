@@ -212,12 +212,16 @@ function runs(L, pts) {
 export function render(items, paper) {
   const lines = items.map((it) => {
     const pts = visible(it.fig, it.upTo);
-    return { pts, s: arc(pts), w: it.w ?? 5, colorAt: (i) => it.colors[pts[Math.max(1, i)].part] };
+    // fade: parts whose back (the stretch behind, z < -0.3) is drawn lighter, like the back of a wrap.
+    const fade = new Set(it.fade ?? []);
+    return { pts, s: arc(pts), w: it.w ?? 5, colorAt: (i) => { const p = pts[Math.max(1, i)]; const c = it.colors[p.part]; return fade.has(p.part) && p.z < -0.3 ? `fade:${c}` : c; } };
   });
   items.forEach((it, k) => lines[k].pts.forEach((p) => { if (!it.colors[p.part]) throw new Error(`Parte sin color: ${p.part}`); }));
   const crossings = findCrossings(lines);
   // A color 'dotted:#xxxxxx' draws that part in dots: it goes behind an object.
-  const path = (pts, color, w) => color.startsWith('dotted:')
+  const path = (pts, color, w) => color.startsWith('fade:')
+    ? `<path d="${fmt(pts)}" fill="none" stroke="${color.slice(5)}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>`
+    : color.startsWith('dotted:')
     ? `<path d="${fmt(pts)}" fill="none" stroke="${color.slice(7)}" stroke-width="${w}" stroke-linecap="round" stroke-dasharray="0.1 ${w + 4}"/>`
     : `<path d="${fmt(pts)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
   let svg = '';

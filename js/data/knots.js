@@ -67,7 +67,7 @@ export const KNOTS = {
       'Pasar la punta por el ojo y dar 5 a 7 vueltas con ella alrededor de la línea principal (menos si la línea es gruesa).',
       'Volver con la punta y pasarla por el lazo chico que quedó junto al ojo: entra por detrás y sale por delante.',
       'Pasar la punta por el lazo grande que se acaba de formar: entra por delante y sale por detrás.',
-      'Mojar y apretar: tirar de la línea sosteniendo el anzuelo. Las vueltas se juntan contra el ojo.',
+      'Mojar y apretar: tirar de la línea y de la punta sosteniendo el anzuelo, hasta que las vueltas se junten contra el ojo y no quede ningún lazo abierto.',
       'Cortar el sobrante.',
     ],
   },

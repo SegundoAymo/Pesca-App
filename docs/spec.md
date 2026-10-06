@@ -260,7 +260,7 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   | Lazo perfecto | fuentes web | sí | sí | sí |
   | Nudo de carrete | imagen del usuario | sí | sí | falta |
   | Palomar | guía A p. 2, Wilson p. 6 | sí | sí | falta |
-  | Clinch mejorado | Wilson p. 5 (arriba) | sí | en curso | falta |
+  | Clinch mejorado | Wilson p. 5 (arriba) | sí | sí | falta |
   | Uni, Snell, Doble uni, Cirujano, Lazo de cirujano, Haywire, Manguito, Brazolada, Sangre, Albright | ver `docs/referencias-nudos.md` | no | — | — |
   | Bimini, Rapala | referencia débil | no | — | — |
   | FG, Tope corredizo | sin referencia ilustrada: pedirla | no | — | — |

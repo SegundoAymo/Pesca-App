@@ -658,29 +658,29 @@ const CL_SX = 232; // where the tip goes up through the small loop (between the 
 const CL_BX = 220; // where it goes down through the big loop
 const clSmall = { name: 'al lazo chico', d: `M${clWrapsEnd} ${CE.y + CL_W.a} C${clWrapsEnd - 10} ${CE.y + 34} ${clWrapsEnd} ${CE.y + 46} ${clWrapsEnd + 30} ${CE.y + 46} H${CL_SX - 12} C${CL_SX - 2} ${CE.y + 46} ${CL_SX} ${CE.y + 36} ${CL_SX} ${CE.y + 24} C${CL_SX} ${CE.y + 6} ${CL_SX} ${CE.y - 8} ${CL_SX} ${CE.y - 22}`,
   z: [[0, 0], [0.7, 0], [0.8, -1], [0.88, 1], [1, 1]] };
-const clBig = { name: 'por el lazo grande', d: `M${CL_SX} ${CE.y - 22} C${CL_SX} ${CE.y - 34} ${CL_BX} ${CE.y - 34} ${CL_BX} ${CE.y - 22} V${CE.y + 62}`, z: [[0, 1], [0.25, 0.5], [0.7, 0.5], [0.8, -1], [1, -1]] };
+const clBig = { name: 'por el lazo grande', d: `M${CL_SX} ${CE.y - 22} C${CL_SX} ${CE.y - 34} ${CL_BX} ${CE.y - 34} ${CL_BX} ${CE.y - 22} V${CE.y + 66}`, z: [[0, 1], [0.25, 0.5], [0.7, 0.5], [0.8, -1], [1, -1]] };
 const CL1 = figure(...CL_START);
 const CL2 = figure(...CL_START, clSmall);
 const CL3 = figure(...CL_START, clSmall, clBig);
 // Pulled: the wraps close up against the eye and the loops close around the line.
-// The passes through the loops keep their order between the wraps and the eye.
-const CL_SHIFT = 218 - CL_W.x - (CL_W.x - clWrapsEnd) * -0.2; // how far the wraps move toward the eye
-const CL_STOPS = [[clWrapsEnd, clWrapsEnd + CL_SHIFT], [CL_W.x, 218], [CL_BX, 225], [CL_SX, 233], [CE.x, CE.x]];
-const clPull = pullAlong(CL_STOPS, CE.y, (x) => (x < clWrapsEnd - 30 ? 1 : 0.6));
-const CL4 = warp(figure({ ...CL_START[0], d: `M${30 - CL_SHIFT} ${CE.y} H${CE.x}` }, ...CL_START.slice(1), clSmall, clBig), clPull);
+// Pulled: the wraps move up against the eye (shorter), the passes through the loops keep
+// their order between them and the eye, and the loops close on the line.
+const CL_STOPS = [[clWrapsEnd, 164], [CL_W.x, 213], [CL_BX, 220], [CL_SX, 234], [CE.x, CE.x]];
+const clPull = pullAlong(CL_STOPS, CE.y, (x) => (x < clWrapsEnd - 30 || x > CL_SX + 6 ? 1 : 0.42)); // the eye stays as it is
+const CL4 = warp(figure({ ...CL_START[0], d: `M${62 - (164 - clWrapsEnd)} ${CE.y} H${CE.x}` }, ...CL_START.slice(1), clSmall, clBig), clPull);
 const clColors = (fig, c, over = {}) => ({ ...allParts(fig, c), ...over });
 const M = L1.move;
 const Dn = L1.done;
 const CLINCH = [
-  step3([...CL_HOOK, { fig: CL1, colors: clColors(CL1, M, { 'línea': L1.still }) }], tipAt(CL1, null, M),
-    arrow(`M${CL_W.x + 4} ${CE.y + 30} H${clWrapsEnd + 6}`), text(10, 158, '5 a 7 vueltas', 'start')),
-  step3([...CL_HOOK, { fig: CL2, colors: clColors(CL2, Dn, { 'línea': L1.still, 'al lazo chico': M }) }], tipAt(CL2, null, M),
+  step3([...CL_HOOK, { fig: CL1, colors: clColors(CL1, M, { 'línea': L1.still }), fade: ['vueltas'] }], tipAt(CL1, null, M),
+    arrow(`M${CL_W.x + 4} ${CE.y + CL_W.a + 10} H${clWrapsEnd + 6}`), text(10, 158, '5 a 7 vueltas', 'start')),
+  step3([...CL_HOOK, { fig: CL2, colors: clColors(CL2, Dn, { 'línea': L1.still, 'al lazo chico': M }), fade: ['vueltas'] }], tipAt(CL2, null, M),
     text(10, 158, 'por el lazo chico, junto al ojo', 'start')),
-  step3([...CL_HOOK, { fig: CL3, colors: clColors(CL3, Dn, { 'línea': L1.still, 'por el lazo grande': M }) }], tipAt(CL3, null, M),
+  step3([...CL_HOOK, { fig: CL3, colors: clColors(CL3, Dn, { 'línea': L1.still, 'por el lazo grande': M }), fade: ['vueltas'] }], tipAt(CL3, null, M),
     text(10, 158, 'y por el lazo grande', 'start')),
-  step3([...CL_HOOK, { fig: CL4, colors: clColors(CL4, M) }], tipAt(CL4, null, M), pull(`M54 ${CE.y} H28`), hold(276, CE.y, 0), drop(90, 130),
-    text(10, 158, 'tirar de la línea', 'start'), { tight: true }),
-  step3([...CL_HOOK, { fig: CL4, colors: clColors(CL4, Dn) }], tipAt(CL4, null, Dn), scissors(250, 122), { tight: true }),
+  step3([...CL_HOOK, { fig: CL4, colors: clColors(CL4, M), fade: ['vueltas'] }], pull(`M54 ${CE.y} H28`), pull(`M${CL_STOPS[2][1]} ${CE.y + 39} V${CE.y + 50}`), hold(276, CE.y, 0), drop(90, 130),
+    text(10, 158, 'tirar de la línea y de la punta', 'start'), { tight: true }),
+  step3([...CL_HOOK, { fig: CL4, colors: clColors(CL4, Dn), fade: ['vueltas'] }], tipAt(CL4, null, Dn), scissors(202, 112), { tight: true }),
 ];
 
 /* Snell: hook without eye, shank along y = 60. */
