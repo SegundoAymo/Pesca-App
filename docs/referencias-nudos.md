@@ -2,6 +2,8 @@
 
 Índice para dibujar los 18 nudos de la app (`js/data/knots.js`). Los dos PDF están en `docs/fuentes/` (A: `guia-A-como-hacer-bien-sus-nudos.pdf`; B: `guia-B-wilson-nudos-y-aparejos.pdf`). Acá se anota dónde está cada nudo, cómo lo dibujan y qué tan cerca está de lo que hace la app.
 
+
+> Imágenes del usuario (7 de octubre de 2026), para Snell, Rapala, Albright, FG, Bimini y Tope corredizo: `docs/fuentes/correcciones-usuario-2026-10.pdf`. Qué muestra cada una y qué pidió el usuario: `docs/plan-nudos.md`, "Correcciones pedidas por el usuario".
 ## Las dos fuentes
 
 - **A**: "Cómo hacer bien sus nudos prácticos de pesca", un documento de Google exportado a PDF. Tiene 7 páginas y 7 nudos. Los dibujos son planos, en color: rojo para la línea que se ata, negro para la segunda línea o el anzuelo y flechas grises gruesas. Cada nudo trae de 3 a 5 pasos muy cortos. Es lo más parecido al estilo de la app.
