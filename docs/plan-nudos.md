@@ -89,14 +89,56 @@ Al 6 de octubre de 2026:
 - **Sangre, lo leve que quedó de la revisión:** el tramo verde de arriba del hueco se ve como un guion corto entre las dos puntas (lo mismo pasa en la Brazolada: es el borde de arriba del hueco). En el paso 3, las puntas pasan por detrás del tramo de abajo, que está en tono claro, y eso se ve poco; el texto lo dice. Wilson usa 4 vueltas por lado y otras fuentes, 5 a 7: si en la mano se desliza, subir a 5.
 - **Pendiente del usuario:** atar en la mano el carrete, el palomar, el clinch, el uni, el snell, el cirujano, el doble uni, el lazo de cirujano, la brazolada y la sangre, y contar si aguantan. Si alguno falla, volver a la fuente antes de tocar el dibujo.
 
+## Correcciones pedidas por el usuario (7 de octubre de 2026)
+
+El usuario probó la app y pidió **no corregir en ese chat**, sino dejarlo anotado para el siguiente. Pasó un PDF con imágenes de referencia, guardado en `docs/fuentes/correcciones-usuario-2026-10.pdf` (5 páginas; mirar con `pdftoppm -r 110 -f <pág> -l <pág> -png docs/fuentes/correcciones-usuario-2026-10.pdf <salida>`). Las imágenes van numeradas n1 a n6:
+
+| Imagen | Página del PDF | Nudo | Fuente de la imagen |
+|---|---|---|---|
+| n1 | 1 | Snell | sin nombre (dibujo en línea, 3 pasos) |
+| n2 | 2 | Rapala | sin nombre (señuelo, 6 pasos con texto en español) |
+| n3 | 3 | Albright | Peche.com (4 pasos) |
+| n4 | 4 | FG | Peche.com (pasos 4 a 8; los pasos 1 a 3 no están en la imagen) |
+| n5 | 5, arriba | Bimini | 101Knots, "Bimini Twist Directions" (8 pasos) |
+| n6 | 5, abajo | Tope corredizo | sin nombre (3 pasos con texto en español) |
+
+Lo que dijo de cada nudo (sus palabras, resumidas) y lo que muestra su imagen:
+
+1. **Snell (ya rehecho en 3D, hay que rehacerlo).** "No se entiende y por lo que vi en internet es un poco diferente." Imagen n1: anzuelo horizontal, ojo a la izquierda y curva a la derecha. (1) La línea entra por el ojo, corre a lo largo de la caña y forma un círculo grande colgando debajo. (2) Con el lado del círculo se dan 5 vueltas alrededor de la caña y de la línea, desde el ojo hacia la curva, mientras el círculo se achica. (3) Se tira de la línea y las vueltas quedan apretadas junto al ojo, con la línea saliendo por debajo de la caña. Copiar esa disposición.
+2. **Rapala (sin rehacer).** "El nudo simple está mal dibujado; en el paso 3 la tanza no es continua; del paso 4 al 5 no se entiende qué hay que hacer: faltaría un paso más o un dibujo mejor." Imagen n2, 6 pasos: (1) nudo simple a 12 cm (5") de la punta y la punta por el ojo del señuelo; (2) la punta vuelve por dentro del nudo simple; (3) 3 vueltas con la punta alrededor de la línea; (4) la punta pasa por la parte de atrás del nudo simple; (5) la punta pasa por la curva que se forma; (6) mojar, apretar y cortar.
+3. **Cirujano (ya rehecho en 3D, hay que aclararlo).** "Me costó bastante entenderlo y tuve que ver un video." En el nudo simple pasan juntos la **punta de la línea verde** y la **naranja entera, por su otro extremo** (el largo, el que va al resto de la línea), **no la punta naranja** que se había puesto al principio junto a la verde, con 15 cm de sobra de cada lado. Hay que aclararlo en el dibujo y en el texto (qué extremo de la naranja pasa por el lazo).
+4. **Albright (sin rehacer).** "No se entiende el dibujo del paso 4: el texto dice que sale por donde entró, pero en el dibujo sale por encima de la línea gruesa y entra por debajo de ella." Imagen n3: le pareció interesante cómo empieza. La línea fina (a) entra en el lazo de la gruesa (b) y da vueltas alrededor del lazo alejándose de la curva, hacia las dos patas de la gruesa (paso 2, con flecha). Después pega la vuelta y sale por el lazo (paso 3). Paso 4: apretado, con las vueltas sobre la gruesa. Comparar con Wilson p. 25 y elegir la forma más simple (regla 33).
+5. **FG (sin rehacer).** "No se entiende nada, ni los dibujos ni la explicación. En los dibujos actuales no se ve ningún nudo simple como en la guía." Imagen n4 (pasos 4 a 8): (4) de 20 a 30 vueltas cruzadas del trenzado sobre el líder; (5) 6 medios nudos alrededor de las dos líneas, tirando; (6) cortar el líder a 3 mm; (7) 10 medios nudos del trenzado solo; (8) quemar la punta con un encendedor. Los pasos 1 a 3 no están en la imagen: buscarlos en Peche.com o pedírselos al usuario.
+6. **Bimini (sin rehacer).** "Está mal dibujado: hacerlo como en la imagen n5 y con una explicación que vaya con el dibujo." Imagen n5, 8 pasos:
+   1. Hacer un lazo alrededor de un apoyo y retorcer la punta 20 veces.
+   2. Separar los extremos para que las vueltas se junten.
+   3. Pasar la punta por encima de las vueltas, tirándola hacia el apoyo.
+   4. Pasarla alrededor de la pata de arriba del lazo.
+   5. Pasarla por el lazo chico de abajo y subirla.
+   6. Apretar y dar 4 o 5 vueltas alrededor de todo el lazo.
+   7. Tirar para apretar.
+   8. Cortar el sobrante.
+7. **Tope corredizo (sin rehacer).** "Fue complejo de hacer para lo que representa el nudo; en internet hay una forma más fácil de hacer el mismo nudo." Imagen n6, 3 pasos:
+   1. Se apoya el nylon sobre la línea, haciendo una curva.
+   2. Se dan 3 o 4 vueltas sobre la línea.
+   3. Se tira muy fuerte de las dos puntas y se cortan los sobrantes con un alicate.
+
+   **Además pidió buscar en internet** si pasa algo cuando se hace con nylon o si conviene otro hilo (por ejemplo, si el nylon roza o daña la línea al correr, o si se afloja), y aclararlo en la app con las fuentes.
+
+Mientras no estén corregidos, el Snell y el Cirujano siguen en `REDRAWN` (la app los muestra como "Dibujo nuevo"). Al rehacerlos, volver a pasar por todo el proceso de la spec. Cada uno lleva tabla de cruces citando la imagen del usuario y otra fuente, una revisión y la prueba en la mano.
+
 ## Lo que sigue, en este orden
 
 | Orden | Nudo | Referencia | Nota |
 |---|---|---|---|
-| 1 | Albright | Wilson p. 25 | Wilson da 5 vueltas de ida y 5 de vuelta; la app da 10 |
-| 2 | Haywire | Wilson p. 69 | Acero: gris azulado |
-| 3 | Manguito (crimp) | Wilson p. 64, arriba | Manguito en bronce |
-| 4 | Bimini, Rapala | referencia débil | Buscar mejor fuente antes |
-| 5 | FG, Tope corredizo | sin referencia ilustrada | Pedirle una imagen al usuario |
+| 1 | Cirujano | guía A p. 4, Wilson p. 45, explicación del usuario | Aclarar qué extremo de la naranja pasa por el lazo (dibujo y texto) |
+| 2 | Snell | imagen n1 | Rehacer copiando su disposición |
+| 3 | Albright | imagen n3 y Wilson p. 25 | Vueltas alejándose de la curva y después de vuelta; Wilson da 5 de ida y 5 de vuelta; la app da 10 |
+| 4 | Rapala | imagen n2 | 6 pasos como la imagen; nudo simple bien dibujado y línea continua |
+| 5 | Tope corredizo | imagen n6 | La forma fácil, y buscar si el nylon sirve o conviene otro hilo |
+| 6 | Bimini | imagen n5 | 8 pasos como la imagen, con textos acordes |
+| 7 | FG | imagen n4 (pasos 4 a 8) | Faltan los pasos 1 a 3: buscarlos o pedirlos |
+| 8 | Haywire | Wilson p. 69 | Acero: gris azulado |
+| 9 | Manguito (crimp) | Wilson p. 64, arriba | Manguito en bronce |
 
 Después: pasar los armados (aparejos) al mismo sistema (emerillón en bronce, brazolada de acero).

@@ -263,15 +263,14 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   | Palomar | guía A p. 2, Wilson p. 6 | sí | sí | falta |
   | Clinch mejorado | Wilson p. 5 (arriba) | sí | sí | falta |
   | Uni | guía A p. 1, Wilson p. 9 | sí | sí | falta |
-  | Snell | guía A p. 3, Wilson p. 12 | sí | sí | falta |
-  | Cirujano | guía A p. 4, Wilson p. 45 | sí | sí | falta |
+  | Snell | guía A p. 3, Wilson p. 12; rehacer con la imagen n1 del usuario | sí (rehacer) | sí | no se entiende |
+  | Cirujano | guía A p. 4, Wilson p. 45 | sí (aclarar) | sí | costó: aclarar qué extremo pasa |
   | Doble uni | Wilson p. 22 | sí | sí | falta |
   | Lazo de cirujano | Wilson p. 16 (centro) | sí | sí | falta |
   | Brazolada | Wilson p. 14 (abajo) | sí | sí | falta |
   | Sangre | Wilson p. 23 (arriba) | sí | sí | falta |
-  | Haywire, Manguito, Albright | ver `docs/referencias-nudos.md` | no | — | — |
-  | Bimini, Rapala | referencia débil | no | — | — |
-  | FG, Tope corredizo | sin referencia ilustrada: pedirla | no | — | — |
+  | Haywire, Manguito | ver `docs/referencias-nudos.md` | no | — | — |
+  | Rapala, Albright, FG, Bimini, Tope corredizo | imágenes del usuario (`docs/fuentes/correcciones-usuario-2026-10.pdf`) | no | — | — |
 
 - Control de cada dibujo de nudo, antes de darlo por bueno (salió de revisar los errores de la primera versión):
   1. Continuidad: cada línea es un solo recorrido de punta a punta. Los tramos se tocan en el mismo punto; no hay tramos sueltos, huecos ni corrimientos (por ejemplo, la línea a otra altura que el nudo al que entra).
