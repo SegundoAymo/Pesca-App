@@ -18,7 +18,7 @@ Formato de cada entrada:
 ## 2026-10-07 — ChatGPT — Plan de investigación y verificación de contenidos
 - Rama y pull request: `chatgpt/plan-investigacion-pesca`, [PR #12](https://github.com/SegundoAymo/Pesca-App/pull/12).
 - Qué se hizo: se agregó `docs/plan-investigacion-pesca.md` con alcance, tareas pequeñas, criterios de cierre y controles de fuentes para especies, señuelos, condiciones y futura referencia de diseño. Se enlazó desde `README.md`. No se modificó código ni contenido de la app.
-- Pruebas: `node --test` se ejecuta mediante GitHub Actions en el pull request; resultado pendiente.
+- Pruebas: `node --test` pasa en GitHub Actions (run 26).
 - Qué quedó pendiente o a medias: ejecutar la investigación siguiendo las tareas del plan; el plan no agrega información nueva a la app.
 - Para el próximo: antes de empezar, leer `AGENTS.md`, el tablero y este plan. Mantener el alcance local y dejar las tareas abiertas hasta cumplir sus criterios.
 
