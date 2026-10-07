@@ -50,7 +50,7 @@ Al subir una versión nueva, cambiar `VERSION` en `sw.js` para que los teléfono
 | `js/data/` | Contenido: fichas de las 11 especies, nudos y armados. |
 | `js/drawings/` | Dibujos de los pasos de los nudos y de los armados, hechos en código. |
 | `js/screens/` | Una pantalla por archivo: inicio, calendario, clima, peces, nudos, checklist. |
-| `js/app.js` | Navegación (por `#/ ` en la dirección) y aviso de versión nueva. |
+| `js/app.js` | Navegación (por `#/` en la dirección) y aviso de versión nueva. |
 | `js/weather-service.js` | Ubicación, búsqueda de lugares y pronóstico de Open-Meteo, guardado en el teléfono. |
 
 ## Versiones en claude.ai
