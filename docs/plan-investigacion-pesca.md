@@ -1,91 +1,88 @@
-# Plan de investigación y verificación de contenidos de pesca
+# Investigación para diseñar una guía de pesca visual y útil
 
-**Propósito:** decidir, con información local y verificable, qué contenido de pesca conviene mostrar en la app y cómo organizarlo. Este plan es de investigación y diseño: **no autoriza cambios de código ni define por sí solo nuevas funciones**.
+**Propósito:** averiguar qué necesita decidir un pescador de Laguna de Navarro y alrededores, reunir solo la información que respalda esas decisiones y convertirla en una referencia visual para mejorar la app. El resultado es de diseño; no modifica la app ni autoriza implementar recomendaciones.
 
-**Alcance inicial:** la app de Pesca de Laguna de Navarro y alrededores, según `README.md` y `docs/spec.md`; incluir Laguna de Lobos y río Salado solo cuando las fuentes indiquen que el dato aplica allí. No recomendar puntos de pesca con nombre. Empezar por las 11 especies ya incluidas en `docs/fichas.md` y por los señuelos del kit. Ampliar la región o el catálogo requiere una decisión del usuario.
+**Pregunta guía:** «Con el tiempo y el equipo que tengo hoy, ¿qué conviene probar y cómo lo hago?»
 
-## Cómo marcar una tarea
+## Decisiones de contenido
 
-Marcarla `[x]` solo cuando se cumpla el criterio de cierre escrito en su fila. Si falta evidencia, anotar el faltante y dejarla abierta; no completar por intuición.
+- Priorizar cuatro decisiones: **qué especie intentar**, **qué carnada o señuelo del kit elegir**, **cómo armarlo** y **qué ambiente/condición hace razonable esa elección**.
+- Empezar por tararira, carpa, bagre y pejerrey porque son las especies de mayor utilidad para la guía y el calendario actual. Confirmar presencia local antes de dar recomendaciones.
+- Revisar las otras especies ya incluidas solo para decidir si aportan valor local y qué nivel de ficha merecen. No investigar once fichas con la misma profundidad por defecto.
+- Investigar primero el equipo que el usuario ya tiene. No convertir los señuelos del PDF de referencia en una enciclopedia ni recomendar compras sin una necesidad local clara.
+- No mostrar puntos de pesca con nombre. Usar hábitat, profundidad y tipo de ambiente; precisar la zona solo cuando una fuente local lo permita.
+- Una condición (clima, agua, luz o temporada) entra en una recomendación solo si cambia qué hacer y existe respaldo pertinente.
 
-## Fase A — Preparar la investigación
+## Cantidad y jerarquía que se evaluarán
 
-| Estado | # | Tarea | Terminada cuando… |
-|---|---:|---|---|
-| [ ] | A1 | Fijar alcance geográfico, especies y tipos de pesca incluidos. | El alcance local y las excepciones están escritos en este documento y no se mezclan datos de otras cuencas sin advertencia. |
-| [ ] | A2 | Auditar `docs/fichas.md`, `docs/kit.md`, `docs/spec.md` y el índice de fuentes. | Hay una matriz de afirmaciones actuales con fuente, confianza, región y estado: confirmada, revisar o sin respaldo. |
-| [ ] | A3 | Preparar el registro de fuentes. | Cada referencia nueva registra autor u organismo, título, enlace o archivo, fecha consultada, región, tema y qué afirmación respalda; además queda anotada en `docs/fuentes/README.md`. |
-| [ ] | A4 | Aplicar criterios de calidad antes de recopilar datos. | El registro distingue normativa oficial, investigación científica, material técnico, experiencia local y fuente comercial; ninguna fuente comercial prueba por sí sola una recomendación de pesca. |
+**Vista rápida:** una imagen o ilustración principal, tres o cuatro iconos con rótulos breves y una acción recomendada. Como objetivo de diseño, no superar **35 palabras visibles**, sin contar nombres propios de controles. Mostrar solo: objetivo, opción principal del kit, armado básico y una pista de ambiente/condición.
 
-## Fase B — Revisar especies
+**Al ampliar:** hasta dos alternativas, explicación corta de por qué, pasos o medidas del armado, límites de la recomendación y fuentes. La normativa y los avisos relevantes de seguridad deben quedar visibles cuando apliquen.
 
-Hacer una tarea por especie. Usar el mismo cierre para cada fila: presencia en la zona, reconocimiento, hábitat y profundidad, temporada u horario si hay evidencia, carnada/equipo/técnica relevante, normativa aplicable y nivel de confianza. Los datos que no se puedan confirmar se anotan como faltantes, no se inventan.
+**Visual primero:** usar iconos para categorías repetidas (pez, carnada, señuelo, profundidad, horario, clima, armado); diagramas para explicar cómo montar o trabajar un equipo; fotos/ilustraciones para reconocer especies. Todo icono debe tener rótulo accesible, no depender solo del color y distinguirse de decoración. Usar imágenes con permiso o licencia registrada. El texto orienta y aclara; no repite lo que ya explica claramente el dibujo.
 
-| Estado | # | Especie |
-|---|---:|---|
-| [ ] | B1 | Tararira |
-| [ ] | B2 | Carpa |
-| [ ] | B3 | Bagre |
-| [ ] | B4 | Pejerrey |
-| [ ] | B5 | Dientudo |
-| [ ] | B6 | Vieja del agua |
-| [ ] | B7 | Mojarra |
-| [ ] | B8 | Lisa |
-| [ ] | B9 | Patí |
-| [ ] | B10 | Bagre amarillo |
-| [ ] | B11 | Boga |
+Estos límites son hipótesis de diseño para validar, no hechos de pesca. Si una recomendación no cabe sin perder seguridad o precisión, se conserva el dato esencial y se pasa el detalle al nivel ampliado.
 
-**Cierre de cada tarea B:** sus campos aplicables están respaldados, los datos de otras zonas están identificados como tales y las dudas tienen una nota y responsable de revisión.
+## Pasos de investigación
 
-## Fase C — Revisar señuelos y condiciones
+Marcar [x] únicamente cuando se cumple la meta observable. Si falta evidencia, registrar qué falta y dejar el paso abierto.
 
-Para cada tipo, investigar función, especies compatibles en la zona, profundidad, movimiento/recuperación, condiciones de uso, equipo necesario, errores comunes y si el kit actual lo incluye. No trasladar automáticamente reglas de otras especies o ambientes.
+### 1. Entender qué decisión resuelve cada pantalla
 
-| Estado | # | Tipo de señuelo |
-|---|---:|---|
-| [ ] | C1 | Popper |
-| [ ] | C2 | Jerkbait |
-| [ ] | C3 | Stick |
-| [ ] | C4 | Spinnerbait |
-| [ ] | C5 | Jig |
-| [ ] | C6 | Shad |
-| [ ] | C7 | Frog |
-| [ ] | C8 | Crankbait |
-| [ ] | C9 | Minnow |
+| Estado | Tarea | Meta de cierre |
+|---|---|---|
+| [ ] | 1.1 Revisar README, spec y pantallas actuales. | Una tabla asigna a cada pantalla una pregunta concreta del pescador y señala solapamientos o huecos. |
+| [ ] | 1.2 Revisar las fichas y el kit existentes. | Cada dato actual queda etiquetado: ayuda a decidir, explica/enseña, es repetido o necesita verificación. |
+| [ ] | 1.3 Ordenar las decisiones por frecuencia e importancia. | Quedan definidas 3–4 decisiones principales y qué información es secundaria; cada prioridad tiene una razón vinculada al uso. |
 
-**Cierre de cada tarea C:** la ficha comparativa tiene todos los campos aplicables, identifica límites y excepciones y cita sus fuentes. Si el señuelo no corresponde al kit o a la zona, queda señalado en vez de presentarse como recomendación.
+### 2. Delimitar qué especies y equipo merecen investigación
 
-| Estado | # | Tarea | Terminada cuando… |
-|---|---:|---|---|
-| [ ] | C10 | Verificar criterios ambientales: claridad del agua, profundidad, luz/nubosidad, temperatura, viento o corriente. | Cada relación condición-recomendación tiene fuente y alcance; las que no tienen respaldo quedan fuera de las recomendaciones. |
-| [ ] | C11 | Revisar reglas de elección combinada. | Hay una tabla que conecta especie + ambiente + profundidad + técnica con una sugerencia, y cada sugerencia se puede rastrear a sus fuentes. |
+| Estado | Tarea | Meta de cierre |
+|---|---|---|
+| [ ] | 2.1 Confirmar presencia local de tararira, carpa, bagre y pejerrey. | Cada especie tiene fuente pertinente a Navarro o a la cuenca, fecha/alcance y nivel de confianza; sin confirmación no se formula recomendación local. |
+| [ ] | 2.2 Clasificar las demás especies del catálogo. | Cada especie queda como prioritaria, secundaria, solo identificación o fuera de foco, con razón y evidencia disponible. |
+| [ ] | 2.3 Mapear el kit actual a decisiones de pesca. | Una matriz relaciona cada pieza del kit con las especies/técnicas para las que hay evidencia; los elementos sin uso respaldado quedan sin recomendación. |
+| [ ] | 2.4 Detectar faltantes de equipo que impidan una recomendación útil. | Solo se proponen investigaciones sobre equipo nuevo cuando resuelven una necesidad local concreta; no se amplía el catálogo por el PDF de referencia. |
 
-## Fase D — Chequear y resolver dudas
+### 3. Buscar datos que cambian qué hacer
 
-| Estado | # | Tarea | Terminada cuando… |
-|---|---:|---|---|
-| [ ] | D1 | Contrastar afirmaciones importantes con una segunda fuente independiente cuando sea posible. | Las normas se contrastaron con la autoridad competente; las afirmaciones biológicas/técnicas tienen respaldo pertinente o quedaron marcadas como inciertas. |
-| [ ] | D2 | Resolver diferencias entre fuentes. | Cada diferencia tiene explicación (zona, temporada, especie o método) y se eligió una formulación acotada; si no se resuelve, el dato queda pendiente. |
-| [ ] | D3 | Revisar datos cambiantes: vedas, cupos, tallas, licencias y temporadas. | Cada dato legal tiene jurisdicción, fuente oficial, fecha de consulta y fecha de próxima revisión. |
-| [ ] | D4 | Pedir revisión a una persona con experiencia local. | Quedaron registradas sus observaciones y se aceptó, corrigió o dejó pendiente cada una; la experiencia no reemplaza una fuente oficial para normativa. |
-| [ ] | D5 | Asignar confianza a cada afirmación. | Todo dato usado tiene nivel alto/medio/bajo con motivo; ningún dato de baja confianza se presenta como regla segura. |
+| Estado | Tarea | Meta de cierre |
+|---|---|---|
+| [ ] | 3.1 Investigar una opción principal de carnada/señuelo por especie prioritaria. | Para cada especie hay una opción inicial con especie, zona, método y fuente explícitos; si no hay sustento, se registra la incertidumbre. |
+| [ ] | 3.2 Investigar armado y uso de las opciones respaldadas por el kit. | Cada armado elegido tiene un diagrama o pasos verificables, medidas/unidades cuando importen y compatibilidad con el equipo registrado. |
+| [ ] | 3.3 Investigar hábitat y profundidad relevantes. | Cada guía describe el ambiente (sin punto nombrado) y distingue información local de referencias más amplias. |
+| [ ] | 3.4 Comprobar si temporada, horario o condiciones ambientales cambian la elección. | Solo se conservan relaciones condición→acción respaldadas; las demás no generan consejos. |
+| [ ] | 3.5 Verificar normativa y seguridad aplicables. | Cada aviso tiene jurisdicción, fuente oficial vigente y fecha de consulta; los avisos pertinentes se marcan como información prioritaria. |
 
-## Fase E — Convertir evidencia en referencia de diseño
+### 4. Comprobar la calidad de la información
 
-| Estado | # | Tarea | Terminada cuando… |
-|---|---:|---|---|
-| [ ] | E1 | Proponer el recorrido de consulta. | Un esquema muestra cómo llegar desde especie o condiciones a una recomendación, y qué hacer cuando faltan datos. |
-| [ ] | E2 | Proponer una plantilla de ficha. | La plantilla separa recomendación breve, explicación, pasos, errores y fuente; cada campo se puede completar con datos investigados. |
-| [ ] | E3 | Decidir qué conviene mostrar con texto, tabla, icono o ilustración. | Cada recurso visual tiene un propósito informativo y su fuente o permiso está identificado; no se copian imágenes sin derechos claros. |
-| [ ] | E4 | Revisar legibilidad y carga de información en celular. | Una muestra de contenido cabe en pantalla pequeña, prioriza lo necesario y conserva el detalle sin texto ilegible. |
-| [ ] | E5 | Presentar hallazgos, dudas y propuesta de diseño al usuario. | El resumen separa hechos confirmados, datos inciertos y decisiones de producto; no se implementa contenido nuevo hasta recibir aprobación. |
+| Estado | Tarea | Meta de cierre |
+|---|---|---|
+| [ ] | 4.1 Registrar cada afirmación importante y su fuente. | El índice de fuentes anota autor/organismo, título, enlace/archivo, fecha consultada, región y afirmación respaldada. |
+| [ ] | 4.2 Contrastar afirmaciones de alto impacto. | Normativa se confirma con autoridad oficial; presencia y biología con fuentes técnicas/científicas; técnica con fuentes pertinentes o experiencia local identificada como tal. |
+| [ ] | 4.3 Resolver desacuerdos y asignar confianza. | Cada dato usado tiene confianza alta/media/baja y motivo; diferencias no resueltas quedan visibles, sin presentarse como regla segura. |
+| [ ] | 4.4 Identificar derechos de imágenes e ilustraciones. | Cada imagen candidata tiene origen y licencia/permiso registrado; las no autorizadas se reemplazan por diagramas propios o iconos permitidos. |
 
-## Reglas de verificación
+### 5. Convertir los hallazgos en diseño fácil de escanear
 
-- **Normativa:** usar la autoridad oficial de la jurisdicción; registrar vigencia y fecha de revisión.
-- **Biología y distribución:** priorizar universidades, institutos y publicaciones científicas.
-- **Técnica de pesca:** priorizar fuentes técnicas pertinentes a la zona; etiquetar la experiencia anecdótica.
-- **Afirmaciones atómicas:** una afirmación por fila del registro, con su fuente específica.
-- **Unidades y alcance:** anotar unidades, especie, región, temporada y condiciones a las que aplica.
-- **Trazabilidad:** conservar los documentos de referencia en `docs/fuentes/` según su índice; los enlaces por sí solos se anotan con fecha de consulta.
-- **Criterio de salida:** ninguna recomendación pasa a la app si contradice la spec, no indica su alcance o depende de un dato sin fuente suficiente.
+| Estado | Tarea | Meta de cierre |
+|---|---|---|
+| [ ] | 5.1 Diseñar una muestra de vista rápida para una especie prioritaria. | La muestra responde qué probar, cómo armarlo y qué pista del ambiente mirar en hasta 35 palabras, usando iconos/imagen con rótulos. |
+| [ ] | 5.2 Diseñar el nivel ampliado de esa muestra. | Alternativas, explicación, medidas, límites y fuentes quedan disponibles sin sobrecargar la vista rápida. |
+| [ ] | 5.3 Revisar comprensión con pescadores locales. | En una prueba exploratoria con 5 personas, al menos 4 encuentran opción, armado y motivo en 10 segundos; si no, se simplifica y se repite. |
+| [ ] | 5.4 Cerrar la referencia de diseño. | El informe separa hallazgos confirmados, dudas, contenido excluido y decisiones visuales; no se implementa sin una decisión posterior del usuario. |
+
+## Criterios para las fuentes
+
+- Una afirmación por registro, vinculada a una fuente concreta, su región, especie, método y fecha.
+- Normativa: organismo oficial de la jurisdicción y vigencia comprobada.
+- Presencia/biología: universidades, institutos y publicaciones científicas pertinentes a la cuenca.
+- Técnica: fuentes técnicas pertinentes al equipo y ambiente local; señalar por separado el consejo anecdótico.
+- No inferir que una recomendación aplica a Navarro solo porque funciona en otra región.
+- Las fuentes comerciales pueden explicar un producto, pero por sí solas no justifican una recomendación.
+- Registrar fuentes nuevas en `docs/fuentes/README.md` y conservar referencias según sus reglas.
+- Si el respaldo es débil, acotar el consejo o dejarlo como duda. No rellenar huecos por intuición.
+
+## Resultado esperado
+
+Una guía de diseño breve y visual, basada en tareas reales del pescador: qué merece atención inmediata, qué se revela al ampliar y qué no hace falta mostrar. Debe incluir la muestra de ficha, decisiones de iconografía/diagramas, fuentes y nivel de confianza, y los datos que requieren revisión.
