@@ -323,6 +323,7 @@ Detalles que no estaban definidos y se resolvieron antes de empezar el código.
   - Prueba de cruces (`test/knots-crossings.test.js`): en los nudos en 3D, los cruces de cada paso son los de la tabla escrita desde el nudo real (regla 18). Los nudos todavía sin rehacer figuran como pendientes y no frenan la publicación; al rehacer uno, se agrega a la lista de rehechos (`REDRAWN` en `js/data/knots.js`), que también los pone primero en la app, y se sube `VERSION` en `sw.js`.
   - Revisión independiente: el agente `revisor-nudos` (`.claude/agents/revisor-nudos.md`) mira las imágenes de cada paso sin saber qué se quiso dibujar y las compara con las reglas y con cómo se ata el nudo de verdad. Las imágenes salen de `node tools/nudos/hoja.mjs` (usa Playwright, solo para desarrollo). Qué va por encima en cada cruce no lo juzga mirando: lo lee de `node tools/nudos/cruces.mjs <id>` (en los nudos en 3D) y lo compara con cómo se ata el nudo. Separa lo que está mal (enseña mal el nudo) de lo que se puede leer mal (claridad). Se usa después de dibujar o cambiar un nudo y antes de mostrarlo.
 - Publicación: un workflow de GitHub Actions corre las pruebas y publica en GitHub Pages en cada push a main.
+- Dos agentes (7 de octubre de 2026): Claude Code y ChatGPT trabajan en el mismo repositorio. Reglas comunes en `AGENTS.md`; coordinación en `docs/equipo/` (tablero, bitácora, aprendizajes, herramientas); fuentes en `docs/fuentes/README.md`. El repositorio pasa a ser la fuente de verdad, por encima de los artifacts de claude.ai.
 
 ## Pendientes y preguntas abiertas
 
