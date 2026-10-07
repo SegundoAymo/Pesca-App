@@ -27,6 +27,9 @@ Al subir una versión nueva, cambiar `VERSION` en `sw.js` para que los teléfono
 
 | Carpeta / archivo | Qué hay |
 | --- | --- |
+| [`AGENTS.md`](AGENTS.md) | Reglas para los dos agentes (Claude y ChatGPT): cómo empezar, cómo terminar, cómo no pisarse. |
+| [`docs/equipo/`](docs/equipo) | Coordinación: tablero de tareas, bitácora de lo que hizo cada agente, aprendizajes y herramientas. |
+| [`docs/fuentes/`](docs/fuentes) | Documentos e imágenes de referencia, con índice. `entrada/` es la bandeja para subir lo nuevo. |
 | [`docs/spec.md`](docs/spec.md) | Especificación completa: pantallas, Calendario, Clima, modelo de puntaje, arquitectura, decisiones y orden de trabajo. **Empezar por acá.** |
 | [`docs/fichas.md`](docs/fichas.md) | Fichas de las 11 especies (carnadas, hábitat, equipo, tips, vedas). |
 | [`docs/nudos.md`](docs/nudos.md) | 18 nudos y 3 armados de plomada, clasificados en 9 situaciones, con pasos. |
@@ -49,14 +52,14 @@ Al subir una versión nueva, cambiar `VERSION` en `sw.js` para que los teléfono
 | `js/app.js` | Navegación (por `#/` en la dirección) y aviso de versión nueva. |
 | `js/weather-service.js` | Ubicación, búsqueda de lugares y pronóstico de Open-Meteo, guardado en el teléfono. |
 
-## Versiones vivas (fuente de verdad)
+## Versiones en claude.ai
 
-Los archivos de `docs/` y `design/` son copias exportadas. Las versiones que se siguen editando están en:
+Desde el 7 de octubre de 2026 **la fuente de verdad es el repositorio**: ChatGPT también trabaja en el proyecto y no puede abrir los artifacts de claude.ai. Estas versiones quedan como referencia:
 
 - Spec (con pestañas Fichas, Nudos y Armados): https://claude.ai/code/artifact/7a4393ec-ede8-4ac3-bdcc-4daae4a87f87
 - Lienzo de diseños: https://claude.ai/artifact/SFLVG9zwdgi5i9Yx82bRs1
 
-Si se cambia algo en el doc o en el lienzo, volver a exportarlo acá para que los demás chats lo vean.
+Si se cambia algo en el doc o en el lienzo, exportarlo acá en la misma tarea.
 
 ## Decisiones clave (resumen)
 
