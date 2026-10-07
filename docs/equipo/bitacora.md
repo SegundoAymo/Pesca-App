@@ -15,6 +15,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-07 — ChatGPT — Replanteo de la investigación desde el uso y lo visual
+- Rama y pull request: `chatgpt/reencuadrar-contenido-pesca`, [PR #13](https://github.com/SegundoAymo/Pesca-App/pull/13).
+- Qué se hizo: se reemplazó el plan extenso de especies y señuelos por pasos pequeños orientados a decisiones del pescador: qué especie intentar, qué elegir del kit, cómo armarlo y qué condición mirar. Se definieron prioridades locales, vista rápida de hasta 35 palabras, detalle ampliado, iconos rotulados, diagramas, permisos de imagen y prueba exploratoria de comprensión. Sin cambios de código ni nuevas recomendaciones.
+- Pruebas: `node --test` pendiente de GitHub Actions.
+- Qué quedó pendiente o a medias: realizar la investigación y validar la muestra visual con pescadores locales.
+- Para el próximo: comenzar por la pantalla y decisiones actuales; no implementar contenido nuevo hasta una decisión posterior del usuario. El límite de 35 palabras es una hipótesis de diseño que debe validarse.
+
 ## 2026-10-07 — ChatGPT — Plan de investigación y verificación de contenidos
 - Rama y pull request: `chatgpt/plan-investigacion-pesca`, [PR #12](https://github.com/SegundoAymo/Pesca-App/pull/12).
 - Qué se hizo: se agregó `docs/plan-investigacion-pesca.md` con alcance, tareas pequeñas, criterios de cierre y controles de fuentes para especies, señuelos, condiciones y futura referencia de diseño. Se enlazó desde `README.md`. No se modificó código ni contenido de la app.
