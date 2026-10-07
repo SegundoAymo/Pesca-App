@@ -15,6 +15,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-07 — ChatGPT — Plan de investigación y verificación de contenidos
+- Rama y pull request: `chatgpt/plan-investigacion-pesca`, [PR #12](https://github.com/SegundoAymo/Pesca-App/pull/12).
+- Qué se hizo: se agregó `docs/plan-investigacion-pesca.md` con alcance, tareas pequeñas, criterios de cierre y controles de fuentes para especies, señuelos, condiciones y futura referencia de diseño. Se enlazó desde `README.md`. No se modificó código ni contenido de la app.
+- Pruebas: `node --test` se ejecuta mediante GitHub Actions en el pull request; resultado pendiente.
+- Qué quedó pendiente o a medias: ejecutar la investigación siguiendo las tareas del plan; el plan no agrega información nueva a la app.
+- Para el próximo: antes de empezar, leer `AGENTS.md`, el tablero y este plan. Mantener el alcance local y dejar las tareas abiertas hasta cumplir sus criterios.
+
 ## 2026-10-07 — Claude — Coordinación con ChatGPT
 - Rama y pull request: `claude/tender-carson-p5xf7z`.
 - Qué se hizo: `AGENTS.md` con las reglas comunes (Claude lo lee desde `CLAUDE.md`); carpeta `docs/equipo/` con tablero, bitácora, aprendizajes y herramientas; índice de fuentes `docs/fuentes/README.md` con carpetas `entrada/` e `imagenes/`; plantilla de pull request. El repo pasa a ser la fuente de verdad (ChatGPT no puede abrir los artifacts de claude.ai).
