@@ -220,13 +220,13 @@ a{color:var(--green)}
     <div class="month-grid">
       <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
       <button> </button><button> </button><button> </button><button>1</button><button>2</button><button>3</button><button>4</button>
-      <button>5</button><button>6</button><button>7</button><button class="selected">8</button><button>9</button><button class="has-event">10</button><button>11</button>
-      <button>12</button><button>13</button><button>14</button><button>15</button><button>16</button><button class="has-event">17</button><button>18</button>
+      <button>5</button><button>6</button><button>7</button><button class="selected" data-day="8">8</button><button>9</button><button class="has-event" data-day="10">10</button><button>11</button>
+      <button>12</button><button>13</button><button>14</button><button>15</button><button>16</button><button class="has-event" data-day="17">17</button><button>18</button>
       <button>19</button><button>20</button><button>21</button><button>22</button><button>23</button><button>24</button><button>25</button>
       <button>26</button><button>27</button><button>28</button><button>29</button><button>30</button><button>31</button><button> </button>
     </div>
   </div>
-  <h2>Jueves 8 · hoy</h2>
+  <h2 id="calendar-selected">Jueves 8 · hoy</h2>
   <div class="card soft row"><span>◷</span><div style="flex:1"><strong>Condiciones para revisar</strong><div class="label">Ejemplo visual, no calculado</div></div><button class="link-button" data-screen="weather">Abrir →</button></div>
   <div class="card"><div class="row"><strong>Sábado 10</strong><span class="pill orange">DEMO</span></div><p class="label">Recordatorio personal: revisar el equipo</p><button class="link-button" data-screen="gear">Ver checklist →</button></div>
 </template>
@@ -330,18 +330,24 @@ a{color:var(--green)}
   <h1>Mis capturas</h1>
   <p class="lead">Tus registros quedan privados en tu dispositivo.</p>
   <button class="big-button" data-screen="new-catch">＋ Agregar captura</button>
-  <div class="row" style="margin:17px 0 8px"><strong>Octubre 2026</strong><span class="pill orange">DEMO</span></div>
-  <div class="list-row">
-    <img class="thumb" src="https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=220" alt="Foto de referencia para un registro ficticio">
-    <div class="grow"><strong>Tararira · ejemplo ficticio</strong><small>42 cm · peso sin agregar</small><small>Ubicación no compartida</small></div>
-    <button data-screen="capture-detail">Ver</button>
+  <div data-catches-state="list">
+    <div class="row" style="margin:17px 0 8px"><strong>Octubre 2026</strong><span class="pill orange">DEMO</span></div>
+    <div class="list-row">
+      <img class="thumb" src="https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=220" alt="Foto de referencia para un registro ficticio">
+      <div class="grow"><strong>Tararira · ejemplo ficticio</strong><small>42 cm · peso sin agregar</small><small>Ubicación no compartida</small></div>
+      <button data-screen="capture-detail">Ver</button>
+    </div>
+    <p class="source">El ejemplo y la foto son demostrativos; no representan una captura real del usuario.</p>
   </div>
-  <div class="card flat" style="margin-top:14px">
-    <div class="row"><strong>¿Primera vez acá?</strong><span aria-hidden="true">✦</span></div>
-    <p class="label">También podés guardar una nota o foto sin saber la especie ni las medidas.</p>
-    <button class="link-button" data-screen="new-catch">Probar un registro vacío →</button>
+  <div data-catches-state="empty" hidden>
+    <div class="card soft" style="margin-top:16px;text-align:center;padding:22px 12px">
+      <div style="font-size:34px" aria-hidden="true">✦</div>
+      <strong>Tu bitácora empieza acá</strong>
+      <p class="label">Podés guardar una nota o foto sin saber la especie ni las medidas.</p>
+      <button class="link-button" data-screen="new-catch">Registrar primera captura →</button>
+    </div>
   </div>
-  <p class="source">El ejemplo y la foto son demostrativos; no representan una captura real del usuario.</p>
+  <button class="link-button" data-action="toggle-catches-state">Ver estado sin capturas</button>
 </template>
 
 <template id="new-catch">
@@ -432,14 +438,14 @@ a{color:var(--green)}
 <template id="tutorial">
   <p class="kicker">TUTORIAL · MUESTRA VISUAL</p>
   <h1>Nudo Palomar</h1>
-  <p class="lead">Paso 2 de 4 · Pasá el lazo por el ojo</p>
+  <p id="knot-step-label" class="lead">Paso 2 de 4 · Movimiento principal</p>
   <div class="step-art" role="img" aria-label="Diagrama conceptual de una línea y un lazo frente a un ojo de anzuelo">
     <span class="line-a"></span><span class="line-b"></span><span class="circle"></span>
     <span style="position:absolute;left:6%;top:43%;font-size:12px;color:var(--green);font-weight:800">LÍNEA</span>
     <span style="position:absolute;right:7%;top:30%;font-size:12px;color:var(--orange);font-weight:800">LAZO</span>
   </div>
   <div class="steps" aria-label="Progreso del tutorial"><span></span><span class="active"></span><span></span><span></span></div>
-  <div class="card"><div class="row"><strong>Qué hacer</strong><span class="pill orange">DIBUJO A VALIDAR</span></div><p>Pasá el lazo completo por el ojo del anzuelo.</p><p class="source">Diagrama conceptual para mostrar jerarquía y tamaño del texto; no es una instrucción verificada del nudo.</p></div>
+  <div class="card"><div class="row"><strong>Qué muestra este paso</strong><span class="pill orange">DIBUJO A VALIDAR</span></div><p id="knot-step-text">Mostrar el movimiento principal con la línea.</p><p class="source">Diagrama conceptual para mostrar jerarquía y tamaño del texto; no es una instrucción verificada del nudo.</p></div>
   <div class="row"><button class="secondary-button" data-action="step-prev">← Anterior</button><button class="secondary-button" data-action="step-next">Siguiente →</button></div>
   <button class="link-button" data-screen="knots">Ver otros nudos</button>
 </template>
@@ -489,6 +495,8 @@ const fishData={
 };
 let current="home";
 let detailMode="sample";
+let catchesEmpty=false;
+let knotStep=2;
 let locationStatus="sin ubicación";
 let savedFields={};
 const content=document.getElementById("screen-content");
@@ -496,11 +504,26 @@ const index=document.getElementById("screen-index");
 function buildIndex(){
  index.innerHTML=screens.map((s,i)=>'<button type="button" data-screen="'+s.id+'" aria-current="'+(s.id===current?"page":"false")+'"><span class="number">'+String(i+1).padStart(2,"0")+'</span>'+s.name+'</button>').join("");
 }
+function updateTutorialStep(){
+ const labels=["Preparar las piezas","Movimiento principal","Apretar y ordenar","Nudo terminado"];
+ const notes=["Nombrar las piezas antes de moverlas.","Mostrar el movimiento principal con la línea.","Enseñar el cierre sin tapar los cruces.","Dejar el nudo terminado y sus piezas visibles."];
+ const label=content.querySelector("#knot-step-label"), note=content.querySelector("#knot-step-text");
+ if(!label||!note)return;
+ label.textContent="Paso "+knotStep+" de 4 · "+labels[knotStep-1];
+ note.textContent=notes[knotStep-1];
+ content.querySelectorAll(".steps span").forEach((x,i)=>x.classList.toggle("active",i===knotStep-1));
+}
+function updateCatchList(){
+ const list=content.querySelector('[data-catches-state="list"]'), empty=content.querySelector('[data-catches-state="empty"]'), toggle=content.querySelector('[data-action="toggle-catches-state"]');
+ if(list&&empty&&toggle){list.hidden=catchesEmpty;empty.hidden=!catchesEmpty;toggle.textContent=catchesEmpty?"Ver ejemplo de lista":"Ver estado sin capturas";}
+}
 function show(id){
  if(!names.hasOwnProperty(id)) return;
  current=id;
  const t=document.getElementById(id);
  content.replaceChildren(t.content.cloneNode(true));
+ if(id==="catches") updateCatchList();
+ if(id==="tutorial") updateTutorialStep();
  if(id==="species"){
   const fish=fishData[selectedFish]||fishData.tararira;
   content.querySelector("#species-name").textContent=fish.name;
@@ -534,6 +557,8 @@ function show(id){
  content.scrollTop=0;
 }
 document.addEventListener("click",e=>{
+ const day=e.target.closest("[data-day]");
+ if(day){content.querySelectorAll("[data-day]").forEach(x=>x.classList.remove("selected"));day.classList.add("selected");const label=content.querySelector("#calendar-selected");if(label)label.textContent=(day.dataset.day==="8"?"Jueves 8 · hoy · DEMO":"Sábado "+day.dataset.day+" · DEMO");return}
  const nav=e.target.closest("[data-screen]");
  if(nav){if(nav.dataset.fish)selectedFish=nav.dataset.fish;if(nav.dataset.screen==="capture-detail")detailMode="sample";show(nav.dataset.screen);return}
  const action=e.target.closest("[data-action]");
@@ -550,8 +575,9 @@ document.addEventListener("click",e=>{
   case "next": show(screens[Math.min(screens.length-1,names[current]+1)].id);break;
   case "back": show(current==="location"?"new-catch":current==="species"||current==="measures"?"catalog":current==="capture-detail"?"catches":current==="tutorial"?"knots":"home");break;
   case "reset-checklist": content.querySelectorAll('input[type="checkbox"]').forEach(x=>x.checked=false);break;
-  case "step-prev": action.textContent="← Paso anterior · DEMO";break;
-  case "step-next": action.textContent="Paso siguiente · DEMO";break;
+  case "toggle-catches-state": catchesEmpty=!catchesEmpty;updateCatchList();break;
+  case "step-prev": knotStep=Math.max(1,knotStep-1);show("tutorial");break;
+  case "step-next": knotStep=Math.min(4,knotStep+1);show("tutorial");break;
  }
 });
 document.addEventListener("change",e=>{
