@@ -2,7 +2,7 @@
 
 Quién hace qué. Lo leen y lo escriben los dos agentes (Claude y ChatGPT). Reglas en `AGENTS.md`.
 
-- Al **tomar** una tarea: moverla a "En curso" con agente, rama, fecha y archivos que va a tocar, y hacer commit y push de ese cambio solo, enseguida.
+- Al **tomar** una tarea: moverla a "En curso" con agente, rama, fecha y archivos que va a tocar, y hacer commit de ese cambio solo, enseguida.
 - Al **terminar**: moverla a "Hecho" con el número de pull request.
 - Si una tarea "En curso" es del otro agente, no tocar sus archivos. Si lleva más de 2 días sin movimiento en la bitácora, preguntarle al usuario.
 - El orden de "Para hacer" es el que pidió el usuario: tomar la primera libre salvo que el usuario diga otra cosa.
@@ -11,6 +11,7 @@ Quién hace qué. Lo leen y lo escriben los dos agentes (Claude y ChatGPT). Regl
 
 | Tarea | Agente | Rama | Desde | Archivos que toca |
 |---|---|---|---|---|
+| Incorporar catálogo tipo Pokédex y registro opcional de capturas | ChatGPT | `chatgpt/pokedex-registro-capturas` | 2026-10-08 | `docs/spec.md`, `docs/plan-investigacion-pesca.md`, `docs/equipo/tablero.md`, `docs/equipo/bitacora.md` |
 
 ## Para hacer (en este orden)
 
