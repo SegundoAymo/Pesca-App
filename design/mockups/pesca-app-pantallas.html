@@ -255,7 +255,7 @@ a{color:var(--green)}
   <p class="lead">Explorá las fichas. Las cuatro prioritarias aparecen primero.</p>
   <div class="wrap" style="margin:8px 0 12px"><span class="pill">11 especies</span><span class="pill orange">4 prioritarias</span></div>
   <div class="fish-grid">
-    <article class="fish-card"><button data-screen="species">
+    <article class="fish-card"><button data-screen="species" data-fish="tararira">
       <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=480" alt="Tararira de referencia, foto identificada como Hoplias malabaricus">
       <div class="fish-info"><strong>Tararira</strong><span>Depredadora · agua quieta</span></div></button></article>
     <article class="fish-card"><button data-screen="species" data-fish="carpa">
@@ -280,17 +280,17 @@ a{color:var(--green)}
 
 <template id="species">
   <p class="kicker">FICHA DE CAMPO · ESPECIE PRIORITARIA</p>
-  <img id="species-image" class="image hero-image" src="https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=720" alt="Tararira de referencia. El nombre de la imagen original figura como Hoplias malabaricus.">
-  <div class="row" style="margin-top:9px"><div><h1 id="species-name">Tararira</h1><div class="label" id="species-latin"><i>Hoplias argentinensis</i> · identificación regional a revisar</div></div><span class="pill orange">REGIONAL</span></div>
-  <div class="wrap" style="margin:9px 0"><span class="pill">Aguas quietas</span><span class="pill">Depredadora</span><span class="pill">Cuenca del Salado</span></div>
+  <img id="species-image" class="image hero-image" src="" alt="">
+  <div class="row" style="margin-top:9px"><div><h1 id="species-name">Tararira</h1><div class="label" id="species-latin"></div></div><span class="pill orange">REGIONAL</span></div>
+  <div class="wrap" style="margin:9px 0"><span id="species-tags"></span></div>
   <div class="card">
     <div class="row"><strong>Tamaño</strong><button class="link-button" data-screen="measures">Ver fuente →</button></div>
     <div class="metric-row" style="margin-top:7px">
       <div class="metric"><span>MEDIA EN NAVARRO</span><b>Sin muestra</b><span>largo y peso</span></div>
-      <div class="metric"><span>REFERENCIA SIB</span><b>Hasta 63 cm</b><span>no es medida local</span></div>
+      <div class="metric"><span>REFERENCIA SIB</span><b id="species-size">Hasta 63 cm</b><span id="species-size-note">no es medida local</span></div>
     </div>
   </div>
-  <p class="source">Imagen de referencia: archivo de Wikimedia Commons identificado como <i>Hoplias malabaricus</i>, CC BY 2.0; no es un ejemplar de Navarro. La taxonomía de la tararira pampeana sigue en revisión.</p>
+  <p class="source" id="species-attribution"></p>
   <button class="big-button" data-screen="catches">Ver mis capturas →</button>
 </template>
 
@@ -468,6 +468,13 @@ const screens = [
   {id:"checklist",name:"Checklist",purpose:"La lista se puede marcar y volver a empezar para una nueva salida."}
 ];
 const names=Object.fromEntries(screens.map((s,i)=>[s.id,i]));
+let selectedFish="tararira";
+const fishData={
+ tararira:{name:"Tararira",latin:"<i>Hoplias argentinensis</i> · identidad regional a revisar",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=720",alt:"Foto de referencia identificada como Hoplias malabaricus; no confirma una tararira de Navarro.",tags:"Aguas quietas · Depredadora · Cuenca del Salado",size:"Hasta 63 cm",sizeNote:"SIB/APN · referencia general",credit:"Imagen: archivo de Wikimedia Commons identificado como Hoplias malabaricus, Ictiología Universidad Católica de Oriente, CC BY 2.0. No es un ejemplar de Navarro; nombre científico regional por revisar."},
+ carpa:{name:"Carpa",latin:"<i>Cyprinus carpio</i> · especie introducida",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Common_carp.jpg?width=720",alt:"Carpa común, imagen de dominio público de USFWS.",tags:"Introducida · Fondo · Agua calma",size:"Hasta 100 cm · 20 kg",sizeNote:"SAGyP · Río de la Plata/cuenca Salado",credit:"Imagen: Common carp.jpg, U.S. Fish and Wildlife Service, dominio público. La cifra es de cuenca, no una medida de Navarro."},
+ bagre:{name:"Bagre sapo",latin:"<i>Rhamdia quelen</i> · nombre por cotejar",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Rhamdia_quelen.jpg?width=720",alt:"Ilustración histórica de Rhamdia quelen, Paul Louis Oudart, 1847.",tags:"Fondo · Agua dulce · Identificación abierta",size:"≈ 55 cm",sizeNote:"SAGyP · referencia general",credit:"Imagen: lámina histórica Rhamdia quelen.jpg, Paul Louis Oudart (1847), Commons. La fuente SIB usa Rhamdia sapo; no asumir que el registro local está identificado."},
+ pejerrey:{name:"Pejerrey",latin:"<i>Odontesthes bonariensis</i>",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Pejerrey_Odontesthes_Bonariensis.jpg?width=720",alt:"Pejerrey argentino, fotografía CC0 de Uli7.",tags:"Plateado · Cardumen · Laguna",size:"Hasta 74 cm",sizeNote:"SAGyP · referencia general",credit:"Imagen: Pejerrey Odontesthes Bonariensis.jpg, Uli7, CC0. SIB cita otra media general; ninguna es una estadística de Navarro."}
+};
 let current="home";
 let savedEmpty=false;
 let locationStatus="sin ubicación";
@@ -481,6 +488,17 @@ function show(id){
  current=id;
  const t=document.getElementById(id);
  content.replaceChildren(t.content.cloneNode(true));
+ if(id==="species"){
+  const fish=fishData[selectedFish]||fishData.tararira;
+  content.querySelector("#species-name").textContent=fish.name;
+  content.querySelector("#species-latin").innerHTML=fish.latin;
+  content.querySelector("#species-image").src=fish.image;
+  content.querySelector("#species-image").alt=fish.alt;
+  content.querySelector("#species-tags").innerHTML=fish.tags.split(" · ").map(x=>'<span class="pill">'+x+'</span>').join("");
+  content.querySelector("#species-size").textContent=fish.size;
+  content.querySelector("#species-size-note").textContent=fish.sizeNote;
+  content.querySelector("#species-attribution").textContent=fish.credit;
+ }
  if(id==="capture-detail"){
   const sample=content.querySelector('[data-detail="sample"]');
   const empty=content.querySelector('[data-detail="empty"]');
@@ -493,12 +511,12 @@ function show(id){
  document.getElementById("purpose-title").textContent=screens[names[id]].name;
  document.getElementById("purpose-text").textContent=screens[names[id]].purpose;
  document.getElementById("phone-caption").textContent=(names[id]+1)+" / "+screens.length+" · "+screens[names[id]].name;
- document.querySelectorAll(".bottom-nav button").forEach(b=>b.classList.toggle("active",b.dataset.screen===id || (id==="species"||id==="measures"||id==="calendar"||id==="weather")&&b.dataset.screen==="home" || (id==="new-catch"||id==="location"||id==="capture-detail")&&b.dataset.screen==="catches" || (id==="knots"||id==="tutorial"||id==="checklist")&&b.dataset.screen==="gear"));
+ document.querySelectorAll(".bottom-nav button").forEach(b=>b.classList.toggle("active",b.dataset.screen===id || (id==="calendar"||id==="weather")&&b.dataset.screen==="home" || (id==="species"||id==="measures")&&b.dataset.screen==="catalog" || (id==="new-catch"||id==="location"||id==="capture-detail")&&b.dataset.screen==="catches" || (id==="knots"||id==="tutorial"||id==="checklist")&&b.dataset.screen==="gear"));
  content.scrollTop=0;
 }
 document.addEventListener("click",e=>{
  const nav=e.target.closest("[data-screen]");
- if(nav){show(nav.dataset.screen);return}
+ if(nav){if(nav.dataset.fish)selectedFish=nav.dataset.fish;show(nav.dataset.screen);return}
  const action=e.target.closest("[data-action]");
  if(!action)return;
  switch(action.dataset.action){
