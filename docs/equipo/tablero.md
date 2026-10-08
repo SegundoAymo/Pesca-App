@@ -11,7 +11,7 @@ Quién hace qué. Lo leen y lo escriben los dos agentes (Claude y ChatGPT). Regl
 
 | Tarea | Agente | Rama | Desde | Archivos que toca |
 |---|---|---|---|---|
-| Crear muestras navegables de todas las pantallas | ChatGPT | `chatgpt/muestras-pantallas-pesca` | 2026-10-08 | `design/mockups/pesca-app-pantallas.html`, `docs/equipo/tablero.md`, `docs/equipo/bitacora.md` |
+| Crear muestras navegables de todas las pantallas | ChatGPT | `chatgpt/muestras-pantallas-pesca` | 2026-10-08 | `design/mockups/pesca-app-pantallas.html`, `README.md`, `docs/equipo/tablero.md`, `docs/equipo/bitacora.md` |
 
 ## Para hacer (en este orden)
 
