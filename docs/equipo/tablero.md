@@ -11,6 +11,7 @@ Quién hace qué. Lo leen y lo escriben los dos agentes (Claude y ChatGPT). Regl
 
 | Tarea | Agente | Rama | Desde | Archivos que toca |
 |---|---|---|---|---|
+| Registrar Pesca Argentina como fuente de especies | ChatGPT | `chatgpt/indice-pesca-argentina` | 2026-10-08 | `docs/fuentes/README.md`, `docs/equipo/tablero.md`, `docs/equipo/bitacora.md` |
 
 ## Para hacer (en este orden)
 
