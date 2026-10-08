@@ -12,7 +12,7 @@
 - **Qué ayuda a pescar:** sumar bloques breves con carnadas y señuelos, dónde buscar el pez y sus hábitos (horario, estación y efecto del frío) cuando el material disponible lo respalde. No inventar una recomendación para llenar un espacio.
 - **Mis capturas:** agrupar registros por especie como el catálogo; guardar los registros sin especie bajo “Sin identificar”. Mantener foto, lugar, especie, largo, peso y nota opcionales.
 - **Ubicación:** pedir permiso solo al elegir agregar ubicación. La pantalla de permiso existe como estado condicional dentro de ese flujo, no como destino de navegación.
-- **Equipo:** conservar la pantalla de nudos por situación y etiquetas cortas que dicen qué unión resolver. Mantener nudos y checklist separados: la portada actual tiene cinco accesos y el usuario no encontró que agruparlos fuera necesario.
+- **Nudos:** conservar la selección de nudos por situación con etiquetas cortas que dicen qué se quiere unir, como en la primera muestra. Mantener Nudos y Checklist como accesos separados, siguiendo la portada actual. El tutorial sí usa la app actual y conserva todos los pasos a la vista.
 - **Tutorial de nudos y checklist:** usar las pantallas de la app actual; el tutorial muestra todos sus pasos a la vista y la checklist conserva sus controles actuales.
 - **Fuentes de datos:** las fuentes y límites se guardan en documentación de proyecto para verificar el contenido, pero no se presentan como pantalla ni como bloque visible del detalle. Los créditos de las fotografías se conservan de forma discreta porque identifican el origen y la licencia de cada imagen.
 
@@ -51,7 +51,7 @@ La galería conserva un índice externo para navegar las pantallas de muestra; e
 | 7 | Nueva captura | Nueva | Foto, ubicación, especie, largo, peso y nota; todo opcional, incluso el guardado vacío. |
 | 8 | Permiso de ubicación | Estado condicional | Aparece solo tras pedir agregar ubicación. Permitir, omitir o seguir sin lugar. |
 | 9 | Captura guardada / detalle | Nueva | Solo los datos ingresados, opción de editar y regreso al grupo de su especie. |
-| 10 | Elegir un nudo | App actual | Situaciones y nombres cortos para encontrar la unión necesaria. |
+| 10 | Elegir un nudo | Muestra aprobada | Situaciones con etiquetas cortas y simples: línea, anzuelo, señuelo, empalme. |
 | 11 | Tutorial de nudo | App actual | Todos los pasos visibles en la misma pantalla, con sus dibujos actuales. |
 | 12 | Checklist | App actual | Lista y controles actuales, incluyendo “Nueva salida”. |
 
