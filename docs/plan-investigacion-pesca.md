@@ -86,3 +86,29 @@ Marcar [x] únicamente cuando se cumple la meta observable. Si falta evidencia, 
 ## Resultado esperado
 
 Una guía de diseño breve y visual, basada en tareas reales del pescador: qué merece atención inmediata, qué se revela al ampliar y qué no hace falta mostrar. Debe incluir la muestra de ficha, decisiones de iconografía/diagramas, fuentes y nivel de confianza, y los datos que requieren revisión.
+
+## Investigación para las funciones pedidas por el usuario (2026-10-08)
+
+El usuario quiere que la app se sienta simple y algo lúdica, con un catálogo visual tipo Pokédex; ver tamaño y peso medios y máximos de cada pez; y llevar un registro personal de capturas con foto, ubicación, especie, largo y peso. **Todos esos campos de captura son opcionales.** Son objetivos de diseño e investigación; no implican programar estas funciones ahora.
+
+### 6. Diseñar el catálogo tipo Pokédex y las medidas por especie
+
+| Estado | Tarea | Meta de cierre |
+|---|---|---|
+| [ ] | 6.1 Proponer la tarjeta visual de especie. | Una muestra prioriza imagen/ilustración e iconos rotulados, identificación y datos de un vistazo; el detalle ampliado contiene texto breve y organizado, no una ficha larga. |
+| [ ] | 6.2 Definir qué significan “tamaño medio”, “peso medio” y “máximo”. | Para largo y peso se especifican unidad, etapa/sexo si aplica, ámbito geográfico, fuente y método; “máximo” se rotula como máximo científico, ejemplar récord o máximo observado según la evidencia, sin mezclarlos. |
+| [ ] | 6.3 Reunir valores de largo y peso por especie. | Cada valor mostrado tiene fuente trazable y alcance claro; promedio y máximo se distinguen; cuando no haya un promedio local confiable, se indica “sin dato confiable” en vez de inventarlo. |
+| [ ] | 6.4 Elegir la forma compacta de mostrar medidas. | La tarjeta permite comparar largo y peso medios/máximos en una mirada, con iconos y unidades legibles; la persona puede entender qué compara una prueba rápida de comprensión. |
+| [ ] | 6.5 Definir la lógica lúdica del catálogo. | Un boceto demuestra cómo recorrer/descubrir especies al estilo Pokédex sin añadir texto innecesario, ocultar información útil ni exigir completar el catálogo para usar la app. |
+
+### 7. Diseñar el registro personal de capturas
+
+| Estado | Tarea | Meta de cierre |
+|---|---|---|
+| [ ] | 7.1 Definir la tarjeta de una captura propia. | El registro contempla foto, ubicación, especie, largo y peso, y permite guardar una captura con cualquier combinación de esos datos, incluso si falta especie, foto o medidas. |
+| [ ] | 7.2 Definir la carga visual y rápida. | Un boceto usa iconos con rótulos claros para cargar o consultar los cinco datos; no hace obligatorio ningún campo y evita pedir texto libre cuando sirve una opción visual. |
+| [ ] | 7.3 Resolver permisos y privacidad de foto/ubicación. | La ubicación se pide solo con permiso explícito, puede omitirse o quitarse, y se deja claro dónde queda guardada; no se comparte públicamente sin una decisión expresa del usuario. |
+| [ ] | 7.4 Definir cómo convive el registro con la Pokédex. | Un flujo muestra cómo una captura personal se vincula a una especie y cómo se consulta el historial, sin confundir datos personales con promedios o máximos de la especie. |
+| [ ] | 7.5 Probar comprensión y facilidad de carga. | En una prueba exploratoria con 5 pescadores, al menos 4 pueden iniciar un registro, omitir datos que no tienen y encontrar una captura guardada; registrar fricciones y ajustes. |
+
+Las reglas de fuentes, derechos de imágenes, incertidumbre y validación visual de las secciones anteriores también aplican a estas funciones. No sumar insignias, puntajes, rankings o uso compartido como requisitos sin evidencia de que ayudan y una decisión posterior del usuario.
