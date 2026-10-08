@@ -11,7 +11,7 @@ Quién hace qué. Lo leen y lo escriben los dos agentes (Claude y ChatGPT). Regl
 
 | Tarea | Agente | Rama | Desde | Archivos que toca |
 |---|---|---|---|---|
-| Crear muestras navegables de todas las pantallas | ChatGPT | `chatgpt/muestras-pantallas-pesca` | 2026-10-08 | `design/mockups/pesca-app-pantallas.html`, `README.md`, `docs/equipo/tablero.md`, `docs/equipo/bitacora.md` |
+
 
 ## Para hacer (en este orden)
 
@@ -19,7 +19,6 @@ Detalle de cada nudo en `docs/plan-nudos.md`, "Lo que sigue" y "Correcciones ped
 
 | # | Tarea | Referencia | Nota |
 |---|---|---|---|
-| 1 | Crear muestras navegables de todas las pantallas | `docs/plan-diseno-pantallas.md` | 14 estados con navegación, fotos atribuidas y datos reales/ficticios claramente marcados |
 | 2 | Nudo Cirujano: corregir | guía A p. 4, Wilson p. 45, explicación del usuario | Qué extremo de la naranja pasa por el lazo |
 | 3 | Nudo Snell: rehacer | imagen n1 | Copiar su disposición |
 | 4 | Nudo Albright | imagen n3, Wilson p. 25 | 5 vueltas de ida y 5 de vuelta |
@@ -43,6 +42,7 @@ Detalle de cada nudo en `docs/plan-nudos.md`, "Lo que sigue" y "Correcciones ped
 
 | Tarea | Agente | Pull request | Fecha |
 |---|---|---|---|
+| Muestras navegables de 14 pantallas y estados, con datos y navegación documentados | ChatGPT | [#18](https://github.com/SegundoAymo/Pesca-App/pull/18) | 2026-10-08 |
 | Coordinación Claude + ChatGPT (este tablero, bitácora, aprendizajes, herramientas, fuentes) | Claude | ver bitácora | 2026-10-07 |
 | Plan de investigación y verificación de contenidos para la app | ChatGPT | [#12](https://github.com/SegundoAymo/Pesca-App/pull/12) | 2026-10-07 |
 | Replantear investigación según necesidades del pescador y diseño visual | ChatGPT | [#13](https://github.com/SegundoAymo/Pesca-App/pull/13) | 2026-10-07 |
