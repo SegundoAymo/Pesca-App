@@ -344,7 +344,6 @@ const screens = [
   {id:"knots",name:"Elegir un nudo",purpose:"Se conservan las etiquetas cortas y simples que te gustaron: línea, anzuelo, señuelo y empalme."},
   {id:"tutorial",name:"Tutorial · app actual",purpose:"Se conserva la vista actual con todos los pasos y dibujos a la vista."},
   {id:"checklist",name:"Checklist · app actual",purpose:"Se conserva la lista y los controles que ya tiene la app."}
-]
 ];
 const names=Object.fromEntries(screens.map((s,i)=>[s.id,i]));
 const liveRoutes={home:"/",calendar:"/calendario",weather:"/clima",tutorial:"/nudos/anzuelo/palomar",checklist:"/checklist"};
@@ -357,7 +356,6 @@ const fishData={
  carpa:{name:"Carpa",latin:"<i>Cyprinus carpio</i>",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Common_carp.jpg?width=720",alt:"Carpa común; imagen de USFWS en dominio público.",metrics:[["Largo máx.","100 cm","referencia de cuenca"],["Peso máx.","20 kg","referencia de cuenca"]],bait:"Maíz dulce o papa hervida; también masa y pan. No hay señuelo del kit recomendado; el curly tail de fondo es una alternativa.",where:"Agua tranquila y fondo barroso; bordes con vegetación. Referencia de profundidad: 0,5–3 m.",habits:"Amanecer y anochecer. Con agua debajo de 10 °C casi no come.",credit:"U.S. Fish and Wildlife Service · dominio público."},
  bagre:{name:"Bagre sapo",latin:"<i>Rhamdia</i> sp. · identidad por confirmar",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Rhamdia_quelen.jpg?width=720",alt:"Lámina histórica identificada como Rhamdia quelen, no fotografía local.",metrics:[["Tamaño ref.","≈55 cm","referencia general"]],bait:"Lombriz colorada en racimo; también hígado o trozos de pescado. No hay señuelo del kit recomendado.",where:"Pegado al fondo, en agua baja con vegetación, barro, hojas o madera.",habits:"Sobre todo de noche; con agua fría deja de comer. Referencia general para bagre sapo, no certeza local.",credit:"Lámina de Paul Louis Oudart, 1847 · dominio público. La identificación local sigue abierta."},
  pejerrey:{name:"Pejerrey",latin:"<i>Odontesthes bonariensis</i>",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Pejerrey_Odontesthes_Bonariensis.jpg?width=720",alt:"Pejerrey argentino, fotografía de Uli7 con licencia CC0.",metrics:[["Largo máx.","74 cm","referencia general"]],bait:"Mojarra viva, filet de dientudo o de pejerrey. Señuelo: cucharita giratoria chica.",where:"Sigue cardúmenes; con viento puede afirmarse en el centro de la laguna. La profundidad cambia.",habits:"De día y más activo en época fría. Con heladas suele bajar; con días templados sube.",credit:"Uli7 · CC0."}
-}
 };
 let current="home";
 let detailMode="sample";
@@ -367,7 +365,6 @@ let locationStatus="sin ubicación";
 let savedFields={};
 let draftFields={};
 let formOrigin="catches";
-let draftFields={};
 const content=document.getElementById("screen-content");
 const index=document.getElementById("screen-index");
 function buildIndex(){
