@@ -1,6 +1,6 @@
 // Service Worker: keeps the whole app on the phone so it works without a connection.
 // Bump VERSION on every release so phones pick up the new files.
-const VERSION = 'v7';
+const VERSION = 'v8';
 const CACHE = `kitpesca-${VERSION}`;
 const DATA_CACHE = 'kitpesca-data';
 
@@ -82,7 +82,8 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  if (url.origin !== self.location.origin) return;
+  // The design gallery is a separate static page; do not serve the app shell there.
+  if (url.origin !== self.location.origin || url.pathname.includes('/muestras/')) return;
 
   // App files: from the phone first.
   event.respondWith((async () => {
