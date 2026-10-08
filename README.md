@@ -2,7 +2,7 @@
 
 App para el teléfono (PWA, Android) para pescar en la laguna de Navarro y alrededores: Clima, Calendario de pique, Peces, Nudos y Checklist.
 
-**Estado:** primera versión de la app programada (las 6 pantallas, con los dibujos de nudos y armados). Falta probarla en el teléfono y publicarla.
+**Estado:** primera versión de la app programada (las 6 pantallas, con los dibujos de nudos y armados). Falta probarla en el teléfono y publicarla. [Ver las muestras navegables](https://segundoaymo.github.io/Pesca-App/muestras/).
 
 ## Probarla en la computadora
 
@@ -34,7 +34,7 @@ Al subir una versión nueva, cambiar `VERSION` en `sw.js` para que los teléfono
 | [`docs/fichas.md`](docs/fichas.md) | Fichas de las 11 especies (carnadas, hábitat, equipo, tips, vedas). |
 | [`docs/plan-investigacion-pesca.md`](docs/plan-investigacion-pesca.md) | Plan por tareas para investigar, verificar y preparar contenido de pesca como referencia de diseño. |
 | [`docs/plan-diseno-pantallas.md`](docs/plan-diseno-pantallas.md) | Decisiones de navegación, contenido, privacidad y criterios previos a las muestras de pantallas. |
-| [`design/mockups/pesca-app-pantallas.html`](design/mockups/pesca-app-pantallas.html) | Prototipo visual navegable de las 14 pantallas; es referencia de diseño, no la app. |
+| [`design/mockups/pesca-app-pantallas.html`](design/mockups/pesca-app-pantallas.html) | Galería navegable de 12 pantallas: conserva vistas de la app actual y agrega propuestas de catálogo y capturas; es referencia de diseño, no la app. |
 | [`docs/nudos.md`](docs/nudos.md) | 18 nudos y 3 armados de plomada, clasificados en 9 situaciones, con pasos. |
 | [`docs/armados.md`](docs/armados.md) | 8 armados de línea para tararira, bagre y carpa, glosario y lista de compras. |
 | [`design/mockups/`](design/mockups) | Todas las muestras de diseño (calendario A–F6, Inicio, Calendario, Clima, estilos, variantes S1–S7, catálogo de íconos). |
