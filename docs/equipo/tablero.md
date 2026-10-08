@@ -11,7 +11,6 @@ Quién hace qué. Lo leen y lo escriben los dos agentes (Claude y ChatGPT). Regl
 
 | Tarea | Agente | Rama | Desde | Archivos que toca |
 |---|---|---|---|---|
-| Publicar el prototipo en una ruta separada de GitHub Pages | ChatGPT | `chatgpt/publicar-muestra-pantallas` | 2026-10-08 | `.github/workflows/pages.yml`, `docs/equipo/tablero.md`, `docs/equipo/bitacora.md` |
 
 
 ## Para hacer (en este orden)
@@ -43,6 +42,7 @@ Detalle de cada nudo en `docs/plan-nudos.md`, "Lo que sigue" y "Correcciones ped
 
 | Tarea | Agente | Pull request | Fecha |
 |---|---|---|---|
+| Publicar el prototipo en ruta separada de GitHub Pages, sin cambiar la app principal | ChatGPT | [#19](https://github.com/SegundoAymo/Pesca-App/pull/19) | 2026-10-08 |
 | Muestras navegables de 14 pantallas y estados, con datos y navegación documentados | ChatGPT | [#18](https://github.com/SegundoAymo/Pesca-App/pull/18) | 2026-10-08 |
 | Coordinación Claude + ChatGPT (este tablero, bitácora, aprendizajes, herramientas, fuentes) | Claude | ver bitácora | 2026-10-07 |
 | Plan de investigación y verificación de contenidos para la app | ChatGPT | [#12](https://github.com/SegundoAymo/Pesca-App/pull/12) | 2026-10-07 |
