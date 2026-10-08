@@ -37,8 +37,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: Armar el sitio
         run: |
-          mkdir _site
+          mkdir -p _site/muestras
           cp -r index.html manifest.webmanifest sw.js css fonts icons js _site/
+          cp design/mockups/pesca-app-pantallas.html _site/muestras/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
       - id: deployment
