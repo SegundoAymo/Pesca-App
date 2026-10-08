@@ -12,24 +12,24 @@ Quién hace qué. Lo leen y lo escriben los dos agentes (Claude y ChatGPT). Regl
 | Tarea | Agente | Rama | Desde | Archivos que toca |
 |---|---|---|---|---|
 
-
 ## Para hacer (en este orden)
 
 Detalle de cada nudo en `docs/plan-nudos.md`, "Lo que sigue" y "Correcciones pedidas por el usuario".
 
 | # | Tarea | Referencia | Nota |
 |---|---|---|---|
-| 1 | Nudo Cirujano: corregir | guía A p. 4, Wilson p. 45, explicación del usuario | Qué extremo de la naranja pasa por el lazo |
-| 2 | Nudo Snell: rehacer | imagen n1 | Copiar su disposición |
-| 3 | Nudo Albright | imagen n3, Wilson p. 25 | 5 vueltas de ida y 5 de vuelta |
-| 4 | Nudo Rapala | imagen n2 | 6 pasos como la imagen |
-| 5 | Tope corredizo | imagen n6 | Forma fácil; buscar si sirve el nylon |
-| 6 | Nudo Bimini | imagen n5 | 8 pasos como la imagen |
-| 7 | Nudo FG | imagen n4 | Faltan los pasos 1 a 3 |
-| 8 | Haywire | Wilson p. 69 | Acero gris azulado |
-| 9 | Manguito (crimp) | Wilson p. 64 | Manguito en bronce |
-| 10 | Armados al sistema nuevo | `docs/armados.md` | Emerillón en bronce, brazolada de acero |
-| 11 | Probar la app en el teléfono y publicarla | `README.md` | GitHub Pages |
+| 1 | Crear muestras navegables de todas las pantallas | `docs/plan-diseno-pantallas.md` | 14 estados con navegación, fotos atribuidas y datos reales/ficticios claramente marcados |
+| 2 | Nudo Cirujano: corregir | guía A p. 4, Wilson p. 45, explicación del usuario | Qué extremo de la naranja pasa por el lazo |
+| 3 | Nudo Snell: rehacer | imagen n1 | Copiar su disposición |
+| 4 | Nudo Albright | imagen n3, Wilson p. 25 | 5 vueltas de ida y 5 de vuelta |
+| 5 | Nudo Rapala | imagen n2 | 6 pasos como la imagen |
+| 6 | Tope corredizo | imagen n6 | Forma fácil; buscar si sirve el nylon |
+| 7 | Nudo Bimini | imagen n5 | 8 pasos como la imagen |
+| 8 | Nudo FG | imagen n4 | Faltan los pasos 1 a 3 |
+| 9 | Haywire | Wilson p. 69 | Acero gris azulado |
+| 10 | Manguito (crimp) | Wilson p. 64 | Manguito en bronce |
+| 11 | Armados al sistema nuevo | `docs/armados.md` | Emerillón en bronce, brazolada de acero |
+| 12 | Probar la app en el teléfono y publicarla | `README.md` | GitHub Pages |
 
 ## Esperando al usuario
 

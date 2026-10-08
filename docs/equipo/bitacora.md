@@ -15,6 +15,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-08 — ChatGPT — Planificar pantallas y navegación
+- Rama y pull request: `chatgpt/plan-muestras-pantallas`, [PR #17](https://github.com/SegundoAymo/Pesca-App/pull/17).
+- Qué se hizo: antes de dibujar se definieron propósito, cuatro destinos principales, recorrido, 14 pantallas/estados, uso separado de datos reales y ficticios, créditos de imágenes, privacidad y criterios de revisión. El plan quedó escrito en `docs/plan-diseno-pantallas.md`.
+- Pruebas: no ejecutadas; cambio documental, sin cambios de código.
+- Qué quedó pendiente o a medias: producir muestras navegables basadas en este plan.
+- Para el próximo: consultar el plan publicado antes de hacer la primera muestra; no mostrar las cifras generales como medidas de Navarro.
+
 ## 2026-10-08 — ChatGPT — Relevamiento de especies prioritarias
 - Rama y pull request: `chatgpt/relevamiento-especies-prioritarias`, [PR #16](https://github.com/SegundoAymo/Pesca-App/pull/16).
 - Qué se hizo: se documentó la evidencia de presencia local/regional, taxonomía, tamaños disponibles y límites de los datos para tararira, carpa, bagre sapo y pejerrey. Se propuso cómo presentar medias y máximos sin atribuir cifras de cuenca u otras lagunas a Navarro; se indexó el informe y sus fuentes.
