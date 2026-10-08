@@ -11,7 +11,7 @@ Quién hace qué. Lo leen y lo escriben los dos agentes (Claude y ChatGPT). Regl
 
 | Tarea | Agente | Rama | Desde | Archivos que toca |
 |---|---|---|---|---|
-| Relevamiento de especies prioritarias y medidas para la Pokédex | ChatGPT | `chatgpt/relevamiento-especies-prioritarias` | 2026-10-08 | `docs/fuentes/relevamiento-especies-prioritarias-2026-10.md`, `docs/fuentes/README.md`, `docs/equipo/tablero.md`, `docs/equipo/bitacora.md` |
+
 
 ## Para hacer (en este orden)
 
