@@ -15,6 +15,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-08 — ChatGPT — Publicar prototipo visual sin reemplazar la app
+- Rama y pull request: `chatgpt/publicar-muestra-pantallas`, [PR #19](https://github.com/SegundoAymo/Pesca-App/pull/19).
+- Qué se hizo: se configuró GitHub Pages para copiar el prototipo a `/muestras/`, conservando la app y su entrada en la raíz.
+- Pruebas: no ejecutadas localmente; el workflow de publicación ya ejecuta `node --test` antes del despliegue.
+- Qué quedó pendiente o a medias: confirmar el despliegue de Pages tras integrar el PR.
+- Para el próximo: usar la ruta `/muestras/` para abrir el prototipo; la app sigue en la raíz.
+
 ## 2026-10-08 — ChatGPT — Muestras navegables de pantallas
 - Rama y pull request: `chatgpt/muestras-pantallas-pesca`, PR #18.
 - Qué se hizo: prototipo HTML navegable con 14 pantallas/estados, navegación principal, catálogo de cuatro especies prioritarias, registro opcional de capturas, estados vacíos, clima de demostración y créditos de imágenes. Incluye datos con alcance explícito y ejemplos ficticios marcados.
