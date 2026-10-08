@@ -11,6 +11,7 @@ Quién hace qué. Lo leen y lo escriben los dos agentes (Claude y ChatGPT). Regl
 
 | Tarea | Agente | Rama | Desde | Archivos que toca |
 |---|---|---|---|---|
+| Publicar el prototipo en una ruta separada de GitHub Pages | ChatGPT | `chatgpt/publicar-muestra-pantallas` | 2026-10-08 | `.github/workflows/pages.yml`, `docs/equipo/tablero.md`, `docs/equipo/bitacora.md` |
 
 
 ## Para hacer (en este orden)
