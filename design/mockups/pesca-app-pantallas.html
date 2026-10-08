@@ -313,7 +313,13 @@ a{color:var(--green)}
 </template>
 
 <template id="knots">
-
+<p class="kicker">NUDOS · ELEGIR POR SITUACIÓN</p><h1>¿Qué querés unir?</h1><p class="lead">Elegí una tarea y encontrá el nudo.</p>
+<div class="list">
+<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill">LÍNEA</span><span class="grow"><strong>Atar al carretel</strong><small>Nudo de carrete</small></span><span>→</span></button>
+<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill orange">ANZUELO</span><span class="grow"><strong>Atar anzuelo o emerillón</strong><small>Palomar · Clinch · Uni</small></span><span>→</span></button>
+<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill">SEÑUELO</span><span class="grow"><strong>Dejarlo moverse libre</strong><small>Rapala · elegir después</small></span><span>→</span></button>
+<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill">EMPALME</span><span class="grow"><strong>Unir dos líneas</strong><small>Doble uni · Albright · FG</small></span><span>→</span></button>
+</div>
 </template>
 
 <template id="tutorial">
@@ -335,13 +341,13 @@ const screens = [
   {id:"new-catch",name:"Nueva captura",purpose:"Todos los campos son opcionales. El permiso de ubicación aparece solo si se intenta agregar el lugar."},
   {id:"location",name:"Permiso de ubicación",purpose:"Estado condicional del formulario. Se puede continuar sin ubicación."},
   {id:"capture-detail",name:"Captura guardada",purpose:"El detalle muestra lo guardado y ofrece volver al grupo de especie."},
-  {id:"knots",name:"Nudos · app actual",purpose:"Se conserva la pantalla actual de situaciones y sus etiquetas cortas."},
+  {id:"knots",name:"Elegir un nudo",purpose:"Se conservan las etiquetas cortas y simples que te gustaron: línea, anzuelo, señuelo y empalme."},
   {id:"tutorial",name:"Tutorial · app actual",purpose:"Se conserva la vista actual con todos los pasos y dibujos a la vista."},
   {id:"checklist",name:"Checklist · app actual",purpose:"Se conserva la lista y los controles que ya tiene la app."}
 ]
 ];
 const names=Object.fromEntries(screens.map((s,i)=>[s.id,i]));
-const liveRoutes={home:"/",calendar:"/calendario",weather:"/clima",knots:"/nudos",tutorial:"/nudos/anzuelo/palomar",checklist:"/checklist"};
+const liveRoutes={home:"/",calendar:"/calendario",weather:"/clima",tutorial:"/nudos/anzuelo/palomar",checklist:"/checklist"};
 
 
 
