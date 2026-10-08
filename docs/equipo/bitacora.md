@@ -15,6 +15,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-08 — ChatGPT — Relevamiento de especies prioritarias
+- Rama y pull request: `chatgpt/relevamiento-especies-prioritarias`, [PR #16](https://github.com/SegundoAymo/Pesca-App/pull/16).
+- Qué se hizo: se documentó la evidencia de presencia local/regional, taxonomía, tamaños disponibles y límites de los datos para tararira, carpa, bagre sapo y pejerrey. Se propuso cómo presentar medias y máximos sin atribuir cifras de cuenca u otras lagunas a Navarro; se indexó el informe y sus fuentes.
+- Pruebas: no ejecutadas; cambio documental, sin cambios de código.
+- Qué quedó pendiente o a medias: no hay medias locales confiables; falta una nueva etapa sobre carnadas/técnicas, normativa vigente y prueba visual con pescadores.
+- Para el próximo: mantener “bagre” separado de “bagre amarillo”; revisar los nombres científicos (*Hoplias argentinensis* / *H. malabaricus*, *Rhamdia quelen* / *R. sapo*) y rotular con claridad los datos regionales.
+
 ## 2026-10-08 — ChatGPT — Registro de Pesca Argentina como fuente
 - Rama y pull request: `chatgpt/indice-pesca-argentina`, [PR #15](https://github.com/SegundoAymo/Pesca-App/pull/15).
 - Qué se hizo: se comprobó acceso al índice general y a fichas de Pejerrey, Carpa y Tararira; se añadió el portal al índice de fuentes con su alcance y límites. Contiene fichas enlazadas para más de 40 especies con información descriptiva, distribución/localidades, medidas, modalidades, carnadas y temporadas.
