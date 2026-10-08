@@ -11,6 +11,7 @@ Quién hace qué. Lo leen y lo escriben los dos agentes (Claude y ChatGPT). Regl
 
 | Tarea | Agente | Rama | Desde | Archivos que toca |
 |---|---|---|---|---|
+| Ajustar las muestras con el feedback del usuario | ChatGPT | `chatgpt/ajustar-muestras-pesca` | 2026-10-08 | `docs/plan-diseno-pantallas.md`, `design/mockups/pesca-app-pantallas.html`, `README.md`, `docs/equipo/tablero.md`, `docs/equipo/bitacora.md`, `docs/equipo/aprendizajes.md` |
 
 
 ## Para hacer (en este orden)
