@@ -42,6 +42,7 @@ Detalle de cada nudo en `docs/plan-nudos.md`, "Lo que sigue" y "Correcciones ped
 
 | Tarea | Agente | Pull request | Fecha |
 |---|---|---|---|
+| Ajustar muestras al feedback: pantallas actuales, ficha breve y capturas agrupadas | ChatGPT | [#20](https://github.com/SegundoAymo/Pesca-App/pull/20) | 2026-10-08 |
 | Publicar el prototipo en ruta separada de GitHub Pages, sin cambiar la app principal | ChatGPT | [#19](https://github.com/SegundoAymo/Pesca-App/pull/19) | 2026-10-08 |
 | Muestras navegables de 14 pantallas y estados, con datos y navegación documentados | ChatGPT | [#18](https://github.com/SegundoAymo/Pesca-App/pull/18) | 2026-10-08 |
 | Coordinación Claude + ChatGPT (este tablero, bitácora, aprendizajes, herramientas, fuentes) | Claude | ver bitácora | 2026-10-07 |

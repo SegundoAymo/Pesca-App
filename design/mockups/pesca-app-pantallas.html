@@ -134,6 +134,14 @@ a{color:var(--green)}
 .bottom-nav button.active{background:var(--green-soft);color:var(--green)}
 .bottom-nav button:focus-visible,.index button:focus-visible,.secondary-button:focus-visible,.big-button:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 .phone-caption{padding:7px 4px;text-align:center;font-size:11px;color:var(--muted)}
+#live-app-frame{display:none;width:100%;height:100%;min-height:610px;border:8px solid #26332e;border-radius:34px;background:#0b0b0b}
+.phone.live-app{border:0;border-radius:34px;background:transparent;box-shadow:none}
+.phone.live-app>#live-app-frame{display:block}
+.phone.live-app>:not(#live-app-frame){display:none}
+#live-app-frame{display:none;width:100%;height:100%;min-height:610px;border:8px solid #26332e;border-radius:34px;background:#0b0b0b}
+.phone.live-app{border:0;border-radius:34px;background:transparent;box-shadow:none}
+.phone.live-app>#live-app-frame{display:block}
+.phone.live-app>:not(#live-app-frame){display:none}
 @media(max-width:1000px){.preview-area{grid-template-columns:minmax(0,1fr) minmax(320px,390px);}.side-note.left{display:none}}
 @media(max-width:700px){
  .deck{display:block}.index{padding:10px;border-right:0;border-bottom:1px solid var(--line)}
@@ -154,9 +162,9 @@ a{color:var(--green)}
 <div class="deck">
   <aside class="index" aria-label="Índice de pantallas">
     <div class="brand">KIT <span>DE PESCA</span></div>
-    <p>Propuesta visual · bitácora de campo</p>
+    <p>Revisión visual · app actual + propuesta</p>
     <nav id="screen-index" class="index-list"></nav>
-    <div class="legend">Los datos con etiqueta DEMO son inventados para mostrar la interfaz. Las medidas de peces se muestran con su ámbito y fuente.</div>
+    <div class="legend">DEMO identifica ejemplos inventados. Las medidas regionales indican su alcance en una etiqueta breve.</div>
   </aside>
   <section class="workspace">
     <header class="topbar">
@@ -166,21 +174,17 @@ a{color:var(--green)}
     <div class="preview-area">
       <div class="side-note left">
         <h2>Una bitácora que acompaña la salida</h2>
-        <p>Cuatro destinos claros; cada pantalla responde una pregunta. Las cifras regionales y los ejemplos ficticios se mantienen separados.</p>
+        <p>Las pantallas marcadas “app actual” se cargan desde la app publicada; las demás muestran funciones nuevas para revisar.</p>
       </div>
       <div>
-        <div class="phone" aria-label="Vista previa de teléfono">
+        <div class="phone" id="phone" aria-label="Vista previa de teléfono">
           <div class="phone-status"><span>9:41</span><span>● ● ● 100%</span></div>
-          <div class="appbar"><button class="back" data-action="back" aria-label="Volver">‹ Volver</button><span class="brand-small">BITÁCORA DE PESCA</span><button class="icon-action" aria-label="Ayuda">?</button></div>
+          <div class="appbar"><button class="back" data-action="back" aria-label="Volver">‹ Volver</button><span class="brand-small">KIT DE PESCA</span><button class="icon-action" aria-label="Ayuda">?</button></div>
           <main id="screen-content" class="screen-content" aria-live="polite"></main>
-          <nav class="bottom-nav" aria-label="Navegación principal">
-            <button data-screen="home"><span aria-hidden="true">⌂</span>Inicio</button>
-            <button data-screen="catalog"><span aria-hidden="true">◉</span>Peces</button>
-            <button data-screen="catches"><span aria-hidden="true">▣</span>Capturas</button>
-            <button data-screen="gear"><span aria-hidden="true">⌁</span>Equipo</button>
-          </nav>
+
+          <iframe id="live-app-frame" title="Pantalla actual de Kit de Pesca" src="about:blank"></iframe>
         </div>
-        <div id="phone-caption" class="phone-caption">14 muestras · elegí una pantalla en el índice</div>
+        <div id="phone-caption" class="phone-caption">12 muestras · elegí una pantalla en el índice</div>
       </div>
       <aside class="side-note right">
         <h2 id="purpose-title">Una sola acción principal por pantalla</h2>
@@ -196,57 +200,15 @@ a{color:var(--green)}
 </div>
 
 <template id="home">
-  <p class="kicker">Jueves 8 de octubre · <span class="pill orange">DEMO</span></p>
-  <h1>¿A dónde te lleva la salida?</h1>
-  <p class="lead">Tu bitácora para explorar, preparar el equipo y guardar lo que viviste.</p>
-  <div class="card dark">
-    <div class="row"><span class="label">LUGAR DE LA SALIDA</span><span class="pill">Guardado en este teléfono</span></div>
-    <h2 style="margin:7px 0 3px">Laguna de Navarro</h2>
-    <div class="row"><span class="label">Condiciones ilustrativas</span><span class="pill orange">DEMO</span></div>
-    <div class="row" style="margin-top:11px"><strong style="font-size:25px">16°</strong><span>Viento suave · sin alerta</span></div>
-  </div>
-  <button class="big-button" data-screen="catalog">Explorar peces <span aria-hidden="true">→</span></button>
-  <button class="secondary-button" style="width:100%;margin-top:8px" data-screen="new-catch">＋ Guardar una captura</button>
-  <h2>Tu próxima salida</h2>
-  <div class="card row"><div><strong>Sábado 10</strong><div class="label">Calendario ilustrativo · DEMO</div></div><button data-screen="calendar" class="link-button">Ver mes →</button></div>
-  <div class="row"><button class="secondary-button" data-screen="weather">☁ Ver clima</button><button class="secondary-button" data-screen="gear">⌁ Preparar equipo</button></div>
+<p>Vista de la app actual.</p>
 </template>
 
 <template id="calendar">
-  <p class="kicker">PLANIFICAR · <span class="pill orange">DEMO</span></p>
-  <h1>Octubre 2026</h1>
-  <p class="lead">Días y señales de muestra. No es un pronóstico real.</p>
-  <div class="card">
-    <div class="month-grid">
-      <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
-      <button> </button><button> </button><button> </button><button>1</button><button>2</button><button>3</button><button>4</button>
-      <button>5</button><button>6</button><button>7</button><button class="selected" data-day="8">8</button><button>9</button><button class="has-event" data-day="10">10</button><button>11</button>
-      <button>12</button><button>13</button><button>14</button><button>15</button><button>16</button><button class="has-event" data-day="17">17</button><button>18</button>
-      <button>19</button><button>20</button><button>21</button><button>22</button><button>23</button><button>24</button><button>25</button>
-      <button>26</button><button>27</button><button>28</button><button>29</button><button>30</button><button>31</button><button> </button>
-    </div>
-  </div>
-  <h2 id="calendar-selected">Jueves 8 · hoy</h2>
-  <div class="card soft row"><span>◷</span><div style="flex:1"><strong>Condiciones para revisar</strong><div class="label">Ejemplo visual, no calculado</div></div><button class="link-button" data-screen="weather">Abrir →</button></div>
-  <div class="card"><div class="row"><strong>Sábado 10</strong><span class="pill orange">DEMO</span></div><p class="label">Recordatorio personal: revisar el equipo</p><button class="link-button" data-screen="gear">Ver checklist →</button></div>
+<p>Vista de la app actual.</p>
 </template>
 
 <template id="weather">
-  <p class="kicker">CONDICIONES · <span class="pill orange">DEMO</span></p>
-  <h1>El día, de un vistazo</h1>
-  <p class="lead">Laguna de Navarro · valores inventados para la muestra</p>
-  <div class="card dark row"><div><span class="label">AHORA · DEMO</span><div style="font-size:32px;font-weight:850">16°</div><div>Parcialmente nublado</div></div><div style="font-size:35px" aria-hidden="true">☁</div></div>
-  <div class="metric-row">
-    <div class="metric"><span>VIENTO · DEMO</span><b>12 km/h</b><span>del este</span></div>
-    <div class="metric"><span>LLUVIA · DEMO</span><b>0 mm</b><span>próximas horas</span></div>
-  </div>
-  <h2>Durante el día</h2>
-  <div class="chart" role="img" aria-label="Gráfico ilustrativo de temperatura, valores ficticios">
-    <span style="height:47%" data-time="9 h"></span><span style="height:62%" data-time="12 h"></span><span style="height:78%" data-time="15 h"></span><span style="height:72%" data-time="18 h"></span><span style="height:48%" data-time="21 h"></span>
-  </div>
-  <div style="height:16px"></div>
-  <div class="card warm"><strong>Dato ilustrativo</strong><p class="label">Esta pantalla no consultó el clima. En la app, si falta conexión o permiso, se mostraría “sin dato” y no se inventaría un pronóstico.</p></div>
-  <button class="secondary-button" data-screen="calendar">← Volver al calendario</button>
+<p>Vista de la app actual.</p>
 </template>
 
 <template id="catalog">
@@ -254,6 +216,7 @@ a{color:var(--green)}
   <h1>Encontrá tu pez</h1>
   <p class="lead">Explorá las fichas. Las cuatro prioritarias aparecen primero.</p>
   <div class="wrap" style="margin:8px 0 12px"><span class="pill">11 especies</span><span class="pill orange">4 prioritarias</span></div>
+  <button class="secondary-button" style="width:100%;margin-bottom:10px" data-screen="catches">Mis capturas por especie →</button>
   <div class="fish-grid">
     <article class="fish-card"><button data-screen="species" data-fish="tararira">
       <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=480" alt="Tararira de referencia, foto identificada como Hoplias malabaricus">
@@ -279,75 +242,34 @@ a{color:var(--green)}
 </template>
 
 <template id="species">
-  <p class="kicker">FICHA DE CAMPO · ESPECIE PRIORITARIA</p>
-  <img id="species-image" class="image hero-image" src="" alt="">
-  <div class="row" style="margin-top:9px"><div><h1 id="species-name">Tararira</h1><div class="label" id="species-latin"></div></div><span class="pill orange">REGIONAL</span></div>
-  <div class="wrap" style="margin:9px 0"><span id="species-tags"></span></div>
-  <div class="card">
-    <div class="row"><strong>Tamaño</strong><button class="link-button" data-screen="measures">Ver fuente →</button></div>
-    <div class="metric-row" style="margin-top:7px">
-      <div class="metric"><span>MEDIA EN NAVARRO</span><b>Sin muestra</b><span>largo y peso</span></div>
-      <div class="metric"><span>REFERENCIA SIB</span><b id="species-size">Hasta 63 cm</b><span id="species-size-note">no es medida local</span></div>
-    </div>
-  </div>
-  <p class="source" id="species-attribution"></p>
-  <button class="big-button" data-screen="catches">Ver mis capturas →</button>
+<p class="kicker">FICHA DE CAMPO</p>
+<img id="species-image" class="image hero-image" src="" alt="">
+<div class="row" style="margin-top:8px"><div><h1 id="species-name">Tararira</h1><div class="label" id="species-latin"></div></div><span class="pill orange">FICHA</span></div>
+<div class="wrap" id="species-metrics" style="margin:8px 0"></div>
+<section class="card"><div class="row"><strong>Qué usar</strong><span>🎣</span></div><p id="species-bait" class="label"></p></section>
+<section class="card"><div class="row"><strong>Dónde buscar</strong><span>⌖</span></div><p id="species-where" class="label"></p></section>
+<section class="card"><div class="row"><strong>Hábitos</strong><span>◷</span></div><p id="species-habits" class="label"></p></section>
+<details class="source"><summary>Crédito de imagen</summary><p id="species-attribution"></p></details>
+<button class="big-button" data-screen="new-catch" data-fish="tararira">＋ Registrar esta especie</button>
+<button class="secondary-button" style="width:100%;margin-top:8px" data-screen="catches">Mis capturas de peces →</button>
 </template>
 
 <template id="measures">
-  <p class="kicker">MEDIDAS · FUENTES</p>
-  <h1>¿Qué significa cada número?</h1>
-  <p class="lead">No hay promedios locales confiables en las fuentes consultadas.</p>
-  <div class="card warm"><strong>Navarro</strong><p class="label">Largo medio y peso medio: sin muestra local confiable para las cuatro especies.</p></div>
-  <div class="list">
-    <div class="card">
-      <div class="row"><strong>Tararira</strong><span class="pill">Referencia de especie</span></div>
-      <p><b>Hasta 63 cm</b> <span class="label">· SIB/APN para <i>H. argentinensis</i></span></p>
-      <p class="source">No es media, récord ni dato de Navarro. Fuentes históricas usan otro nombre científico.</p>
-    </div>
-    <div class="card">
-      <div class="row"><strong>Carpa</strong><span class="pill">Cuenca</span></div>
-      <p><b>Hasta 100 cm · 20 kg</b></p>
-      <p class="source">Referencia SAGyP para Río de la Plata/cuenca del Salado; no es un ejemplar de Navarro.</p>
-    </div>
-    <div class="card">
-      <div class="row"><strong>Bagre sapo</strong><span class="pill">General</span></div>
-      <p><b>≈ 55 cm</b> <span class="label">· referencia SAGyP</span></p>
-      <p class="source">No es récord ni promedio. Confirmar especie: bagre sapo y bagre amarillo son fichas distintas.</p>
-    </div>
-    <div class="card">
-      <div class="row"><strong>Pejerrey</strong><span class="pill">General</span></div>
-      <p><b>≈ 40 cm · 800 g</b> <span class="label">· media general SIB, sin muestra detallada</span></p>
-      <p><b>Hasta 74 cm</b> <span class="label">· cifra SAGyP</span></p>
-      <p class="source">Las fichas difieren en el máximo. No presentarlo como medida local ni como récord.</p>
-    </div>
-  </div>
-  <button class="secondary-button" data-screen="species">← Volver a tararira</button>
+
 </template>
 
 <template id="catches">
-  <p class="kicker">BITÁCORA PERSONAL</p>
-  <h1>Mis capturas</h1>
-  <p class="lead">Tus registros quedan privados en tu dispositivo.</p>
-  <button class="big-button" data-screen="new-catch">＋ Agregar captura</button>
-  <div data-catches-state="list">
-    <div class="row" style="margin:17px 0 8px"><strong>Octubre 2026</strong><span class="pill orange">DEMO</span></div>
-    <div class="list-row">
-      <img class="thumb" src="https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=220" alt="Foto de referencia para un registro ficticio">
-      <div class="grow"><strong>Tararira · ejemplo ficticio</strong><small>42 cm · peso sin agregar</small><small>Ubicación no compartida</small></div>
-      <button data-screen="capture-detail">Ver</button>
-    </div>
-    <p class="source">El ejemplo y la foto son demostrativos; no representan una captura real del usuario.</p>
-  </div>
-  <div data-catches-state="empty" hidden>
-    <div class="card soft" style="margin-top:16px;text-align:center;padding:22px 12px">
-      <div style="font-size:34px" aria-hidden="true">✦</div>
-      <strong>Tu bitácora empieza acá</strong>
-      <p class="label">Podés guardar una nota o foto sin saber la especie ni las medidas.</p>
-      <button class="link-button" data-screen="new-catch">Registrar primera captura →</button>
-    </div>
-  </div>
-  <button class="link-button" data-action="toggle-catches-state">Ver estado sin capturas</button>
+<p class="kicker">BITÁCORA PERSONAL</p><h1>Mis capturas</h1><p class="lead">Agrupadas por especie.</p>
+<button class="big-button" data-screen="new-catch">＋ Agregar captura</button>
+<div data-catches-state="list">
+<details class="card" open><summary><strong>Tararira</strong> <span class="pill">2</span></summary>
+<div class="list-row" style="margin-top:9px"><img class="thumb" src="https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=220" alt="Foto de referencia, no es una captura"><div class="grow"><strong>Salida de octubre · DEMO</strong><small>42 cm · peso no agregado</small><small>Ubicación no agregada</small></div><button data-screen="capture-detail">Ver</button></div>
+<div class="list-row"><div class="thumb" aria-hidden="true" style="display:grid;place-items:center;font-size:24px">＋</div><div class="grow"><strong>Captura sin foto · DEMO</strong><small>Especie guardada</small></div><button data-screen="capture-detail">Ver</button></div></details>
+<details class="card"><summary><strong>Carpa</strong> <span class="pill">1</span></summary><div class="list-row" style="margin-top:9px"><div class="thumb" aria-hidden="true">🐟</div><div class="grow"><strong>Registro de ejemplo</strong><small>62 cm · 4,1 kg · DEMO</small></div><button data-screen="capture-detail">Ver</button></div></details>
+<details class="card"><summary><strong>Sin identificar</strong> <span class="pill orange">1</span></summary><div class="list-row" style="margin-top:9px"><div class="thumb" aria-hidden="true">?</div><div class="grow"><strong>Solo guardé el recuerdo</strong><small>Sin especie · DEMO</small></div><button data-screen="capture-detail">Ver</button></div></details>
+<p class="source">Los registros son ficticios. La foto es una referencia.</p></div>
+<div data-catches-state="empty" hidden><div class="card soft" style="margin-top:16px;text-align:center;padding:22px 12px"><div style="font-size:34px">✦</div><strong>Tu bitácora empieza acá</strong><p class="label">Podés guardar una nota o foto sin saber la especie ni las medidas.</p><button class="link-button" data-screen="new-catch">Registrar primera captura →</button></div></div>
+<button class="link-button" data-action="toggle-catches-state">Ver estado sin capturas</button>
 </template>
 
 <template id="new-catch">
@@ -369,129 +291,73 @@ a{color:var(--green)}
 </template>
 
 <template id="location">
-  <p class="kicker">UBICACIÓN · OPCIONAL</p>
-  <h1>¿Querés guardar el lugar?</h1>
-  <p class="lead">La app solo puede usar tu ubicación con permiso. No se comparte con otras personas.</p>
-  <div class="card soft"><div class="row"><strong>Permiso</strong><span class="pill orange">EJEMPLO</span></div><p class="label">En esta muestra no se accede al GPS; el resultado es ilustrativo.</p></div>
-  <button class="big-button" data-action="location-allow">Permitir mientras uso la app</button>
-  <button class="secondary-button" style="width:100%;margin-top:8px" data-action="location-skip">Guardar sin ubicación</button>
-  <div class="permission" style="margin-top:14px"><strong>Si el permiso está rechazado</strong><br>Podés continuar sin ubicación y guardar igual.</div>
-  <button class="link-button" data-screen="new-catch">← Volver al registro</button>
+<p class="kicker">UBICACIÓN · OPCIONAL</p><h1>¿Querés guardar el lugar?</h1>
+<p class="lead">La ubicación solo se agrega si das permiso. En esta muestra no se accede al GPS.</p>
+<button class="big-button" data-action="location-allow">Permitir mientras uso la app</button>
+<button class="secondary-button" style="width:100%;margin-top:8px" data-action="location-skip">Seguir sin ubicación</button>
+<button class="link-button" data-screen="new-catch">← Volver al registro</button>
 </template>
 
 <template id="capture-detail">
-  <div data-detail="sample">
-    <p class="kicker">CAPTURA · EJEMPLO FICTICIO</p>
-    <h1>Una tararira para recordar</h1>
-    <img class="image hero-image" src="https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=720" alt="Imagen de referencia, no foto de una captura real">
-    <div class="wrap" style="margin-top:8px"><span class="pill">42 cm</span><span class="pill orange">Peso sin agregar</span></div>
-    <div class="card"><div class="row"><strong>Lo que guardaste</strong><span class="label">DEMO</span></div><p class="label">Especie: tararira · Fecha: ejemplo · Ubicación: no compartida.</p></div>
-    <p class="source">La imagen no es una captura real; se usa como referencia visual con atribución.</p>
-  </div>
-  <div data-detail="empty" hidden>
-    <p class="kicker">CAPTURA GUARDADA</p>
-    <h1>Ya quedó en tu bitácora</h1>
-    <div class="card soft" style="padding:25px 14px;text-align:center"><div style="font-size:38px" aria-hidden="true">✦</div><strong>Registro sin datos opcionales</strong><p class="label">No agregaste foto, lugar, especie ni medidas. Podés completarlo cuando quieras.</p></div>
-  </div>
-  <div data-detail="submitted" hidden>
-    <p class="kicker">CAPTURA GUARDADA · MUESTRA</p>
-    <h1>Un recuerdo a tu manera</h1>
-    <div class="card">
-      <div class="row"><strong id="record-species">Especie sin elegir</strong><span class="pill">Privado</span></div>
-      <p id="record-length" class="label">Largo no agregado</p>
-      <p id="record-weight" class="label">Peso no agregado</p>
-      <p id="record-location" class="label">Ubicación no agregada</p>
-      <p id="record-note" class="label">Sin nota</p>
-    </div>
-    <p class="source">La demostración guarda solo los campos que ingresaste. La imagen no es una foto de usuario.</p>
-  </div>
-  <button class="secondary-button" data-screen="new-catch">Editar datos</button>
-  <button class="link-button" data-screen="catches">Volver a Mis capturas</button>
+<div data-detail="sample"><p class="kicker">CAPTURA · EJEMPLO FICTICIO</p><h1>Una tararira para recordar</h1>
+<img class="image hero-image" src="https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=720" alt="Imagen de referencia, no foto de una captura real">
+<div class="wrap" style="margin-top:8px"><span class="pill">Tararira</span><span class="pill">42 cm</span><span class="pill orange">Peso no agregado</span></div>
+<div class="card"><strong>Lo que guardaste</strong><p class="label">Fecha: ejemplo · Ubicación no agregada</p></div><p class="source">La imagen es de referencia, no una captura real.</p></div>
+<div data-detail="empty" hidden><p class="kicker">CAPTURA GUARDADA</p><h1>Ya quedó en tu bitácora</h1><div class="card soft" style="padding:25px 14px;text-align:center"><div style="font-size:38px">✦</div><strong>Registro sin datos opcionales</strong><p class="label">Podés completarlo cuando quieras.</p></div></div>
+<div data-detail="submitted" hidden><p class="kicker">CAPTURA GUARDADA · MUESTRA</p><h1>Un recuerdo a tu manera</h1><div class="card"><div class="row"><strong id="record-species">Sin identificar</strong><span class="pill">Privado</span></div><p id="record-length" class="label"></p><p id="record-weight" class="label"></p><p id="record-location" class="label"></p><p id="record-note" class="label"></p></div></div>
+<button class="secondary-button" data-screen="new-catch">Editar datos</button><button class="link-button" data-screen="catches">Volver a Mis capturas</button>
 </template>
 
 <template id="gear">
-  <p class="kicker">PREPARAR LA SALIDA</p>
-  <h1>Equipo</h1>
-  <p class="lead">Encontrá rápido lo que querés resolver.</p>
-  <button class="card" style="width:100%;text-align:left;display:flex;align-items:center;gap:13px;cursor:pointer" data-screen="knots">
-    <span style="font-size:25px;color:var(--green)">⌁</span><span><strong>Nudos</strong><small class="label" style="display:block">Elegí la unión que necesitás</small></span><span style="margin-left:auto">→</span>
-  </button>
-  <button class="card" style="width:100%;text-align:left;display:flex;align-items:center;gap:13px;cursor:pointer" data-screen="checklist">
-    <span style="font-size:25px;color:var(--orange)">☑</span><span><strong>Checklist</strong><small class="label" style="display:block">Prepará lo básico antes de salir</small></span><span style="margin-left:auto">→</span>
-  </button>
-  <div class="card flat"><strong>Tu kit</strong><p class="label">Las recomendaciones se conectarán con el equipo que ya tenés, sin convertir la ficha en una lista de compras.</p></div>
+
 </template>
 
 <template id="knots">
-  <p class="kicker">NUDOS · ELEGIR POR SITUACIÓN</p>
-  <h1>¿Qué querés unir?</h1>
-  <p class="lead">Primero la tarea; después, el nudo.</p>
-  <div class="list">
-    <button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill">LÍNEA</span><span class="grow"><strong>Atar al carretel</strong><small>Nudo de carrete</small></span><span>→</span></button>
-    <button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill orange">ANZUELO</span><span class="grow"><strong>Atar anzuelo o emerillón</strong><small>Palomar · Clinch · Uni</small></span><span>→</span></button>
-    <button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill">SEÑUELO</span><span class="grow"><strong>Dejar libre el movimiento</strong><small>Rapala · elegir después</small></span><span>→</span></button>
-    <button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill">EMPALME</span><span class="grow"><strong>Unir dos líneas</strong><small>Doble uni · Albright · FG</small></span><span>→</span></button>
-  </div>
-  <p class="source">Los pasos son una muestra de organización visual; cada nudo deberá verificarse con fuentes y prueba en mano antes de incorporarlo a la app.</p>
+<p class="kicker">NUDOS · ELEGIR POR SITUACIÓN</p><h1>¿Qué querés unir?</h1><p class="lead">Elegí una tarea y encontrá el nudo.</p>
+<div class="list">
+<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial" data-knot-route="reel/carrete"><span class="pill">LÍNEA</span><span class="grow"><strong>Atar al carretel</strong><small>Nudo de carrete</small></span><span>→</span></button>
+<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial" data-knot-route="anzuelo/palomar"><span class="pill orange">ANZUELO</span><span class="grow"><strong>Atar anzuelo o emerillón</strong><small>Palomar · Clinch · Uni</small></span><span>→</span></button>
+<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial" data-knot-route="senuelo/rapala"><span class="pill">SEÑUELO</span><span class="grow"><strong>Dejarlo moverse libre</strong><small>Rapala · elegir después</small></span><span>→</span></button>
+<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial" data-knot-route="unir/doble-uni"><span class="pill">EMPALME</span><span class="grow"><strong>Unir dos líneas</strong><small>Doble uni · Albright · FG</small></span><span>→</span></button>
+</div>
 </template>
 
 <template id="tutorial">
-  <p class="kicker">TUTORIAL · MUESTRA VISUAL</p>
-  <h1>Nudo Palomar</h1>
-  <p id="knot-step-label" class="lead">Paso 2 de 4 · Movimiento principal</p>
-  <div class="step-art" role="img" aria-label="Diagrama conceptual de una línea y un lazo frente a un ojo de anzuelo">
-    <span class="line-a"></span><span class="line-b"></span><span class="circle"></span>
-    <span style="position:absolute;left:6%;top:43%;font-size:12px;color:var(--green);font-weight:800">LÍNEA</span>
-    <span style="position:absolute;right:7%;top:30%;font-size:12px;color:var(--orange);font-weight:800">LAZO</span>
-  </div>
-  <div class="steps" aria-label="Progreso del tutorial"><span></span><span class="active"></span><span></span><span></span></div>
-  <div class="card"><div class="row"><strong>Qué muestra este paso</strong><span class="pill orange">DIBUJO A VALIDAR</span></div><p id="knot-step-text">Mostrar el movimiento principal con la línea.</p><p class="source">Diagrama conceptual para mostrar jerarquía y tamaño del texto; no es una instrucción verificada del nudo.</p></div>
-  <div class="row"><button class="secondary-button" data-action="step-prev">← Anterior</button><button class="secondary-button" data-action="step-next">Siguiente →</button></div>
-  <button class="link-button" data-screen="knots">Ver otros nudos</button>
+
 </template>
 
 <template id="checklist">
-  <p class="kicker">ANTES DE SALIR</p>
-  <h1>¿Todo listo?</h1>
-  <p class="lead">Marcá lo que ya está. La lista es tuya.</p>
-  <div class="check-group"><h3>Equipo</h3>
-    <label><input type="checkbox"> Caña y reel</label>
-    <label><input type="checkbox"> Línea, anzuelos y plomadas</label>
-    <label><input type="checkbox"> Carnada o señuelos</label>
-  </div>
-  <div class="check-group"><h3>Salida</h3>
-    <label><input type="checkbox"> Agua y abrigo</label>
-    <label><input type="checkbox"> Licencia / reglamento del día</label>
-    <label><input type="checkbox"> Teléfono cargado</label>
-  </div>
-  <div class="card warm"><strong>Recordatorio</strong><p class="label">Antes de ir, consultá el reglamento vigente de la Provincia de Buenos Aires. La muestra no reemplaza una fuente oficial actualizada.</p></div>
-  <button class="big-button" data-action="reset-checklist">Nueva salida · destildar todo</button>
+
 </template>
 
 <script>
 const screens = [
-  {id:"home",name:"Inicio",purpose:"La portada ordena la salida en una acción principal y dos accesos secundarios."},
-  {id:"calendar",name:"Calendario",purpose:"El calendario ayuda a elegir fecha; los datos de esta muestra son ficticios y están señalados."},
-  {id:"weather",name:"Clima",purpose:"Clima aparece como detalle consultable; el ejemplo no se hace pasar por un pronóstico real."},
-  {id:"catalog",name:"Pokédex · catálogo",purpose:"Las especies se reconocen por foto y rótulos; las 11 fichas mantienen su nombre común."},
-  {id:"species",name:"Ficha de especie",purpose:"La ficha prioriza identificación y medidas, pero separa la referencia regional del dato local."},
-  {id:"measures",name:"Medidas y fuentes",purpose:"Este detalle explica unidad, alcance y discrepancias sin inventar una media de Navarro."},
-  {id:"catches",name:"Mis capturas",purpose:"La bitácora guarda recuerdos personales; los ejemplos aparecen como ficticios."},
-  {id:"new-catch",name:"Nueva captura",purpose:"El formulario acepta una captura parcial y permite guardar sin completar ningún dato."},
-  {id:"location",name:"Permiso de ubicación",purpose:"La persona puede permitir, omitir o seguir si rechazó el permiso."},
-  {id:"capture-detail",name:"Captura guardada",purpose:"Hay un registro de ejemplo y otro estado de guardado vacío."},
-  {id:"gear",name:"Equipo",purpose:"Nudos y checklist se encuentran bajo una sola decisión de preparación."},
-  {id:"knots",name:"Elegir un nudo",purpose:"Se elige por la unión que se necesita, no por una lista larga de nombres."},
-  {id:"tutorial",name:"Tutorial de nudo",purpose:"El diagrama tiene prioridad; se advierte que el ejemplo visual aún debe verificarse."},
-  {id:"checklist",name:"Checklist",purpose:"La lista se puede marcar y volver a empezar para una nueva salida."}
+  {id:"home",name:"Inicio · app actual",purpose:"La portada conserva la composición de cinco accesos grandes de la app actual."},
+  {id:"calendar",name:"Calendario · app actual",purpose:"Se muestra la pantalla real del calendario de la app, sin rediseñarla."},
+  {id:"weather",name:"Clima · app actual",purpose:"Se muestra la pantalla real del clima de la app, sin rediseñarla."},
+  {id:"catalog",name:"Pokédex · catálogo",purpose:"Se conserva el catálogo visual que te gustó. Desde acá se llega a Mis capturas."},
+  {id:"species",name:"Ficha breve",purpose:"Nombre, medidas disponibles y tres ayudas prácticas; sin promedios inexistentes ni pantalla de fuentes."},
+  {id:"catches",name:"Mis capturas",purpose:"Las capturas se agrupan debajo de su especie; las que no tienen especie van a Sin identificar."},
+  {id:"new-catch",name:"Nueva captura",purpose:"Todos los campos son opcionales. El permiso de ubicación aparece solo si se intenta agregar el lugar."},
+  {id:"location",name:"Permiso de ubicación",purpose:"Estado condicional del formulario. Se puede continuar sin ubicación."},
+  {id:"capture-detail",name:"Captura guardada",purpose:"El detalle muestra lo guardado y ofrece volver al grupo de especie."},
+  {id:"knots",name:"Elegir un nudo",purpose:"Se conservan las etiquetas cortas y simples que te gustaron: línea, anzuelo, señuelo y empalme."},
+  {id:"tutorial",name:"Tutorial · app actual",purpose:"Se conserva la vista actual con todos los pasos y dibujos a la vista."},
+  {id:"checklist",name:"Checklist · app actual",purpose:"Se conserva la lista y los controles que ya tiene la app."}
+]
 ];
 const names=Object.fromEntries(screens.map((s,i)=>[s.id,i]));
+const liveRoutes={home:"/",calendar:"/calendario",weather:"/clima",tutorial:"/nudos/anzuelo/palomar",checklist:"/checklist"};
+
+
+
 let selectedFish="tararira";
 const fishData={
- tararira:{name:"Tararira",latin:"<i>Hoplias argentinensis</i> · identidad regional a revisar",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=720",alt:"Foto de referencia identificada como Hoplias malabaricus; no confirma una tararira de Navarro.",tags:"Aguas quietas · Depredadora · Cuenca del Salado",size:"Hasta 63 cm",sizeNote:"SIB/APN · referencia general",credit:"Imagen: archivo de Wikimedia Commons identificado como Hoplias malabaricus, Ictiología Universidad Católica de Oriente, CC BY 2.0. No es un ejemplar de Navarro; nombre científico regional por revisar."},
- carpa:{name:"Carpa",latin:"<i>Cyprinus carpio</i> · especie introducida",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Common_carp.jpg?width=720",alt:"Carpa común, imagen de dominio público de USFWS.",tags:"Introducida · Fondo · Agua calma",size:"Hasta 100 cm · 20 kg",sizeNote:"SAGyP · Río de la Plata/cuenca Salado",credit:"Imagen: Common carp.jpg, U.S. Fish and Wildlife Service, dominio público. La cifra es de cuenca, no una medida de Navarro."},
- bagre:{name:"Bagre sapo",latin:"<i>Rhamdia quelen</i> · nombre por cotejar",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Rhamdia_quelen.jpg?width=720",alt:"Ilustración histórica de Rhamdia quelen, Paul Louis Oudart, 1847.",tags:"Fondo · Agua dulce · Identificación abierta",size:"≈ 55 cm",sizeNote:"SAGyP · referencia general",credit:"Imagen: lámina histórica Rhamdia quelen.jpg, Paul Louis Oudart (1847), Commons. La fuente SIB usa Rhamdia sapo; no asumir que el registro local está identificado."},
- pejerrey:{name:"Pejerrey",latin:"<i>Odontesthes bonariensis</i>",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Pejerrey_Odontesthes_Bonariensis.jpg?width=720",alt:"Pejerrey argentino, fotografía CC0 de Uli7.",tags:"Plateado · Cardumen · Laguna",size:"Hasta 74 cm",sizeNote:"SAGyP · referencia general",credit:"Imagen: Pejerrey Odontesthes Bonariensis.jpg, Uli7, CC0. SIB cita otra media general; ninguna es una estadística de Navarro."}
+ tararira:{name:"Tararira",latin:"",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=720",alt:"Imagen de referencia identificada como Hoplias malabaricus; no confirma un ejemplar local.",metrics:[["Largo máx.","63 cm","referencia de especie"]],bait:"Mojarra viva; también lombriz grande y corazón. Señuelos: rana en vegetación, popper en superficie y goma cerca del fondo.",where:"Agua baja, en el borde de juncos o plantas y agua abierta; fondo blando.",habits:"Amanecer, atardecer y noche. Con agua debajo de 14 °C se aletarga.",credit:"Ictiología Universidad Católica de Oriente · CC BY 2.0. La foto se publicó como H. malabaricus; la población pampeana requiere revisión taxonómica."},
+ carpa:{name:"Carpa",latin:"<i>Cyprinus carpio</i>",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Common_carp.jpg?width=720",alt:"Carpa común; imagen de USFWS en dominio público.",metrics:[["Largo máx.","100 cm","referencia de cuenca"],["Peso máx.","20 kg","referencia de cuenca"]],bait:"Maíz dulce o papa hervida; también masa y pan. No hay señuelo del kit recomendado; el curly tail de fondo es una alternativa.",where:"Agua tranquila y fondo barroso; bordes con vegetación. Referencia de profundidad: 0,5–3 m.",habits:"Amanecer y anochecer. Con agua debajo de 10 °C casi no come.",credit:"U.S. Fish and Wildlife Service · dominio público."},
+ bagre:{name:"Bagre sapo",latin:"<i>Rhamdia</i> sp. · identidad por confirmar",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Rhamdia_quelen.jpg?width=720",alt:"Lámina histórica identificada como Rhamdia quelen, no fotografía local.",metrics:[["Tamaño ref.","≈55 cm","referencia general"]],bait:"Lombriz colorada en racimo; también hígado o trozos de pescado. No hay señuelo del kit recomendado.",where:"Pegado al fondo, en agua baja con vegetación, barro, hojas o madera.",habits:"Sobre todo de noche; con agua fría deja de comer. Referencia general para bagre sapo, no certeza local.",credit:"Lámina de Paul Louis Oudart, 1847 · dominio público. La identificación local sigue abierta."},
+ pejerrey:{name:"Pejerrey",latin:"<i>Odontesthes bonariensis</i>",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Pejerrey_Odontesthes_Bonariensis.jpg?width=720",alt:"Pejerrey argentino, fotografía de Uli7 con licencia CC0.",metrics:[["Largo máx.","74 cm","referencia general"]],bait:"Mojarra viva, filet de dientudo o de pejerrey. Señuelo: cucharita giratoria chica.",where:"Sigue cardúmenes; con viento puede afirmarse en el centro de la laguna. La profundidad cambia.",habits:"De día y más activo en época fría. Con heladas suele bajar; con días templados sube.",credit:"Uli7 · CC0."}
+}
 };
 let current="home";
 let detailMode="sample";
@@ -499,6 +365,9 @@ let catchesEmpty=false;
 let knotStep=2;
 let locationStatus="sin ubicación";
 let savedFields={};
+let draftFields={};
+let formOrigin="catches";
+let draftFields={};
 const content=document.getElementById("screen-content");
 const index=document.getElementById("screen-index");
 function buildIndex(){
@@ -518,29 +387,45 @@ function updateCatchList(){
  if(list&&empty&&toggle){list.hidden=catchesEmpty;empty.hidden=!catchesEmpty;toggle.textContent=catchesEmpty?"Ver ejemplo de lista":"Ver estado sin capturas";}
 }
 function show(id){
- if(!names.hasOwnProperty(id)) return;
+ if(!names.hasOwnProperty(id))return;
  current=id;
- const t=document.getElementById(id);
- content.replaceChildren(t.content.cloneNode(true));
- if(id==="catches") updateCatchList();
- if(id==="tutorial") updateTutorialStep();
+ const phone=document.getElementById("phone"),frame=document.getElementById("live-app-frame"),t=document.getElementById(id);
+ if(Object.prototype.hasOwnProperty.call(liveRoutes,id)){
+  phone.classList.add("live-app");
+  const src="../#"+liveRoutes[id];
+  if(frame.getAttribute("src")!==src)frame.src=src;
+  content.replaceChildren();
+ }else{
+  phone.classList.remove("live-app");
+  if(frame.getAttribute("src")!=="about:blank")frame.src="about:blank";
+  content.replaceChildren(t.content.cloneNode(true));
+ }
+ if(id==="catches")updateCatchList();
  if(id==="species"){
   const fish=fishData[selectedFish]||fishData.tararira;
   content.querySelector("#species-name").textContent=fish.name;
   content.querySelector("#species-latin").innerHTML=fish.latin;
   content.querySelector("#species-image").src=fish.image;
   content.querySelector("#species-image").alt=fish.alt;
-  content.querySelector("#species-tags").innerHTML=fish.tags.split(" · ").map(x=>'<span class="pill">'+x+'</span>').join("");
-  content.querySelector("#species-size").textContent=fish.size;
-  content.querySelector("#species-size-note").textContent=fish.sizeNote;
+  content.querySelector("#species-metrics").innerHTML=fish.metrics.map(([label,value,scope])=>'<span class="pill">'+label+': '+value+' · '+scope+'</span>').join("");
+  content.querySelector("#species-bait").textContent=fish.bait;
+  content.querySelector("#species-where").textContent=fish.where;
+  content.querySelector("#species-habits").textContent=fish.habits;
   content.querySelector("#species-attribution").textContent=fish.credit;
+  const add=content.querySelector('[data-screen="new-catch"]');
+  if(add)add.dataset.fish=selectedFish;
+ }
+ if(id==="new-catch"){
+  const species=content.querySelector("#species-choice");
+  if(species)species.value=draftFields.species||"Elegir más tarde";
+  for(const key of ["length","weight","note"]){const el=content.querySelector("#"+key);if(el)el.value=draftFields[key]||"";}
  }
  if(id==="capture-detail"){
   content.querySelector('[data-detail="sample"]').hidden=detailMode!=="sample";
   content.querySelector('[data-detail="empty"]').hidden=detailMode!=="empty";
   content.querySelector('[data-detail="submitted"]').hidden=detailMode!=="submitted";
   if(detailMode==="submitted"){
-   content.querySelector("#record-species").textContent=savedFields.species||"Especie sin elegir";
+   content.querySelector("#record-species").textContent=savedFields.species||"Sin identificar";
    content.querySelector("#record-length").textContent=savedFields.length?savedFields.length+" cm":"Largo no agregado";
    content.querySelector("#record-weight").textContent=savedFields.weight?savedFields.weight+" kg":"Peso no agregado";
    content.querySelector("#record-location").textContent=savedFields.location||"Ubicación no agregada";
@@ -552,37 +437,56 @@ function show(id){
  document.getElementById("screen-subtitle").textContent="Pantalla "+(names[id]+1)+" de "+screens.length;
  document.getElementById("purpose-title").textContent=screens[names[id]].name;
  document.getElementById("purpose-text").textContent=screens[names[id]].purpose;
- document.getElementById("phone-caption").textContent=(names[id]+1)+" / "+screens.length+" · "+screens[names[id]].name;
- document.querySelectorAll(".bottom-nav button").forEach(b=>b.classList.toggle("active",b.dataset.screen===id || (id==="calendar"||id==="weather")&&b.dataset.screen==="home" || (id==="species"||id==="measures")&&b.dataset.screen==="catalog" || (id==="new-catch"||id==="location"||id==="capture-detail")&&b.dataset.screen==="catches" || (id==="knots"||id==="tutorial"||id==="checklist")&&b.dataset.screen==="gear"));
+ document.getElementById("phone-caption").textContent=Object.prototype.hasOwnProperty.call(liveRoutes,id)?"App actual · "+screens[names[id]].name:(names[id]+1)+" / "+screens.length+" · "+screens[names[id]].name;
  content.scrollTop=0;
 }
+function saveDraftFromForm(){
+ if(current!=="new-catch")return;
+ const read=(id)=>content.querySelector("#"+id)?.value||"";
+ draftFields={species:read("species-choice"),length:read("length"),weight:read("weight"),note:read("note")};
+}
 document.addEventListener("click",e=>{
- const day=e.target.closest("[data-day]");
- if(day){content.querySelectorAll("[data-day]").forEach(x=>x.classList.remove("selected"));day.classList.add("selected");const label=content.querySelector("#calendar-selected");if(label)label.textContent=(day.dataset.day==="8"?"Jueves 8 · hoy · DEMO":"Sábado "+day.dataset.day+" · DEMO");return}
  const nav=e.target.closest("[data-screen]");
- if(nav){if(nav.dataset.fish)selectedFish=nav.dataset.fish;if(nav.dataset.screen==="capture-detail")detailMode="sample";show(nav.dataset.screen);return}
+ if(nav){
+  if(current==="new-catch"&&nav.dataset.screen==="location")saveDraftFromForm();
+  if(nav.dataset.screen==="new-catch"){
+   formOrigin=current;
+   if(current==="species")draftFields={species:(fishData[selectedFish]||fishData.tararira).name,length:"",weight:"",note:""};
+   else draftFields={species:"",length:"",weight:"",note:""};
+  }
+  if(nav.dataset.fish)selectedFish=nav.dataset.fish;
+  if(nav.dataset.knotRoute)liveRoutes.tutorial="/nudos/"+nav.dataset.knotRoute;
+  if(nav.dataset.screen==="capture-detail")detailMode="sample";
+  show(nav.dataset.screen);return;
+ }
  const action=e.target.closest("[data-action]");
  if(!action)return;
  switch(action.dataset.action){
-  case "save-empty": {
-   const choice=content.querySelector("#species-choice").value;
-   savedFields={species:choice==="Elegir más tarde"?"":choice,length:content.querySelector("#length").value,weight:content.querySelector("#weight").value,note:content.querySelector("#note").value,location:locationStatus==="ubicación de ejemplo"?"Ubicación de ejemplo · no compartida":""};
-   detailMode=Object.values(savedFields).some(Boolean)?"submitted":"empty";show("capture-detail");break;
+  case "save-empty":{
+   saveDraftFromForm();
+   const species=draftFields.species==="Elegir más tarde"?"":draftFields.species;
+   savedFields={...draftFields,species,location:locationStatus==="ubicación de ejemplo"?"Ubicación de ejemplo · no compartida":""};
+   detailMode=Object.values(savedFields).some(Boolean)?"submitted":"empty";
+   draftFields={};show("capture-detail");break;
   }
-  case "location-allow": locationStatus="ubicación de ejemplo";show("new-catch");break;
-  case "location-skip": locationStatus="sin ubicación";show("new-catch");break;
-  case "previous": show(screens[Math.max(0,names[current]-1)].id);break;
-  case "next": show(screens[Math.min(screens.length-1,names[current]+1)].id);break;
-  case "back": show(current==="location"?"new-catch":current==="species"||current==="measures"?"catalog":current==="capture-detail"?"catches":current==="tutorial"?"knots":"home");break;
-  case "reset-checklist": content.querySelectorAll('input[type="checkbox"]').forEach(x=>x.checked=false);break;
-  case "toggle-catches-state": catchesEmpty=!catchesEmpty;updateCatchList();break;
-  case "step-prev": knotStep=Math.max(1,knotStep-1);show("tutorial");break;
-  case "step-next": knotStep=Math.min(4,knotStep+1);show("tutorial");break;
+  case "location-allow":locationStatus="ubicación de ejemplo";show("new-catch");break;
+  case "location-skip":locationStatus="sin ubicación";show("new-catch");break;
+  case "previous":show(screens[Math.max(0,names[current]-1)].id);break;
+  case "next":show(screens[Math.min(screens.length-1,names[current]+1)].id);break;
+  case "back":
+   if(current==="location")show("new-catch");
+   else if(current==="new-catch")show(formOrigin||"catches");
+   else if(current==="species")show("catalog");
+   else if(current==="capture-detail")show("catches");
+   else if(current==="catches")show("catalog");
+   else if(current==="tutorial")show("knots");
+   else show("home");
+   break;
+  case "toggle-catches-state":catchesEmpty=!catchesEmpty;updateCatchList();break;
  }
 });
-document.addEventListener("change",e=>{
- 
-});
+document.addEventListener("input",()=>saveDraftFromForm());
+document.addEventListener("change",()=>saveDraftFromForm());
 buildIndex();show("home");
 </script>
 </body>

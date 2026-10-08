@@ -15,6 +15,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-08 — ChatGPT — Ajustar muestras según feedback
+- Rama y pull request: `chatgpt/ajustar-muestras-pesca`, [PR #20](https://github.com/SegundoAymo/Pesca-App/pull/20).
+- Qué se hizo: se registraron primero las nuevas decisiones de diseño; se enlazaron Inicio, Calendario, Clima, tutorial y Checklist a vistas de la app actual; se simplificó el detalle de especie, se agruparon capturas por especie y se conservaron etiquetas breves para elegir nudos. La galería quedó en 12 pantallas y se actualizó README y aprendizajes.
+- Pruebas: no ejecutadas localmente; cambios de diseño y documentación. El workflow publica con pruebas automáticas.
+- Qué quedó pendiente o a medias: confirmar la galería tras el despliegue de Pages.
+- Para el próximo: promedios no respaldados y máximos ausentes no se muestran; los detalles de fuentes quedan en la documentación, no en la interfaz.
+
 ## 2026-10-08 — ChatGPT — Publicar prototipo visual sin reemplazar la app
 - Rama y pull request: `chatgpt/publicar-muestra-pantallas`, [PR #19](https://github.com/SegundoAymo/Pesca-App/pull/19).
 - Qué se hizo: se configuró GitHub Pages para copiar el prototipo a `/muestras/`, conservando la app y su entrada en la raíz.
