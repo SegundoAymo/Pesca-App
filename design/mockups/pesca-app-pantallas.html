@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kit de Pesca — muestras de pantallas</title>
+<style>
+:root {
+  color-scheme: light;
+  --paper:#f3f0e7;
+  --surface:#fffefa;
+  --ink:#1c2925;
+  --muted:#596b63;
+  --line:#d6ddd2;
+  --green:#18594e;
+  --green-soft:#e1eee8;
+  --orange:#c64c20;
+  --orange-soft:#fbe4d8;
+  --blue:#d8e9ed;
+  --cream:#ece4d2;
+  --shadow:0 16px 40px rgba(28,41,37,.12);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:500 15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,select{font:inherit}
+button{color:inherit}
+a{color:var(--green)}
+.deck{min-height:100vh;display:grid;grid-template-columns:260px minmax(0,1fr)}
+.index{padding:24px 16px;background:#e9e5d9;border-right:1px solid var(--line)}
+.brand{font-weight:850;letter-spacing:.03em;font-size:20px}
+.brand span{color:var(--green)}
+.index p{color:var(--muted);font-size:13px;margin:5px 0 18px}
+.index-list{display:grid;gap:5px}
+.index button{border:0;background:transparent;text-align:left;padding:10px 11px;border-radius:10px;cursor:pointer;font-size:13px;line-height:1.25;min-height:42px}
+.index button:hover,.index button[aria-current="page"]{background:var(--green);color:white}
+.index .number{display:inline-block;width:25px;color:var(--muted);font-variant-numeric:tabular-nums}
+.index button[aria-current="page"] .number,.index button:hover .number{color:#d7eee4}
+.legend{font-size:12px;color:var(--muted);margin-top:20px;padding:12px;border-top:1px solid var(--line)}
+.workspace{display:grid;grid-template-rows:auto 1fr;min-width:0}
+.topbar{padding:17px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);gap:12px}
+.topbar strong{font-size:14px}
+.topbar .sub{font-size:12px;color:var(--muted)}
+.demo-tag{font-size:10px;letter-spacing:.07em;font-weight:800;color:#75280c;background:#ffdfcd;padding:5px 8px;border-radius:999px;white-space:nowrap}
+.preview-area{display:grid;grid-template-columns:minmax(250px,1fr) minmax(330px,390px) minmax(250px,1fr);gap:24px;align-items:center;padding:24px;min-height:0}
+.side-note{max-width:260px;color:var(--muted);font-size:14px}
+.side-note h2{color:var(--ink);font-size:20px;line-height:1.15;margin:0 0 10px}
+.side-note p{margin:0 0 12px}
+.side-note .small{font-size:12px}
+.controls{display:flex;gap:8px;margin-top:16px}
+.controls button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 12px;cursor:pointer}
+.controls button:hover{border-color:var(--green);color:var(--green)}
+.phone{height:min(790px,calc(100vh - 118px));min-height:610px;width:100%;max-width:390px;margin:auto;background:var(--surface);border:8px solid #26332e;border-radius:34px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden}
+.phone-status{height:29px;flex:none;padding:6px 18px 0;display:flex;justify-content:space-between;font-size:11px;font-weight:700;background:var(--surface)}
+.appbar{min-height:55px;padding:8px 15px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:8px}
+.appbar .brand-small{font-weight:850;letter-spacing:.02em}
+.appbar .back{border:0;background:transparent;color:var(--green);padding:7px 5px;cursor:pointer;font-weight:700}
+.appbar .icon-action{border:0;background:var(--green-soft);color:var(--green);border-radius:50%;width:36px;height:36px;cursor:pointer}
+.screen-content{padding:14px 15px 18px;overflow:auto;flex:1;overscroll-behavior:contain}
+.screen-content h1{font-size:24px;line-height:1.08;letter-spacing:-.03em;margin:2px 0 8px}
+.screen-content h2{font-size:17px;line-height:1.15;margin:16px 0 8px}
+.screen-content h3{font-size:14px;margin:0 0 5px}
+.lead{font-size:13px;color:var(--muted);margin:0 0 12px}
+.kicker{font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:850;color:var(--green);margin:0 0 5px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.wrap{display:flex;flex-wrap:wrap;gap:7px}
+.pill{display:inline-flex;align-items:center;gap:5px;background:var(--green-soft);color:#17483e;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:750}
+.pill.orange{background:var(--orange-soft);color:#762b10}
+.label{font-size:11px;color:var(--muted)}
+.strong{font-weight:800}
+.card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:12px;margin:9px 0}
+.card.soft{background:var(--green-soft);border-color:transparent}
+.card.warm{background:#fff3e6;border-color:transparent}
+.card.dark{background:var(--green);color:white;border:0}
+.card.dark .label{color:#d8e8df}
+.card.flat{border:0;background:#f4f1e9}
+.big-button{width:100%;min-height:48px;background:var(--green);border:0;color:#fff;border-radius:12px;font-weight:800;cursor:pointer;padding:11px 14px;margin-top:8px}
+.secondary-button{min-height:43px;background:var(--surface);border:1px solid var(--line);border-radius:12px;font-weight:750;padding:9px 12px;cursor:pointer}
+.link-button{border:0;background:transparent;color:var(--green);font-weight:800;cursor:pointer;padding:7px 0}
+.image{width:100%;object-fit:cover;background:var(--cream);display:block}
+.hero-image{height:180px;border-radius:15px}
+.thumb{width:66px;height:60px;object-fit:cover;border-radius:12px;background:var(--cream);flex:none}
+.fish-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.fish-card{padding:0;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:14px}
+.fish-card button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:0;cursor:pointer;color:inherit}
+.fish-card img{height:92px;width:100%;object-fit:cover;background:var(--cream)}
+.fish-card .fish-info{padding:8px 9px 10px}
+.fish-card .fish-info strong{display:block;font-size:13px}
+.fish-card .fish-info span{display:block;font-size:10px;color:var(--muted);margin-top:3px}
+.metric-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.metric{background:#f2f0e8;border-radius:12px;padding:10px}
+.metric b{display:block;font-size:16px}
+.metric span{font-size:10px;color:var(--muted)}
+.source{font-size:10px;color:var(--muted);line-height:1.35}
+.source a{color:inherit}
+.list{display:grid;gap:8px}
+.list-row{display:flex;align-items:center;gap:10px;padding:9px;border:1px solid var(--line);background:#fff;border-radius:13px}
+.list-row .grow{min-width:0;flex:1}
+.list-row strong{display:block;font-size:13px}
+.list-row small{display:block;color:var(--muted);font-size:11px}
+.list-row button{background:var(--green-soft);border:0;color:var(--green);border-radius:10px;padding:8px;font-weight:750;cursor:pointer}
+.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.month-grid span{font-size:10px;color:var(--muted);padding:3px 0}
+.month-grid button{aspect-ratio:1;border:0;background:#f3f0e8;border-radius:9px;font-size:12px;cursor:pointer}
+.month-grid button.selected{background:var(--green);color:white}
+.month-grid button.has-event:after{content:"";display:block;width:4px;height:4px;background:var(--orange);border-radius:50%;margin:1px auto 0}
+.chart{height:98px;display:flex;align-items:end;gap:8px;padding:8px 5px;background:#f3f0e8;border-radius:12px}
+.chart span{flex:1;background:#71a899;border-radius:6px 6px 2px 2px;position:relative}
+.chart span:after{content:attr(data-time);position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);font-size:9px;color:var(--muted)}
+.timeline{display:flex;align-items:center;gap:9px}
+.timeline i{width:9px;height:9px;border-radius:50%;background:var(--orange);flex:none}
+.timeline div{border-left:1px solid var(--line);padding:7px 0 7px 10px;flex:1}
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.field label{font-size:11px;color:var(--muted);display:block;margin:0 0 5px}
+.field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;background:white;color:var(--ink);min-height:42px}
+.field input::placeholder{color:#7c8881}
+.field.full{grid-column:1/-1}
+.option{display:flex;align-items:center;gap:9px;padding:9px;border-radius:11px;background:#f4f1e9;font-size:12px}
+.option input{accent-color:var(--green);width:19px;height:19px}
+.photo-add{height:82px;border:1px dashed #8a9c91;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#f5f2e9;color:var(--green);font-weight:800;font-size:13px}
+.permission{border-left:3px solid var(--orange);padding:8px 10px;background:#fff4ea;border-radius:0 9px 9px 0;font-size:12px}
+.step-art{height:150px;border-radius:13px;background:#edf2eb;position:relative;margin:12px 0;overflow:hidden}
+.line-a{position:absolute;height:4px;width:75%;left:13%;top:52%;background:#315c50;border-radius:8px;transform:rotate(-17deg)}
+.line-b{position:absolute;height:4px;width:60%;left:21%;top:49%;background:#d26b35;border-radius:8px;transform:rotate(22deg)}
+.circle{position:absolute;width:30px;height:30px;border:4px solid #315c50;border-radius:50%;left:49%;top:41%;background:#edf2eb}
+.steps{display:flex;gap:5px}
+.steps span{height:5px;flex:1;border-radius:9px;background:#d4ddd3}
+.steps span.active{background:var(--orange)}
+.check-group{margin:10px 0}
+.check-group label{display:flex;gap:9px;align-items:center;min-height:42px;border-bottom:1px solid var(--line);font-size:13px}
+.check-group input{accent-color:var(--green);width:19px;height:19px}
+.bottom-nav{flex:none;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:#fffefa;padding:5px 3px max(6px,env(safe-area-inset-bottom))}
+.bottom-nav button{border:0;background:transparent;min-height:48px;color:var(--muted);font-size:10px;font-weight:750;cursor:pointer;border-radius:9px}
+.bottom-nav button span{display:block;font-size:17px;line-height:1.2;margin-bottom:2px}
+.bottom-nav button.active{background:var(--green-soft);color:var(--green)}
+.bottom-nav button:focus-visible,.index button:focus-visible,.secondary-button:focus-visible,.big-button:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.phone-caption{padding:7px 4px;text-align:center;font-size:11px;color:var(--muted)}
+@media(max-width:1000px){.preview-area{grid-template-columns:minmax(0,1fr) minmax(320px,390px);}.side-note.left{display:none}}
+@media(max-width:700px){
+ .deck{display:block}.index{padding:10px;border-right:0;border-bottom:1px solid var(--line)}
+ .brand{font-size:17px}.index p,.legend{display:none}
+ .index-list{display:flex;overflow:auto;gap:5px;padding:6px 0}
+ .index button{white-space:nowrap;min-height:38px;padding:7px 9px}
+ .topbar{padding:10px 12px}.preview-area{display:block;padding:12px}
+ .side-note.right{max-width:390px;margin:0 auto 10px}
+ .side-note.right h2{font-size:16px;margin-bottom:3px}
+ .side-note.right p{font-size:12px;margin:0}
+ .controls{margin:7px 0}
+ .phone{height:calc(100vh - 245px);min-height:560px;max-height:740px}
+}
+@media(max-width:370px){.preview-area{padding:7px}.phone{border-width:6px;border-radius:27px;min-height:530px;height:calc(100vh - 230px)}.screen-content{padding:11px}.screen-content h1{font-size:21px}}
+</style>
+</head>
+<body>
+<div class="deck">
+  <aside class="index" aria-label="Índice de pantallas">
+    <div class="brand">KIT <span>DE PESCA</span></div>
+    <p>Propuesta visual · bitácora de campo</p>
+    <nav id="screen-index" class="index-list"></nav>
+    <div class="legend">Los datos con etiqueta DEMO son inventados para mostrar la interfaz. Las medidas de peces se muestran con su ámbito y fuente.</div>
+  </aside>
+  <section class="workspace">
+    <header class="topbar">
+      <div><strong id="screen-title">Inicio</strong><div id="screen-subtitle" class="sub">Muestra de navegación</div></div>
+      <span class="demo-tag">DISEÑO · NO ES LA APP</span>
+    </header>
+    <div class="preview-area">
+      <div class="side-note left">
+        <h2>Una bitácora que acompaña la salida</h2>
+        <p>Cuatro destinos claros; cada pantalla responde una pregunta. Las cifras regionales y los ejemplos ficticios se mantienen separados.</p>
+      </div>
+      <div>
+        <div class="phone" aria-label="Vista previa de teléfono">
+          <div class="phone-status"><span>9:41</span><span>● ● ● 100%</span></div>
+          <div class="appbar"><button class="back" data-action="back" aria-label="Volver">‹ Volver</button><span class="brand-small">BITÁCORA DE PESCA</span><button class="icon-action" aria-label="Ayuda">?</button></div>
+          <main id="screen-content" class="screen-content" aria-live="polite"></main>
+          <nav class="bottom-nav" aria-label="Navegación principal">
+            <button data-screen="home"><span aria-hidden="true">⌂</span>Inicio</button>
+            <button data-screen="catalog"><span aria-hidden="true">◉</span>Peces</button>
+            <button data-screen="catches"><span aria-hidden="true">▣</span>Capturas</button>
+            <button data-screen="gear"><span aria-hidden="true">⌁</span>Equipo</button>
+          </nav>
+        </div>
+        <div id="phone-caption" class="phone-caption">14 muestras · elegí una pantalla en el índice</div>
+      </div>
+      <aside class="side-note right">
+        <h2 id="purpose-title">Una sola acción principal por pantalla</h2>
+        <p id="purpose-text">Tocá el índice o los accesos de la vista para recorrer el prototipo.</p>
+        <div class="controls">
+          <button data-action="previous" aria-label="Pantalla anterior">← Anterior</button>
+          <button data-action="next">Siguiente →</button>
+        </div>
+        <p class="small">En teléfono, el índice se desplaza horizontalmente. En la app real, los datos del clima dependerán de conexión y permiso.</p>
+      </aside>
+    </div>
+  </section>
+</div>
+
+<template id="home">
+  <p class="kicker">Jueves 8 de octubre · <span class="pill orange">DEMO</span></p>
+  <h1>¿A dónde te lleva la salida?</h1>
+  <p class="lead">Tu bitácora para explorar, preparar el equipo y guardar lo que viviste.</p>
+  <div class="card dark">
+    <div class="row"><span class="label">LUGAR DE LA SALIDA</span><span class="pill">Guardado en este teléfono</span></div>
+    <h2 style="margin:7px 0 3px">Laguna de Navarro</h2>
+    <div class="row"><span class="label">Condiciones ilustrativas</span><span class="pill orange">DEMO</span></div>
+    <div class="row" style="margin-top:11px"><strong style="font-size:25px">16°</strong><span>Viento suave · sin alerta</span></div>
+  </div>
+  <button class="big-button" data-screen="catalog">Explorar peces <span aria-hidden="true">→</span></button>
+  <button class="secondary-button" style="width:100%;margin-top:8px" data-screen="new-catch">＋ Guardar una captura</button>
+  <h2>Tu próxima salida</h2>
+  <div class="card row"><div><strong>Sábado 10</strong><div class="label">Calendario ilustrativo · DEMO</div></div><button data-screen="calendar" class="link-button">Ver mes →</button></div>
+  <div class="row"><button class="secondary-button" data-screen="weather">☁ Ver clima</button><button class="secondary-button" data-screen="gear">⌁ Preparar equipo</button></div>
+</template>
+
+<template id="calendar">
+  <p class="kicker">PLANIFICAR · <span class="pill orange">DEMO</span></p>
+  <h1>Octubre 2026</h1>
+  <p class="lead">Días y señales de muestra. No es un pronóstico real.</p>
+  <div class="card">
+    <div class="month-grid">
+      <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+      <button> </button><button> </button><button> </button><button>1</button><button>2</button><button>3</button><button>4</button>
+      <button>5</button><button>6</button><button>7</button><button class="selected">8</button><button>9</button><button class="has-event">10</button><button>11</button>
+      <button>12</button><button>13</button><button>14</button><button>15</button><button>16</button><button class="has-event">17</button><button>18</button>
+      <button>19</button><button>20</button><button>21</button><button>22</button><button>23</button><button>24</button><button>25</button>
+      <button>26</button><button>27</button><button>28</button><button>29</button><button>30</button><button>31</button><button> </button>
+    </div>
+  </div>
+  <h2>Jueves 8 · hoy</h2>
+  <div class="card soft row"><span>◷</span><div style="flex:1"><strong>Condiciones para revisar</strong><div class="label">Ejemplo visual, no calculado</div></div><button class="link-button" data-screen="weather">Abrir →</button></div>
+  <div class="card"><div class="row"><strong>Sábado 10</strong><span class="pill orange">DEMO</span></div><p class="label">Recordatorio personal: revisar el equipo</p><button class="link-button" data-screen="gear">Ver checklist →</button></div>
+</template>
+
+<template id="weather">
+  <p class="kicker">CONDICIONES · <span class="pill orange">DEMO</span></p>
+  <h1>El día, de un vistazo</h1>
+  <p class="lead">Laguna de Navarro · valores inventados para la muestra</p>
+  <div class="card dark row"><div><span class="label">AHORA · DEMO</span><div style="font-size:32px;font-weight:850">16°</div><div>Parcialmente nublado</div></div><div style="font-size:35px" aria-hidden="true">☁</div></div>
+  <div class="metric-row">
+    <div class="metric"><span>VIENTO · DEMO</span><b>12 km/h</b><span>del este</span></div>
+    <div class="metric"><span>LLUVIA · DEMO</span><b>0 mm</b><span>próximas horas</span></div>
+  </div>
+  <h2>Durante el día</h2>
+  <div class="chart" role="img" aria-label="Gráfico ilustrativo de temperatura, valores ficticios">
+    <span style="height:47%" data-time="9 h"></span><span style="height:62%" data-time="12 h"></span><span style="height:78%" data-time="15 h"></span><span style="height:72%" data-time="18 h"></span><span style="height:48%" data-time="21 h"></span>
+  </div>
+  <div style="height:16px"></div>
+  <div class="card warm"><strong>Dato ilustrativo</strong><p class="label">Esta pantalla no consultó el clima. En la app, si falta conexión o permiso, se mostraría “sin dato” y no se inventaría un pronóstico.</p></div>
+  <button class="secondary-button" data-screen="calendar">← Volver al calendario</button>
+</template>
+
+<template id="catalog">
+  <p class="kicker">COLECCIÓN DE CAMPO</p>
+  <h1>Encontrá tu pez</h1>
+  <p class="lead">Explorá las fichas. Las cuatro prioritarias aparecen primero.</p>
+  <div class="wrap" style="margin:8px 0 12px"><span class="pill">11 especies</span><span class="pill orange">4 prioritarias</span></div>
+  <div class="fish-grid">
+    <article class="fish-card"><button data-screen="species">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=480" alt="Tararira de referencia, foto identificada como Hoplias malabaricus">
+      <div class="fish-info"><strong>Tararira</strong><span>Depredadora · agua quieta</span></div></button></article>
+    <article class="fish-card"><button data-screen="species" data-fish="carpa">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Common_carp.jpg?width=480" alt="Carpa común, imagen de dominio público">
+      <div class="fish-info"><strong>Carpa</strong><span>Introducida · fondo</span></div></button></article>
+    <article class="fish-card"><button data-screen="species" data-fish="bagre">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Rhamdia_quelen.jpg?width=480" alt="Lámina histórica de Rhamdia quelen">
+      <div class="fish-info"><strong>Bagre sapo</strong><span>Fondo · nombre por confirmar</span></div></button></article>
+    <article class="fish-card"><button data-screen="species" data-fish="pejerrey">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pejerrey_Odontesthes_Bonariensis.jpg?width=480" alt="Pejerrey argentino fotografiado por Uli7">
+      <div class="fish-info"><strong>Pejerrey</strong><span>Plateado · cardumen</span></div></button></article>
+    <article class="fish-card"><button data-screen="species"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Common_carp.jpg?width=480" alt="Imagen ilustrativa de un pez de agua dulce"><div class="fish-info"><strong>Dientudo</strong><span>Ficha complementaria</span></div></button></article>
+    <article class="fish-card"><button data-screen="species"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Rhamdia_quelen.jpg?width=480" alt="Imagen ilustrativa de pez"><div class="fish-info"><strong>Vieja del agua</strong><span>Ficha complementaria</span></div></button></article>
+    <article class="fish-card"><button data-screen="species"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pejerrey_Odontesthes_Bonariensis.jpg?width=480" alt="Imagen ilustrativa de pez"><div class="fish-info"><strong>Mojarra</strong><span>Ficha complementaria</span></div></button></article>
+    <article class="fish-card"><button data-screen="species"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pejerrey_Odontesthes_Bonariensis.jpg?width=480" alt="Imagen ilustrativa de pez"><div class="fish-info"><strong>Lisa</strong><span>Ficha complementaria</span></div></button></article>
+    <article class="fish-card"><button data-screen="species"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Rhamdia_quelen.jpg?width=480" alt="Imagen ilustrativa de pez"><div class="fish-info"><strong>Patí</strong><span>Ficha complementaria</span></div></button></article>
+    <article class="fish-card"><button data-screen="species"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Rhamdia_quelen.jpg?width=480" alt="Imagen ilustrativa de pez"><div class="fish-info"><strong>Bagre amarillo</strong><span>Ficha complementaria</span></div></button></article>
+    <article class="fish-card"><button data-screen="species"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Common_carp.jpg?width=480" alt="Imagen ilustrativa de pez"><div class="fish-info"><strong>Boga</strong><span>Ficha complementaria</span></div></button></article>
+  </div>
+  <p class="source" style="margin-top:10px">Las imágenes de especies complementarias son marcadores visuales, no identificaciones. Créditos de las cuatro imágenes prioritarias en la ficha ampliada.</p>
+</template>
+
+<template id="species">
+  <p class="kicker">FICHA DE CAMPO · ESPECIE PRIORITARIA</p>
+  <img id="species-image" class="image hero-image" src="https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=720" alt="Tararira de referencia. El nombre de la imagen original figura como Hoplias malabaricus.">
+  <div class="row" style="margin-top:9px"><div><h1 id="species-name">Tararira</h1><div class="label" id="species-latin"><i>Hoplias argentinensis</i> · identificación regional a revisar</div></div><span class="pill orange">REGIONAL</span></div>
+  <div class="wrap" style="margin:9px 0"><span class="pill">Aguas quietas</span><span class="pill">Depredadora</span><span class="pill">Cuenca del Salado</span></div>
+  <div class="card">
+    <div class="row"><strong>Tamaño</strong><button class="link-button" data-screen="measures">Ver fuente →</button></div>
+    <div class="metric-row" style="margin-top:7px">
+      <div class="metric"><span>MEDIA EN NAVARRO</span><b>Sin muestra</b><span>largo y peso</span></div>
+      <div class="metric"><span>REFERENCIA SIB</span><b>Hasta 63 cm</b><span>no es medida local</span></div>
+    </div>
+  </div>
+  <p class="source">Imagen de referencia: archivo de Wikimedia Commons identificado como <i>Hoplias malabaricus</i>, CC BY 2.0; no es un ejemplar de Navarro. La taxonomía de la tararira pampeana sigue en revisión.</p>
+  <button class="big-button" data-screen="catches">Ver mis capturas →</button>
+</template>
+
+<template id="measures">
+  <p class="kicker">MEDIDAS · FUENTES</p>
+  <h1>¿Qué significa cada número?</h1>
+  <p class="lead">No hay promedios locales confiables en las fuentes consultadas.</p>
+  <div class="card warm"><strong>Navarro</strong><p class="label">Largo medio y peso medio: sin muestra local confiable para las cuatro especies.</p></div>
+  <div class="list">
+    <div class="card">
+      <div class="row"><strong>Tararira</strong><span class="pill">Referencia de especie</span></div>
+      <p><b>Hasta 63 cm</b> <span class="label">· SIB/APN para <i>H. argentinensis</i></span></p>
+      <p class="source">No es media, récord ni dato de Navarro. Fuentes históricas usan otro nombre científico.</p>
+    </div>
+    <div class="card">
+      <div class="row"><strong>Carpa</strong><span class="pill">Cuenca</span></div>
+      <p><b>Hasta 100 cm · 20 kg</b></p>
+      <p class="source">Referencia SAGyP para Río de la Plata/cuenca del Salado; no es un ejemplar de Navarro.</p>
+    </div>
+    <div class="card">
+      <div class="row"><strong>Bagre sapo</strong><span class="pill">General</span></div>
+      <p><b>≈ 55 cm</b> <span class="label">· referencia SAGyP</span></p>
+      <p class="source">No es récord ni promedio. Confirmar especie: bagre sapo y bagre amarillo son fichas distintas.</p>
+    </div>
+    <div class="card">
+      <div class="row"><strong>Pejerrey</strong><span class="pill">General</span></div>
+      <p><b>≈ 40 cm · 800 g</b> <span class="label">· media general SIB, sin muestra detallada</span></p>
+      <p><b>Hasta 74 cm</b> <span class="label">· cifra SAGyP</span></p>
+      <p class="source">Las fichas difieren en el máximo. No presentarlo como medida local ni como récord.</p>
+    </div>
+  </div>
+  <button class="secondary-button" data-screen="species">← Volver a tararira</button>
+</template>
+
+<template id="catches">
+  <p class="kicker">BITÁCORA PERSONAL</p>
+  <h1>Mis capturas</h1>
+  <p class="lead">Tus registros quedan privados en tu dispositivo.</p>
+  <button class="big-button" data-screen="new-catch">＋ Agregar captura</button>
+  <div class="row" style="margin:17px 0 8px"><strong>Octubre 2026</strong><span class="pill orange">DEMO</span></div>
+  <div class="list-row">
+    <img class="thumb" src="https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=220" alt="Foto de referencia para un registro ficticio">
+    <div class="grow"><strong>Tararira · ejemplo ficticio</strong><small>42 cm · peso sin agregar</small><small>Ubicación no compartida</small></div>
+    <button data-screen="capture-detail">Ver</button>
+  </div>
+  <div class="card flat" style="margin-top:14px">
+    <div class="row"><strong>¿Primera vez acá?</strong><span aria-hidden="true">✦</span></div>
+    <p class="label">También podés guardar una nota o foto sin saber la especie ni las medidas.</p>
+    <button class="link-button" data-screen="new-catch">Probar un registro vacío →</button>
+  </div>
+  <p class="source">El ejemplo y la foto son demostrativos; no representan una captura real del usuario.</p>
+</template>
+
+<template id="new-catch">
+  <p class="kicker">NUEVO RECUERDO</p>
+  <h1>¿Qué querés guardar?</h1>
+  <p class="lead">Todo es opcional. Podés guardar aunque solo tengas un dato.</p>
+  <div class="photo-add" role="button" tabindex="0" aria-label="Agregar foto opcional">＋ Agregar foto (opcional)</div>
+  <div style="height:10px"></div>
+  <button class="option" style="width:100%;border:0;text-align:left;cursor:pointer" data-screen="location">⌖ <span style="flex:1">Ubicación <small class="label">· todavía no agregada</small></span><span>Elegir →</span></button>
+  <div class="input-grid" style="margin-top:11px">
+    <div class="field full"><label for="species-choice">Especie · opcional</label><select id="species-choice"><option>Elegir más tarde</option><option>Tararira</option><option>Carpa</option><option>Bagre sapo</option><option>Pejerrey</option><option>No estoy seguro</option></select></div>
+    <div class="field"><label for="length">Largo · cm · opcional</label><input id="length" type="number" min="0" placeholder="—"></div>
+    <div class="field"><label for="weight">Peso · kg · opcional</label><input id="weight" type="number" min="0" step=".1" placeholder="—"></div>
+    <div class="field full"><label for="note">Nota · opcional</label><input id="note" type="text" placeholder="¿Qué querés recordar?"></div>
+  </div>
+  <div class="card soft"><strong>Privado</strong><p class="label">La ubicación solo se agrega si la elegís. No se comparte.</p></div>
+  <button class="big-button" data-action="save-empty">Guardar captura</button>
+  <button class="link-button" data-screen="catches">Cancelar</button>
+</template>
+
+<template id="location">
+  <p class="kicker">UBICACIÓN · OPCIONAL</p>
+  <h1>¿Querés guardar el lugar?</h1>
+  <p class="lead">La app solo puede usar tu ubicación con permiso. No se comparte con otras personas.</p>
+  <div class="card soft"><div class="row"><strong>Permiso</strong><span class="pill orange">EJEMPLO</span></div><p class="label">En esta muestra no se accede al GPS; el resultado es ilustrativo.</p></div>
+  <button class="big-button" data-action="location-allow">Permitir mientras uso la app</button>
+  <button class="secondary-button" style="width:100%;margin-top:8px" data-action="location-skip">Guardar sin ubicación</button>
+  <div class="permission" style="margin-top:14px"><strong>Si el permiso está rechazado</strong><br>Podés continuar sin ubicación y guardar igual.</div>
+  <button class="link-button" data-screen="new-catch">← Volver al registro</button>
+</template>
+
+<template id="capture-detail">
+  <div data-detail="sample">
+    <p class="kicker">CAPTURA · EJEMPLO FICTICIO</p>
+    <h1>Una tararira para recordar</h1>
+    <img class="image hero-image" src="https://commons.wikimedia.org/wiki/Special:FilePath/Hoplias_malabaricus_(16521590825).jpg?width=720" alt="Imagen de referencia, no foto de una captura real">
+    <div class="wrap" style="margin-top:8px"><span class="pill">42 cm</span><span class="pill orange">Peso sin agregar</span></div>
+    <div class="card"><div class="row"><strong>Lo que guardaste</strong><span class="label">DEMO</span></div><p class="label">Especie: tararira · Fecha: ejemplo · Ubicación: no compartida.</p></div>
+    <p class="source">La imagen no es una captura real; se usa como referencia visual con atribución.</p>
+  </div>
+  <div data-detail="empty" hidden>
+    <p class="kicker">CAPTURA GUARDADA</p>
+    <h1>Ya quedó en tu bitácora</h1>
+    <div class="card soft" style="padding:25px 14px;text-align:center"><div style="font-size:38px" aria-hidden="true">✦</div><strong>Registro sin datos opcionales</strong><p class="label">No agregaste foto, lugar, especie ni medidas. Podés completarlo cuando quieras.</p></div>
+  </div>
+  <button class="secondary-button" data-screen="new-catch">Editar datos</button>
+  <button class="link-button" data-screen="catches">Volver a Mis capturas</button>
+</template>
+
+<template id="gear">
+  <p class="kicker">PREPARAR LA SALIDA</p>
+  <h1>Equipo</h1>
+  <p class="lead">Encontrá rápido lo que querés resolver.</p>
+  <button class="card" style="width:100%;text-align:left;display:flex;align-items:center;gap:13px;cursor:pointer" data-screen="knots">
+    <span style="font-size:25px;color:var(--green)">⌁</span><span><strong>Nudos</strong><small class="label" style="display:block">Elegí la unión que necesitás</small></span><span style="margin-left:auto">→</span>
+  </button>
+  <button class="card" style="width:100%;text-align:left;display:flex;align-items:center;gap:13px;cursor:pointer" data-screen="checklist">
+    <span style="font-size:25px;color:var(--orange)">☑</span><span><strong>Checklist</strong><small class="label" style="display:block">Prepará lo básico antes de salir</small></span><span style="margin-left:auto">→</span>
+  </button>
+  <div class="card flat"><strong>Tu kit</strong><p class="label">Las recomendaciones se conectarán con el equipo que ya tenés, sin convertir la ficha en una lista de compras.</p></div>
+</template>
+
+<template id="knots">
+  <p class="kicker">NUDOS · ELEGIR POR SITUACIÓN</p>
+  <h1>¿Qué querés unir?</h1>
+  <p class="lead">Primero la tarea; después, el nudo.</p>
+  <div class="list">
+    <button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill">LÍNEA</span><span class="grow"><strong>Atar al carretel</strong><small>Nudo de carrete</small></span><span>→</span></button>
+    <button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill orange">ANZUELO</span><span class="grow"><strong>Atar anzuelo o emerillón</strong><small>Palomar · Clinch · Uni</small></span><span>→</span></button>
+    <button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill">SEÑUELO</span><span class="grow"><strong>Dejar libre el movimiento</strong><small>Rapala · elegir después</small></span><span>→</span></button>
+    <button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill">EMPALME</span><span class="grow"><strong>Unir dos líneas</strong><small>Doble uni · Albright · FG</small></span><span>→</span></button>
+  </div>
+  <p class="source">Los pasos son una muestra de organización visual; cada nudo deberá verificarse con fuentes y prueba en mano antes de incorporarlo a la app.</p>
+</template>
+
+<template id="tutorial">
+  <p class="kicker">TUTORIAL · MUESTRA VISUAL</p>
+  <h1>Nudo Palomar</h1>
+  <p class="lead">Paso 2 de 4 · Pasá el lazo por el ojo</p>
+  <div class="step-art" role="img" aria-label="Diagrama conceptual de una línea y un lazo frente a un ojo de anzuelo">
+    <span class="line-a"></span><span class="line-b"></span><span class="circle"></span>
+    <span style="position:absolute;left:6%;top:43%;font-size:12px;color:var(--green);font-weight:800">LÍNEA</span>
+    <span style="position:absolute;right:7%;top:30%;font-size:12px;color:var(--orange);font-weight:800">LAZO</span>
+  </div>
+  <div class="steps" aria-label="Progreso del tutorial"><span></span><span class="active"></span><span></span><span></span></div>
+  <div class="card"><div class="row"><strong>Qué hacer</strong><span class="pill orange">DIBUJO A VALIDAR</span></div><p>Pasá el lazo completo por el ojo del anzuelo.</p><p class="source">Diagrama conceptual para mostrar jerarquía y tamaño del texto; no es una instrucción verificada del nudo.</p></div>
+  <div class="row"><button class="secondary-button" data-action="step-prev">← Anterior</button><button class="secondary-button" data-action="step-next">Siguiente →</button></div>
+  <button class="link-button" data-screen="knots">Ver otros nudos</button>
+</template>
+
+<template id="checklist">
+  <p class="kicker">ANTES DE SALIR</p>
+  <h1>¿Todo listo?</h1>
+  <p class="lead">Marcá lo que ya está. La lista es tuya.</p>
+  <div class="check-group"><h3>Equipo</h3>
+    <label><input type="checkbox"> Caña y reel</label>
+    <label><input type="checkbox"> Línea, anzuelos y plomadas</label>
+    <label><input type="checkbox"> Carnada o señuelos</label>
+  </div>
+  <div class="check-group"><h3>Salida</h3>
+    <label><input type="checkbox"> Agua y abrigo</label>
+    <label><input type="checkbox"> Licencia / reglamento del día</label>
+    <label><input type="checkbox"> Teléfono cargado</label>
+  </div>
+  <div class="card warm"><strong>Recordatorio</strong><p class="label">Antes de ir, consultá el reglamento vigente de la Provincia de Buenos Aires. La muestra no reemplaza una fuente oficial actualizada.</p></div>
+  <button class="big-button" data-action="reset-checklist">Nueva salida · destildar todo</button>
+</template>
+
+<script>
+const screens = [
+  {id:"home",name:"Inicio",purpose:"La portada ordena la salida en una acción principal y dos accesos secundarios."},
+  {id:"calendar",name:"Calendario",purpose:"El calendario ayuda a elegir fecha; los datos de esta muestra son ficticios y están señalados."},
+  {id:"weather",name:"Clima",purpose:"Clima aparece como detalle consultable; el ejemplo no se hace pasar por un pronóstico real."},
+  {id:"catalog",name:"Pokédex · catálogo",purpose:"Las especies se reconocen por foto y rótulos; las 11 fichas mantienen su nombre común."},
+  {id:"species",name:"Ficha de especie",purpose:"La ficha prioriza identificación y medidas, pero separa la referencia regional del dato local."},
+  {id:"measures",name:"Medidas y fuentes",purpose:"Este detalle explica unidad, alcance y discrepancias sin inventar una media de Navarro."},
+  {id:"catches",name:"Mis capturas",purpose:"La bitácora guarda recuerdos personales; los ejemplos aparecen como ficticios."},
+  {id:"new-catch",name:"Nueva captura",purpose:"El formulario acepta una captura parcial y permite guardar sin completar ningún dato."},
+  {id:"location",name:"Permiso de ubicación",purpose:"La persona puede permitir, omitir o seguir si rechazó el permiso."},
+  {id:"capture-detail",name:"Captura guardada",purpose:"Hay un registro de ejemplo y otro estado de guardado vacío."},
+  {id:"gear",name:"Equipo",purpose:"Nudos y checklist se encuentran bajo una sola decisión de preparación."},
+  {id:"knots",name:"Elegir un nudo",purpose:"Se elige por la unión que se necesita, no por una lista larga de nombres."},
+  {id:"tutorial",name:"Tutorial de nudo",purpose:"El diagrama tiene prioridad; se advierte que el ejemplo visual aún debe verificarse."},
+  {id:"checklist",name:"Checklist",purpose:"La lista se puede marcar y volver a empezar para una nueva salida."}
+];
+const names=Object.fromEntries(screens.map((s,i)=>[s.id,i]));
+let current="home";
+let savedEmpty=false;
+let locationStatus="sin ubicación";
+const content=document.getElementById("screen-content");
+const index=document.getElementById("screen-index");
+function buildIndex(){
+ index.innerHTML=screens.map((s,i)=>'<button type="button" data-screen="'+s.id+'" aria-current="'+(s.id===current?"page":"false")+'"><span class="number">'+String(i+1).padStart(2,"0")+'</span>'+s.name+'</button>').join("");
+}
+function show(id){
+ if(!names.hasOwnProperty(id)) return;
+ current=id;
+ const t=document.getElementById(id);
+ content.replaceChildren(t.content.cloneNode(true));
+ if(id==="capture-detail"){
+  const sample=content.querySelector('[data-detail="sample"]');
+  const empty=content.querySelector('[data-detail="empty"]');
+  if(sample) sample.hidden=savedEmpty;
+  if(empty) empty.hidden=!savedEmpty;
+ }
+ buildIndex();
+ document.getElementById("screen-title").textContent=screens[names[id]].name;
+ document.getElementById("screen-subtitle").textContent="Pantalla "+(names[id]+1)+" de "+screens.length;
+ document.getElementById("purpose-title").textContent=screens[names[id]].name;
+ document.getElementById("purpose-text").textContent=screens[names[id]].purpose;
+ document.getElementById("phone-caption").textContent=(names[id]+1)+" / "+screens.length+" · "+screens[names[id]].name;
+ document.querySelectorAll(".bottom-nav button").forEach(b=>b.classList.toggle("active",b.dataset.screen===id || (id==="species"||id==="measures"||id==="calendar"||id==="weather")&&b.dataset.screen==="home" || (id==="new-catch"||id==="location"||id==="capture-detail")&&b.dataset.screen==="catches" || (id==="knots"||id==="tutorial"||id==="checklist")&&b.dataset.screen==="gear"));
+ content.scrollTop=0;
+}
+document.addEventListener("click",e=>{
+ const nav=e.target.closest("[data-screen]");
+ if(nav){show(nav.dataset.screen);return}
+ const action=e.target.closest("[data-action]");
+ if(!action)return;
+ switch(action.dataset.action){
+  case "save-empty": savedEmpty=true;show("capture-detail");break;
+  case "location-allow": locationStatus="ubicación de ejemplo";show("new-catch");break;
+  case "location-skip": locationStatus="sin ubicación";show("new-catch");break;
+  case "previous": show(screens[Math.max(0,names[current]-1)].id);break;
+  case "next": show(screens[Math.min(screens.length-1,names[current]+1)].id);break;
+  case "back": show(current==="location"?"new-catch":current==="species"||current==="measures"?"catalog":current==="capture-detail"?"catches":current==="tutorial"?"knots":"home");break;
+  case "reset-checklist": content.querySelectorAll('input[type="checkbox"]').forEach(x=>x.checked=false);break;
+  case "step-prev": action.textContent="← Paso anterior · DEMO";break;
+  case "step-next": action.textContent="Paso siguiente · DEMO";break;
+ }
+});
+document.addEventListener("change",e=>{
+ if(e.target.id==="species-choice"||e.target.id==="length"||e.target.id==="weight"||e.target.id==="note") savedEmpty=false;
+});
+buildIndex();show("home");
+</script>
+</body>
+</html>
