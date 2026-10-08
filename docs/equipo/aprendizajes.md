@@ -17,6 +17,10 @@ Las reglas numeradas de dibujo (hasta la 40) están en `docs/spec.md`, "Control 
 - **2026-10, Claude — Gastar menos.** Cada respuesta relee toda la conversación. **Regla:** chat nuevo cada 3 o 4 nudos; una sola revisión por nudo.
 - **2026-10, Claude — Pasar todo a main.** Si no se une el pull request, el chat siguiente no ve el trabajo. **Regla:** al terminar algo, pull request a `main` y unirlo enseguida (ver `AGENTS.md`).
 
+## Diseño de pantallas
+
+- **2026-10-08, usuario — Usar las pantallas actuales como referencia.** El usuario prefiere Inicio, Calendario, Clima, tutoriales de nudos y Checklist de la app actual; en la ficha quiere información corta con medidas disponibles, carnadas/señuelos, lugar y hábitos; las capturas deben agruparse por especie. **Regla:** al revisar muestras, reutilizar esas vistas actuales; quitar explicaciones de fuentes de la interfaz y no rellenar datos ausentes.
+
 ## Dibujos de nudos
 
 - **2026-10, Claude — Dibujar sin fuente.** El Lazo perfecto se dibujó de memoria y salió corredizo: el usuario lo ató y se deshacía. **Regla:** mirar antes la página de la guía y escribir la tabla de cruces citando la fuente.
