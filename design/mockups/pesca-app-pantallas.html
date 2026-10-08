@@ -387,6 +387,18 @@ a{color:var(--green)}
     <h1>Ya quedó en tu bitácora</h1>
     <div class="card soft" style="padding:25px 14px;text-align:center"><div style="font-size:38px" aria-hidden="true">✦</div><strong>Registro sin datos opcionales</strong><p class="label">No agregaste foto, lugar, especie ni medidas. Podés completarlo cuando quieras.</p></div>
   </div>
+  <div data-detail="submitted" hidden>
+    <p class="kicker">CAPTURA GUARDADA · MUESTRA</p>
+    <h1>Un recuerdo a tu manera</h1>
+    <div class="card">
+      <div class="row"><strong id="record-species">Especie sin elegir</strong><span class="pill">Privado</span></div>
+      <p id="record-length" class="label">Largo no agregado</p>
+      <p id="record-weight" class="label">Peso no agregado</p>
+      <p id="record-location" class="label">Ubicación no agregada</p>
+      <p id="record-note" class="label">Sin nota</p>
+    </div>
+    <p class="source">La demostración guarda solo los campos que ingresaste. La imagen no es una foto de usuario.</p>
+  </div>
   <button class="secondary-button" data-screen="new-catch">Editar datos</button>
   <button class="link-button" data-screen="catches">Volver a Mis capturas</button>
 </template>
@@ -476,8 +488,9 @@ const fishData={
  pejerrey:{name:"Pejerrey",latin:"<i>Odontesthes bonariensis</i>",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Pejerrey_Odontesthes_Bonariensis.jpg?width=720",alt:"Pejerrey argentino, fotografía CC0 de Uli7.",tags:"Plateado · Cardumen · Laguna",size:"Hasta 74 cm",sizeNote:"SAGyP · referencia general",credit:"Imagen: Pejerrey Odontesthes Bonariensis.jpg, Uli7, CC0. SIB cita otra media general; ninguna es una estadística de Navarro."}
 };
 let current="home";
-let savedEmpty=false;
+let detailMode="sample";
 let locationStatus="sin ubicación";
+let savedFields={};
 const content=document.getElementById("screen-content");
 const index=document.getElementById("screen-index");
 function buildIndex(){
@@ -500,10 +513,16 @@ function show(id){
   content.querySelector("#species-attribution").textContent=fish.credit;
  }
  if(id==="capture-detail"){
-  const sample=content.querySelector('[data-detail="sample"]');
-  const empty=content.querySelector('[data-detail="empty"]');
-  if(sample) sample.hidden=savedEmpty;
-  if(empty) empty.hidden=!savedEmpty;
+  content.querySelector('[data-detail="sample"]').hidden=detailMode!=="sample";
+  content.querySelector('[data-detail="empty"]').hidden=detailMode!=="empty";
+  content.querySelector('[data-detail="submitted"]').hidden=detailMode!=="submitted";
+  if(detailMode==="submitted"){
+   content.querySelector("#record-species").textContent=savedFields.species||"Especie sin elegir";
+   content.querySelector("#record-length").textContent=savedFields.length?savedFields.length+" cm":"Largo no agregado";
+   content.querySelector("#record-weight").textContent=savedFields.weight?savedFields.weight+" kg":"Peso no agregado";
+   content.querySelector("#record-location").textContent=savedFields.location||"Ubicación no agregada";
+   content.querySelector("#record-note").textContent=savedFields.note||"Sin nota";
+  }
  }
  buildIndex();
  document.getElementById("screen-title").textContent=screens[names[id]].name;
@@ -516,11 +535,15 @@ function show(id){
 }
 document.addEventListener("click",e=>{
  const nav=e.target.closest("[data-screen]");
- if(nav){if(nav.dataset.fish)selectedFish=nav.dataset.fish;show(nav.dataset.screen);return}
+ if(nav){if(nav.dataset.fish)selectedFish=nav.dataset.fish;if(nav.dataset.screen==="capture-detail")detailMode="sample";show(nav.dataset.screen);return}
  const action=e.target.closest("[data-action]");
  if(!action)return;
  switch(action.dataset.action){
-  case "save-empty": savedEmpty=true;show("capture-detail");break;
+  case "save-empty": {
+   const choice=content.querySelector("#species-choice").value;
+   savedFields={species:choice==="Elegir más tarde"?"":choice,length:content.querySelector("#length").value,weight:content.querySelector("#weight").value,note:content.querySelector("#note").value,location:locationStatus==="ubicación de ejemplo"?"Ubicación de ejemplo · no compartida":""};
+   detailMode=Object.values(savedFields).some(Boolean)?"submitted":"empty";show("capture-detail");break;
+  }
   case "location-allow": locationStatus="ubicación de ejemplo";show("new-catch");break;
   case "location-skip": locationStatus="sin ubicación";show("new-catch");break;
   case "previous": show(screens[Math.max(0,names[current]-1)].id);break;
@@ -532,7 +555,7 @@ document.addEventListener("click",e=>{
  }
 });
 document.addEventListener("change",e=>{
- if(e.target.id==="species-choice"||e.target.id==="length"||e.target.id==="weight"||e.target.id==="note") savedEmpty=false;
+ 
 });
 buildIndex();show("home");
 </script>
