@@ -2,7 +2,7 @@
 
 Quién hace qué. Lo leen y lo escriben los dos agentes (Claude y ChatGPT). Reglas en `AGENTS.md`.
 
-- Al **tomar** una tarea: moverla a "En curso" con agente, rama, fecha y archivos que va a tocar, y hacer commit y push de ese cambio solo, enseguida.
+- Al **tomar** una tarea: moverla a "En curso" con agente, rama, fecha y archivos que va a tocar, y hacer commit de ese cambio solo, enseguida.
 - Al **terminar**: moverla a "Hecho" con el número de pull request.
 - Si una tarea "En curso" es del otro agente, no tocar sus archivos. Si lleva más de 2 días sin movimiento en la bitácora, preguntarle al usuario.
 - El orden de "Para hacer" es el que pidió el usuario: tomar la primera libre salvo que el usuario diga otra cosa.
@@ -44,4 +44,5 @@ Detalle de cada nudo en `docs/plan-nudos.md`, "Lo que sigue" y "Correcciones ped
 | Coordinación Claude + ChatGPT (este tablero, bitácora, aprendizajes, herramientas, fuentes) | Claude | ver bitácora | 2026-10-07 |
 | Plan de investigación y verificación de contenidos para la app | ChatGPT | [#12](https://github.com/SegundoAymo/Pesca-App/pull/12) | 2026-10-07 |
 | Replantear investigación según necesidades del pescador y diseño visual | ChatGPT | [#13](https://github.com/SegundoAymo/Pesca-App/pull/13) | 2026-10-07 |
+| Incorporar catálogo tipo Pokédex y registro opcional de capturas | ChatGPT | [#14](https://github.com/SegundoAymo/Pesca-App/pull/14) | 2026-10-08 |
 |

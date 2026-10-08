@@ -15,6 +15,14 @@ Formato de cada entrada:
 
 ---
 
+
+## 2026-10-08 — ChatGPT — Pokédex y registro opcional de capturas
+- Rama y pull request: `chatgpt/pokedex-registro-capturas`, [PR #14](https://github.com/SegundoAymo/Pesca-App/pull/14).
+- Qué se hizo: se anotó en la spec el catálogo de peces visual y lúdico tipo Pokédex, la preferencia por largo/peso medios y máximos con fuente y alcance, y el registro personal con foto, ubicación, especie, largo y peso opcionales. El plan quedó dividido en tareas de investigación, privacidad y prueba de uso.
+- Pruebas: no ejecutadas; cambio solo documental, sin cambios de código.
+- Qué quedó pendiente o a medias: investigar medidas confiables por especie y preparar bocetos para validar antes de programar.
+- Para el próximo: diferenciar máximo científico, récord y máximo observado; no mezclar registros personales con estadísticas de especie; todos los campos de captura deben seguir siendo opcionales.
+
 ## 2026-10-07 — ChatGPT — Replanteo de la investigación desde el uso y lo visual
 - Rama y pull request: `chatgpt/reencuadrar-contenido-pesca`, [PR #13](https://github.com/SegundoAymo/Pesca-App/pull/13).
 - Qué se hizo: se reemplazó el plan extenso de especies y señuelos por pasos pequeños orientados a decisiones del pescador: qué especie intentar, qué elegir del kit, cómo armarlo y qué condición mirar. Se definieron prioridades locales, vista rápida de hasta 35 palabras, detalle ampliado, iconos rotulados, diagramas, permisos de imagen y prueba exploratoria de comprensión. Sin cambios de código ni nuevas recomendaciones.

@@ -375,3 +375,15 @@ Ideas para más adelante:
 - Veda del pejerrey (1 de septiembre al 30 de noviembre) visible en su ficha.
 - Talla mínima, cupos y licencia de pesca de la provincia en cada ficha.
 - Estimar la temperatura del agua con la temperatura del aire de Open-Meteo, en vez de la tabla fija de Chascomús. Una laguna de 1 m de profundidad sigue al aire con pocos días de atraso; habría que definir cuántos días promediar.
+
+
+## Nuevas decisiones de producto — 2026-10-08
+
+Preferencias expresadas por el usuario para una futura mejora de la app. Son decisiones de producto para orientar el diseño; todavía no se implementan.
+
+- **Experiencia simple y lúdica:** el catálogo de peces se diseña como una Pokédex, con imagen/ilustración e iconos primero y poco texto. Los rótulos deben ser claros; el detalle adicional se descubre al abrir cada especie.
+- **Medidas por especie:** mostrar largo y peso medios y máximos cuando existan datos confiables. Cada dato debe indicar unidad, fuente y alcance; distinguir máximo científico, récord y máximo observado. Si falta respaldo, indicarlo claramente.
+- **Registro personal de capturas:** permitir guardar foto, ubicación, especie, largo y peso. Ninguno de esos campos es obligatorio; se admite una captura parcial.
+- **Foto y ubicación:** solicitar permiso cuando corresponda, permitir omitir/quitar esos datos y explicar dónde se guardan. El registro es personal; no compartir ubicación ni capturas públicamente sin pedido expreso.
+- **Separar datos:** las medidas medias/máximas describen la especie; no se calculan a partir de registros personales sin explicar la muestra y obtener una decisión del usuario.
+- **Alcance:** investigar y preparar una referencia visual antes de programar. No agregar puntos, insignias, puntajes, rankings ni publicación social como requisitos por inferencia.
