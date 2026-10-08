@@ -22,6 +22,7 @@ Archivos de más de 50 MB no entran en GitHub: guardarlos en Google Drive y anot
 | `docs/kit.md` | El Kit original: equipo, señuelos, carnadas | El usuario | Fichas y Checklist | — |
 | `docs/fichas.md`, `docs/nudos.md`, `docs/armados.md` | Contenido de la app ya armado | Chats anteriores | Datos de la app | — |
 | `tools/simulacion/` | Simulación del puntaje | Chats anteriores | Calibrar el modelo | — |
+| Pesca Argentina — Especies argentinas (https://www.pescaargentina.com.ar/contenidos/especies-argentinas) | Portal público con índice de más de 40 especies y fichas enlazadas | Sitio web Pesca Argentina; acceso comprobado el 2026-10-08 | Referencia inicial para identificación, distribución/localidades, tamaños y pesos, modalidades, carnadas, temporadas y vedas. Acceso web disponible. Es información editorial/general: corroborar datos locales, medidas y normativa con fuentes científicas u oficiales antes de usarlos en la app. Fichas revisadas: Pejerrey, Carpa y Tararira | Índice y fichas individuales |
 | Open-Meteo (https://open-meteo.com) | Clima y presión | API pública | Clima y Calendario | — |
 
 Fuentes del modelo de puntaje (temperatura del agua, luna, presión): `docs/spec.md`, sección "Fuentes".

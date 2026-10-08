@@ -15,6 +15,14 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-08 — ChatGPT — Registro de Pesca Argentina como fuente
+- Rama y pull request: `chatgpt/indice-pesca-argentina`, [PR #15](https://github.com/SegundoAymo/Pesca-App/pull/15).
+- Qué se hizo: se comprobó acceso al índice general y a fichas de Pejerrey, Carpa y Tararira; se añadió el portal al índice de fuentes con su alcance y límites. Contiene fichas enlazadas para más de 40 especies con información descriptiva, distribución/localidades, medidas, modalidades, carnadas y temporadas.
+- Pruebas: no ejecutadas; cambio documental, sin cambios de código.
+- Qué quedó pendiente o a medias: verificar cada dato que se use con fuentes científicas u oficiales y fuentes pertinentes a Navarro.
+- Para el próximo: tratar el sitio como referencia exploratoria/editorial; en especial, no usar sus datos generales como cifras locales ni como normativa vigente sin corroboración.
+
+
 
 ## 2026-10-08 — ChatGPT — Pokédex y registro opcional de capturas
 - Rama y pull request: `chatgpt/pokedex-registro-capturas`, [PR #14](https://github.com/SegundoAymo/Pesca-App/pull/14).
