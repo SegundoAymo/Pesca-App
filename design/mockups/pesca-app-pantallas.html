@@ -315,10 +315,10 @@ a{color:var(--green)}
 <template id="knots">
 <p class="kicker">NUDOS · ELEGIR POR SITUACIÓN</p><h1>¿Qué querés unir?</h1><p class="lead">Elegí una tarea y encontrá el nudo.</p>
 <div class="list">
-<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill">LÍNEA</span><span class="grow"><strong>Atar al carretel</strong><small>Nudo de carrete</small></span><span>→</span></button>
-<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill orange">ANZUELO</span><span class="grow"><strong>Atar anzuelo o emerillón</strong><small>Palomar · Clinch · Uni</small></span><span>→</span></button>
-<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill">SEÑUELO</span><span class="grow"><strong>Dejarlo moverse libre</strong><small>Rapala · elegir después</small></span><span>→</span></button>
-<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial"><span class="pill">EMPALME</span><span class="grow"><strong>Unir dos líneas</strong><small>Doble uni · Albright · FG</small></span><span>→</span></button>
+<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial" data-knot-route="reel/carrete"><span class="pill">LÍNEA</span><span class="grow"><strong>Atar al carretel</strong><small>Nudo de carrete</small></span><span>→</span></button>
+<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial" data-knot-route="anzuelo/palomar"><span class="pill orange">ANZUELO</span><span class="grow"><strong>Atar anzuelo o emerillón</strong><small>Palomar · Clinch · Uni</small></span><span>→</span></button>
+<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial" data-knot-route="senuelo/rapala"><span class="pill">SEÑUELO</span><span class="grow"><strong>Dejarlo moverse libre</strong><small>Rapala · elegir después</small></span><span>→</span></button>
+<button class="list-row" style="text-align:left;cursor:pointer" data-screen="tutorial" data-knot-route="unir/doble-uni"><span class="pill">EMPALME</span><span class="grow"><strong>Unir dos líneas</strong><small>Doble uni · Albright · FG</small></span><span>→</span></button>
 </div>
 </template>
 
@@ -455,6 +455,7 @@ document.addEventListener("click",e=>{
    else draftFields={species:"",length:"",weight:"",note:""};
   }
   if(nav.dataset.fish)selectedFish=nav.dataset.fish;
+  if(nav.dataset.knotRoute)liveRoutes.tutorial="/nudos/"+nav.dataset.knotRoute;
   if(nav.dataset.knotRoute)liveRoutes.tutorial="/nudos/"+nav.dataset.knotRoute;
   if(nav.dataset.screen==="capture-detail")detailMode="sample";
   show(nav.dataset.screen);return;
