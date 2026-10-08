@@ -15,6 +15,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-08 — ChatGPT — Muestras navegables de pantallas
+- Rama y pull request: `chatgpt/muestras-pantallas-pesca`, PR #18.
+- Qué se hizo: prototipo HTML navegable con 14 pantallas/estados, navegación principal, catálogo de cuatro especies prioritarias, registro opcional de capturas, estados vacíos, clima de demostración y créditos de imágenes. Incluye datos con alcance explícito y ejemplos ficticios marcados.
+- Pruebas: no ejecutadas; artefacto de diseño sin cambios de código de la app.
+- Qué quedó pendiente o a medias: validar el recorrido y la comprensión con pescadores; el prototipo es una referencia, no una implementación.
+- Para el próximo: usar junto con `docs/plan-diseno-pantallas.md`; reemplazar los datos de demostración solo con fuentes y alcance corroborados.
+
 ## 2026-10-08 — ChatGPT — Planificar pantallas y navegación
 - Rama y pull request: `chatgpt/plan-muestras-pantallas`, [PR #17](https://github.com/SegundoAymo/Pesca-App/pull/17).
 - Qué se hizo: antes de dibujar se definieron propósito, cuatro destinos principales, recorrido, 14 pantallas/estados, uso separado de datos reales y ficticios, créditos de imágenes, privacidad y criterios de revisión. El plan quedó escrito en `docs/plan-diseno-pantallas.md`.
