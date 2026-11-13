@@ -17,10 +17,10 @@ Cinco botones grandes con ícono: Peces, Calendario, Clima, Nudos, Checklist. Mi
 
 Diseño del inicio ([muestra](https://claude.ai/artifact/SFLVG9zwdgi5i9Yx82bRs1)): estilo Señal, formato S7: una sola columna de 5 botones grandes que llenan la pantalla. Clima va primero y más alto, en amarillo, con la temperatura de ahora y el aviso de tormenta; debajo Calendario, Peces, Nudos y Checklist.
 
-Mapa de navegación:
+Mapa de navegación (actualizado con el rediseño de noviembre 2026; detalle en la sección "Rediseño de noviembre 2026" y en `docs/plan-rediseno-2026-11.md`):
 
-- Inicio
-  1. Peces → las 11 especies del catálogo → Carnadas / Hábitat / Equipo / Tips
+- Inicio (cada botón con una línea de dato vivo) · en todas las pantallas, botón Inicio arriba a la derecha y enlaces entre secciones
+  1. Peces → catálogo tipo Pokédex (Especies | Mis capturas) → ficha única de cada especie (carnada, cuándo, dónde, señuelos, armado, consejos) → armado `#/armados/:id` → nudo
   2. Calendario → mes → día → desglose de tararira, carpa y bagre + resumen del tiempo → Ver por hora (abre Clima en ese día)
   3. Clima → hoy (o el día elegido) → resumen + 24 horas; se pasa a los días siguientes
   4. Nudos → situación → nudos aplicables → tutorial con diagrama
@@ -57,7 +57,7 @@ Datos tomados de resúmenes de búsqueda, sin leer cada artículo completo: veri
 
 ## Nudos
 
-Navegación por situación: elegís qué querés unir, ves los nudos que sirven (primero los que ya tienen el dibujo nuevo, en 3D y revisado, marcados "Dibujo nuevo"; el recomendado para tu kit, en amarillo) y abrís el tutorial con diagrama paso a paso, sin video. Son 9 situaciones, 18 nudos y 3 armados de plomada; la clasificación completa, con resistencia, dificultad y pasos de cada uno, está en Nudos.
+Navegación por situación: elegís qué querés unir, ves los nudos que sirven, cada uno con la miniatura del nudo terminado (primero los que ya tienen el dibujo nuevo, en 3D y revisado; los demás, en un grupo "Dibujo provisorio"; el recomendado para tu kit, con la marca amarilla "Recomendado") y abrís el tutorial con diagrama paso a paso, sin video. Son 9 situaciones, 18 nudos y 3 armados de plomada; la clasificación completa, con resistencia, dificultad y pasos de cada uno, está en Nudos.
 
 Ilustraciones (obligatorias en la app):
 
@@ -351,7 +351,7 @@ Ubicación:
 Clima:
 
 - [x] Unidades: °C, km/h y mm, con horario de Argentina.
-- [x] La flecha del viento indica de dónde viene (convención meteorológica).
+- [x] ~~La flecha del viento indica de dónde viene (convención meteorológica).~~ Cambiado en noviembre 2026: la flecha apunta hacia donde sopla y al lado siempre dice de dónde viene ("del SE").
 - [x] El pronóstico se actualiza al abrir la app si tiene más de 3 horas.
 
 Checklist:
@@ -387,3 +387,20 @@ Preferencias expresadas por el usuario para una futura mejora de la app. Son dec
 - **Foto y ubicación:** solicitar permiso cuando corresponda, permitir omitir/quitar esos datos y explicar dónde se guardan. El registro es personal; no compartir ubicación ni capturas públicamente sin pedido expreso.
 - **Separar datos:** las medidas medias/máximas describen la especie; no se calculan a partir de registros personales sin explicar la muestra y obtener una decisión del usuario.
 - **Alcance:** investigar y preparar una referencia visual antes de programar. No agregar puntos, insignias, puntajes, rankings ni publicación social como requisitos por inferencia.
+
+## Rediseño de noviembre 2026
+
+Pedido del usuario (13/11/2026): app práctica, información visual y no en párrafos, dibujos vivos, navegación intuitiva. Plan completo, debate y críticas: `docs/plan-rediseno-2026-11.md`. Decisiones que cambian o completan lo anterior:
+
+- **Navegación:** se mantiene el Inicio de 5 botones (sin barra inferior). Cada botón suma una línea de dato vivo (Clima: viento y lluvia o tormenta; Calendario: peces de hoy; Peces: veda del pejerrey o especies de la laguna en temporada; Nudos: último nudo abierto; Checklist: progreso). Todas las pantallas internas tienen botón Inicio. Todo nombre lleva a su lugar (Calendario → ficha del pez; Clima ↔ Calendario; ficha → armado; pieza del armado → nudo; nudo → armados que lo usan; armado → "Sumar a la checklist"). Volver vuelve a la pantalla anterior real y recupera el scroll.
+- **Peces:** catálogo en grilla de 2 columnas con ilustración a color (`js/drawings/fish.js`), agrupado en "En la laguna" y "En el río Salado", con marcas de temporada, veda y puntaje de hoy. Ficha única: ilustración, cómo reconocerlo, carnada principal en grande y alternativas con ícono, tira de 12 meses (temporada / menos activa / fuera / veda), momentos del día (con la hora de salida y puesta del sol si hay pronóstico), dónde, señuelos por zona, armado recomendado, lo que falta del kit, consejos. Los datos visuales están en `facts` de `js/data/species.js` y salen de los textos de cada especie; si un dato no está, su elemento no se dibuja. Las fuentes no se muestran en la interfaz.
+- **Medidas:** solo las respaldadas en `docs/plan-diseno-pantallas.md` y en las fichas, siempre con su alcance a la vista ("no medida en Navarro", "las fuentes no coinciden").
+- **Calendario:** grilla igual; el día elegido en un panel pegado abajo, con palabra junto al puntaje (menos de 70 Flojo, 70–84 Bueno, 85 o más Muy bueno), "Sin presión" cuando corresponde, fila del tiempo que lleva a Clima, filas de peces que llevan a su ficha, veda del pejerrey y "¿Por qué?" (agua estimada, luna y presión en palabras). Las palabras de presión salen de los cortes de la curva: baja de golpe (≤ −7 hPa), baja de a poco, estable (±1), sube de a poco, sube fuerte (≥ 4).
+- **Clima:** hoy, la lista de horas empieza en Ahora (las anteriores, plegadas); bloque de presión (valor y cambio en 24 h en palabras); viento con palabra simple por rango de Beaufort (calma < 6, leve < 20, moderado < 29, fuerte < 39, muy fuerte < 62, temporal); fila "Pesca" que lleva al Calendario.
+- **Nudos:** cuatro etiquetas grandes con pictograma (Línea, Anzuelo, Señuelo, Empalme) y cinco situaciones más; preguntas que eligen el nudo de un toque ("¿mismo grosor?" Sangre / Cirujano; "¿qué alambre?" Haywire / Manguito); cada nudo con miniatura del nudo terminado. Los que no están rehechos, o tienen una corrección pendiente del usuario (Cirujano, Snell), van en "Dibujo provisorio". El tutorial mantiene todos los pasos a la vista; la leyenda va en una línea; tocar un dibujo lo abre en grande con anterior y siguiente; al final, "Se usa en estos armados".
+- **Render de los dibujos de nudos (tubo):** cada tramo lleva un contorno del mismo color más oscuro (`outlineOf` en `js/drawings/knot3d.js`), el relleno y un brillo fino en el centro, solo en los tonos oscuro y fuerte. El tono claro ("ya hecho") lleva contorno medio y no lleva brillo. El contorno se dibuja en el mismo orden que el color, así en cada cruce el tramo de arriba muestra su contorno entero; entre tramos de la misma línea los contornos no tienen tapa (sin costuras) y las puntas reales llevan tapa redonda. La línea con su contorno mide 6,6, debajo de los 7 que controla la prueba de distancias. No cambia la geometría ni los cruces. `TUBE = false` vuelve al aspecto plano. Los nudos todavía sin rehacer (dibujados con `scene()`) siguen planos.
+- **Armados:** pantalla propia. En los armados con boya, el dibujo va sobre una franja de agua (superficie que cruza la boya, plantas debajo de la carnada, barro), con "no a escala". Las piezas con nudo enlazan al tutorial (`knotsOfRig` en `js/screens/rigs.js` los saca de los rótulos de las piezas). "Te falta" se puede sumar a la checklist como un grupo propio.
+- **Checklist:** grupos (Caña y línea, Terminales, Carnada y señuelos, Herramientas, Otros, y los sumados desde armados) con contador; un grupo completo se pliega solo. Dato guardado versión 2, con migración desde la 1 (mismos ítems, orden y tildes) y respaldo de la 1.
+- **Mis capturas:** segunda pestaña de Peces. Foto, especie, largo, peso, fecha y hora, ubicación (solo si se toca "Agregar ubicación") y nota: todo opcional. Datos en el teléfono (`catches`, versión 1); fotos achicadas a 1280 px en IndexedDB; si IndexedDB falla, se guarda sin foto y se avisa. Se anotan solas la luna y, si hay pronóstico guardado, temperatura, viento y presión de esa hora. Se agrupan por especie ("Sin identificar" para las demás). Botón para guardar una copia (sin fotos). Nada se comparte. No se calculan promedios de especie con las capturas propias.
+- **Íconos de datos:** `js/drawings/glyphs.js` (momentos del día, profundidad, ambientes, carnadas, señuelos, alertas, situaciones de nudos, grupos de la checklist). Amarillo significa solo "recomendado" (con estrella).
+- **Pruebas nuevas:** `test/redesign.test.js` (datos visuales válidos e íconos existentes, palabras, nudos de los armados, migración de la checklist, capturas, archivos del Service Worker).
