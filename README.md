@@ -1,8 +1,8 @@
 # Kit de Pesca
 
-App para el teléfono (PWA, Android) para pescar en la laguna de Navarro y alrededores: Clima, Calendario de pique, Peces, Nudos y Checklist.
+App para el teléfono (PWA, Android) para pescar en la laguna de Navarro y alrededores: Clima, Calendario de pique, Peces (con Mis capturas), Nudos y Checklist.
 
-**Estado:** primera versión de la app programada (las 6 pantallas, con los dibujos de nudos y armados). Falta probarla en el teléfono y publicarla. [Ver las muestras navegables](https://segundoaymo.github.io/Pesca-App/muestras/).
+**Estado:** rediseño de noviembre 2026 programado (fichas visuales, peces ilustrados, enlaces entre secciones, Mis capturas, dibujos de nudos con volumen; ver [`docs/plan-rediseno-2026-11.md`](docs/plan-rediseno-2026-11.md)). Falta probarla en el teléfono. [Ver las muestras navegables](https://segundoaymo.github.io/Pesca-App/muestras/).
 
 ## Probarla en la computadora
 
@@ -33,6 +33,7 @@ Al subir una versión nueva, cambiar `VERSION` en `sw.js` para que los teléfono
 | [`docs/spec.md`](docs/spec.md) | Especificación completa: pantallas, Calendario, Clima, modelo de puntaje, arquitectura, decisiones y orden de trabajo. **Empezar por acá.** |
 | [`docs/fichas.md`](docs/fichas.md) | Fichas de las 11 especies (carnadas, hábitat, equipo, tips, vedas). |
 | [`docs/plan-investigacion-pesca.md`](docs/plan-investigacion-pesca.md) | Plan por tareas para investigar, verificar y preparar contenido de pesca como referencia de diseño. |
+| [`docs/plan-rediseno-2026-11.md`](docs/plan-rediseno-2026-11.md) | **Rediseño de noviembre 2026:** diagnóstico, debate, decisiones, críticas y pendientes. |
 | [`docs/plan-diseno-pantallas.md`](docs/plan-diseno-pantallas.md) | Decisiones de navegación, contenido, privacidad y criterios previos a las muestras de pantallas. |
 | [`design/mockups/pesca-app-pantallas.html`](design/mockups/pesca-app-pantallas.html) | Galería navegable de 12 pantallas: conserva vistas de la app actual y agrega propuestas de catálogo y capturas; es referencia de diseño, no la app. |
 | [`docs/nudos.md`](docs/nudos.md) | 18 nudos y 3 armados de plomada, clasificados en 9 situaciones, con pasos. |
@@ -49,10 +50,10 @@ Al subir una versión nueva, cambiar `VERSION` en `sw.js` para que los teléfono
 | Carpeta | Qué hay |
 | --- | --- |
 | `js/logic/` | Lógica sin pantalla: fechas, luna, temperatura del agua, presión, puntaje y resumen del clima. Con pruebas. |
-| `js/data/` | Contenido: fichas de las 11 especies, nudos y armados. |
-| `js/drawings/` | Dibujos de los pasos de los nudos y de los armados, hechos en código. |
-| `js/screens/` | Una pantalla por archivo: inicio, calendario, clima, peces, nudos, checklist. |
-| `js/app.js` | Navegación (por `#/` en la dirección) y aviso de versión nueva. |
+| `js/data/` | Contenido: fichas de las 11 especies (con `facts`, el resumen visual de cada ficha), nudos y armados. |
+| `js/drawings/` | Dibujos hechos en código: pasos de los nudos (render tubo), armados, ilustraciones de los 11 peces (`fish.js`) e íconos de datos (`glyphs.js`). |
+| `js/screens/` | Una pantalla por archivo: inicio, calendario, clima, peces, capturas, armados, nudos, checklist. |
+| `js/app.js` | Navegación (por `#/` en la dirección, con historial propio para que Volver vuelva a donde estabas) y aviso de versión nueva. |
 | `js/weather-service.js` | Ubicación, búsqueda de lugares y pronóstico de Open-Meteo, guardado en el teléfono. |
 
 ## Versiones en claude.ai
@@ -66,7 +67,8 @@ Si se cambia algo en el doc o en el lienzo, exportarlo acá en la misma tarea.
 
 ## Decisiones clave (resumen)
 
-- **Estilo:** Señal, formato S7 — negro `#0B0B0B`, blanco, amarillo `#FFC400`, rojo de alerta `#C8102E`. Letras Barlow Semi Condensed (600/800) y Barlow (500/700). Inicio: una columna de 5 botones grandes, Clima primero y en amarillo. Ver [`design/mockups/S7-Final.dc.html`](design/mockups/S7-Final.dc.html).
+- **Estilo:** Señal, formato S7 — negro `#0B0B0B`, blanco, amarillo `#FFC400`, rojo de alerta `#C8102E`. Letras Barlow Semi Condensed (600/800) y Barlow (500/700). Inicio: una columna de 5 botones grandes, Clima primero y en amarillo, cada uno con una línea de dato vivo. Ver [`design/mockups/S7-Final.dc.html`](design/mockups/S7-Final.dc.html).
+- **Navegación:** sin barra inferior; botón Inicio en cada pantalla y enlaces entre secciones (Calendario → pez → armado → nudo → checklist).
 - **Calendario:** diseño F6 (fondo del mejor pez + días apagados), piso 70. Colores: tararira `#C2410C`, carpa `#0F766E`, bagre `#3730A3`.
 - **Puntaje:** temporada / luna / presión con pesos por especie (tararira 35/45/20, carpa 30/20/50, bagre 15/65/20) y compuerta de frío. Detalle completo en la spec.
 - **Técnica:** HTML, CSS y JavaScript simple (módulos ES), sin framework ni compilación; Open-Meteo para clima y presión; Service Worker para uso sin conexión; GitHub Pages.

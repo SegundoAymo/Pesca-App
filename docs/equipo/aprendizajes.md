@@ -21,6 +21,10 @@ Las reglas numeradas de dibujo (hasta la 40) están en `docs/spec.md`, "Control 
 
 - **2026-10-08, usuario — Usar las pantallas actuales como referencia.** El usuario prefiere Inicio, Calendario, Clima, tutoriales de nudos y Checklist de la app actual; en la ficha quiere información corta con medidas disponibles, carnadas/señuelos, lugar y hábitos; las capturas deben agruparse por especie. **Regla:** al revisar muestras, reutilizar esas vistas actuales; quitar explicaciones de fuentes de la interfaz y no rellenar datos ausentes.
 
+- **2026-11-13, usuario — App práctica y visual.** Pidió que al entrar buscando algo la información esté a la vista, dibujada y no en párrafos, con dibujos vivos y navegación intuitiva. **Regla:** primero la respuesta (sin scroll), después el detalle; datos repetidos (meses, horarios, profundidad, carnadas) como íconos rotulados; todo nombre lleva a su lugar (puentes entre secciones); un dato que no está no se dibuja. (Anotado también en: spec, "Rediseño de noviembre 2026"; plan en `docs/plan-rediseno-2026-11.md`)
+- **2026-11-13, Claude — Pasar texto a datos visuales pierde matices.** Al convertir las fichas en `facts` se perdieron marcas "sin fuente", se invirtió un rango de meses y se eligió el mayor de dos máximos que no coinciden; lo encontró la crítica del plan. **Regla:** cada dato visual conserva el matiz del texto ("a confirmar", "sin fuente", "dato de río", "las fuentes no coinciden") a la vista, y una segunda persona (o agente) compara `facts` contra el texto antes de publicar.
+- **2026-11-13, Claude — Un dibujo "de escena" puede mentir.** El esquema vertical de los armados de fondo pone la plomada arriba: con agua de fondo parecía que flotaba. **Regla:** un fondo realista solo donde el orden del dibujo coincide con la posición real (armados con boya); si no, esquema limpio.
+
 ## Dibujos de nudos
 
 - **2026-10, Claude — Dibujar sin fuente.** El Lazo perfecto se dibujó de memoria y salió corredizo: el usuario lo ató y se deshacía. **Regla:** mirar antes la página de la guía y escribir la tabla de cruces citando la fuente.
@@ -31,7 +35,11 @@ Las reglas numeradas de dibujo (hasta la 40) están en `docs/spec.md`, "Control 
 - **2026-10, Claude — Tijera mal ubicada.** **Regla:** la tijera va sobre el sobrante, cerca de la punta (lo controlan las pruebas).
 - **2026-10-07, usuario — Correcciones de Snell, Rapala, Cirujano, Albright, FG, Bimini y Tope.** Detalle en `docs/plan-nudos.md`. **Regla:** cuando el usuario pasa una imagen, copiar su disposición y su cantidad de pasos.
 
+- **2026-11-13, Claude — Render tubo.** Contorno y brillo hacen los dibujos más legibles, pero el brillo en el tono claro lo hacía ver como dos rayas y un contorno ancho pasaba la distancia que controla la prueba. **Regla:** brillo solo en tonos oscuro y fuerte; línea + contorno por debajo de los 7 de distancia mínima; cualquier cambio de render se mira en las hojas de varios nudos y pasa por `revisor-nudos`. (Anotado también en: spec y revisor)
+
 ## Código y repositorio
 
 - **2026-10-07, Claude — Dos agentes en el mismo repo.** **Regla:** leer el tablero antes de empezar, ramas cortas, archivos "de a uno" (lista en `AGENTS.md`).
+- **2026-11-13, Claude — Clases CSS genéricas chocan.** Una clase `.block` nueva (secciones) pisó a `.btn.block` (botón ancho) y apiló el ícono sobre el texto. **Regla:** nombres de clase específicos (`.sblock`) y mirar capturas de pantallas con botones después de agregar CSS.
+- **2026-11-13, Claude — Historial con "volver" adivinado.** Detectar "atrás" comparando con la pantalla anterior falla en ciclos (Calendario → Bagre → Calendario). **Regla:** cada entrada del historial guarda su índice en `history.state` (`js/app.js`).
 - **2026-10, Claude — Versión nueva que el teléfono no baja.** **Regla:** al cambiar dibujos o la app, subir `VERSION` en `sw.js`.
