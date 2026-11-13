@@ -207,6 +207,28 @@ function runs(L, pts) {
   return out;
 }
 
+/* ---------- Tube look (2026-11 redesign) ----------
+   Each stretch is drawn like a real line: a dark outline, its color, and a thin shine
+   along the middle. The outline goes in the same order as the color, so at a crossing
+   the part on top shows its whole outline over the one below. Outlines have butt ends
+   where two runs of the same line meet (no seam where the shade changes) and a round
+   cap only at the two real ends of the line. Lines behind an object (dotted) keep no
+   outline. TUBE = false draws the flat look of the first version. */
+export const TUBE = true;
+const OUTLINE = 1.6; // extra width of the outline: the line plus outline stays under 7 (the gap the drawing checks ask for)
+const hexRgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+/** The outline color of a line color: the same hue, much darker. */
+export function outlineOf(color) {
+  const c = color.replace(/^(fade|dotted):/, '');
+  if (!/^#[0-9A-Fa-f]{6}$/.test(c)) return '#0B0B0B';
+  const rgb = hexRgb(c);
+  // Light colors (the "already done" shade) get a medium outline, so they stay readable
+  // but quieter than the part that moves in this step; the rest get a dark one.
+  const light = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) > 170;
+  const k = light ? 0.6 : 0.4;
+  return '#' + rgb.map((v) => Math.round(v * k).toString(16).padStart(2, '0')).join('').toUpperCase();
+}
+
 /** Draws figures. Each item: { fig, upTo (last part shown), colors ({ part: color }),
     w (width) }. paper: the paper color, for the edges. Returns { svg, crossings }. */
 export function render(items, paper) {
@@ -224,9 +246,29 @@ export function render(items, paper) {
     : color.startsWith('dotted:')
     ? `<path d="${fmt(pts)}" fill="none" stroke="${color.slice(7)}" stroke-width="${w}" stroke-linecap="round" stroke-dasharray="0.1 ${w + 4}"/>`
     : `<path d="${fmt(pts)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const outlined = (color) => TUBE && !color.startsWith('dotted:');
+  const outline = (pts, color, w, cap = 'butt') => outlined(color)
+    ? `<path d="${fmt(pts)}" fill="none" stroke="${outlineOf(color)}" stroke-width="${w + OUTLINE}" stroke-linecap="${cap}" stroke-linejoin="round"${color.startsWith('fade:') ? ' opacity="0.45"' : ''}/>`
+    : '';
+  const isLight = (color) => { const c = hexRgb(color.replace(/^(fade|dotted):/, '')); return 0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2] > 170; };
+  // Shine only on the dark and strong shades: on the light one it would read as a second line.
+  const shine = (pts, color, w) => (outlined(color) && w >= 4 && !color.startsWith('fade:') && !isLight(color)
+    ? `<path d="${fmt(pts)}" fill="none" stroke="#FFFFFF" stroke-width="${(w * 0.26).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>`
+    : '');
+  const cap = (p, color, w) => (outlined(color) && !color.startsWith('fade:')
+    ? `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${((w + OUTLINE) / 2).toFixed(2)}" fill="${outlineOf(color)}"/>`
+    : '');
   let svg = '';
-  // Under everything, each line in its colors.
-  for (const L of lines) for (const r of runs(L, L.pts.map((p, i) => ({ ...p, i })))) svg += path(r.pts, r.color, L.w);
+  // Under everything, each line in its colors (with the tube look: caps, outlines, colors, shine).
+  for (const L of lines) {
+    const rs = runs(L, L.pts.map((p, i) => ({ ...p, i })));
+    if (TUBE && rs.length) {
+      svg += cap(rs[0].pts[0], rs[0].color, L.w) + cap(rs[rs.length - 1].pts[rs[rs.length - 1].pts.length - 1], rs[rs.length - 1].color, L.w);
+      for (const r of rs) svg += outline(r.pts, r.color, L.w);
+    }
+    for (const r of rs) svg += path(r.pts, r.color, L.w);
+    if (TUBE) for (const r of rs) svg += shine(r.pts, r.color, L.w);
+  }
   // Then, nearest last, the piece of the upper line at each crossing: long enough to
   // cover the lower one, and stopping before any crossing where this line goes under.
   for (const c of [...crossings].sort((a, b) => a.zHi - b.zHi)) {
@@ -238,7 +280,10 @@ export function render(items, paper) {
     if (piece.length < 2) continue;
     const [top, below] = c.colors;
     if (top === below) svg += `<path d="${fmt(piece)}" fill="none" stroke="${paper}" stroke-width="${L.w + 5}" stroke-linecap="butt" stroke-linejoin="round"/>`;
-    for (const r of runs(L, piece)) svg += path(r.pts, r.color, L.w);
+    const rs = runs(L, piece);
+    if (TUBE) for (const r of rs) svg += outline(r.pts, r.color, L.w);
+    for (const r of rs) svg += path(r.pts, r.color, L.w);
+    if (TUBE) for (const r of rs) svg += shine(r.pts, r.color, L.w);
   }
   for (const L of lines) for (const p of [L.pts[0], L.pts[L.pts.length - 1]]) svg += `<path data-end="1" d="M${p.x.toFixed(1)} ${p.y.toFixed(1)}" fill="none" stroke="none"/>`;
   return {

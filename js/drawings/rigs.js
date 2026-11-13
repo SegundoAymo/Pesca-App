@@ -76,6 +76,7 @@ export function rigSvg(rig) {
   let lineStart = y;
   let lineColor = C.line;
   const segments = []; // [y0, y1, color]
+  let floatAt = null; // where the water surface crosses the first float
   for (const part of rig.parts) {
     if (part.kind === 'dropper') {
       // A side branch: loop on the main line, leader to the left, hook at its end.
@@ -108,6 +109,7 @@ export function rigSvg(rig) {
     const h = Math.max(g.h, lb.h);
     const gy = (h - g.h) / 2;
     const gg = (GLYPH[part.kind] || GLYPH.bead)(X, y + gy);
+    if (floatAt == null && ['float', 'float-small', 'plop'].includes(part.kind)) floatAt = y + gy + (part.kind === 'plop' ? 14 : 28);
     // The line keeps running through floats, beads and sliding sinkers; it ends at the hook or the fixed sinker.
     if (part.kind !== 'hook' && part.kind !== 'sinker-fixed') segments.push([y, y + h, lineColor]);
     else segments.push([y, y + gy + 6, lineColor]);
@@ -116,8 +118,41 @@ export function rigSvg(rig) {
     y += h;
   }
   const lines = segments.map(([a, b, c]) => `<path d="M${X} ${a} V${b}" stroke="${c}" stroke-width="${c === C.wire ? 3.4 : 2.6}"/>`).join('');
-  const height = Math.ceil(y + 10);
-  return `<svg viewBox="0 0 ${W} ${height}" width="${W}" height="${height}" role="img" aria-label="${esc(`Dibujo del armado ${rig.name}`)}">${lines}${body}</svg>`;
+  // With a float, room under the bait for the plants it hangs over.
+  const height = Math.ceil(y + 10) + (floatAt != null ? 44 : 0);
+  return `<svg viewBox="0 0 ${W} ${height}" width="${W}" height="${height}" role="img" aria-label="${esc(`Dibujo del armado ${rig.name}`)}">${floatAt != null ? waterScene(floatAt, height) : ''}${lines}${body}</svg>`;
+}
+
+/* ---------- Water behind the rig (2026-11 redesign) ----------
+   Only for rigs with a float, where the order of the pieces is also their order in the
+   water: the surface crosses the float, the bait hangs below and the plants stay under
+   it. Bottom rigs keep the plain drawing (their sinker lies on the bottom, which the
+   vertical layout cannot show). Not to scale. */
+const WATER = '#DCEEF7';
+const SURFACE = '#5BB4E5';
+const MUD = '#8A6A48';
+const WEED = '#2F7D3A';
+const STRIP = { x0: 6, x1: 104 };
+// The plants stay under the hook: the bait hangs over them.
+
+function waterScene(floatY, height) {
+  const { x0, x1 } = STRIP;
+  const top = floatY ?? 2;
+  const bottomY = height - 14;
+  let s = `<rect x="${x0}" y="${top}" width="${x1 - x0}" height="${bottomY - top}" fill="${WATER}"/>`;
+  // Surface: a wavy line (at the float, or at the top when the rig sits on the bottom).
+  let wave = `M${x0} ${top}`;
+  for (let x = x0; x < x1; x += 12) wave += ` q3 -3 6 0 t6 0`;
+  s += `<path d="${wave}" fill="none" stroke="${SURFACE}" stroke-width="2"/>`;
+  // Bottom: mud.
+  s += `<path d="M${x0} ${bottomY} q12 -4 24 0 t24 0 t24 0 t26 0 V${height - 2} H${x0} Z" fill="${MUD}"/>`;
+  // Plants under a float rig (tararira waits in them).
+  if (floatY != null) {
+    const weed = (x, h) => `<path d="M${x} ${bottomY} q-5 ${-h / 2} 2 ${-h}" fill="none" stroke="${WEED}" stroke-width="3" stroke-linecap="round"/><path d="M${x + 7} ${bottomY} q6 ${-h / 2.2} -1 ${-h * 0.8}" fill="none" stroke="${WEED}" stroke-width="3" stroke-linecap="round"/>`;
+    s += weed(x0 + 8, 34) + weed(x1 - 24, 26) + weed(X + 4, 30);
+  }
+  s += `<text x="${x1 - 4}" y="${height - 4}" text-anchor="end" font-family="Barlow, sans-serif" font-weight="700" font-size="11" fill="#FFFFFF">no a escala</text>`;
+  return s;
 }
 
 export const RIG_KEY = [
