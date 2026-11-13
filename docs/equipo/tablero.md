@@ -11,7 +11,7 @@ Quién hace qué. Lo leen y lo escriben los dos agentes (Claude y ChatGPT). Regl
 
 | Tarea | Agente | Rama | Desde | Archivos que toca |
 |---|---|---|---|---|
-| Corregir la galería publicada que aparece en blanco | ChatGPT | `chatgpt/corregir-muestra-en-blanco` | 2026-10-08 | `design/mockups/pesca-app-pantallas.html`, `docs/equipo/tablero.md`, `docs/equipo/bitacora.md` |
+| Rediseño completo de la app: navegación, fichas visuales, dibujos más vivos (plan + implementación) | Claude | `ccr-b05cd55e-26yu7u` | 2026-11-13 | `index.html`, `css/`, `js/` (pantallas, datos, dibujos de peces y armados, render de nudos), `sw.js`, `test/`, `docs/spec.md`, `docs/plan-rediseno-2026-11.md`, `README.md`, `docs/equipo/*` |
 
 
 ## Para hacer (en este orden)
@@ -43,6 +43,7 @@ Detalle de cada nudo en `docs/plan-nudos.md`, "Lo que sigue" y "Correcciones ped
 
 | Tarea | Agente | Pull request | Fecha |
 |---|---|---|---|
+| Corregir la galería publicada que aparece en blanco (cerrada en el tablero por Claude: el PR ya estaba unido) | ChatGPT | [#21](https://github.com/SegundoAymo/Pesca-App/pull/21) | 2026-10-08 |
 | Ajustar muestras al feedback: pantallas actuales, ficha breve y capturas agrupadas | ChatGPT | [#20](https://github.com/SegundoAymo/Pesca-App/pull/20) | 2026-10-08 |
 | Publicar el prototipo en ruta separada de GitHub Pages, sin cambiar la app principal | ChatGPT | [#19](https://github.com/SegundoAymo/Pesca-App/pull/19) | 2026-10-08 |
 | Muestras navegables de 14 pantallas y estados, con datos y navegación documentados | ChatGPT | [#18](https://github.com/SegundoAymo/Pesca-App/pull/18) | 2026-10-08 |
