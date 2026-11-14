@@ -26,6 +26,7 @@ export function homeIcon(name, size = 84, dayNumber = 1) {
 /* ---------- UI ---------- */
 
 export const ICON = {
+  home: svg(26, 26, '0 0 24 24', '<path d="M3 11.5 L12 3.5 L21 11.5" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 10 V20.5 H10 V14.5 H14 V20.5 H18.5 V10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>'),
   back: svg(26, 26, '0 0 24 24', '<path d="M15 4 L7 12 L15 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'),
   prev: svg(24, 24, '0 0 24 24', '<path d="M15 4 L7 12 L15 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'),
   next: svg(24, 24, '0 0 24 24', '<path d="M9 4 L17 12 L9 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'),
@@ -44,11 +45,13 @@ export const ICON = {
   sunset: svg(30, 30, '0 0 24 24', '<path d="M6.5 16a5.5 5.5 0 0 1 11 0z" fill="#FFC400" stroke="#0B0B0B" stroke-width="1.8" stroke-linejoin="round"/><path d="M2 19.5h20" stroke="#0B0B0B" stroke-width="2" stroke-linecap="round"/><path d="M12 3v5M9.5 5.5 12 8l2.5-2.5" fill="none" stroke="#0B0B0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>'),
 };
 
-/** Arrow pointing where the wind comes FROM (meteorological convention). */
+/** Arrow pointing where the wind GOES (deg is where it comes from, as Open-Meteo gives
+    it). Changed in the 2026-11 redesign: most weather apps draw it this way. The text
+    next to it always says where it comes from ("del SE"). */
 export function windArrow(deg, size = 22, color = '#0B0B0B') {
   if (deg == null) return '';
   return svg(size, size, '0 0 24 24',
-    `<g transform="rotate(${Math.round(deg)} 12 12)"><path d="M12 3 L12 20" stroke="${color}" stroke-width="2.6" stroke-linecap="round"/><path d="M6.5 8.5 L12 3 L17.5 8.5" fill="none" stroke="${color}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></g>`,
+    `<g transform="rotate(${Math.round(deg + 180)} 12 12)"><path d="M12 3 L12 20" stroke="${color}" stroke-width="2.6" stroke-linecap="round"/><path d="M6.5 8.5 L12 3 L17.5 8.5" fill="none" stroke="${color}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></g>`,
     'class="wind-arrow"');
 }
 

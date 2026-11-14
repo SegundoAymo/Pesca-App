@@ -27,6 +27,7 @@ Si el nudo tiene referencia en `docs/referencias-nudos.md` (páginas de guías e
    - Que cada línea sea continua: sin cortes, tramos sueltos, uniones raras o tramos cerrados que no deberían estarlo.
    - Que el nudo se reconozca y que una persona que no lo conoce pueda seguirlo solo mirando los dibujos.
    - Colores, flechas, puntitos y bordes según el sistema; textos que no tapen nada ni se corten.
+   - Render tubo (desde noviembre 2026, nudos en 3D): cada tramo lleva un contorno de su mismo color más oscuro y, en los tonos oscuro y fuerte, un brillo fino al medio; el tono claro ("ya hecho") lleva contorno medio y sin brillo. Revisá que el contorno no vuelva ambiguo un cruce, que "ya hecho" se lea como una sola línea, que no haya costuras donde cambia el tono de una misma línea y que las vueltas de un nudo apretado no se empasten. Detalle en `docs/spec.md`, "Rediseño de noviembre 2026".
    - Si el texto dice "apretado", que el nudo se vea más chico y con el lazo pegado a las vueltas que en el paso anterior, no solo corrido (regla 37). Contá las pasadas por delante y comparalas con las vueltas del texto (regla 38).
 4. No supongas buena intención: si el dibujo "casi" muestra algo, decí qué falta.
 

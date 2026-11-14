@@ -77,6 +77,7 @@ export function buildDays(data) {
       wind: H.wind_speed_10m?.[i] ?? null,
       gust: H.wind_gusts_10m?.[i] ?? null,
       dir: H.wind_direction_10m?.[i] ?? null,
+      pressure: H.pressure_msl?.[i] ?? null,
       isDay,
     };
     (days[key] ||= { key, hours: [] }).hours.push(hour);

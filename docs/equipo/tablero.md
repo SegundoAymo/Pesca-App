@@ -11,7 +11,6 @@ Quién hace qué. Lo leen y lo escriben los dos agentes (Claude y ChatGPT). Regl
 
 | Tarea | Agente | Rama | Desde | Archivos que toca |
 |---|---|---|---|---|
-| Corregir la galería publicada que aparece en blanco | ChatGPT | `chatgpt/corregir-muestra-en-blanco` | 2026-10-08 | `design/mockups/pesca-app-pantallas.html`, `docs/equipo/tablero.md`, `docs/equipo/bitacora.md` |
 
 
 ## Para hacer (en este orden)
@@ -36,6 +35,8 @@ Detalle de cada nudo en `docs/plan-nudos.md`, "Lo que sigue" y "Correcciones ped
 
 | Qué | Desde |
 |---|---|
+| Mirar las 11 ilustraciones de peces y decir si reconoce cada una; probar el rediseño en el teléfono | 2026-11-13 |
+| Decidir: carnada principal del bagre (lombriz o hígado de pollo), medidas de la boya de tararira (1,5 m vs 30–40 cm) y sentido de la flecha del viento | 2026-11-13 |
 | Atar en la mano: carrete, palomar, clinch, uni, snell, cirujano, doble uni, lazo de cirujano, brazolada y sangre, y decir si aguantan | 2026-10-06 |
 | Pasos 1 a 3 del FG (o permiso para buscarlos) | 2026-10-07 |
 
@@ -43,6 +44,8 @@ Detalle de cada nudo en `docs/plan-nudos.md`, "Lo que sigue" y "Correcciones ped
 
 | Tarea | Agente | Pull request | Fecha |
 |---|---|---|---|
+| Rediseño completo de la app (plan, debate e implementación) | Claude | [#23](https://github.com/SegundoAymo/Pesca-App/pull/23) | 2026-11-13 |
+| Corregir la galería publicada que aparece en blanco (cerrada en el tablero por Claude: el PR ya estaba unido) | ChatGPT | [#21](https://github.com/SegundoAymo/Pesca-App/pull/21) | 2026-10-08 |
 | Ajustar muestras al feedback: pantallas actuales, ficha breve y capturas agrupadas | ChatGPT | [#20](https://github.com/SegundoAymo/Pesca-App/pull/20) | 2026-10-08 |
 | Publicar el prototipo en ruta separada de GitHub Pages, sin cambiar la app principal | ChatGPT | [#19](https://github.com/SegundoAymo/Pesca-App/pull/19) | 2026-10-08 |
 | Muestras navegables de 14 pantallas y estados, con datos y navegación documentados | ChatGPT | [#18](https://github.com/SegundoAymo/Pesca-App/pull/18) | 2026-10-08 |

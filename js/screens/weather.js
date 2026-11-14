@@ -2,9 +2,13 @@ import { ICON, weatherIcon, windArrow } from '../icons.js';
 import { screen, esc, DOW, DOW_SHORT, MONTHS } from '../ui.js';
 import { todayAR, dayKey, parseDayKey, weekday, daysBetween } from '../logic/dates.js';
 import { windDir, rangeText, SKY_TEXT } from '../logic/weather.js';
+import { windWord, windLevel, pressureWord, scoreWord } from '../logic/labels.js';
+import { scoreDay, FLOOR } from '../logic/score.js';
+import { calFish } from '../icons.js';
+import { glyph } from '../drawings/glyphs.js';
 import {
   getForecast, getCachedForecast, cachedDays, agoText, getPlaceChoice, setPlaceChoice,
-  getRecentPlaces, searchPlaces, NAVARRO,
+  getRecentPlaces, searchPlaces, NAVARRO, cachedPressureDeltas,
 } from '../weather-service.js';
 
 export const keepScroll = true;
@@ -41,7 +45,7 @@ function hourRow(h, isToday, sunrise, sunset) {
     ${weatherIcon(h.code, 32)}
     <span class="tt">${h.temp != null ? Math.round(h.temp) + '°' : '–'}</span>
     <span class="rain">${rain}</span>
-    <span class="wind">${windArrow(h.dir, 20)}${h.wind != null ? Math.round(h.wind) : '–'}<small>${h.gust != null ? `ráf. ${Math.round(h.gust)}` : ''}</small></span>
+    <span class="wind w${windLevel(h.wind)}">${windArrow(h.dir, 20)}${h.wind != null ? Math.round(h.wind) : '–'}<small>${h.dir != null ? windDir(h.dir) : ''}${h.gust != null ? ` · ráf. ${Math.round(h.gust)}` : ''}</small></span>
   </div>`);
   const sunRow = (time, label, icon) => `<div class="hour sun"><span class="h">${esc(time)}</span>${icon}<span>${label}</span></div>`;
   if (sunrise && Number(sunrise.slice(0, 2)) === h.h) rows.push(sunRow(sunrise, 'Sale el sol', ICON.sunrise));
@@ -49,34 +53,58 @@ function hourRow(h, isToday, sunrise, sunset) {
   return rows.join('');
 }
 
+const SPECIES_NAME = { tararira: 'Tararira', carpa: 'Carpa', bagre: 'Bagre' };
+const SPECIES_COLOR = { tararira: '#C2410C', carpa: '#0F766E', bagre: '#3730A3' };
+
+function fishingRow(date, key) {
+  const today = todayAR();
+  const r = scoreDay(date, today, cachedPressureDeltas());
+  const shown = [...r.shown].sort((a, b) => b.score - a.score);
+  const txt = shown.length
+    ? shown.map((x) => `<span class="fi">${calFish(x.species, SPECIES_COLOR[x.species], 24)}${SPECIES_NAME[x.species]} ${x.score}</span>`).join('')
+    : `<span>Ningún pez llega a ${FLOOR}</span>`;
+  return `<a class="fishing-row" href="#/calendario/${key}"><span class="k">Pesca</span><span class="fish-list">${txt}</span>${ICON.chevron}</a>`;
+}
+
 function dayView(day, key, isToday) {
   const date = parseDayKey(key);
   const storm = day.storms.length
     ? `<div class="card alert">${ICON.warning}<span>Tormenta eléctrica ${day.storms.map((s) => `de ${rangeText(s)}`).join(' y ')}. Salir del agua y guardar la caña.</span></div>`
     : '';
-  const nowH = isToday ? day.hours.find((h) => h.h === nowHour()) : null;
+  const hNow = nowHour();
+  const nowH = isToday ? day.hours.find((h) => h.h === hNow) : null;
   const t = (v) => (v != null ? `${v}°` : '–');
   const bigTemp = nowH?.temp != null ? `${Math.round(nowH.temp)}°` : t(day.max);
+  // Pressure: now (today) or at noon, and the noon-to-noon change the score uses.
+  const pH = nowH || day.hours.find((h) => h.h === 12) || day.hours[0];
+  const pVal = pH?.pressure != null ? Math.round(pH.pressure) : null;
+  const delta = cachedPressureDeltas()[key];
+  const pw = pressureWord(delta);
+  const wind = nowH && nowH.wind != null ? { v: Math.round(nowH.wind), dir: nowH.dir, gust: nowH.gust != null ? Math.round(nowH.gust) : null } : { v: day.wind, dir: day.dir, gust: day.gust };
+  const past = isToday ? day.hours.filter((h) => h.h < hNow) : [];
+  const next = isToday ? day.hours.filter((h) => h.h >= hNow) : day.hours;
   return `${storm}
-  <section class="card">
+  <section class="card wx-card">
     <div class="summary-top">
-      ${weatherIcon(day.code, 64)}
+      ${weatherIcon(nowH?.code || day.code, 64)}
       <div>
         <div class="big-t">${bigTemp}</div>
-        <div class="sky">${esc(day.sky)}</div>
-        <div class="small muted">${isToday ? 'Ahora · ' : ''}${DOW[weekday(date)]} ${date.d} de ${MONTHS[date.m - 1]}</div>
+        <div class="sky">${esc(nowH ? SKY_TEXT[nowH.code] || day.sky : day.sky)}</div>
+        <div class="small muted">${isToday ? 'Ahora · ' : ''}${DOW[weekday(date)]} ${date.d} · mín ${t(day.min)} · máx ${t(day.max)}</div>
       </div>
     </div>
     <div class="wblocks">
-      <div class="wblock"><span class="k">Temperatura</span><span class="v">${t(day.min)} / ${t(day.max)}</span><span class="s">mínima / máxima</span></div>
-      <div class="wblock"><span class="k">Lluvia</span><span class="v">${day.prob ?? '–'}%</span><span class="s">${day.mm != null ? `${fmt1(day.mm)} mm en el día` : ''}</span></div>
-      <div class="wblock"><span class="k">Viento</span><span class="v">${windArrow(day.dir, 24)}${day.wind ?? '–'} km/h</span><span class="s">del ${windDir(day.dir, true)}${day.gust != null ? ` · ráfagas ${day.gust}` : ''}</span></div>
-      <div class="wblock"><span class="k">Sol</span><span class="v">${day.sunrise ?? '–'}</span><span class="s">sale · se pone ${day.sunset ?? '–'}</span></div>
+      <div class="wblock"><span class="k">${glyph('wind', 20)} Viento${nowH ? '' : ' máx.'}</span><span class="v w${windLevel(wind.v)}">${windArrow(wind.dir, 24)}${wind.v ?? '–'} <small>km/h</small></span><span class="s">${wind.dir != null ? `del ${windDir(wind.dir, true)}` : ''}${wind.gust != null ? ` · ráfagas ${wind.gust}` : ''}<br>${esc(windWord(wind.v))}</span></div>
+      <div class="wblock"><span class="k">${glyph('drop', 20)} Lluvia</span><span class="v">${day.prob ?? '–'}%</span><span class="s">${day.mm != null ? `${fmt1(day.mm)} mm en el día` : ''}</span></div>
+      <div class="wblock"><span class="k">${glyph('pressure', 20)} Presión</span><span class="v">${pVal ?? '–'} <small>hPa</small></span><span class="s">${pw ? `${esc(pw.word)} <small>(${delta > 0 ? '+' : ''}${fmt1(delta)} en 24 h)</small>` : 'Sin dato del cambio'}</span></div>
+      <div class="wblock"><span class="k">${glyph('dawn', 20)} Sol</span><span class="v">${day.sunrise ?? '–'}</span><span class="s">sale · se pone ${day.sunset ?? '–'}</span></div>
     </div>
   </section>
+  ${fishingRow(date, key)}
   <h2 class="h2">Hora por hora</h2>
-  <p class="small muted">La flecha apunta hacia el lado de donde viene el viento. Viento y ráfagas en km/h.</p>
-  <div class="hours">${day.hours.map((h) => hourRow(h, isToday, day.sunrise, day.sunset)).join('')}</div>`;
+  ${past.length ? `<details class="fold past"><summary>Horas anteriores (0 a ${past[past.length - 1].h} h)</summary><div class="hours">${past.map((h) => hourRow(h, false, day.sunrise, day.sunset)).join('')}</div></details>` : ''}
+  <div class="hours">${next.map((h) => hourRow(h, isToday, day.sunrise, day.sunset)).join('')}</div>
+  <p class="small muted">La flecha apunta hacia donde sopla el viento; las letras dicen de dónde viene. Viento y ráfagas en km/h.</p>`;
 }
 
 function strip(days, todayKey, selKey) {

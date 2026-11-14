@@ -6,6 +6,7 @@ import assert from 'node:assert/strict';
 import { KNOTS, REDRAWN } from '../js/data/knots.js';
 import { knotStepSvg, knotStepCount, knotCrossings, knotCloseRuns, knotStepTight, KNOT_PALETTE as P } from '../js/drawings/knots.js';
 import { readSvg, dist } from './svg-geom.js';
+import { outlineOf } from '../js/drawings/knot3d.js';
 
 // Knots already redrawn with the current system (REDRAWN, from the data): their checks must
 // pass. The others are reported as pending until they are redrawn.
@@ -15,7 +16,12 @@ const H = 170;
 const MARGIN = 6; // line centers stay this far from the edge (rule 10)
 const LINE = new Set([P.L1, P.L2, P.WIRE].flatMap((c) => Object.values(c)));
 const OBJECTS = ['#FFFFFF', '#0B0B0B', '#E4E4DE', '#8A8A84', '#7A5E18', 'none'];
-const ALLOWED = new Set([...LINE, P.METAL, P.BRASS, P.TOOL, P.R, P.F, P.WATER, P.YELLOW, P.PAPER, P.INK, ...OBJECTS]);
+// Tube look (2026-11): each line color has its outline color, derived from it (outlineOf).
+// They are allowed, but they are not lines: the geometry checks below look at the colors.
+const OUTLINES = new Set([...LINE, P.METAL].map(outlineOf));
+const ALLOWED = new Set([...LINE, P.METAL, P.BRASS, P.TOOL, P.R, P.F, P.WATER, P.YELLOW, P.PAPER, P.INK, ...OBJECTS, ...OUTLINES]);
+/** Round end of a line's outline: it may go to the edge of the drawing, never past it. */
+const isCap = (s) => s.kind === 'circle' && OUTLINES.has(s.attrs.fill);
 
 const isEdge = (s) => s.attrs.stroke === P.PAPER;
 const isLine = (s) => s.kind === 'path' && LINE.has(s.attrs.stroke) && !s.group;
@@ -36,7 +42,8 @@ export function check(svg) {
     }
     // Nothing outside the drawing (rule 10).
     if (s.kind !== 'text' && !isEdge(s) && !s.attrs['data-end']) {
-      const bad = s.points.flat().find(([x, y]) => x < MARGIN || x > W - MARGIN || y < MARGIN || y > H - MARGIN);
+      const m = isCap(s) ? 0 : MARGIN;
+      const bad = s.points.flat().find(([x, y]) => x < m || x > W - m || y < m || y > H - m);
       if (bad) out.push(`se sale del borde cerca de (${bad.map(Math.round)})`);
     }
   }
