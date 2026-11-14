@@ -172,6 +172,7 @@ function knot(s, k) {
     },
     unmount() {
       document.querySelector('.zoom')?.remove();
+      document.body.classList.remove('zoomed');
     },
   };
 }
