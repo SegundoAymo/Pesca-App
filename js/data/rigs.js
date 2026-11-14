@@ -13,14 +13,13 @@ export const RIGS = {
       { kind: 'stop', label: 'Tope corredizo', measure: 'marca la profundidad' },
       { kind: 'bead', label: 'Perla' },
       { kind: 'float', label: 'Boya corrediza tipo pera, o boya plop' },
-      { kind: 'line', label: 'Madre', measure: '30 a 40 cm debajo del tope' },
+      { kind: 'line', label: 'Madre', measure: 'de tope a carnada, al menos 1,5 m' },
       { kind: 'swivel', label: 'Emerillón con Palomar' },
       { kind: 'wire', label: 'Líder de acero', measure: '20 cm' },
       { kind: 'hook', label: 'Anzuelo 2/0 a 5/0', measure: 'según el tamaño de las tarariras' },
     ],
     measures: [
-      'Emerillón unos 30 a 40 cm debajo del tope, para que la boya corra libre y la clavada sea limpia.',
-      'Profundidad: la fuente usa al menos 1,5 m entre tope y carnada en 1 m de agua, porque la línea trabaja inclinada. Si se engancha en las plantas, acortarla.',
+            'Profundidad: la fuente usa al menos 1,5 m entre tope y carnada en 1 m de agua, porque la línea trabaja inclinada. Si se engancha en las plantas, acortarla.',
     ],
     missing: 'Boya pera o plop, hilo para el tope, líder de acero de 20 cm (si todavía no lo compraste) y anzuelos 2/0 a 5/0.',
     bait: '',
@@ -251,17 +250,64 @@ export const RIGS = {
     missing: '',
     bait: '',
   },
+  // Señuelo de goma al fondo con plomada corrediza. Fuente: Wilson, "Aparejos de señuelos
+  // de plástico blando" (docs/fuentes/guia-B-wilson-nudos-y-aparejos.pdf, página 79 del PDF):
+  // montaje Texas (plomo bala corredizo pegado al anzuelo, punta escondida en la goma) y
+  // montaje Carolina (plomo corredizo y emerillón arriba, la goma al final de un tramo de
+  // línea). La fuente no da pesos ni largos: no se ponen. La perla entre plomo y emerillón
+  // es la misma de la plomada corrediza del kit.
+  'senuelo-texas': {
+    id: 'senuelo-texas',
+    species: null,
+    letter: '',
+    name: 'Señuelo de goma al fondo: montaje Texas',
+    recommended: true,
+    type: 'fondo',
+    why: 'El plomo bala corre por la línea y queda pegado al anzuelo; la punta del anzuelo va escondida dentro de la goma. Así se puede pescar entre vegetación sin engancharse. Recoger despacio y con pausas.',
+    parts: [
+      { kind: 'line', label: 'Madre' },
+      { kind: 'sinker-bullet', label: 'Plomo bala corredizo', measure: 'enhebrado, con la punta hacia la caña' },
+      { kind: 'soft-lure', label: 'Goma (curly tail) en anzuelo offset con Palomar', measure: 'la punta del anzuelo, escondida en la goma' },
+    ],
+    measures: [
+      'Para tararira, la app pide siempre líder de acero, y la fuente no lo dibuja: con tararira, atar el anzuelo a un líder de acero corto y enhebrar el plomo en la madre, arriba del emerillón.',
+    ],
+    missing: 'Plomo bala (cónico) corredizo.',
+    bait: '',
+  },
+  'senuelo-carolina': {
+    id: 'senuelo-carolina',
+    species: null,
+    letter: '',
+    name: 'Señuelo de goma al fondo: montaje Carolina',
+    recommended: false,
+    type: 'fondo',
+    why: 'El plomo corredizo va arriba, frenado por el emerillón, y la goma trabaja suelta al final de un tramo de línea. Sirve para recorrer mucha agua rápido, en puntas y zonas con relieve del fondo. Recoger despacio.',
+    parts: [
+      { kind: 'line', label: 'Madre' },
+      { kind: 'sinker-bullet', label: 'Plomo bala corredizo' },
+      { kind: 'bead', label: 'Perla' },
+      { kind: 'swivel', label: 'Emerillón con Palomar (hace de tope)' },
+      { kind: 'leader', label: 'Tramo de línea hasta la goma' },
+      { kind: 'soft-lure', label: 'Goma (curly tail) en anzuelo offset con Palomar', measure: 'la punta, escondida en la goma' },
+    ],
+    measures: [
+      'Para tararira, el tramo hasta la goma va de alambre de acero (la app lo pide siempre: corta la línea con los dientes).',
+    ],
+    missing: 'Plomo bala (cónico) corredizo.',
+    bait: '',
+  },
 };
 
 export const RIGS_BY_SPECIES = {
-  tararira: ['tararira-boya', 'tararira-fondo'],
+  tararira: ['tararira-boya', 'tararira-fondo', 'senuelo-texas', 'senuelo-carolina'],
   bagre: ['bagre-fondo', 'bagre-dos-brazoladas', 'bagre-boya'],
   carpa: ['carpa-fondo', 'carpa-masa', 'carpa-boya'],
 };
 
 export const SPECIES_RIG_NOTES = {
   tararira: 'Un solo anzuelo siempre, y siempre con líder de acero. Carnada: mojarra viva, o filet de dientudo, bagre o carpa.',
-  bagre: 'Se pesca de fondo y sobre todo de noche. Carnada: hígado de pollo (la mejor), lombriz o trozos de pescado.',
+  bagre: 'Se pesca de fondo y sobre todo de noche. Carnada: lombriz colorada en racimo (la principal), hígado de pollo o trozos de pescado.',
   carpa: 'Carnada: masa dulce compacta o maíz. Tu equipo (caña de 2,10 a 2,40 m, reel 3000 y nylon 0,30 mm) es justo el que recomiendan para empezar con carpa.',
 };
 

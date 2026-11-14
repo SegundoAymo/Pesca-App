@@ -130,8 +130,11 @@ function whereBlock(f) {
   return `<ul class="where">${f.where.map((w) => `<li>${glyph(w.icon, 34)}<span>${esc(w.text)}</span></li>`).join('')}</ul>`;
 }
 
+// A soft lure "de fondo con plomo" links to the bottom rigs with a sliding sinker (Wilson p. 79).
+const BOTTOM_LURE_RIGS = () => `<div class="chips">${['senuelo-texas', 'senuelo-carolina'].map((id) => chip(RIGS[id].name.replace('Señuelo de goma al fondo: m', 'M'), '', { href: `#/armados/${id}`, icon: glyph('bottom', 20) })).join('')}</div>`;
+
 function luresBlock(f) {
-  if (!f.lures.length) return f.luresNote ? `<p>${rich(f.luresNote)}</p>` : '';
+  if (!f.lures.length) return f.luresNote ? `<p>${rich(f.luresNote)}</p>${/plomo/.test(f.luresNote) ? BOTTOM_LURE_RIGS() : ''}` : '';
   const groups = [['surface', 'Superficie'], ['midwater', 'Media agua'], ['bottom', 'Fondo'], ['', '']];
   const html = groups.map(([d, title]) => {
     const list = f.lures.filter((l) => (l.depth || '') === d);
@@ -139,7 +142,8 @@ function luresBlock(f) {
     return `${title ? `<p class="mini-title">${glyph(d, 22)} ${title}</p>` : ''}
       <ul class="lures">${list.map((l) => `<li>${l.icon ? glyph(l.icon, 36) : glyph(d || 'fish', 36)}<span><strong>${esc(l.name)}</strong><small>${esc(l.how)}</small></span></li>`).join('')}</ul>`;
   }).join('');
-  return `${html}${f.luresNote ? `<p class="small muted">${rich(f.luresNote)}</p>` : ''}`;
+  const soft = f.lures.some((l) => l.icon === 'lure-soft');
+  return `${html}${f.luresNote ? `<p class="small muted">${rich(f.luresNote)}</p>` : ''}${soft ? `<p class="mini-title">Goma al fondo con plomada corrediza</p>${BOTTOM_LURE_RIGS()}` : ''}`;
 }
 
 function rigBlock(s) {

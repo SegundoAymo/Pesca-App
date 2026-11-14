@@ -15,6 +15,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-11-14 — Claude — Señuelo de goma al fondo (Texas y Carolina) y definiciones pendientes
+- Rama y pull request: `ccr-b05cd55e-26yu7u`, pull request a `main`.
+- Qué se hizo: el usuario preguntó si la app tenía cómo poner una plomada corrediza a un señuelo para que vaya al fondo: no estaba. Se agregaron los montajes Texas y Carolina copiados de Wilson p. 79 del PDF (sin inventar pesos ni largos), con dibujo propio (plomo bala y goma en anzuelo offset), en Nudos → Plomada, en la tararira y enlazados desde los señuelos. Además, por pedido del usuario, se definió lo pendiente: carnada principal del bagre (lombriz), medidas de la boya de tararira (sin la contradicción) y flecha del viento. Correcciones del revisor al render tubo (brillo continuo, parte de atrás clara) ya estaban en el PR #23.
+- Pruebas: `node --test` pasa (56).
+- Pendiente: validar las ilustraciones de peces y probar en el teléfono.
+- Para el próximo: `js/data/knots.js` se tocó solo para sumar los dos armados a la situación Plomada.
+
 ## 2026-11-13 — Claude — Rediseño completo de la app (plan, debate e implementación)
 - Rama y pull request: `ccr-b05cd55e-26yu7u` (la rama que asigna el entorno de esta sesión, en vez de `claude/…`), [PR #23](https://github.com/SegundoAymo/Pesca-App/pull/23).
 - Qué se hizo: pedido del usuario de una app práctica, visual y fácil de navegar. Diagnóstico con capturas de todas las pantallas; debate con cuatro miradas independientes (pescador de Navarro, investigación de otras apps, navegación/UX, dirección de arte) y dos críticas del plan (abogado del diablo y revisión técnica). Todo quedó en `docs/plan-rediseno-2026-11.md` y en la spec ("Rediseño de noviembre 2026"). Programado: botón Inicio y enlaces entre secciones con historial propio (Volver vuelve a donde estabas); Inicio con una línea viva por botón; catálogo tipo Pokédex con 11 ilustraciones nuevas (`js/drawings/fish.js`); ficha única por especie con datos visuales (`facts` en `species.js`: meses, momentos del día, carnadas, dónde, señuelos por zona); íconos de datos (`js/drawings/glyphs.js`); Calendario con panel del día pegado abajo, palabras y "¿Por qué?"; Clima desde "Ahora", con presión, viento en palabras y flecha hacia donde sopla; Nudos con cuatro etiquetas y pictogramas, miniaturas, preguntas que eligen el nudo y zoom de cada paso; render "tubo" de los nudos en 3D (contorno + brillo, sin tocar geometría); armados en pantalla propia, con agua en los de boya, nudos enlazados y "Sumar a la checklist"; checklist agrupada (dato v2 con migración); Mis capturas (todo opcional, fotos en IndexedDB, copia de seguridad).
