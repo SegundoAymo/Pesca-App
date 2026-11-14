@@ -246,7 +246,9 @@ export function render(items, paper) {
     : color.startsWith('dotted:')
     ? `<path d="${fmt(pts)}" fill="none" stroke="${color.slice(7)}" stroke-width="${w}" stroke-linecap="round" stroke-dasharray="0.1 ${w + 4}"/>`
     : `<path d="${fmt(pts)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
-  const outlined = (color) => TUBE && !color.startsWith('dotted:');
+  // No outline behind an object (dotted) nor on the back of a wrap (fade): seen through
+  // its transparent color, an outline would make the back darker instead of lighter.
+  const outlined = (color) => TUBE && !color.startsWith('dotted:') && !color.startsWith('fade:');
   const outline = (pts, color, w, cap = 'butt') => outlined(color)
     ? `<path d="${fmt(pts)}" fill="none" stroke="${outlineOf(color)}" stroke-width="${w + OUTLINE}" stroke-linecap="${cap}" stroke-linejoin="round"${color.startsWith('fade:') ? ' opacity="0.45"' : ''}/>`
     : '';
@@ -283,7 +285,9 @@ export function render(items, paper) {
     const rs = runs(L, piece);
     if (TUBE) for (const r of rs) svg += outline(r.pts, r.color, L.w);
     for (const r of rs) svg += path(r.pts, r.color, L.w);
-    if (TUBE) for (const r of rs) svg += shine(r.pts, r.color, L.w);
+    // The shine runs a little past the ends of the piece, over the same line drawn below:
+    // otherwise the round end of the color would cut it into dashes.
+    if (TUBE) for (const r of runs(L, slice(L, c.hi.s - reach - L.w / 2, c.hi.s + reach + L.w / 2))) svg += shine(r.pts, r.color, L.w);
   }
   for (const L of lines) for (const p of [L.pts[0], L.pts[L.pts.length - 1]]) svg += `<path data-end="1" d="M${p.x.toFixed(1)} ${p.y.toFixed(1)}" fill="none" stroke="none"/>`;
   return {
