@@ -44,6 +44,10 @@ const GLYPH = {
   'split-shot': (x, y) => ({ h: 24, svg: `<circle cx="${x}" cy="${y + 12}" r="6" fill="${C.lead}" stroke="#0B0B0B" stroke-width="1.5"/>` }),
   hook: (x, y) => ({ h: 56, svg: `<circle cx="${x}" cy="${y + 5}" r="4" fill="none" stroke="${C.lead}" stroke-width="2.4"/><path d="M${x} ${y + 9} V${y + 38} a11 11 0 0 1 -22 0 v-6" fill="none" stroke="${C.lead}" stroke-width="3" stroke-linecap="round"/><path d="M${x - 22} ${y + 32} l5 6" stroke="${C.lead}" stroke-width="2.6" stroke-linecap="round"/>` }),
   dough: (x, y) => ({ h: 52, svg: `<circle cx="${x}" cy="${y + 26}" r="22" fill="#E8C98A" stroke="#0B0B0B" stroke-width="2"/><circle cx="${x - 8}" cy="${y + 19}" r="2" fill="#B08A48"/><circle cx="${x + 7}" cy="${y + 31}" r="2" fill="#B08A48"/><circle cx="${x + 9}" cy="${y + 16}" r="1.6" fill="#B08A48"/>` }),
+  // Bullet sinker: a cone with its point up (toward the rod), the line through it.
+  'sinker-bullet': (x, y) => ({ h: 40, svg: `<path d="M${x} ${y + 4} C${x + 4} ${y + 10} ${x + 10} ${y + 26} ${x + 10} ${y + 34} Q${x} ${y + 38} ${x - 10} ${y + 34} C${x - 10} ${y + 26} ${x - 4} ${y + 10} ${x} ${y + 4}Z" fill="${C.lead}" stroke="#0B0B0B" stroke-width="2"/><path d="M${x} ${y + 6} v28" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="3 3"/>` }),
+  // Soft lure (curly tail) on an offset hook, the point hidden in the body.
+  'soft-lure': (x, y) => ({ h: 96, svg: `<circle cx="${x}" cy="${y + 4}" r="4" fill="none" stroke="${C.lead}" stroke-width="2.4"/><path d="M${x} ${y + 8} v6 l-4 4 v4" fill="none" stroke="${C.lead}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M${x - 8} ${y + 20} C${x - 9} ${y + 40} ${x - 8} ${y + 56} ${x - 4} ${y + 62} C${x + 6} ${y + 64} ${x + 8} ${y + 50} ${x + 6} ${y + 20} Q${x - 1} ${y + 15} ${x - 8} ${y + 20}Z" fill="#8A4B2A" stroke="#0B0B0B" stroke-width="2"/><path d="M${x - 6} ${y + 28} h11 M${x - 7} ${y + 36} h12 M${x - 7} ${y + 44} h12 M${x - 6} ${y + 52} h11" stroke="#5E2F17" stroke-width="1.4"/><path d="M${x - 4} ${y + 62} C${x - 20} ${y + 70} ${x + 14} ${y + 78} ${x - 2} ${y + 88} C${x - 12} ${y + 94} ${x - 18} ${y + 86} ${x - 10} ${y + 82}" fill="none" stroke="#0B0B0B" stroke-width="7" stroke-linecap="round"/><path d="M${x - 4} ${y + 62} C${x - 20} ${y + 70} ${x + 14} ${y + 78} ${x - 2} ${y + 88} C${x - 12} ${y + 94} ${x - 18} ${y + 86} ${x - 10} ${y + 82}" fill="none" stroke="#8A4B2A" stroke-width="4" stroke-linecap="round"/><path d="M${x + 4} ${y + 52} v-4" stroke="${C.lead}" stroke-width="2.4" stroke-linecap="round"/>` }),
   popup: (x, y) => ({ h: 26, svg: `<circle cx="${x - 11}" cy="${y + 12}" r="8" fill="${C.yellow}" stroke="#0B0B0B" stroke-width="2"/>` }),
 };
 
@@ -111,7 +115,7 @@ export function rigSvg(rig) {
     const gg = (GLYPH[part.kind] || GLYPH.bead)(X, y + gy);
     if (floatAt == null && ['float', 'float-small', 'plop'].includes(part.kind)) floatAt = y + gy + (part.kind === 'plop' ? 14 : 28);
     // The line keeps running through floats, beads and sliding sinkers; it ends at the hook or the fixed sinker.
-    if (part.kind !== 'hook' && part.kind !== 'sinker-fixed') segments.push([y, y + h, lineColor]);
+    if (!['hook', 'sinker-fixed', 'soft-lure'].includes(part.kind)) segments.push([y, y + h, lineColor]);
     else segments.push([y, y + gy + 6, lineColor]);
     body += gg.svg + lb.svg;
     body += `<path d="M${X + 22} ${y + h / 2} H${LABEL_X - 8}" stroke="#C9C9C2" stroke-width="1" stroke-dasharray="2 3"/>`;

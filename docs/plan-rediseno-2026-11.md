@@ -148,6 +148,6 @@ Con el plan escrito y la primera versión programada, dos revisores más lo atac
 ## 11. Pendientes después de esta tarea
 
 - Que el usuario mire las 11 ilustraciones de peces y diga si reconoce cada una (sobre todo vieja, patí y dientudo).
-- Resolver las contradicciones de datos que salieron al cruzar fuentes: carnada principal del bagre (ficha: lombriz; nota de armados: hígado de pollo) y "1,5 m entre tope y carnada" contra "emerillón 30–40 cm debajo del tope" en la boya de tararira.
+- ~~Contradicciones de datos~~ resueltas el 14/11 (ver spec, "Definiciones del 14/11/2026").
 - Probar en el teléfono: al sol (contraste del render nuevo y de las franjas de meses), con GPS y sin conexión (capturas con foto).
 - Ícono de pata de rana y algunos señuelos chicos se leen poco a 24 px: mejorarlos si molestan.

@@ -36,7 +36,6 @@ Detalle de cada nudo en `docs/plan-nudos.md`, "Lo que sigue" y "Correcciones ped
 | Qué | Desde |
 |---|---|
 | Mirar las 11 ilustraciones de peces y decir si reconoce cada una; probar el rediseño en el teléfono | 2026-11-13 |
-| Decidir: carnada principal del bagre (lombriz o hígado de pollo), medidas de la boya de tararira (1,5 m vs 30–40 cm) y sentido de la flecha del viento | 2026-11-13 |
 | Atar en la mano: carrete, palomar, clinch, uni, snell, cirujano, doble uni, lazo de cirujano, brazolada y sangre, y decir si aguantan | 2026-10-06 |
 | Pasos 1 a 3 del FG (o permiso para buscarlos) | 2026-10-07 |
 
