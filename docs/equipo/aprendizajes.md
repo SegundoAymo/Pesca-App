@@ -37,6 +37,8 @@ Las reglas numeradas de dibujo (hasta la 40) están en `docs/spec.md`, "Control 
 
 - **2026-11-13, Claude — Render tubo.** Contorno y brillo hacen los dibujos más legibles, pero el brillo en el tono claro lo hacía ver como dos rayas y un contorno ancho pasaba la distancia que controla la prueba. **Regla:** brillo solo en tonos oscuro y fuerte; línea + contorno por debajo de los 7 de distancia mínima; cualquier cambio de render se mira en las hojas de varios nudos y pasa por `revisor-nudos`. (Anotado también en: spec y revisor)
 
+- **2026-11-16, usuario — Decir cómo agarrar.** En el tope corredizo se le desenrollaban las vueltas: los pasos decían qué hacer pero no qué mano sostiene qué ni qué parte queda tensa. **Regla:** en los nudos con vueltas, el texto dice el agarre (qué queda tenso, dónde aprietan los dedos y hasta cuándo); al rehacer un dibujo, mostrar la pinza de los dedos cuando haga falta. (Anotado también en: plan-nudos)
+
 ## Código y repositorio
 
 - **2026-10-07, Claude — Dos agentes en el mismo repo.** **Regla:** leer el tablero antes de empezar, ramas cortas, archivos "de a uno" (lista en `AGENTS.md`).
