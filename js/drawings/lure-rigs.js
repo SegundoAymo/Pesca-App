@@ -1,0 +1,90 @@
+// Montajes de señuelo de goma (Texas, Free rig, Drop shot, Wacky, Damiki, Carolina) y sus
+// variantes, dibujados como quedan armados en el agua. Colores del sistema de la app:
+// línea verde, plomo y anzuelo gris, la goma con su color. Aprobados por el usuario el
+// 16/11/2026 (boceto en docs/plan-montajes-goma.md).
+
+const LINE = '#1E5A38';
+const LEAD = '#6B6B66';
+const HOOK = '#4E4E49';
+const INK = '#0B0B0B';
+const MUTED = '#55554F';
+const RED = '#C8102E';
+const W = 360;
+const H = 240;
+
+const water = (top = 34, bottom = false) => {
+  let wave = `M0 ${top}`;
+  for (let x = 0; x < W; x += 20) wave += ' q5 -4 10 0 t10 0';
+  return `<rect x="0" y="${top}" width="${W}" height="${H - top}" fill="#E8F2F6"/><path d="${wave}" fill="none" stroke="#5BB4E5" stroke-width="2"/>`
+    + (bottom ? `<path d="M0 ${H - 20} q20 -6 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 V${H} H0Z" fill="#8A6A48"/>` : '');
+};
+const t = (x, y, s, sub = false) => `<text x="${x}" y="${y}" font-family="Barlow, sans-serif" font-weight="${sub ? 500 : 700}" font-size="13" fill="${sub ? MUTED : INK}">${s}</text>`;
+const label = (x, y, a, b = '', c = '') => t(x, y, a) + (b ? t(x, y + 16, b, true) : '') + (c ? t(x, y + 32, c, true) : '');
+const eye = (x, y) => `<circle cx="${x}" cy="${y}" r="4" fill="none" stroke="${HOOK}" stroke-width="2.4"/>`;
+const slide = (x, y1, y2) => `<path d="M${x} ${y1} V${y2}" stroke="${RED}" stroke-width="2.5" stroke-dasharray="5 3" marker-start="url(#lr-ar)" marker-end="url(#lr-ar)"/>`;
+const worm = (d, color, w = 11) => `<path d="${d}" fill="none" stroke="${INK}" stroke-width="${w + 4}" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+// A curly-tail soft lure lying to the right of (x, y).
+const curly = (x, y, color = '#8A4B2A') => `<path d="M${x} ${y - 6} C${x + 44} ${y - 10} ${x + 94} ${y - 10} ${x + 124} ${y + 2} C${x + 136} ${y + 8} ${x + 124} ${y + 18} ${x + 104} ${y + 16} C${x + 64} ${y + 14} ${x + 24} ${y + 12} ${x + 2} ${y + 6} Z" fill="${color}" stroke="${INK}" stroke-width="2"/>`
+  + `<path d="M${x + 124} ${y + 6} C${x + 144} ${y + 12} ${x + 154} ${y + 32} ${x + 136} ${y + 42} C${x + 124} ${y + 48} ${x + 120} ${y + 34} ${x + 132} ${y + 32}" fill="none" stroke="${color}" stroke-width="6" stroke-linecap="round"/>`;
+// The hook inside the lure, in dots (rule: what goes behind or inside an object is dotted).
+const hidden = (d) => `<path d="${d}" fill="none" stroke="${HOOK}" stroke-width="2.4" stroke-dasharray="3 3"/>`;
+const bullet = (x, y, a = 0) => `<g transform="translate(${x} ${y}) rotate(${a})"><path d="M0 -14 C4 -8 9 6 9 12 Q0 15 -9 12 C-9 6 -4 -8 0 -14Z" fill="${LEAD}" stroke="${INK}" stroke-width="2"/></g>`;
+const cyl = (x, y, h = 30) => `<rect x="${x - 8}" y="${y}" width="16" height="${h}" rx="6" fill="${LEAD}" stroke="${INK}" stroke-width="2"/>`;
+
+const ART = {
+  texas: () => water() + `<path d="M50 6 L152 110" stroke="${LINE}" stroke-width="3"/>`
+    + bullet(142, 100, -44) + `<path d="M150 108 L161 119" stroke="${LINE}" stroke-width="2"/>` + eye(164, 122)
+    + curly(174, 132) + hidden('M168 125 C176 130 180 128 186 132 L268 132 C288 134 288 152 270 152 L256 146')
+    + label(160, 54, 'Plomo bala corredizo', 'enhebrado, punta hacia la caña') + label(150, 196, 'Goma en anzuelo offset', 'la punta escondida en la goma'),
+  'texas-pegado': () => water() + `<path d="M50 6 L150 108" stroke="${LINE}" stroke-width="3"/>`
+    + bullet(154, 112, -44) + `<path d="M142 98 l-10 -10" stroke="#C9A66B" stroke-width="3" stroke-linecap="round"/>` + eye(164, 122)
+    + curly(174, 132) + hidden('M168 125 C176 130 180 128 186 132 L268 132 C288 134 288 152 270 152 L256 146')
+    + label(160, 54, 'Plomo trabado', 'contra la goma (tope o palillo)') + label(150, 196, 'Todo se mueve junto', 'entra mejor entre plantas'),
+  free: () => water() + `<path d="M110 6 V146" stroke="${LINE}" stroke-width="3"/>`
+    + `<circle cx="110" cy="62" r="4" fill="none" stroke="${INK}" stroke-width="2"/>` + cyl(110, 66) + slide(132, 64, 104) + eye(110, 150)
+    + `<path d="M110 154 v8 l6 6" fill="none" stroke="${HOOK}" stroke-width="3"/>` + curly(116, 170, '#2F7D3A') + hidden('M118 168 H190 a8 8 0 0 1 -8 12')
+    + label(144, 78, 'Plomo con ojal', 'corre libre por la línea') + label(30, 214, 'Goma sola en el anzuelo', 'el nudo frena al plomo; nada pegado'),
+  'free-topes': () => water() + `<path d="M110 6 V146" stroke="${LINE}" stroke-width="3"/>`
+    + `<rect x="103" y="50" width="14" height="6" rx="3" fill="#F07C00" stroke="${INK}" stroke-width="1.5"/>` + cyl(110, 62) + `<rect x="103" y="98" width="14" height="6" rx="3" fill="#F07C00" stroke="${INK}" stroke-width="1.5"/>` + eye(110, 150)
+    + `<path d="M110 154 v8 l6 6" fill="none" stroke="${HOOK}" stroke-width="3"/>` + curly(116, 170, '#2F7D3A') + hidden('M118 168 H190 a8 8 0 0 1 -8 12')
+    + label(144, 64, 'Topes de goma', 'a los dos lados del plomo:', 'fijan dónde queda') + label(30, 214, 'Plomo a la distancia que se elija', 'de la goma'),
+  dropshot: (tag = 'corta') => {
+    const hy = tag === 'larga' ? 70 : 128;
+    return water(26, true) + `<path d="M120 4 V196" stroke="${LINE}" stroke-width="3"/>`
+      + eye(124, hy) + `<path d="M128 ${hy} H156 a8 8 0 0 1 -8 12" fill="none" stroke="${HOOK}" stroke-width="3"/>`
+      + `<path d="M150 ${hy} C158 ${hy - 4} 166 ${hy} 166 ${hy + 8} C168 ${hy + 34} 168 ${hy + 54} 160 ${hy + 68} C156 ${hy + 74} 150 ${hy + 70} 152 ${hy + 62} C158 ${hy + 40} 156 ${hy + 22} 150 ${hy + 8} Z" fill="#B5651D" stroke="${INK}" stroke-width="2"/>`
+      + cyl(120, 194, 26) + `<path d="M108 ${hy + 6} V192" stroke="${MUTED}" stroke-width="1.2"/><path d="M104 ${hy + 6} h8 M104 192 h8" stroke="${MUTED}" stroke-width="1.2"/>`
+      + label(176, hy - 8, 'Anzuelo con Palomar', 'punta hacia arriba, sale', 'horizontal; goma por la nariz')
+      + label(6, (hy + 192) / 2, 'Punta', tag === 'larga' ? 'larga: goma' : 'corta: goma', tag === 'larga' ? 'alta' : 'cerca del fondo') + t(140, 214, 'Plomo al final, en el fondo');
+  },
+  'dropshot-larga': () => ART.dropshot('larga'),
+  wacky: () => water() + `<path d="M120 6 V112" stroke="${LINE}" stroke-width="3"/>` + eye(120, 116)
+    + worm('M90 200 C88 162 100 134 120 126 C140 134 152 162 150 200', '#5A3A6E')
+    + `<ellipse cx="120" cy="128" rx="9" ry="4" fill="none" stroke="#FFC400" stroke-width="2.5"/><path d="M120 120 v8 a10 10 0 0 0 16 4" fill="none" stroke="${HOOK}" stroke-width="3"/>`
+    + label(170, 112, 'Anzuelo por un aro', 'en el medio del gusano', '(tipo Senko)') + label(170, 180, 'Las dos puntas cuelgan', 'sin plomo: cae despacio'),
+  neko: () => water() + `<path d="M120 6 V96" stroke="${LINE}" stroke-width="3"/>` + eye(120, 100)
+    + worm('M122 108 C126 140 128 170 130 206', '#5A3A6E')
+    + `<ellipse cx="122" cy="114" rx="9" ry="4" fill="none" stroke="#FFC400" stroke-width="2.5"/><path d="M120 104 v10 a9 9 0 0 0 14 4" fill="none" stroke="${HOOK}" stroke-width="3"/>`
+    + `<rect x="125" y="200" width="10" height="16" rx="2" fill="${LEAD}" stroke="${INK}" stroke-width="1.5"/>`
+    + label(150, 100, 'Anzuelo cerca de la cabeza', 'con aro') + label(150, 196, 'Plomo tipo clavo', 'en la punta: queda parado', 'y se mueve en el fondo'),
+  damiki: () => water() + `<path d="M110 6 V116" stroke="${LINE}" stroke-width="3"/>` + eye(110, 120)
+    + `<path d="M98 128 h30 l4 6 l-6 12 h-22 q-8 -6 -6 -18z" fill="${LEAD}" stroke="${INK}" stroke-width="2"/>`
+    + `<path d="M90 130 C120 122 200 122 250 128 L290 116 L286 134 L292 150 L250 138 C200 144 120 144 90 136 Z" fill="#C9D6DE" stroke="${INK}" stroke-width="2"/><circle cx="100" cy="132" r="2.5" fill="${INK}"/>`
+    + hidden('M128 132 H200 a8 8 0 0 1 -8 -10')
+    + label(126, 70, 'Ojal a 90°', 'la línea sale para arriba') + label(30, 180, 'Cabeza jig con quilla de plomo', 'debajo del anzuelo') + label(30, 214, 'Goma tipo pececito, recta:', 'queda horizontal'),
+  carolina: () => water(26, true) + `<path d="M40 4 C70 60 90 90 120 112" stroke="${LINE}" stroke-width="3" fill="none"/>`
+    + bullet(98, 88, -54) + `<circle cx="112" cy="104" r="4.5" fill="#fff" stroke="${INK}" stroke-width="1.5"/>`
+    + `<rect x="116" y="104" width="14" height="8" rx="3" fill="${LEAD}" stroke="${INK}" stroke-width="1.5" transform="rotate(34 123 108)"/>`
+    + `<path d="M130 116 C160 146 176 166 186 184" stroke="#8A4300" stroke-width="2.6" fill="none"/>` + eye(188, 186)
+    + curly(192, 194) + hidden('M192 190 L262 194')
+    + label(150, 70, 'Plomo, perla y emerillón', 'el emerillón hace de tope') + label(20, 150, 'Tramo de línea', 'la goma trabaja suelta'),
+};
+
+/** SVG of a soft-lure rig or variant ('' if unknown). */
+export function lureRigSvg(id, label = '') {
+  const art = ART[id];
+  if (!art) return '';
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${label.replace(/"/g, '')}"><defs><marker id="lr-ar" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="${RED}"/></marker></defs>${art()}</svg>`;
+}
+
+export const LURE_ART = Object.keys(ART);

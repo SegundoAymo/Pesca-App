@@ -6,6 +6,7 @@ import { RIGS, RIGS_BY_SPECIES, GLOSSARY } from '../data/rigs.js';
 import { KNOTS, SITUATIONS } from '../data/knots.js';
 import { SPECIES } from '../data/species.js';
 import { rigSvg, RIG_KEY } from '../drawings/rigs.js';
+import { lureRigSvg } from '../drawings/lure-rigs.js';
 import { glyph } from '../drawings/glyphs.js';
 import { addItems } from './checklist.js';
 
@@ -49,10 +50,26 @@ export function missingItems(rig) {
   return t.split(/,\s*|\s+y\s+(?=[a-záéíóúñ0-9])/i).map((x) => x.trim()).filter(Boolean).map((x) => x[0].toUpperCase() + x.slice(1));
 }
 
+/** Soft-lure rigs: how it works, how to tie it, variants, when not, which fish. */
+function lureSections(rig) {
+  const variants = rig.variants?.length ? `<h2 class="block-title">Variantes</h2><div class="variants">${rig.variants.map((v) => `<div class="variant">
+      ${v.art ? `<div class="variant-art">${lureRigSvg(v.art, `Variante ${v.name}`)}</div>` : ''}
+      <p class="variant-name">${esc(v.name)}</p><p><strong>Qué cambia:</strong> ${esc(v.what)}</p><p><strong>Cuándo:</strong> ${esc(v.when)}</p>
+    </div>`).join('')}</div>` : '';
+  return `<h2 class="block-title">Cómo funciona</h2><p>${esc(rig.works)}</p>
+    <h2 class="block-title">Cómo armarlo</h2><ol class="tips">${rig.steps.map((x) => `<li>${esc(x)}</li>`).join('')}</ol>
+    ${rig.measures?.length ? `<div class="kit">${glyph('ruler', 30)}<p>${rig.measures.map(esc).join('<br>')}</p></div>` : ''}
+    ${variants}
+    <h2 class="block-title">Cuándo no conviene</h2><ul class="list">${rig.notWhen.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+    <h2 class="block-title">Para qué peces</h2><p>${esc(rig.fish)}</p>
+    <div class="warn">${glyph('teeth', 34)}<span>${esc(rig.tararira)}</span></div>`;
+}
+
 /** Compact card that links to a rig (used in Nudos → Plomada). */
 export function rigLinkCard(rig, recommended = rig.recommended) {
   return `<a class="rig-link" href="#/armados/${rig.id}">
-    <span class="rig-link-txt">${recommended ? chip('Recomendado', 'rec') : ''}<strong>${esc(rig.name)}</strong>${rig.why ? `<small>${rich(rig.why.split('. ')[0].replace(/\.?$/, '.'))}</small>` : ''}</span>
+    ${rig.art ? `<span class="mini lure">${lureRigSvg(rig.art).replace(/<text[\s\S]*?<\/text>/g, '').replace(/width="360" height="240"/, 'width="112" height="75"')}</span>` : ''}
+    <span class="rig-link-txt">${recommended ? chip('Recomendado', 'rec') : ''}<strong>${esc(rig.name)}</strong>${rig.use ? `<small>${esc(rig.use)}</small>` : rig.why ? `<small>${rich(rig.why.split('. ')[0].replace(/\.?$/, '.'))}</small>` : ''}</span>
     <span class="go">${ICON.chevron}</span>
   </a>`;
 }
@@ -64,14 +81,15 @@ function rigScreen(rig) {
   const others = sp ? (RIGS_BY_SPECIES[sp.id] || []).filter((id) => id !== rig.id) : [];
   const tags = [
     rig.recommended ? chip('Recomendado', 'rec') : '',
-    chip(rig.type === 'boya' ? 'Con boya' : 'De fondo', '', { icon: glyph(rig.type === 'boya' ? 'surface' : 'bottom', 20) }),
+    chip({ boya: 'Con boya', fondo: 'De fondo', media: 'Media agua' }[rig.type] || 'De fondo', '', { icon: glyph({ boya: 'surface', media: 'midwater' }[rig.type] || 'bottom', 20) }),
   ].join('');
   const body = `
     <div class="chips">${tags}</div>
     ${rig.why ? `<p class="lead">${rich(rig.why)}</p>` : ''}
-    <div class="card rig"><div class="rig-drawing">${rigSvg(rig)}</div>
+    ${rig.art ? `<div class="card rig"><div class="rig-drawing">${lureRigSvg(rig.art, `Dibujo del montaje ${rig.name}`)}</div><p class="small muted">Puntos: el anzuelo por dentro de la goma. No a escala.</p></div>` : `<div class="card rig"><div class="rig-drawing">${rigSvg(rig)}</div>
       <div class="key">${RIG_KEY.map((k) => `<span><i style="background:${k.color}"></i>${esc(k.label)}</span>`).join('')}</div>
-    </div>
+    </div>`}
+    ${rig.lure ? lureSections(rig) : ''}
     ${knots.length ? `<h2 class="block-title">Nudos de este armado</h2>
       <div class="knot-links">${knots.map((id) => `<a class="big" href="${knotHref(id)}">${glyph(id === 'tope' ? 'knot-dropper' : id === 'brazolada' ? 'knot-dropper' : 'knot-hook', 40)}<span class="label">${esc(KNOTS[id].name)}<small>${esc(KNOTS[id].difficulty)}${KNOTS[id].strength && /%/.test(KNOTS[id].strength) ? ` · ${esc(KNOTS[id].strength)}` : ''}</small></span><span class="go">${ICON.chevron}</span></a>`).join('')}</div>` : ''}
     <h2 class="block-title">Con tu kit</h2>
@@ -79,13 +97,13 @@ function rigScreen(rig) {
       ? `<div class="card"><p><strong>Te falta:</strong></p><ul class="list">${missing.map((m) => `<li>${esc(m)}</li>`).join('')}</ul>
          <button type="button" class="btn yellow block" data-add-missing>${ICON.plus}<span>Sumar a la checklist</span></button><p class="small" data-added aria-live="polite"></p></div>`
       : `<div class="kit">${glyph('tackle', 30)}<p><strong>Todo está en el kit.</strong></p></div>`}
-    ${rig.measures?.length ? `<details class="fold"><summary>Medidas y profundidad</summary><ul class="list">${rig.measures.map((m) => `<li>${rich(m)}</li>`).join('')}</ul></details>` : ''}
+    ${rig.measures?.length && !rig.lure ? `<details class="fold"><summary>Medidas y profundidad</summary><ul class="list">${rig.measures.map((m) => `<li>${rich(m)}</li>`).join('')}</ul></details>` : ''}
     <details class="fold"><summary>Palabras que se usan</summary>${GLOSSARY.map((g) => `<p><strong>${esc(g.term)}:</strong> ${rich(g.text)}</p>`).join('')}</details>
     ${others.length ? `<h2 class="block-title">Otros armados para ${esc(sp.name.toLowerCase())}</h2>${others.map((id) => rigLinkCard(RIGS[id])).join('')}` : ''}
     ${sp ? `<a class="btn white block" href="#/peces/${sp.id}">Ficha de la ${esc(sp.name.toLowerCase())}</a>` : ''}`;
   return {
     title: rig.name,
-    html: screen(rig.name, body, sp ? `Armado para ${sp.name.toLowerCase()}` : 'Armado de plomada'),
+    html: screen(rig.name, body, sp ? `Armado para ${sp.name.toLowerCase()}` : rig.lure ? 'Montaje de señuelo de goma' : 'Armado de plomada'),
     mount(root) {
       root.querySelector('[data-add-missing]')?.addEventListener('click', (e) => {
         const n = addItems(`Para «${rig.name}»`, missing);

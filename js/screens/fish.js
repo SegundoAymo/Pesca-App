@@ -2,7 +2,7 @@
 import { ICON } from '../icons.js';
 import { screen, esc, rich, chip, section, mix } from '../ui.js';
 import { SPECIES, VEDAS, GENERAL_TIPS } from '../data/species.js';
-import { RIGS, RIGS_BY_SPECIES } from '../data/rigs.js';
+import { RIGS, RIGS_BY_SPECIES, LURE_RIGS } from '../data/rigs.js';
 import { fishArt } from '../drawings/fish.js';
 import { glyph } from '../drawings/glyphs.js';
 import { todayAR } from '../logic/dates.js';
@@ -131,7 +131,7 @@ function whereBlock(f) {
 }
 
 // A soft lure "de fondo con plomo" links to the bottom rigs with a sliding sinker (Wilson p. 79).
-const BOTTOM_LURE_RIGS = () => `<div class="chips">${['senuelo-texas', 'senuelo-carolina'].map((id) => chip(RIGS[id].name.replace('Señuelo de goma al fondo: m', 'M'), '', { href: `#/armados/${id}`, icon: glyph('bottom', 20) })).join('')}</div>`;
+const BOTTOM_LURE_RIGS = () => `<div class="chips">${LURE_RIGS.map((id) => chip(RIGS[id].name, '', { href: `#/armados/${id}`, icon: glyph('lure-soft', 20) })).join('')}</div>`;
 
 function luresBlock(f) {
   if (!f.lures.length) return f.luresNote ? `<p>${rich(f.luresNote)}</p>${/plomo/.test(f.luresNote) ? BOTTOM_LURE_RIGS() : ''}` : '';
@@ -143,7 +143,7 @@ function luresBlock(f) {
       <ul class="lures">${list.map((l) => `<li>${l.icon ? glyph(l.icon, 36) : glyph(d || 'fish', 36)}<span><strong>${esc(l.name)}</strong><small>${esc(l.how)}</small></span></li>`).join('')}</ul>`;
   }).join('');
   const soft = f.lures.some((l) => l.icon === 'lure-soft');
-  return `${html}${f.luresNote ? `<p class="small muted">${rich(f.luresNote)}</p>` : ''}${soft ? `<p class="mini-title">Goma al fondo con plomada corrediza</p>${BOTTOM_LURE_RIGS()}` : ''}`;
+  return `${html}${f.luresNote ? `<p class="small muted">${rich(f.luresNote)}</p>` : ''}${soft ? `<p class="mini-title">Cómo montar la goma</p>${BOTTOM_LURE_RIGS()}` : ''}`;
 }
 
 function rigBlock(s) {

@@ -119,3 +119,15 @@ test('el Service Worker no lista archivos que no existen ni repetidos', () => {
   for (const f of list) assert.ok(existsSync(f), `sw.js lista ${f}, que no existe`);
   assert.equal(new Set(list).size, list.length, 'sw.js tiene archivos repetidos');
 });
+
+test('montajes de goma: cada uno con dibujo, pasos, variantes y regla de la tararira', async () => {
+  const { LURE_RIGS } = await import('../js/data/rigs.js');
+  const { lureRigSvg } = await import('../js/drawings/lure-rigs.js');
+  assert.equal(LURE_RIGS.length, 6);
+  for (const id of LURE_RIGS) {
+    const r = RIGS[id];
+    assert.match(lureRigSvg(r.art), /^<svg/, id);
+    assert.ok(r.steps.length >= 3 && r.works && r.notWhen.length && r.fish && r.tararira && r.use, id);
+    for (const v of r.variants) if (v.art) assert.match(lureRigSvg(v.art), /^<svg/, `${id}: ${v.name}`);
+  }
+});

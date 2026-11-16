@@ -33,3 +33,5 @@ Fuentes del modelo de puntaje (temperatura del agua, luna, presión): `docs/spec
 - La guía es personal y sin fin comercial: se puede copiar la disposición de los dibujos (decisión del usuario).
 - Al usar una página como referencia de un nudo, citarla en `docs/referencias-nudos.md` y en la tabla de cruces (`test/knots-crossings.test.js`).
 - Para mirar una página de un PDF: `pdftoppm -r 110 -f <pág> -l <pág> -png <pdf> <salida>`.
+
+| `imagenes/montajes-goma-boceto-aprobado.png` | Boceto de Claude de los 5 montajes de goma del video del usuario, aprobado el 16/11/2026 | Propio | Referencia de cómo quedan armados | `docs/plan-montajes-goma.md` |

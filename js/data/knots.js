@@ -7,7 +7,8 @@ export const SITUATIONS = [
   { id: 'unir', n: 5, title: 'Unir dos líneas', knots: ['sangre', 'doble-uni', 'cirujano', 'albright', 'fg'], recommended: ['sangre', 'cirujano'], note: 'Sangre si son del mismo grosor; Cirujano si son de distinto grosor.' },
   { id: 'lazos', n: 6, title: 'Lazos y línea doble', knots: ['lazo-cirujano', 'lazo-perfecto', 'bimini'], recommended: ['lazo-cirujano'], note: '' },
   { id: 'armar', n: 7, title: 'Armar líneas (brazoladas y boyas)', knots: ['brazolada', 'tope'], recommended: ['brazolada', 'tope'], note: '' },
-  { id: 'plomada', n: 8, title: 'Plomada', knots: [], rigs: ['plomada-corrediza', 'plomada-fija', 'plomada-pasternoster', 'senuelo-texas', 'senuelo-carolina'], recommended: ['plomada-corrediza'], note: '' },
+  { id: 'plomada', n: 8, title: 'Plomada', knots: [], rigs: ['plomada-corrediza', 'plomada-fija', 'plomada-pasternoster'], recommended: ['plomada-corrediza'], note: '' },
+  { id: 'gomas', n: 10, title: 'Señuelos de goma: montajes', knots: [], rigs: ['senuelo-texas', 'senuelo-free-rig', 'senuelo-drop-shot', 'senuelo-wacky', 'senuelo-damiki', 'senuelo-carolina'], recommended: [], note: '' },
   { id: 'acero', n: 9, title: 'Alambre de acero (tararira)', knots: ['haywire', 'manguito'], recommended: [], note: 'Según el alambre que compres.' },
 ];
 
