@@ -123,6 +123,8 @@ Lo que dijo de cada nudo (sus palabras, resumidas) y lo que muestra su imagen:
    2. Se dan 3 o 4 vueltas sobre la línea.
    3. Se tira muy fuerte de las dos puntas y se cortan los sobrantes con un alicate.
 
+   **16/11/2026:** el usuario dijo que al dar las vueltas se le desenrollaban y pidió aclarar qué parte queda tensa y dónde va el agarre. Se reescribieron los textos con el agarre (mano izquierda: línea tensa y pinza de pulgar e índice sobre las vueltas; mano derecha: vueltas) y la nota (dos topes con trenzado; no apretarlo de más). Falta rehacer el dibujo con la imagen n6, mostrando la pinza de los dedos.
+
    **Además pidió buscar en internet** si pasa algo cuando se hace con nylon o si conviene otro hilo (por ejemplo, si el nylon roza o daña la línea al correr, o si se afloja), y aclararlo en la app con las fuentes.
 
 Mientras no estén corregidos, el Snell y el Cirujano siguen en `REDRAWN` (la app los muestra como "Dibujo nuevo"). Al rehacerlos, volver a pasar por todo el proceso de la spec. Cada uno lleva tabla de cruces citando la imagen del usuario y otra fuente, una revisión y la prueba en la mano.

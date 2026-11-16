@@ -15,6 +15,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-11-16 — Claude — Tope corredizo: cómo agarrarlo
+- Rama y pull request: `ccr-b05cd55e-26yu7u`, pull request a `main`.
+- Qué se hizo: pedido del usuario (se le desenrollaban las vueltas). Textos del tope corredizo reescritos según su imagen n6 y guías de "bobber stop knot", con el agarre en cada paso y la nota (dos topes con trenzado, no apretar de más). `js/data/knots.js` tocado solo en el tope.
+- Pruebas: `node --test` pasa.
+- Pendiente: rehacer el dibujo del tope (imagen n6, mostrando la pinza de los dedos) con el proceso de la spec; prueba en la mano del usuario. Sigue pendiente la aprobación del boceto de los 3 armados para tararira.
+
 ## 2026-11-16 — Claude — Montajes de señuelo de goma (Texas, Free rig, Drop shot, Wacky, Damiki)
 - Rama y pull request: `ccr-b05cd55e-26yu7u`, pull request a `main`.
 - Qué se hizo: investigación de los 5 montajes del video del usuario; boceto aprobado por el usuario; nueva situación "Señuelos de goma: montajes" en Nudos con 6 montajes (más Carolina), dibujos propios de cada uno y de sus variantes (`js/drawings/lure-rigs.js`), pasos, medidas, variantes, cuándo no conviene, peces y acero para tararira. Enlazados desde las fichas.

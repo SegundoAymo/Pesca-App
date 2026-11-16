@@ -248,15 +248,19 @@ export const KNOTS = {
     lines: 'Con hilo aparte (de coser grueso, dental o la misma línea) sobre cualquier línea',
     strength: null,
     difficulty: 'Fácil',
-    note: 'Marca la profundidad de una boya corrediza o hace de tope en líneas de flote sin dañar la línea; se puede mover.',
+    // Pasos según la imagen n6 del usuario (docs/fuentes/correcciones-usuario-2026-10.pdf, p. 5)
+    // y las guías de "bobber stop knot" (101knots, Netknots, Take Me Fishing). El agarre (qué
+    // mano sostiene qué) lo pidió el usuario el 16/11/2026: se le desarmaban las vueltas.
+    note: 'Marca la profundidad de una boya corrediza y se puede mover. **Cómo agarrarlo:** la mano izquierda sostiene la línea tensa y aprieta entre el pulgar y el índice el lugar del nudo; la derecha da las vueltas. El pulgar izquierdo no suelta las vueltas hasta que el nudo está apretado. Con trenzado (resbaloso), hacer dos topes juntos. No apretarlo de más: deja de correr.',
     steps: [
-      'Apoyar 15 cm de hilo sobre la línea, formando un lazo.',
-      'Dar 4 o 5 vueltas con una punta del hilo alrededor de la línea y del lazo.',
-      'Pasar esa punta por el lazo.',
-      'Tirar de las dos puntas del hilo para cerrar; queda un nudo que se corre al empujarlo.',
-      'Dejar 2 cm de punta. Con boya corrediza, poner una perla entre el tope y la boya.',
+      'Apoyar unos 15 cm de hilo a lo largo de la línea y doblarlo formando un lazo. **Agarre:** con la mano izquierda, apretar entre el pulgar y el índice la línea junto con las dos patas del hilo, donde va a ir el nudo; la línea, tensa (sostenerla con los otros dedos o con la caña apoyada).',
+      'Con la mano derecha, dar 4 o 5 vueltas con la punta larga del hilo alrededor de la línea y de la pata del lazo, por dentro del lazo, avanzando hacia la curva. **Agarre:** el pulgar izquierdo se va corriendo y aprieta cada vuelta contra la anterior, para que no se desenrolle.',
+      'Pasar la punta por el lazo, si no quedó adentro con la última vuelta. **Agarre:** seguir apretando las vueltas con el pulgar y el índice izquierdos: todavía no se sueltan.',
+      'Mojar y tirar de las dos puntas del hilo a la vez, primero suave y después fuerte, hasta que el nudo quede bien ajustado sobre la línea. Recién ahí soltar las vueltas. Tiene que correr si se lo empuja, sin aflojarse.',
+      'Cortar las puntas dejando 2 cm. Con boya corrediza, poner una perla entre el tope y la boya.',
     ],
   },
+
   haywire: {
     id: 'haywire',
     name: 'Haywire',
