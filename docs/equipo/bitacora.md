@@ -15,6 +15,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-11-16 — Claude — Montajes de señuelo de goma (Texas, Free rig, Drop shot, Wacky, Damiki)
+- Rama y pull request: `ccr-b05cd55e-26yu7u`, pull request a `main`.
+- Qué se hizo: investigación de los 5 montajes del video del usuario; boceto aprobado por el usuario; nueva situación "Señuelos de goma: montajes" en Nudos con 6 montajes (más Carolina), dibujos propios de cada uno y de sus variantes (`js/drawings/lure-rigs.js`), pasos, medidas, variantes, cuándo no conviene, peces y acero para tararira. Enlazados desde las fichas.
+- Pruebas: `node --test` pasa (57).
+- Pendiente: las fuentes solo se pudieron leer por resúmenes de búsqueda (los sitios están bloqueados en el entorno); verificarlas si se habilitan. No hay fuente de estos montajes con tararira.
+- Para el próximo: plan en `docs/plan-montajes-goma.md`. `js/data/knots.js` se tocó para sumar la situación `gomas`.
+
 ## 2026-11-14 — Claude — Señuelo de goma al fondo (Texas y Carolina) y definiciones pendientes
 - Rama y pull request: `ccr-b05cd55e-26yu7u`, pull request a `main`.
 - Qué se hizo: el usuario preguntó si la app tenía cómo poner una plomada corrediza a un señuelo para que vaya al fondo: no estaba. Se agregaron los montajes Texas y Carolina copiados de Wilson p. 79 del PDF (sin inventar pesos ni largos), con dibujo propio (plomo bala y goma en anzuelo offset), en Nudos → Plomada, en la tararira y enlazados desde los señuelos. Además, por pedido del usuario, se definió lo pendiente: carnada principal del bagre (lombriz), medidas de la boya de tararira (sin la contradicción) y flecha del viento. Correcciones del revisor al render tubo (brillo continuo, parte de atrás clara) ya estaban en el PR #23.

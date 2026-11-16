@@ -250,57 +250,166 @@ export const RIGS = {
     missing: '',
     bait: '',
   },
-  // Señuelo de goma al fondo con plomada corrediza. Fuente: Wilson, "Aparejos de señuelos
-  // de plástico blando" (docs/fuentes/guia-B-wilson-nudos-y-aparejos.pdf, página 79 del PDF):
-  // montaje Texas (plomo bala corredizo pegado al anzuelo, punta escondida en la goma) y
-  // montaje Carolina (plomo corredizo y emerillón arriba, la goma al final de un tramo de
-  // línea). La fuente no da pesos ni largos: no se ponen. La perla entre plomo y emerillón
-  // es la misma de la plomada corrediza del kit.
+  // ---- Montajes de señuelo de goma (pedido del usuario del 16/11/2026, del video que pasó:
+  // Texas, Free rig, Drop shot, Wacky, Damiki). Fuentes: guías de pesca de black bass
+  // (Tackle Warehouse, Wired2Fish, Bassmaster, Mike Iaconelli, Outdoor Life, Major League
+  // Fishing, Mustad, Kayak Angler) vistas por búsqueda; Texas y Carolina, además, Wilson
+  // p. 79 del PDF (docs/fuentes/guia-B-wilson-nudos-y-aparejos.pdf). Ninguna fuente los
+  // prueba con tararira: la regla del líder de acero es de la app. Las medidas van como
+  // rango cuando las fuentes no coinciden. Detalle: docs/plan-montajes-goma.md.
+  // Campos propios: art (dibujo en js/drawings/lure-rigs.js), use (para qué sirve, en una
+  // línea), works, steps, notWhen, fish, tararira, variants [{ name, art, what, when }].
   'senuelo-texas': {
-    id: 'senuelo-texas',
-    species: null,
-    letter: '',
-    name: 'Señuelo de goma al fondo: montaje Texas',
-    recommended: true,
-    type: 'fondo',
-    why: 'El plomo bala corre por la línea y queda pegado al anzuelo; la punta del anzuelo va escondida dentro de la goma. Así se puede pescar entre vegetación sin engancharse. Recoger despacio y con pausas.',
-    parts: [
-      { kind: 'line', label: 'Madre' },
-      { kind: 'sinker-bullet', label: 'Plomo bala corredizo', measure: 'enhebrado, con la punta hacia la caña' },
-      { kind: 'soft-lure', label: 'Goma (curly tail) en anzuelo offset con Palomar', measure: 'la punta del anzuelo, escondida en la goma' },
+    id: 'senuelo-texas', species: null, letter: '', lure: true, art: 'texas',
+    name: 'Texas', recommended: true, type: 'fondo',
+    use: 'Entre plantas y palos, sin engancharse',
+    why: 'El plomo bala corre por la línea y llega hasta la cabeza de la goma; la punta del anzuelo va escondida adentro de la goma, así pasa entre plantas y palos sin engancharse.',
+    works: 'Se deja ir al fondo y se recoge despacio, con saltitos de puntera y pausas. Al picar, la punta sale de la goma al clavar.',
+    steps: [
+      'Enhebrar el plomo bala en la línea, con la punta hacia la caña.',
+      'Atar el anzuelo offset con Palomar.',
+      'Clavar la punta del anzuelo en la cabeza de la goma, sacarla a 1 cm y correr la goma hasta el codo del offset.',
+      'Girar el anzuelo y volver a clavar la punta en el cuerpo, que quede escondida y la goma recta.',
     ],
-    measures: [
-      'Para tararira, la app pide siempre líder de acero, y la fuente no lo dibuja: con tararira, atar el anzuelo a un líder de acero corto y enhebrar el plomo en la madre, arriba del emerillón.',
+    notWhen: ['Plomo libre en vegetación muy cerrada: el plomo se separa y se traba. Ahí, pegado.'],
+    fish: 'Black bass en las fuentes.',
+    tararira: 'Con tararira, líder de acero corto entre un emerillón y el anzuelo (regla de la app: corta la línea con los dientes). El plomo corre por la madre y se apoya en el emerillón.',
+    variants: [
+      { name: 'Libre', art: 'texas', what: 'El plomo corre por la línea.', when: 'Agua abierta: la goma cae más suave detrás del plomo.' },
+      { name: 'Pegado', art: 'texas-pegado', what: 'El plomo trabado contra la goma con un tope o un palillo.', when: 'Plantas y palos cerrados: todo se mueve junto y no se traba.' },
+      { name: 'Sin plomo', art: '', what: 'Solo la goma en el offset.', when: 'Superficie o muy poca agua, caída muy lenta.' },
     ],
+    parts: [{ kind: 'line', label: 'Madre' }, { kind: 'hook', label: 'Anzuelo offset con Palomar' }],
+    measures: ['Plomo: 1/8 a 1/2 oz (3,5 a 14 g), el más liviano que te deje sentir el fondo.', 'Anzuelo offset 2/0 a 4/0 (las fuentes no coinciden). Tu kit tiene offset lastrados.'],
     missing: 'Plomo bala (cónico) corredizo.',
     bait: '',
   },
+  'senuelo-free-rig': {
+    id: 'senuelo-free-rig', species: null, letter: '', lure: true, art: 'free',
+    name: 'Free rig', recommended: false, type: 'fondo',
+    use: 'Caída natural de la goma, agua clara',
+    why: 'El plomo tiene ojal y corre libre por la línea, arriba del anzuelo; nada va pegado a la goma. Al caer, el plomo llega primero al fondo y la goma baja sola detrás, de forma natural.',
+    works: 'Se lanza y se deja caer: casi todas las picadas llegan en la caída o cuando la goma toca el plomo. Después se levanta y se deja caer otra vez; no conviene arrastrarlo.',
+    steps: [
+      'Enhebrar el plomo por su ojal en la línea.',
+      'Opcional: un tope de goma debajo del plomo, para que no golpee el nudo.',
+      'Atar el anzuelo con Palomar: el nudo frena al plomo.',
+      'Montar la goma con la punta escondida, como en el Texas.',
+    ],
+    notWhen: ['El ojal del plomo tiene que ser chico: si es grande, pasa por encima del anzuelo.', 'Las fuentes no dicen en qué ambientes falla.'],
+    fish: 'Black bass en las fuentes; para peces desconfiados en agua clara.',
+    tararira: 'Con tararira, líder de acero corto entre un emerillón y el anzuelo; el plomo corre por la madre, arriba del emerillón.',
+    variants: [
+      { name: 'Plomo cilíndrico', art: 'free', what: 'Plomo largo y fino con ojal.', when: 'El que usa Iaconelli: se traba menos en el fondo.' },
+      { name: 'Plomo campana', art: '', what: 'Plomo en forma de gota o campana con ojal.', when: 'El más fácil de conseguir. Las fuentes no coinciden en cuál anda mejor.' },
+      { name: 'Con topes', art: 'free-topes', what: 'Topes de goma a los dos lados del plomo.', when: 'Para que el plomo quede siempre a la misma distancia de la goma.' },
+    ],
+    parts: [{ kind: 'line', label: 'Madre' }, { kind: 'hook', label: 'Anzuelo con Palomar' }],
+    measures: ['Plomo: 1/4 a 3/8 oz (7 a 10 g), según Iaconelli.', 'Anzuelo 2/0 a 3/0.'],
+    missing: 'Plomo con ojal (cilíndrico o campana).',
+    bait: '',
+  },
+  'senuelo-drop-shot': {
+    id: 'senuelo-drop-shot', species: null, letter: '', lure: true, art: 'dropshot',
+    name: 'Drop shot', recommended: false, type: 'fondo',
+    use: 'Goma quieta sobre el fondo',
+    why: 'El anzuelo va en el medio de la línea y el plomo al final: el plomo queda quieto en el fondo y la goma flota más arriba, a la altura que marca el tramo de línea entre los dos.',
+    works: 'Con el plomo apoyado, se hace temblar la puntera sin arrastrar el plomo: la goma se mueve casi en el lugar. Para peces quietos o desconfiados.',
+    steps: [
+      'Atar el anzuelo con Palomar y dejar la punta larga.',
+      'Pasar la punta de la línea otra vez por el ojal, desde arriba, con la punta del anzuelo hacia arriba: así el anzuelo queda horizontal.',
+      'Atar o pinzar el plomo al final de esa punta.',
+      'Clavar la goma solo por la nariz, unos 6 mm, para que la cola quede libre.',
+    ],
+    notWhen: ['Si se arrastra el plomo pierde la gracia: es para trabajar en el lugar.', 'El Palomar puede correrse por el ojal: apretarlo bien.'],
+    fish: 'Black bass en las fuentes.',
+    tararira: 'No es para tararira: la goma va pegada a la línea y no se le puede poner acero sin cambiar cómo trabaja.',
+    variants: [
+      { name: 'Punta corta', art: 'dropshot', what: 'Poca línea entre anzuelo y plomo.', when: 'Peces pegados al fondo.' },
+      { name: 'Punta larga', art: 'dropshot-larga', what: 'Mucha línea entre anzuelo y plomo.', when: 'Peces que andan más arriba del fondo, o fondo con plantas bajas.' },
+    ],
+    parts: [{ kind: 'line', label: 'Madre' }, { kind: 'hook', label: 'Anzuelo de drop shot con Palomar' }],
+    measures: ['Punta (anzuelo a plomo): de 15 a 60 cm; las fuentes no coinciden.', 'Plomo cilíndrico o de gota, 1/8 a 1/2 oz (3,5 a 14 g).'],
+    missing: 'Anzuelos de drop shot y plomos de drop shot.',
+    bait: '',
+  },
+  'senuelo-wacky': {
+    id: 'senuelo-wacky', species: null, letter: '', lure: true, art: 'wacky',
+    name: 'Wacky', recommended: false, type: 'media',
+    use: 'Caída lenta, sin plomo',
+    why: 'Un gusano recto (tipo Senko) enganchado por el medio, sin plomo: cae despacio con las dos puntas moviéndose, y eso es lo que provoca la picada.',
+    works: 'Se lanza y se deja caer sin tocar; después pausas largas o toques mínimos de puntera.',
+    steps: [
+      'Poner un aro de goma (o-ring) en el medio del gusano.',
+      'Atar el anzuelo con Palomar.',
+      'Pasar el anzuelo por debajo del aro, no por la goma: así dura más.',
+    ],
+    notWhen: ['Vegetación cerrada con anzuelo común: se engancha (usar uno antienganche).', 'Peces muy activos que comen rápido: una caída tan lenta rinde menos.', 'El aro rasga la goma con el uso.'],
+    fish: 'Black bass en las fuentes.',
+    tararira: 'Con tararira, líder de acero corto: pesa y la caída deja de ser tan lenta.',
+    variants: [
+      { name: 'Clásico', art: 'wacky', what: 'Anzuelo atravesado en el medio (con o sin aro).', when: 'El básico: caída lenta y pareja.' },
+      { name: 'Neko', art: 'neko', what: 'Plomo tipo clavo en una punta y el anzuelo cerca de la otra.', when: 'Más hondo: la goma queda parada en el fondo y se mueve en el lugar.' },
+      { name: 'Aro corrido', art: '', what: 'El aro más cerca de una punta.', when: 'Cambia la acción en la caída.' },
+    ],
+    parts: [{ kind: 'line', label: 'Madre' }, { kind: 'hook', label: 'Anzuelo con Palomar' }],
+    measures: ['Las fuentes no dan medidas.'],
+    missing: 'Gusanos rectos tipo Senko, anzuelos para wacky y aros de goma.',
+    bait: '',
+  },
+  'senuelo-damiki': {
+    id: 'senuelo-damiki', species: null, letter: '', lure: true, art: 'damiki',
+    name: 'Damiki', recommended: false, type: 'media',
+    use: 'En vertical, a media agua',
+    why: 'Una cabeza jig con el ojal para arriba y una quilla de plomo debajo, con una goma tipo pececito: la goma queda horizontal, como un pez quieto.',
+    works: 'Se baja en vertical hasta donde están los peces y se deja casi quieta, con movimientos mínimos. También se tira lejos y se recoge muy despacio.',
+    steps: [
+      'Atar la cabeza jig con Palomar directo a su ojal.',
+      'Enhebrar la goma recta en el anzuelo, sin que quede torcida.',
+      'Opcional: una gota de pegamento para que la goma no se corra.',
+    ],
+    notWhen: ['Pensado para pescar en vertical desde un bote, viendo los peces (con sonda).', 'La cabeza tiene que tener el ojal a 90°: las de swimbait (60°) no sirven.'],
+    fish: 'Black bass en las fuentes.',
+    tararira: 'Con tararira, líder de acero corto con emerillón atado al ojal de la cabeza.',
+    variants: [
+      { name: 'Cabeza liviana', art: 'damiki', what: 'Alrededor de 3/16 oz (5 g).', when: 'Para empezar y en poca profundidad.' },
+      { name: 'Cabeza pesada', art: '', what: 'Hasta 1/2 oz (14 g).', when: 'Más profundidad.' },
+      { name: 'Con cucharita (underspin)', art: '', what: 'Cabeza con una hojita que gira.', when: 'Para recoger y que brille.' },
+    ],
+    parts: [{ kind: 'line', label: 'Madre' }, { kind: 'hook', label: 'Cabeza jig con Palomar' }],
+    measures: ['Cabeza: 3/16 a 1/2 oz (5 a 14 g).'],
+    missing: 'Cabezas jig con quilla y ojal a 90°, gomas tipo pececito.',
+    bait: '',
+  },
+  // Carolina: Wilson p. 79 del PDF (la fuente no da pesos ni largos). La perla es la de la
+  // plomada corrediza del kit.
   'senuelo-carolina': {
-    id: 'senuelo-carolina',
-    species: null,
-    letter: '',
-    name: 'Señuelo de goma al fondo: montaje Carolina',
-    recommended: false,
-    type: 'fondo',
-    why: 'El plomo corredizo va arriba, frenado por el emerillón, y la goma trabaja suelta al final de un tramo de línea. Sirve para recorrer mucha agua rápido, en puntas y zonas con relieve del fondo. Recoger despacio.',
-    parts: [
-      { kind: 'line', label: 'Madre' },
-      { kind: 'sinker-bullet', label: 'Plomo bala corredizo' },
-      { kind: 'bead', label: 'Perla' },
-      { kind: 'swivel', label: 'Emerillón con Palomar (hace de tope)' },
-      { kind: 'leader', label: 'Tramo de línea hasta la goma' },
-      { kind: 'soft-lure', label: 'Goma (curly tail) en anzuelo offset con Palomar', measure: 'la punta, escondida en la goma' },
+    id: 'senuelo-carolina', species: null, letter: '', lure: true, art: 'carolina',
+    name: 'Carolina', recommended: false, type: 'fondo',
+    use: 'Recorrer mucha agua por el fondo',
+    why: 'El plomo corredizo va arriba, frenado por el emerillón, y la goma trabaja suelta al final de un tramo de línea.',
+    works: 'Se tira lejos y se recoge despacio por el fondo: el plomo marca el fondo y la goma viene detrás, suelta. Sirve en puntas y zonas con relieve.',
+    steps: [
+      'Enhebrar el plomo bala y una perla en la madre.',
+      'Atar un emerillón con Palomar: hace de tope.',
+      'Del otro lado del emerillón, un tramo de línea hasta el anzuelo, con Palomar.',
+      'Montar la goma con la punta escondida, como en el Texas.',
     ],
-    measures: [
-      'Para tararira, el tramo hasta la goma va de alambre de acero (la app lo pide siempre: corta la línea con los dientes).',
-    ],
+    notWhen: ['La fuente no dice en qué casos falla.'],
+    fish: 'Wilson no lo dice para una especie.',
+    tararira: 'Con tararira, el tramo hasta la goma va de alambre de acero (regla de la app).',
+    variants: [],
+    parts: [{ kind: 'line', label: 'Madre' }, { kind: 'swivel', label: 'Emerillón con Palomar' }, { kind: 'hook', label: 'Anzuelo con Palomar' }],
+    measures: ['La fuente no da pesos ni largos.'],
     missing: 'Plomo bala (cónico) corredizo.',
     bait: '',
   },
 };
 
+export const LURE_RIGS = ['senuelo-texas', 'senuelo-free-rig', 'senuelo-drop-shot', 'senuelo-wacky', 'senuelo-damiki', 'senuelo-carolina'];
+
 export const RIGS_BY_SPECIES = {
-  tararira: ['tararira-boya', 'tararira-fondo', 'senuelo-texas', 'senuelo-carolina'],
+  tararira: ['tararira-boya', 'tararira-fondo'],
   bagre: ['bagre-fondo', 'bagre-dos-brazoladas', 'bagre-boya'],
   carpa: ['carpa-fondo', 'carpa-masa', 'carpa-boya'],
 };

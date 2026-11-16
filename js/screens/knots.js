@@ -16,7 +16,7 @@ const MAIN = [
   { id: 'senuelo', tag: 'Señuelo', hint: 'que se mueva libre', icon: 'knot-lure' },
   { id: 'unir', tag: 'Empalme', hint: 'unir dos líneas', icon: 'knot-join' },
 ];
-const MORE_ICON = { paleta: 'knot-hook', lazos: 'knot-loop', armar: 'knot-dropper', plomada: 'knot-sinker', acero: 'knot-wire' };
+const MORE_ICON = { gomas: 'lure-soft', paleta: 'knot-hook', lazos: 'knot-loop', armar: 'knot-dropper', plomada: 'knot-sinker', acero: 'knot-wire' };
 // Questions that pick the knot in one tap.
 const DECIDE = {
   unir: { q: '¿Las dos líneas tienen el mismo grosor?', a: [['Sí', 'sangre'], ['No', 'cirujano']] },
@@ -87,7 +87,7 @@ function situations() {
       ${rec ? `<span class="tile-rec">${esc(rec)}</span>` : ''}
     </a>`;
   }).join('');
-  const more = SITUATIONS.filter((s) => !MAIN.some((m) => m.id === s.id)).map((s) => `<a class="big slim" href="#/nudos/${s.id}">${glyph(MORE_ICON[s.id] || 'knot-loop', 40)}<span class="label">${esc(s.title)}</span><span class="go">${ICON.chevron}</span></a>`).join('');
+  const more = [...SITUATIONS].sort((a, b) => (b.id === 'gomas') - (a.id === 'gomas')).filter((s) => !MAIN.some((m) => m.id === s.id)).map((s) => `<a class="big slim" href="#/nudos/${s.id}">${glyph(MORE_ICON[s.id] || 'knot-loop', 40)}<span class="label">${esc(s.title)}</span><span class="go">${ICON.chevron}</span></a>`).join('');
   const lastRow = last && KNOTS[last] ? `<a class="big slim yellow" href="${knotHref(last)}">${knotMini(last) ? `<span class="mini">${knotMini(last)}</span>` : ''}<span class="label">Último: ${esc(KNOTS[last].name)}</span><span class="go">${ICON.chevron}</span></a>` : '';
   const body = `<h2 class="group-title first">¿Qué querés atar?</h2>
     <div class="tiles">${main}</div>
@@ -118,7 +118,7 @@ function situation(s) {
     body += `<div class="decide"><p><strong>${esc(d.q)}</strong></p><div class="decide-row">${d.a.map(([label, id]) => `<a class="btn yellow" href="#/nudos/${s.id}/${id}">${esc(label)} → ${esc(KNOTS[id].name)}</a>`).join('')}</div></div>`;
   } else if (s.note) body += `<div class="card note"><p>${rich(s.note)}</p></div>`;
   if (s.rigs?.length) {
-    body += '<p>La plomada no lleva un nudo propio: depende de cómo se arma la línea.</p>';
+    body += s.id === 'gomas' ? '<p>Cómo montar una goma según dónde está el pez. Tocá uno para ver cómo se arma, sus variantes y cuándo no conviene.</p>' : '<p>La plomada no lleva un nudo propio: depende de cómo se arma la línea.</p>';
     body += [...s.rigs].sort((a, b) => s.recommended.includes(b) - s.recommended.includes(a)).map((id) => rigLinkCard(RIGS[id], s.recommended.includes(id))).join('');
   }
   const order = (ids) => [...ids].sort((a, b) => s.recommended.includes(b) - s.recommended.includes(a));
