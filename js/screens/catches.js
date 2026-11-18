@@ -9,7 +9,8 @@ import { glyph } from '../drawings/glyphs.js';
 import { load, save } from '../store.js';
 import { todayAR, dayKey } from '../logic/dates.js';
 import { moonPhaseName } from '../logic/moon.js';
-import { cachedDays } from '../weather-service.js';
+import { cachedDays, getCachedForecast, NAVARRO } from '../weather-service.js';
+import { pickOnMap } from '../map-picker.js';
 import { windDir } from '../logic/weather.js';
 
 const KEY = 'catches';
@@ -174,11 +175,14 @@ function form(params, ctx) {
     `<button type="button" class="sp-opt${!draft.species ? ' on' : ''}" data-sp="" aria-pressed="${!draft.species}">${glyph('fish', 36)}<span>No sé</span></button>`].join('');
   const body = `
     <form class="catch-form" data-form novalidate>
-      <label class="photo-pick">
-        <input type="file" accept="image/*" capture="environment" data-file hidden>
+      <div class="photo-pick">
         <img alt="Foto de la captura" data-preview hidden>
-        <span class="photo-empty">${glyph('camera', 44)}<span>Agregar foto</span></span>
-      </label>
+        <span class="photo-empty">${glyph('camera', 44)}<span>Foto (opcional)</span></span>
+      </div>
+      <div class="two">
+        <label class="btn white block">${glyph('camera', 22)}<span>Sacar foto</span><input type="file" accept="image/*" capture="environment" data-file hidden></label>
+        <label class="btn white block"><span>Elegir de la galería</span><input type="file" accept="image/*" data-file hidden></label>
+      </div>
       ${draft.hasPhoto || draft.photo ? '<button type="button" class="btn white" data-nophoto>Quitar la foto</button>' : ''}
       <h2 class="block-title">Especie</h2>
       <div class="sp-grid">${opts}</div>
@@ -207,7 +211,7 @@ function form(params, ctx) {
       f.addEventListener('input', sync);
       if (draft.photo) { const u = URL.createObjectURL(draft.photo); urls.push(u); img.src = u; img.hidden = false; }
       else if (draft.hasPhoto && editId) showPhoto(img, editId);
-      root.querySelector('[data-file]').addEventListener('change', async (e) => {
+      root.querySelectorAll('[data-file]').forEach((inp) => inp.addEventListener('change', async (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
         try { draft.photo = await shrink(file); } catch { draft.photo = file; }
@@ -215,7 +219,7 @@ function form(params, ctx) {
         urls.push(u);
         img.src = u;
         img.hidden = false;
-      });
+      }));
       root.querySelector('[data-nophoto]')?.addEventListener('click', () => { draft.photo = null; draft.hasPhoto = false; draft.removePhoto = true; ctx.refresh(); });
       root.querySelectorAll('[data-sp]').forEach((b) => b.addEventListener('click', () => { sync(); draft.species = b.dataset.sp || null; ctx.refresh(); }));
       bindPlace(root, ctx);
@@ -256,19 +260,34 @@ function placeHtml() {
   if (draft.place) {
     return `${glyph('pin', 28)}<span class="place-txt"><strong>Ubicación guardada</strong><small>${draft.place.lat.toFixed(4)}, ${draft.place.lon.toFixed(4)}</small></span><button type="button" class="btn white" data-noplace>Quitar</button>`;
   }
-  return `<button type="button" class="btn white block" data-addplace>${glyph('pin', 24)} Agregar ubicación</button>`;
+  return `<p class="mini-title">${glyph('pin', 22)} Ubicación (opcional)</p>
+    <div class="two"><button type="button" class="btn white block" data-here>Donde estoy ahora</button>
+    <button type="button" class="btn white block" data-onmap>Marcar en el mapa</button></div>
+    <p class="small muted" data-place-msg aria-live="polite"></p>`;
+}
+
+/** Where the map opens: the phone's place if it is known, else the place of the forecast, else Navarro. */
+function mapStart() {
+  const gps = load('gps', 1, null);
+  if (gps?.place) return gps.place;
+  const f = getCachedForecast();
+  return f?.place || NAVARRO;
 }
 
 function bindPlace(root, ctx) {
-  root.querySelector('[data-addplace]')?.addEventListener('click', (e) => {
-    const btn = e.currentTarget;
-    if (!('geolocation' in navigator)) { btn.textContent = 'El teléfono no da la ubicación'; return; }
-    btn.textContent = 'Buscando ubicación…';
+  const msg = root.querySelector('[data-place-msg]');
+  root.querySelector('[data-here]')?.addEventListener('click', () => {
+    if (!('geolocation' in navigator)) { msg.textContent = 'El teléfono no da la ubicación: marcala en el mapa.'; return; }
+    msg.textContent = 'Buscando la ubicación…';
     navigator.geolocation.getCurrentPosition(
       (pos) => { draft.place = { lat: pos.coords.latitude, lon: pos.coords.longitude }; ctx.refresh(); },
-      () => { btn.textContent = 'Sin permiso de ubicación: se guarda sin lugar'; },
+      () => { msg.textContent = 'Sin permiso de ubicación: podés marcarla en el mapa.'; },
       { timeout: 15000, maximumAge: 300000, enableHighAccuracy: true },
     );
+  });
+  root.querySelector('[data-onmap]')?.addEventListener('click', async () => {
+    const p = await pickOnMap(draft.place || mapStart());
+    if (p) { draft.place = { lat: p.lat, lon: p.lon }; ctx.refresh(); }
   });
   root.querySelector('[data-noplace]')?.addEventListener('click', () => { draft.place = null; ctx.refresh(); });
 }

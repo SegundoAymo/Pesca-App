@@ -19,7 +19,9 @@ export function topbar(title, sub = '') {
 }
 
 export function screen(title, body, sub = '', cls = '') {
-  return `${topbar(title, sub)}<main class="content${cls ? ` ${cls}` : ''}">${body}</main>`;
+  const here = (typeof location !== 'undefined' ? location.hash || '#/' : '#/').replace(/^#\/?/, '');
+  const report = here.startsWith('reportar') ? '' : `<a class="report-link" href="#/reportar${here ? `/${here}` : ''}">Reportar un problema o pedir un cambio</a>`;
+  return `${topbar(title, sub)}<main class="content${cls ? ` ${cls}` : ''}">${body}${report}</main>`;
 }
 
 /** Small rounded label. kind: '' (white), 'rec' (recommended, yellow with star), 'cat'

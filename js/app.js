@@ -6,9 +6,10 @@ import * as fish from './screens/fish.js';
 import * as knots from './screens/knots.js';
 import * as checklist from './screens/checklist.js';
 import * as rigs from './screens/rigs.js';
+import * as report from './screens/report.js';
 import { setUpdate } from './update.js';
 
-const SCREENS = { '': home, calendario: calendar, clima: weather, peces: fish, nudos: knots, checklist, armados: rigs };
+const SCREENS = { '': home, calendario: calendar, clima: weather, peces: fish, nudos: knots, checklist, armados: rigs, reportar: report };
 
 const root = document.getElementById('app');
 // History of this visit: entries[i] is the hash of history entry i (each entry carries

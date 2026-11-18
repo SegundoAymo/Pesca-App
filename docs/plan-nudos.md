@@ -123,7 +123,7 @@ Lo que dijo de cada nudo (sus palabras, resumidas) y lo que muestra su imagen:
    2. Se dan 3 o 4 vueltas sobre la línea.
    3. Se tira muy fuerte de las dos puntas y se cortan los sobrantes con un alicate.
 
-   **16/11/2026:** el usuario dijo que al dar las vueltas se le desenrollaban y pidió aclarar qué parte queda tensa y dónde va el agarre. Se reescribieron los textos con el agarre (mano izquierda: línea tensa y pinza de pulgar e índice sobre las vueltas; mano derecha: vueltas) y la nota (dos topes con trenzado; no apretarlo de más). Falta rehacer el dibujo con la imagen n6, mostrando la pinza de los dedos.
+   **16/11/2026:** el usuario dijo que al dar las vueltas se le desenrollaban y pidió aclarar qué parte queda tensa y dónde va el agarre. Se reescribieron los textos con el agarre (mano izquierda: línea tensa y pinza de pulgar e índice sobre las vueltas; mano derecha: vueltas) y la nota (dos topes con trenzado; no apretarlo de más). El 18/11 se sumó al dibujo actual la marca de "sostener" donde aprietan los dedos (pasos 1 a 3). Falta rehacerlo en 3D con la imagen n6 y el proceso de la spec.
 
    **Además pidió buscar en internet** si pasa algo cuando se hace con nylon o si conviene otro hilo (por ejemplo, si el nylon roza o daña la línea al correr, o si se afloja), y aclararlo en la app con las fuentes.
 

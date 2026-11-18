@@ -118,8 +118,13 @@ function situation(s) {
     body += `<div class="decide"><p><strong>${esc(d.q)}</strong></p><div class="decide-row">${d.a.map(([label, id]) => `<a class="btn yellow" href="#/nudos/${s.id}/${id}">${esc(label)} → ${esc(KNOTS[id].name)}</a>`).join('')}</div></div>`;
   } else if (s.note) body += `<div class="card note"><p>${rich(s.note)}</p></div>`;
   if (s.rigs?.length) {
-    body += s.id === 'gomas' ? '<p>Cómo montar una goma según dónde está el pez. Tocá uno para ver cómo se arma, sus variantes y cuándo no conviene.</p>' : '<p>La plomada no lleva un nudo propio: depende de cómo se arma la línea.</p>';
-    body += [...s.rigs].sort((a, b) => s.recommended.includes(b) - s.recommended.includes(a)).map((id) => rigLinkCard(RIGS[id], s.recommended.includes(id))).join('');
+    body += s.id === 'gomas' ? '<p>Cómo armar cada señuelo según dónde está el pez. Tocá uno para ver cómo se arma, sus variantes y cuándo no conviene.</p>' : '<p>La plomada no lleva un nudo propio: depende de cómo se arma la línea.</p>';
+    if (s.id === 'gomas') {
+      const forT = s.rigs.filter((id) => RIGS[id].forTararira);
+      const rest = s.rigs.filter((id) => !RIGS[id].forTararira);
+      body += `<h2 class="group-title">Recomendados para tararira</h2>${forT.map((id) => rigLinkCard(RIGS[id], false)).join('')}`
+        + `<h2 class="group-title">Otros montajes de goma</h2><p class="small muted">Probados en black bass; con tararira, cada uno dice dónde va el acero.</p>${rest.map((id) => rigLinkCard(RIGS[id], false)).join('')}`;
+    } else body += [...s.rigs].sort((a, b) => s.recommended.includes(b) - s.recommended.includes(a)).map((id) => rigLinkCard(RIGS[id], s.recommended.includes(id))).join('');
   }
   const order = (ids) => [...ids].sort((a, b) => s.recommended.includes(b) - s.recommended.includes(a));
   const ready = order(s.knots.filter((id) => REDRAWN.includes(id) && !IN_CORRECTION.includes(id)));

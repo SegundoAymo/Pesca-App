@@ -15,6 +15,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-11-18 — Claude — Montajes para tararira, anzuelos, reportar, capturas con galería y mapa
+- Rama y pull request: `ccr-b05cd55e-26yu7u`, pull request a `main`.
+- Qué se hizo: rana antienganche, spinnerbait y goma en cabeza jig (boceto aprobado), con grupos "Recomendados para tararira" / "Otros"; anzuelos con su forma (`js/drawings/hook.js`) en todos los dibujos de montajes y armados, con detalle ampliado; botón de reportar (issue de GitHub o copiar); Mis capturas con galería y ubicación actual o marcada en un mapa (OpenStreetMap, sin librerías); marcas de agarre en el dibujo del tope corredizo.
+- Pruebas: `node --test` pasa (58). Recorrido con Playwright: mapa (arrastrar y elegir punto) y pantalla de reportar.
+- Pendiente: tope corredizo rehecho en 3D con la imagen n6. El reporte por GitHub necesita que el usuario esté con su cuenta de GitHub.
+- Para el próximo: `APP_VERSION` (`js/version.js`) va siempre igual a `VERSION` de `sw.js` (hay prueba).
+
 ## 2026-11-16 — Claude — Tope corredizo: cómo agarrarlo
 - Rama y pull request: `ccr-b05cd55e-26yu7u`, pull request a `main`.
 - Qué se hizo: pedido del usuario (se le desenrollaban las vueltas). Textos del tope corredizo reescritos según su imagen n6 y guías de "bobber stop knot", con el agarre en cada paso y la nota (dos topes con trenzado, no apretar de más). `js/data/knots.js` tocado solo en el tope.

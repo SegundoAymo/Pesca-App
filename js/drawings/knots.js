@@ -1416,17 +1416,19 @@ const SANGRE = [
 const TP_LOOP = 'M100 70 H200 C220 70 220 100 200 100 H100';
 const tpWraps = (c) => coil(120, 85, 5, 14, 18, c, 1);
 const TOPE = [
-  seg('M10 85 H310', L1.still) + seg(TP_LOOP, L2.move) + tip(100, 70, 180, L2.move) + tip(100, 100, 180, L2.move) + text(160, 140, 'hilo de 15 cm formando un lazo'),
+  seg('M10 85 H310', L1.still) + seg(TP_LOOP, L2.move) + tip(100, 70, 180, L2.move) + tip(100, 100, 180, L2.move) + text(160, 140, 'hilo de 15 cm formando un lazo')
+    + hold(112, 85) + text(112, 34, 'apretar acá'),
   st(() => {
     const w = tpWraps(L2.move);
     return w.back + seg('M10 85 H310', L1.still) + seg(TP_LOOP, L2.done) + tip(100, 70, 180, L2.done) + w.front
-      + seg('M100 100 C108 104 114 104 120 103', L2.move) + tip(190, 103, 0, L2.move) + text(150, 140, '4 o 5 vueltas');
+      + seg('M100 100 C108 104 114 104 120 103', L2.move) + tip(190, 103, 0, L2.move) + text(150, 140, '4 o 5 vueltas')
+      + hold(112, 85) + text(112, 34, 'sin soltar');
   }),
   st(() => {
     const w = tpWraps(L2.done);
     return w.back + seg('M10 85 H310', L1.still) + seg(TP_LOOP, L2.done) + tip(100, 70, 180, L2.done) + w.front
       + seg('M190 103 C204 110 214 100 214 86', L2.move) + tip(214, 84, -90, L2.move) + arrow('M100 130 C140 136 180 126 200 112')
-      + text(110, 150, 'pasar la punta por el lazo');
+      + text(110, 150, 'pasar la punta por el lazo') + hold(112, 85) + text(112, 34, 'sin soltar');
   }),
   st(() => {
     const w = coil(170, 85, 5, 6, 10, L2.done);

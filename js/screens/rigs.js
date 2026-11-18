@@ -7,6 +7,7 @@ import { KNOTS, SITUATIONS } from '../data/knots.js';
 import { SPECIES } from '../data/species.js';
 import { rigSvg, RIG_KEY } from '../drawings/rigs.js';
 import { lureRigSvg } from '../drawings/lure-rigs.js';
+import { hookSvg } from '../drawings/hook.js';
 import { glyph } from '../drawings/glyphs.js';
 import { addItems } from './checklist.js';
 
@@ -51,18 +52,25 @@ export function missingItems(rig) {
 }
 
 /** Soft-lure rigs: how it works, how to tie it, variants, when not, which fish. */
+/** The hook of a rig, big, with its shape (pedido del usuario del 18/11/2026). */
+function hookDetail(h) {
+  const big = hookSvg({ x: 30, y: 74, s: 2.1, kind: h.kind, len: h.kind === 'long' ? 40 : h.kind === 'dropshot' ? 18 : 30, gap: h.kind === 'dropshot' ? 7 : 9 });
+  return `<div class="hook-detail"><svg viewBox="0 0 150 100" width="150" height="100" role="img" aria-label="${esc(`Anzuelo ${h.title}`)}">${big}</svg><p><strong>${esc(h.title)}</strong><br>${esc(h.text)}</p></div>`;
+}
+
 function lureSections(rig) {
   const variants = rig.variants?.length ? `<h2 class="block-title">Variantes</h2><div class="variants">${rig.variants.map((v) => `<div class="variant">
       ${v.art ? `<div class="variant-art">${lureRigSvg(v.art, `Variante ${v.name}`)}</div>` : ''}
       <p class="variant-name">${esc(v.name)}</p><p><strong>Qué cambia:</strong> ${esc(v.what)}</p><p><strong>Cuándo:</strong> ${esc(v.when)}</p>
     </div>`).join('')}</div>` : '';
-  return `<h2 class="block-title">Cómo funciona</h2><p>${esc(rig.works)}</p>
+  return `${rig.hooks?.length ? `<h2 class="block-title">El anzuelo</h2>${rig.hooks.map(hookDetail).join('')}` : ''}
+    <h2 class="block-title">Cómo funciona</h2><p>${esc(rig.works)}</p>
     <h2 class="block-title">Cómo armarlo</h2><ol class="tips">${rig.steps.map((x) => `<li>${esc(x)}</li>`).join('')}</ol>
     ${rig.measures?.length ? `<div class="kit">${glyph('ruler', 30)}<p>${rig.measures.map(esc).join('<br>')}</p></div>` : ''}
     ${variants}
     <h2 class="block-title">Cuándo no conviene</h2><ul class="list">${rig.notWhen.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
     <h2 class="block-title">Para qué peces</h2><p>${esc(rig.fish)}</p>
-    <div class="warn">${glyph('teeth', 34)}<span>${esc(rig.tararira)}</span></div>`;
+    <div class="${rig.forTararira ? 'kit' : 'warn'}">${glyph('teeth', 34)}<span>${esc(rig.tararira)}</span></div>`;
 }
 
 /** Compact card that links to a rig (used in Nudos → Plomada). */
@@ -81,7 +89,8 @@ function rigScreen(rig) {
   const others = sp ? (RIGS_BY_SPECIES[sp.id] || []).filter((id) => id !== rig.id) : [];
   const tags = [
     rig.recommended ? chip('Recomendado', 'rec') : '',
-    chip({ boya: 'Con boya', fondo: 'De fondo', media: 'Media agua' }[rig.type] || 'De fondo', '', { icon: glyph({ boya: 'surface', media: 'midwater' }[rig.type] || 'bottom', 20) }),
+    chip({ boya: 'Con boya', fondo: 'De fondo', media: 'Media agua', superficie: 'Superficie' }[rig.type] || 'De fondo', '', { icon: glyph({ boya: 'surface', superficie: 'surface', media: 'midwater' }[rig.type] || 'bottom', 20) }),
+    rig.forTararira ? chip('Para tararira', 'cat') : '',
   ].join('');
   const body = `
     <div class="chips">${tags}</div>
