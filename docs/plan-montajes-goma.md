@@ -23,3 +23,9 @@
 | Wacky | Clásico (dibujo), Neko (dibujo), Aro corrido |
 | Damiki | Cabeza liviana (dibujo), Cabeza pesada, Con cucharita (underspin) |
 | Carolina | — |
+
+## Para tararira (aprobados el 18/11/2026)
+Rana antienganche (hueca y maciza), spinnerbait y goma en cabeza jig, recomendados para tararira/traíra por guías de Argentina (Suiza Outdoor, Pescabox) y Brasil (Guia Pesca Esportiva, Guia o Melhor), vistas por búsqueda. Boceto aprobado: `docs/fuentes/imagenes/montajes-tararira-boceto-aprobado.png`. El líder de acero armado (emerillón a la madre, señuelo en el mosquetón) lo definió Claude. La sección pasó a llamarse "Montajes de señuelos", con dos grupos: "Recomendados para tararira" y "Otros montajes de goma".
+
+## Anzuelos (18/11/2026)
+Pedido del usuario: los anzuelos "parecen un alambre". Nuevo `js/drawings/hook.js`: ojal, pata, curva, punta con rebaba y la forma de cada tipo (offset con doblez en Z, doble de rana, pata larga, curva abierta, de drop shot, cabeza jig con trabas). Lo usan todos los dibujos de montajes y los armados de línea, y cada montaje tiene una sección "El anzuelo" con el dibujo ampliado.

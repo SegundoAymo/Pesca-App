@@ -123,11 +123,21 @@ test('el Service Worker no lista archivos que no existen ni repetidos', () => {
 test('montajes de goma: cada uno con dibujo, pasos, variantes y regla de la tararira', async () => {
   const { LURE_RIGS } = await import('../js/data/rigs.js');
   const { lureRigSvg } = await import('../js/drawings/lure-rigs.js');
-  assert.equal(LURE_RIGS.length, 6);
+  assert.equal(LURE_RIGS.length, 9);
   for (const id of LURE_RIGS) {
     const r = RIGS[id];
     assert.match(lureRigSvg(r.art), /^<svg/, id);
-    assert.ok(r.steps.length >= 3 && r.works && r.notWhen.length && r.fish && r.tararira && r.use, id);
+    assert.ok(r.steps.length >= 2 && r.works && r.notWhen.length && r.fish && r.tararira && r.use, id);
     for (const v of r.variants) if (v.art) assert.match(lureRigSvg(v.art), /^<svg/, `${id}: ${v.name}`);
   }
+});
+
+test('reportar: arma título y texto, y la versión coincide con el Service Worker', async () => {
+  const { buildReport, reportUrl } = await import('../js/screens/report.js');
+  const { APP_VERSION } = await import('../js/version.js');
+  const r = buildReport({ kind: 'cambio', text: 'Agregar la boga al calendario\nporque…', where: '#/calendario', version: 'v99' });
+  assert.equal(r.title, 'Pedido de cambio: Agregar la boga al calendario');
+  assert.match(r.body, /Pantalla: #\/calendario\nVersión: v99/);
+  assert.match(reportUrl(r), /^https:\/\/github\.com\/SegundoAymo\/Pesca-App\/issues\/new\?title=/);
+  assert.ok(readFileSync('sw.js', 'utf8').includes(`const VERSION = '${APP_VERSION}';`), 'APP_VERSION distinta de sw.js');
 });

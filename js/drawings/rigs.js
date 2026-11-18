@@ -1,6 +1,8 @@
 // Vertical drawings of line rigs, generated from the parts list in js/data/rigs.js:
 // from the main line (top) to the hook (bottom), each piece named on the right.
 
+import { hookSvg } from './hook.js';
+
 const X = 66; // the line runs down this x
 const LABEL_X = 112;
 const W = 330;
@@ -42,7 +44,7 @@ const GLYPH = {
   'sinker-fixed': (x, y) => ({ h: 52, svg: `<circle cx="${x}" cy="${y + 6}" r="4" fill="none" stroke="#0B0B0B" stroke-width="2"/><path d="M${x} ${y + 10} C${x + 15} ${y + 22} ${x + 16} ${y + 44} ${x} ${y + 50} C${x - 16} ${y + 44} ${x - 15} ${y + 22} ${x} ${y + 10}Z" fill="${C.lead}" stroke="#0B0B0B" stroke-width="2"/>` }),
   swivel: (x, y) => ({ h: 40, svg: `<circle cx="${x}" cy="${y + 7}" r="5" fill="none" stroke="${C.lead}" stroke-width="2.4"/><rect x="${x - 5}" y="${y + 12}" width="10" height="16" rx="3" fill="${C.lead}" stroke="${C.lead}" stroke-width="2"/><circle cx="${x}" cy="${y + 33}" r="5" fill="none" stroke="${C.lead}" stroke-width="2.4"/>` }),
   'split-shot': (x, y) => ({ h: 24, svg: `<circle cx="${x}" cy="${y + 12}" r="6" fill="${C.lead}" stroke="#0B0B0B" stroke-width="1.5"/>` }),
-  hook: (x, y) => ({ h: 56, svg: `<circle cx="${x}" cy="${y + 5}" r="4" fill="none" stroke="${C.lead}" stroke-width="2.4"/><path d="M${x} ${y + 9} V${y + 38} a11 11 0 0 1 -22 0 v-6" fill="none" stroke="${C.lead}" stroke-width="3" stroke-linecap="round"/><path d="M${x - 22} ${y + 32} l5 6" stroke="${C.lead}" stroke-width="2.6" stroke-linecap="round"/>` }),
+  hook: (x, y) => ({ h: 56, svg: hookSvg({ x, y: y + 9, rot: 90, len: 30, gap: 11, flip: true }) }),
   dough: (x, y) => ({ h: 52, svg: `<circle cx="${x}" cy="${y + 26}" r="22" fill="#E8C98A" stroke="#0B0B0B" stroke-width="2"/><circle cx="${x - 8}" cy="${y + 19}" r="2" fill="#B08A48"/><circle cx="${x + 7}" cy="${y + 31}" r="2" fill="#B08A48"/><circle cx="${x + 9}" cy="${y + 16}" r="1.6" fill="#B08A48"/>` }),
   // Bullet sinker: a cone with its point up (toward the rod), the line through it.
   'sinker-bullet': (x, y) => ({ h: 40, svg: `<path d="M${x} ${y + 4} C${x + 4} ${y + 10} ${x + 10} ${y + 26} ${x + 10} ${y + 34} Q${x} ${y + 38} ${x - 10} ${y + 34} C${x - 10} ${y + 26} ${x - 4} ${y + 10} ${x} ${y + 4}Z" fill="${C.lead}" stroke="#0B0B0B" stroke-width="2"/><path d="M${x} ${y + 6} v28" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="3 3"/>` }),

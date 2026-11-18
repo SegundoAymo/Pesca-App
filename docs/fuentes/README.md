@@ -35,3 +35,4 @@ Fuentes del modelo de puntaje (temperatura del agua, luna, presión): `docs/spec
 - Para mirar una página de un PDF: `pdftoppm -r 110 -f <pág> -l <pág> -png <pdf> <salida>`.
 
 | `imagenes/montajes-goma-boceto-aprobado.png` | Boceto de Claude de los 5 montajes de goma del video del usuario, aprobado el 16/11/2026 | Propio | Referencia de cómo quedan armados | `docs/plan-montajes-goma.md` |
+| `imagenes/montajes-tararira-boceto-aprobado.png` | Boceto de Claude de rana antienganche, spinnerbait y goma en cabeza jig, aprobado el 18/11/2026 | Propio | Cómo quedan armados y sus anzuelos | `docs/plan-montajes-goma.md` |

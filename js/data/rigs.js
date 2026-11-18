@@ -260,7 +260,7 @@ export const RIGS = {
   // Campos propios: art (dibujo en js/drawings/lure-rigs.js), use (para qué sirve, en una
   // línea), works, steps, notWhen, fish, tararira, variants [{ name, art, what, when }].
   'senuelo-texas': {
-    id: 'senuelo-texas', species: null, letter: '', lure: true, art: 'texas',
+    id: 'senuelo-texas', hooks: [{ kind: 'offset', title: 'Offset', text: 'Doblez en Z junto al ojal: traba la cabeza de la goma; la punta vuelve a entrar en el cuerpo.' }], species: null, letter: '', lure: true, art: 'texas',
     name: 'Texas', recommended: true, type: 'fondo',
     use: 'Entre plantas y palos, sin engancharse',
     why: 'El plomo bala corre por la línea y llega hasta la cabeza de la goma; la punta del anzuelo va escondida adentro de la goma, así pasa entre plantas y palos sin engancharse.',
@@ -285,7 +285,7 @@ export const RIGS = {
     bait: '',
   },
   'senuelo-free-rig': {
-    id: 'senuelo-free-rig', species: null, letter: '', lure: true, art: 'free',
+    id: 'senuelo-free-rig', hooks: [{ kind: 'offset', title: 'Offset', text: 'El mismo del Texas: la punta queda escondida en la goma.' }], species: null, letter: '', lure: true, art: 'free',
     name: 'Free rig', recommended: false, type: 'fondo',
     use: 'Caída natural de la goma, agua clara',
     why: 'El plomo tiene ojal y corre libre por la línea, arriba del anzuelo; nada va pegado a la goma. Al caer, el plomo llega primero al fondo y la goma baja sola detrás, de forma natural.',
@@ -310,7 +310,7 @@ export const RIGS = {
     bait: '',
   },
   'senuelo-drop-shot': {
-    id: 'senuelo-drop-shot', species: null, letter: '', lure: true, art: 'dropshot',
+    id: 'senuelo-drop-shot', hooks: [{ kind: 'dropshot', title: 'De drop shot', text: 'Chico y de pata corta, con la punta hacia arriba; la goma va solo por la nariz.' }], species: null, letter: '', lure: true, art: 'dropshot',
     name: 'Drop shot', recommended: false, type: 'fondo',
     use: 'Goma quieta sobre el fondo',
     why: 'El anzuelo va en el medio de la línea y el plomo al final: el plomo queda quieto en el fondo y la goma flota más arriba, a la altura que marca el tramo de línea entre los dos.',
@@ -334,7 +334,7 @@ export const RIGS = {
     bait: '',
   },
   'senuelo-wacky': {
-    id: 'senuelo-wacky', species: null, letter: '', lure: true, art: 'wacky',
+    id: 'senuelo-wacky', hooks: [{ kind: 'wide', title: 'De curva abierta', text: 'Pata corta y curva amplia, para atravesar el gusano o pasar por el aro.' }], species: null, letter: '', lure: true, art: 'wacky',
     name: 'Wacky', recommended: false, type: 'media',
     use: 'Caída lenta, sin plomo',
     why: 'Un gusano recto (tipo Senko) enganchado por el medio, sin plomo: cae despacio con las dos puntas moviéndose, y eso es lo que provoca la picada.',
@@ -358,7 +358,7 @@ export const RIGS = {
     bait: '',
   },
   'senuelo-damiki': {
-    id: 'senuelo-damiki', species: null, letter: '', lure: true, art: 'damiki',
+    id: 'senuelo-damiki', hooks: [{ kind: 'jig', title: 'Cabeza jig con quilla', text: 'Ojal arriba a 90°; la quilla de plomo va debajo del anzuelo.' }], species: null, letter: '', lure: true, art: 'damiki',
     name: 'Damiki', recommended: false, type: 'media',
     use: 'En vertical, a media agua',
     why: 'Una cabeza jig con el ojal para arriba y una quilla de plomo debajo, con una goma tipo pececito: la goma queda horizontal, como un pez quieto.',
@@ -381,10 +381,79 @@ export const RIGS = {
     missing: 'Cabezas jig con quilla y ojal a 90°, gomas tipo pececito.',
     bait: '',
   },
+  // ---- Para tararira (pedido del usuario del 16/11/2026, boceto aprobado el 18/11). Fuentes
+  // que los recomiendan para tararira/traíra, vistas por búsqueda: guías de Suiza Outdoor y
+  // Pescabox (Argentina), Guia Pesca Esportiva y Guia o Melhor (Brasil). El armado del líder
+  // de acero (emerillón y mosquetón) lo definió Claude. Detalle: docs/plan-montajes-goma.md.
+  'senuelo-rana': {
+    id: 'senuelo-rana', hooks: [{ kind: 'double', title: 'Doble (rana hueca)', text: 'Un ojal, dos curvas juntas; las puntas, hacia arriba, pegadas al lomo.' }, { kind: 'offset', title: 'Offset (rana maciza)', text: 'Doblez en Z junto al ojal: traba la goma y deja la punta escondida.' }], species: null, letter: '', lure: true, art: 'frog', forTararira: true,
+    name: 'Rana antienganche', recommended: true, type: 'superficie',
+    use: 'Sobre camalotes y juncos',
+    why: 'Las puntas del anzuelo van pegadas al cuerpo de la rana, hacia arriba: pasa por arriba de camalotes y juncos sin engancharse. Es donde embosca la tararira.',
+    works: 'Se tira sobre la vegetación y se recoge lento, con pausas; en los claros, dejarla quieta unos segundos. El ataque suele ser explosivo: esperar 1 o 2 segundos antes de clavar.',
+    steps: [
+      'Atar el emerillón del líder de acero a la madre con Palomar.',
+      'Prender la rana en el mosquetón del líder.',
+      'Revisar que las puntas del anzuelo queden pegadas al lomo (la hueca) o escondidas en la goma (la maciza).',
+    ],
+    notWhen: ['Las fuentes no dicen en qué casos falla.', 'Si se clava apenas se ve el golpe, se suele errar: esperar 1 o 2 segundos.'],
+    fish: 'Recomendada para tararira (guías de Argentina y Brasil).',
+    tararira: 'Con líder de acero armado: emerillón a la madre y la rana en el mosquetón.',
+    variants: [
+      { name: 'Hueca', art: 'frog', what: 'Cuerpo hueco con anzuelo doble por fuera, pegado al lomo.', when: 'Vegetación muy cerrada, sobre camalotes.' },
+      { name: 'Maciza', art: 'frog-solid', what: 'Rana de goma con anzuelo offset escondido (la Caster Killer Frog del kit).', when: 'Juncos y claros; también se trabaja "paseando" con toques de puntera.' },
+    ],
+    parts: [{ kind: 'line', label: 'Madre' }, { kind: 'swivel', label: 'Emerillón con Palomar' }],
+    measures: ['Las fuentes no dan medidas.'],
+    missing: 'Rana hueca (la maciza ya está en el kit) y líder de acero armado con mosquetón.',
+    bait: '',
+  },
+  'senuelo-spinnerbait': {
+    id: 'senuelo-spinnerbait', hooks: [{ kind: 'long', title: 'Pata larga', text: 'Curva amplia y punta hacia arriba; la cabeza de plomo va fundida en el anzuelo.' }], species: null, letter: '', lure: true, art: 'spinnerbait', forTararira: true,
+    name: 'Spinnerbait', recommended: false, type: 'media',
+    use: 'Bordes de juncos y agua turbia',
+    why: 'Un alambre doblado con dos brazos: arriba, cucharitas que giran y brillan; abajo, la cabeza de plomo, la faldita y el anzuelo con la punta hacia arriba. El brazo de arriba protege la punta y lo ayuda a pasar entre el pasto.',
+    works: 'Se recoge parejo, rozando juncos y pasto, sobre todo con agua turbia. Las guías argentinas lo proponen cuando no hay ataques en superficie.',
+    steps: [
+      'Atar el emerillón del líder de acero a la madre con Palomar.',
+      'Prender el spinnerbait por el codo del alambre en el mosquetón del líder.',
+    ],
+    notWhen: ['La tararira suele atacar en la pausa, y el spinnerbait no se puede pausar bien (una fuente).'],
+    fish: 'Recomendado para tararira/traíra en bordes de pasto y agua turbia (guías de Brasil; las de Argentina, como alternativa).',
+    tararira: 'Con líder de acero armado, prendido en el codo del alambre.',
+    variants: [],
+    parts: [{ kind: 'line', label: 'Madre' }, { kind: 'swivel', label: 'Emerillón con Palomar' }],
+    measures: ['Las fuentes no dan medidas.'],
+    missing: 'Spinnerbait y líder de acero armado con mosquetón.',
+    bait: '',
+  },
+  'senuelo-cabeza-jig': {
+    id: 'senuelo-cabeza-jig', hooks: [{ kind: 'jig', title: 'Cabeza jig', text: 'Bola de plomo fundida, ojal arriba y trabas en el cuello que sostienen la goma.' }], species: null, letter: '', lure: true, art: 'jighead', forTararira: true,
+    name: 'Goma en cabeza jig', recommended: false, type: 'fondo',
+    use: 'Claros de fondo limpio',
+    why: 'Una cabeza de plomo redonda con el anzuelo adentro de la goma y la punta saliendo por el lomo. Va al fondo o a media agua, pero se engancha en lo que toca.',
+    works: 'Se deja caer hasta el fondo y se recoge con saltitos de puntera, o parejo a media agua.',
+    steps: [
+      'Enhebrar la goma en el anzuelo de la cabeza, recta, hasta que tape las trabas del cuello.',
+      'Sacar la punta por el lomo de la goma.',
+      'Atar el emerillón del líder de acero a la madre con Palomar y prender la cabeza en el mosquetón.',
+    ],
+    notWhen: ['Adentro de la vegetación: se engancha en todo lo que toca.', 'Los dientes de la tararira rompen la goma: llevar repuestos.'],
+    fish: 'Recomendada para traíra en fondo limpio (guía de Brasil).',
+    tararira: 'Con líder de acero armado, prendido al ojal de la cabeza.',
+    variants: [
+      { name: 'Pececito (shad)', art: 'jighead', what: 'Goma con cola de paleta.', when: 'Recogida pareja: la cola vibra.' },
+      { name: 'Curly tail', art: 'jighead-curly', what: 'Goma con cola en espiral (el curly root beer del kit).', when: 'Saltitos desde el fondo: pica en la caída.' },
+    ],
+    parts: [{ kind: 'line', label: 'Madre' }, { kind: 'swivel', label: 'Emerillón con Palomar' }],
+    measures: ['Las fuentes no dan medidas.'],
+    missing: 'Cabezas jig, gomas tipo shad y líder de acero armado con mosquetón.',
+    bait: '',
+  },
   // Carolina: Wilson p. 79 del PDF (la fuente no da pesos ni largos). La perla es la de la
   // plomada corrediza del kit.
   'senuelo-carolina': {
-    id: 'senuelo-carolina', species: null, letter: '', lure: true, art: 'carolina',
+    id: 'senuelo-carolina', hooks: [{ kind: 'offset', title: 'Offset', text: 'La punta escondida en la goma, como en el Texas.' }], species: null, letter: '', lure: true, art: 'carolina',
     name: 'Carolina', recommended: false, type: 'fondo',
     use: 'Recorrer mucha agua por el fondo',
     why: 'El plomo corredizo va arriba, frenado por el emerillón, y la goma trabaja suelta al final de un tramo de línea.',
@@ -406,7 +475,7 @@ export const RIGS = {
   },
 };
 
-export const LURE_RIGS = ['senuelo-texas', 'senuelo-free-rig', 'senuelo-drop-shot', 'senuelo-wacky', 'senuelo-damiki', 'senuelo-carolina'];
+export const LURE_RIGS = ['senuelo-rana', 'senuelo-spinnerbait', 'senuelo-cabeza-jig', 'senuelo-texas', 'senuelo-free-rig', 'senuelo-drop-shot', 'senuelo-wacky', 'senuelo-damiki', 'senuelo-carolina'];
 
 export const RIGS_BY_SPECIES = {
   tararira: ['tararira-boya', 'tararira-fondo'],

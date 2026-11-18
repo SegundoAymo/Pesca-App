@@ -84,6 +84,7 @@ export function render() {
     ${btn('#/peces', homeIcon('peces', 84), 'Peces', fishLine(t))}
     ${btn('#/nudos', homeIcon('nudos', 84), 'Nudos', knotLine())}
     ${btn('#/checklist', homeIcon('checklist', 84), 'Checklist', checklistLine())}
+    <a class="report-link home-report" href="#/reportar">Reportar un problema o pedir un cambio</a>
   </div>`;
 
   let alive = true;

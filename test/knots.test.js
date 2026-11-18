@@ -17,7 +17,7 @@ test('cada paso de cada nudo tiene su dibujo', () => {
 
 test('cada armado tiene su dibujo', () => {
   for (const r of Object.values(RIGS)) assert.match(rigSvg(r), /^<svg/);
-  assert.equal(Object.keys(RIGS).length, 17); // 8 de línea, 3 de plomada y 6 de señuelo de goma
+  assert.equal(Object.keys(RIGS).length, 20); // 8 de línea, 3 de plomada y 9 de señuelos
 });
 
 test('las situaciones apuntan a nudos y armados que existen', () => {
