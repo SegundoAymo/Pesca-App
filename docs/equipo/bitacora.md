@@ -15,6 +15,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-11-19 — Claude — Salidas sin pesca y agua medida
+- Rama y pull request: `ccr-b05cd55e-26yu7u`, pull request a `main`.
+- Qué se hizo: salidas en curso o pasadas (con o sin pesca), captura rápida durante una salida, agua medida en la superficie, comparación por condición en "Tus mejores días", aviso en el Inicio. Nuevo `js/logic/outings.js`; datos `outings` v1 en el teléfono.
+- Pruebas: `node --test` pasa (60). Recorrido con Playwright: empezar, agua, captura rápida, Inicio, terminar, salida pasada sin pesca, resumen.
+- Para el próximo: las capturas sin salida (anteriores) cuentan como una salida con pesca por día en la comparación.
+
 ## 2026-11-19 — Claude — Condiciones de cada captura y "Tus mejores días"
 - Rama y pull request: `ccr-b05cd55e-26yu7u`, pull request a `main`.
 - Qué se hizo: en Mis capturas, "Cuándo" con Ahora / Otro día / Sin fecha; se guardan las condiciones de ese momento (luna, agua, temporada, momento del día, puntaje, y del pronóstico si lo hay: temperatura, viento, lluvia, presión); nueva pantalla "Tus mejores días" con barras por condición. Nuevos `js/logic/sun.js` y `js/logic/conditions.js`.

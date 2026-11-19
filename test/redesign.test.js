@@ -164,3 +164,30 @@ test('condiciones de una captura y resumen de los mejores días', async () => {
   const sum = summarize([{ conditions: c }, { conditions: { ...c, moment: 'night' } }, { conditions: null }]);
   assert.deepEqual(sum.find((x) => x.title === 'Momento del día').rows, [{ label: 'Atardecer', n: 1 }, { label: 'Noche', n: 1 }]);
 });
+
+test('salidas: con y sin pesca, y comparación por condición', async () => {
+  const { allOutings, outingStats, activeOuting, measuredWater } = await import('../js/logic/outings.js');
+  const { parseTemp } = await import('../js/screens/catches.js');
+  const nueva = { moon: 'Luna nueva', month: 11, water: 19.5 };
+  const llena = { moon: 'Luna llena', month: 11, water: 19.5 };
+  const outings = [
+    { id: 'a', date: '2026-11-01', start: '06:00', conditions: nueva, water: [{ time: '06:10', c: 21 }] },
+    { id: 'b', date: '2026-11-08', start: '06:00', conditions: llena, water: [] },
+    { id: 'c', date: '2026-11-09', start: '06:00', conditions: llena, water: [] },
+    { id: 'd', date: '2026-11-10', start: '06:00', conditions: nueva, active: true },
+  ];
+  const catches = [
+    { id: 'x', outingId: 'a', date: '2026-11-01', conditions: nueva },
+    { id: 'y', outingId: 'a', date: '2026-11-01', conditions: nueva },
+    { id: 'z', date: '2026-10-20', time: '07:00', conditions: nueva }, // suelta, de antes de las salidas
+  ];
+  assert.equal(activeOuting(outings).id, 'd');
+  assert.equal(measuredWater(outings[0]), 21);
+  const all = allOutings(outings, catches);
+  assert.deepEqual(all.map((o) => [o.id, o.n]), [['c', 0], ['b', 0], ['a', 2], ['dia-2026-10-20', 1]]);
+  const luna = outingStats(all).find((s) => s.title === 'Luna').rows;
+  assert.deepEqual(luna, [{ label: 'Luna nueva', outings: 2, withFish: 2, fish: 3 }, { label: 'Luna llena', outings: 2, withFish: 0, fish: 0 }]);
+  assert.equal(parseTemp('19,5'), 19.5);
+  assert.equal(parseTemp('60'), null);
+  assert.equal(parseTemp(''), null);
+});
