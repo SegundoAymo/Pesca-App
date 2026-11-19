@@ -15,6 +15,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-11-19 — Claude — Condiciones de cada captura y "Tus mejores días"
+- Rama y pull request: `ccr-b05cd55e-26yu7u`, pull request a `main`.
+- Qué se hizo: en Mis capturas, "Cuándo" con Ahora / Otro día / Sin fecha; se guardan las condiciones de ese momento (luna, agua, temporada, momento del día, puntaje, y del pronóstico si lo hay: temperatura, viento, lluvia, presión); nueva pantalla "Tus mejores días" con barras por condición. Nuevos `js/logic/sun.js` y `js/logic/conditions.js`.
+- Pruebas: `node --test` pasa (59). Recorrido con Playwright (tres capturas y el resumen).
+- Pendiente: con muchas capturas, quizá comparar contra los días de salida sin pesca (hoy no se registran).
+- Para el próximo: las capturas viejas guardaban `wind` como texto; la vista lo respeta.
+
 ## 2026-11-18 — Claude — Montajes para tararira, anzuelos, reportar, capturas con galería y mapa
 - Rama y pull request: `ccr-b05cd55e-26yu7u`, pull request a `main`.
 - Qué se hizo: rana antienganche, spinnerbait y goma en cabeza jig (boceto aprobado), con grupos "Recomendados para tararira" / "Otros"; anzuelos con su forma (`js/drawings/hook.js`) en todos los dibujos de montajes y armados, con detalle ampliado; botón de reportar (issue de GitHub o copiar); Mis capturas con galería y ubicación actual o marcada en un mapa (OpenStreetMap, sin librerías); marcas de agarre en el dibujo del tope corredizo.

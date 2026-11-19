@@ -141,3 +141,26 @@ test('reportar: arma título y texto, y la versión coincide con el Service Work
   assert.match(reportUrl(r), /^https:\/\/github\.com\/SegundoAymo\/Pesca-App\/issues\/new\?title=/);
   assert.ok(readFileSync('sw.js', 'utf8').includes(`const VERSION = '${APP_VERSION}';`), 'APP_VERSION distinta de sw.js');
 });
+
+test('condiciones de una captura y resumen de los mejores días', async () => {
+  const { catchConditions, summarize, moonGroup } = await import('../js/logic/conditions.js');
+  const { sunTimes, momentOfDay } = await import('../js/logic/sun.js');
+  // Navarro, 21 de diciembre: sale cerca de las 5:40 y se pone cerca de las 20:10.
+  const sun = sunTimes({ y: 2026, m: 12, d: 21 }, -35.0056, -59.277);
+  assert.ok(sun.sunrise >= '05:20' && sun.sunrise <= '06:00', sun.sunrise);
+  assert.ok(sun.sunset >= '19:50' && sun.sunset <= '20:30', sun.sunset);
+  assert.equal(momentOfDay('06:10', sun), 'dawn');
+  assert.equal(momentOfDay('13:00', sun), 'day');
+  assert.equal(momentOfDay('23:00', sun), 'night');
+  assert.equal(momentOfDay('', sun), null);
+  const tar = SPECIES.find((s) => s.id === 'tararira');
+  const c = catchConditions({ date: '2026-12-21', time: '20:30', species: 'tararira', facts: tar.facts });
+  assert.equal(c.moment, 'dusk');
+  assert.equal(c.season, 'good');
+  assert.ok(typeof c.score === 'number' && c.moon && c.water > 20);
+  assert.equal(c.temp, undefined, 'sin pronóstico no se inventa la temperatura');
+  assert.equal(catchConditions({ date: '' }), null);
+  assert.equal(moonGroup('Gibosa creciente'), 'Creciente');
+  const sum = summarize([{ conditions: c }, { conditions: { ...c, moment: 'night' } }, { conditions: null }]);
+  assert.deepEqual(sum.find((x) => x.title === 'Momento del día').rows, [{ label: 'Atardecer', n: 1 }, { label: 'Noche', n: 1 }]);
+});
