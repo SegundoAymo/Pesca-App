@@ -62,7 +62,7 @@ function card(s) {
   const alert = s.facts?.warnings?.[0] ? `<span class="fcard-alert" title="${esc(s.facts.warnings[0].text)}">${glyph(s.facts.warnings[0].icon, 26)}</span>` : '';
   const n = catches.countFor(s.id);
   return `<a class="fcard" href="#/peces/${s.id}"${SPECIES_COLOR[s.id] ? ` style="--sp:${SPECIES_COLOR[s.id]}"` : ''}>
-    <span class="fcard-art">${fishArt(s.id, 150)}${alert}${n ? `<span class="fcard-count" aria-label="${n} capturas">${n}</span>` : ''}</span>
+    <span class="fcard-art">${fishArt(s.id, 150)}${alert}${n ? `<span class="fcard-count" aria-label="${n === 1 ? '1 pez' : `${n} peces`} anotados">${n}</span>` : ''}</span>
     <span class="fcard-name">${esc(s.name)}</span>
     <span class="fcard-marks">${marks}</span>
   </a>`;

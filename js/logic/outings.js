@@ -11,23 +11,31 @@ export function activeOuting(outings) {
   return outings.find((o) => o.active) || null;
 }
 
+/** How many fish a catch record stands for (pedido del 19/11/2026: cargar varios chicos juntos). */
+export const qty = (c) => (Number.isInteger(c?.count) && c.count > 1 ? c.count : 1);
+
+/** Fish in a list of catch records. */
+export function fishCount(catches) {
+  return catches.reduce((n, c) => n + qty(c), 0);
+}
+
 /** Catches of an outing. */
 export function catchesOf(outing, catches) {
   return catches.filter((c) => c.outingId === outing.id);
 }
 
 /**
- * Every outing with its catches. Catches saved without an outing (before outings existed,
+ * Every outing with its number of fish (n). Catches saved without an outing (before outings existed,
  * or loose) count as one outing with fish per day, with the conditions of its first catch.
  */
 export function allOutings(outings, catches) {
-  const list = outings.filter((o) => !o.active).map((o) => ({ ...o, n: catchesOf(o, catches).length }));
+  const list = outings.filter((o) => !o.active).map((o) => ({ ...o, n: fishCount(catchesOf(o, catches)) }));
   const loose = new Map();
   for (const c of catches) {
     if (c.outingId || !c.date || !c.conditions) continue;
     const k = c.date;
     if (!loose.has(k)) loose.set(k, { id: `dia-${k}`, date: k, start: c.time || '', conditions: c.conditions, n: 0, implicit: true });
-    loose.get(k).n += 1;
+    loose.get(k).n += qty(c);
   }
   return [...list, ...loose.values()].sort((a, b) => (b.date + (b.start || '')).localeCompare(a.date + (a.start || '')));
 }

@@ -10,7 +10,7 @@ import { load, save } from '../store.js';
 import { todayAR, dayKey } from '../logic/dates.js';
 import { cachedDays, cachedPressureDeltas, getCachedForecast, NAVARRO } from '../weather-service.js';
 import { catchConditions, summarize } from '../logic/conditions.js';
-import { activeOuting, catchesOf, allOutings, outingStats, measuredWater } from '../logic/outings.js';
+import { activeOuting, catchesOf, allOutings, outingStats, measuredWater, qty, fishCount } from '../logic/outings.js';
 import { scoreWord } from '../logic/labels.js';
 import { pickOnMap } from '../map-picker.js';
 import { windDir, SKY_TEXT } from '../logic/weather.js';
@@ -55,10 +55,44 @@ function updateOuting(id, fn) {
 }
 
 export function countFor(species) {
-  return getCatches().filter((c) => c.species === species).length;
+  return fishCount(getCatches().filter((c) => c.species === species));
 }
 export function countAll() {
-  return getCatches().length;
+  return fishCount(getCatches());
+}
+
+/** How many fish the person typed for one record: whole number 1–999, else 1. */
+export function parseCount(text) {
+  const n = Number(String(text ?? '').trim());
+  return Number.isInteger(n) && n >= 1 && n <= 999 ? n : 1;
+}
+
+const fishWord = (n) => (n === 1 ? '1 pez' : `${n} peces`);
+
+/**
+ * +1 of a species in the outing in progress (pedido del 19/11/2026: los chicos no se cargan
+ * uno por uno). Adds to the last plain record of that species (no photo, measures or note)
+ * if it is from the same moment of the day; otherwise starts a new record with the conditions
+ * of now. Returns the record.
+ */
+export function addOne(outingId, species) {
+  const o = getOutings().find((x) => x.id === outingId);
+  if (!o) return null;
+  const n = nowAR();
+  const cond = outingConditions(n.date, n.time, o.place || null);
+  const all = getCatches();
+  const plain = all.filter((c) => c.outingId === outingId && (c.species || null) === (species || null) && !c.hasPhoto && !c.lengthCm && !c.weightKg && !c.note)
+    .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time)).pop();
+  if (plain && plain.conditions?.moment === cond.moment) {
+    plain.count = qty(plain) + 1;
+    setCatches(all);
+    return plain;
+  }
+  const w = measuredWater(o);
+  const item = { id: `c${Date.now()}`, species: species || null, date: n.date, time: n.time, lengthCm: null, weightKg: null, note: '', place: o.place || null, outingId, waterC: w, hasPhoto: false, conditions: cond, count: 1 };
+  all.push(item);
+  setCatches(all);
+  return item;
 }
 
 /** Number from what the person typed ("1,5", "42"), or null. */
@@ -153,11 +187,20 @@ function outingCard() {
       <div class="two"><a class="btn white block" href="#/peces/capturas/salida-pasada">Anotar una salida pasada</a><a class="btn white block" href="#/peces/capturas/nueva">Captura suelta</a></div>
     </div>`;
   }
-  const n = catchesOf(o, getCatches()).length;
+  const cs = catchesOf(o, getCatches());
+  const n = fishCount(cs);
   const w = measuredWater(o);
+  const bySp = new Map();
+  for (const c of cs) bySp.set(c.species || '', (bySp.get(c.species || '') || 0) + qty(c));
+  const order = [...SPECIES.map((s) => s.id), ''];
+  const plus = [...bySp.entries()].sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0])).map(([id, k]) => {
+    const name = SPECIES.find((x) => x.id === id)?.name || 'Sin identificar';
+    return `<button type="button" class="plus-one" data-plus="${id}" aria-label="Sumar 1 ${esc(name.toLowerCase())} (van ${k})">${id ? fishArt(id, 56) : glyph('fish', 30)}<span class="po-name">${esc(name)}<small>van ${k}</small></span><span class="po-add">+1</span></button>`;
+  }).join('');
   return `<section class="outing-card live" aria-label="Salida en curso">
-    <p class="outing-head"><span class="dot" aria-hidden="true"></span><strong>Salida en curso</strong> desde las ${esc(o.start)} · ${n === 0 ? 'todavía sin pesca' : n === 1 ? '1 captura' : `${n} capturas`}${w != null ? ` · agua ${String(w).replace('.', ',')} °C` : ''}</p>
+    <p class="outing-head"><span class="dot" aria-hidden="true"></span><strong>Salida en curso</strong> desde las ${esc(o.start)} · ${n === 0 ? 'todavía sin pesca' : fishWord(n)}${w != null ? ` · agua ${String(w).replace('.', ',')} °C` : ''}</p>
     <a class="btn yellow block big-cta" href="#/peces/capturas/nueva">${glyph('fish', 28)}<span>Saqué un pez</span></a>
+    ${plus ? `<p class="mini-title">Otro igual: un toque y listo</p><div class="plus-grid">${plus}</div><p class="small muted" data-plus-msg aria-live="polite"></p><a class="btn white block" href="#/peces/capturas/salida/${o.id}">Ver lo anotado</a>` : ''}
     <form class="water-row" data-water><label class="field"><span>Agua en la superficie (°C)</span><input class="input" name="c" inputmode="decimal" placeholder="Ej. 19,5" autocomplete="off"></label><button class="btn white" type="submit">Anotar</button></form>
     <button type="button" class="btn block" data-end>Terminar salida</button>
   </section>`;
@@ -168,7 +211,7 @@ function outingRow(o) {
   const hours = o.start ? `${o.start}${o.end ? `–${o.end}` : ''}` : '';
   return `<a class="catch-row" href="#/peces/capturas/salida/${o.id}">
     <span class="thumb">${glyph(o.n ? 'fish' : 'rod', 30)}</span>
-    <span class="catch-txt"><strong>${esc(fmtDate(o))}${hours ? ` · ${esc(hours)}` : ''}</strong><small>${o.n ? `${o.n} ${o.n === 1 ? 'captura' : 'capturas'}` : 'Sin pesca'}${w != null ? ` · agua ${String(w).replace('.', ',')} °C` : ''}${o.conditions?.moon ? ` · ${esc(o.conditions.moon.toLowerCase())}` : ''}</small></span>
+    <span class="catch-txt"><strong>${esc(fmtDate(o))}${hours ? ` · ${esc(hours)}` : ''}</strong><small>${o.n ? fishWord(o.n) : 'Sin pesca'}${w != null ? ` · agua ${String(w).replace('.', ',')} °C` : ''}${o.conditions?.moon ? ` · ${esc(o.conditions.moon.toLowerCase())}` : ''}</small></span>
     <span class="go">${ICON.chevron}</span></a>`;
 }
 
@@ -181,7 +224,7 @@ function list(view = 'salidas') {
   const bySalida = outs.length || loose.length
     ? `${outs.map(outingRow).join('')}${loose.length ? `<h2 class="group-title">Capturas sueltas</h2>${loose.map(catchRow).join('')}` : ''}`
     : activeOuting(getOutings()) ? '' : `<div class="empty-state">${glyph('camera', 56)}<p><strong>Todavía no anotaste salidas ni capturas.</strong></p><p class="small muted">Todo es opcional y queda solo en este teléfono.</p></div>`;
-  const bySpecies = groups.length ? groups.map((g) => `<h2 class="group-title with-art">${g.id ? fishArt(g.id, 72) : glyph('fish', 36)}<span>${esc(g.name)} · ${g.items.length}</span></h2>${g.items.map(catchRow).join('')}`).join('')
+  const bySpecies = groups.length ? groups.map((g) => `<h2 class="group-title with-art">${g.id ? fishArt(g.id, 72) : glyph('fish', 36)}<span>${esc(g.name)} · ${fishCount(g.items)}</span></h2>${g.items.map(catchRow).join('')}`).join('')
     : '<p class="empty">Todavía no hay capturas.</p>';
   const hasData = catches.some((c) => c.conditions) || getOutings().some((o) => !o.active);
   const body = `${tabs('capturas')}
@@ -196,6 +239,15 @@ function list(view = 'salidas') {
     mount(root, ctx) {
       root.querySelectorAll('[data-photo]').forEach((img) => showPhoto(img, img.dataset.photo));
       root.querySelector('[data-start]')?.addEventListener('click', () => { startOuting(); navigator.storage?.persist?.().catch(() => {}); refreshList(); });
+      root.querySelectorAll('[data-plus]').forEach((b) => b.addEventListener('click', () => {
+        const o = activeOuting(getOutings());
+        if (!o) return;
+        addOne(o.id, b.dataset.plus || null);
+        refreshList();
+        const name = SPECIES.find((x) => x.id === b.dataset.plus)?.name || 'Sin identificar';
+        const m = document.querySelector('[data-plus-msg]');
+        if (m) m.textContent = `Sumado: ${name.toLowerCase()}. Si te equivocaste, entrá en Ver lo anotado y corregí la cantidad.`;
+      }));
       root.querySelector('[data-water]')?.addEventListener('submit', (e) => {
         e.preventDefault();
         const c = parseTemp(e.target.c.value);
@@ -206,7 +258,7 @@ function list(view = 'salidas') {
       });
       root.querySelector('[data-end]')?.addEventListener('click', () => {
         const o = activeOuting(getOutings());
-        const n = catchesOf(o, getCatches()).length;
+        const n = fishCount(catchesOf(o, getCatches()));
         if (!confirm(n ? '¿Terminar la salida?' : '¿Terminar la salida sin pesca? Queda anotada igual: sirve para comparar.')) return;
         updateOuting(o.id, (x) => { x.active = false; x.end = nowAR().time; });
         refreshList();
@@ -230,7 +282,7 @@ let refreshList = () => {};
 function catchRow(c) {
   return `<a class="catch-row" href="#/peces/capturas/${c.id}">
     <span class="thumb">${c.hasPhoto ? `<img alt="" hidden data-photo="${c.id}">` : ''}${c.species ? fishArt(c.species, 64) : glyph('fish', 30)}</span>
-    <span class="catch-txt"><strong>${esc(SPECIES.find((x) => x.id === c.species)?.name || 'Sin identificar')}</strong><small>${esc(fmtDate(c) || 'Sin fecha')}${c.time ? ` · ${esc(c.time)}` : ''}${measures(c) ? ` · ${esc(measures(c))}` : ''}</small></span>
+    <span class="catch-txt"><strong>${esc(SPECIES.find((x) => x.id === c.species)?.name || 'Sin identificar')}${qty(c) > 1 ? ` × ${qty(c)}` : ''}</strong><small>${esc(fmtDate(c) || 'Sin fecha')}${c.time ? ` · ${esc(c.time)}` : ''}${measures(c) ? ` · ${esc(measures(c))}` : ''}</small></span>
     <span class="go">${ICON.chevron}</span></a>`;
 }
 
@@ -296,8 +348,8 @@ function form(params, ctx) {
   if (!draft || draft.key !== key) {
     const n = nowAR();
     draft = existing
-      ? { key, ...existing, when: existing.date ? 'otro' : 'sin', origDate: existing.date, origTime: existing.time, lengthCm: existing.lengthCm ?? '', weightKg: existing.weightKg ?? '' }
-      : { key, species: params[0] && params[0] !== 'editar' ? params[0] : null, when: 'ahora', date: n.date, time: n.time, lengthCm: '', weightKg: '', note: '', place: null, photo: null, hasPhoto: false, waterC: '' };
+      ? { key, ...existing, count: String(qty(existing)), when: existing.date ? 'otro' : 'sin', origDate: existing.date, origTime: existing.time, lengthCm: existing.lengthCm ?? '', weightKg: existing.weightKg ?? '' }
+      : { key, count: '1', species: params[0] && params[0] !== 'editar' ? params[0] : null, when: 'ahora', date: n.date, time: n.time, lengthCm: '', weightKg: '', note: '', place: null, photo: null, hasPhoto: false, waterC: '' };
     if (!existing) {
       const o = activeOuting(getOutings());
       if (o) { draft.outingId = o.id; draft.place = o.place || null; const w = measuredWater(o); if (w != null) draft.waterC = String(w).replace('.', ','); }
@@ -314,6 +366,8 @@ function form(params, ctx) {
       ${outing ? `<p class="outing-note"><span class="dot" aria-hidden="true"></span>Se suma a la salida en curso (desde las ${esc(outing.start)}).</p>` : ''}
       <h2 class="block-title">Especie</h2>
       <div class="sp-grid">${opts}</div>
+      <div class="qty-row"><span class="qty-label">Cantidad<small>Varios iguales van juntos, sin foto ni medidas de cada uno</small></span>
+        <div class="stepper"><button type="button" class="btn white" data-qty="-1" aria-label="Uno menos">−</button><input class="input" name="count" inputmode="numeric" value="${esc(draft.count ?? '1')}" aria-label="Cantidad de peces" autocomplete="off"><button type="button" class="btn white" data-qty="1" aria-label="Uno más">+</button></div></div>
       ${existing ? '' : '<button type="submit" class="btn yellow block big-cta">Guardar</button>'}
       <details class="fold more"${existing ? ' open' : ''}><summary>${existing ? 'Datos' : 'Agregar más datos (foto, medidas, cuándo, agua, lugar)'}</summary>
       <div class="photo-pick">
@@ -325,6 +379,7 @@ function form(params, ctx) {
         <label class="btn white block"><span>Elegir de la galería</span><input type="file" accept="image/*" data-file hidden></label>
       </div>
       ${draft.hasPhoto || draft.photo ? '<button type="button" class="btn white" data-nophoto>Quitar la foto</button>' : ''}
+      <p class="small muted">Si cargás varios, las medidas son del más grande.</p>
       <div class="two">
         <label class="field">${glyph('ruler', 24)}<span>Largo (cm)</span><input class="input" name="lengthCm" inputmode="decimal" value="${esc(draft.lengthCm)}" autocomplete="off"></label>
         <label class="field">${glyph('scale', 24)}<span>Peso (kg)</span><input class="input" name="weightKg" inputmode="decimal" value="${esc(draft.weightKg)}" autocomplete="off"></label>
@@ -355,7 +410,7 @@ function form(params, ctx) {
       const f = root.querySelector('[data-form]');
       const img = root.querySelector('[data-preview]');
       const sync = () => {
-        for (const k of ['lengthCm', 'weightKg', 'date', 'time', 'note', 'waterC']) if (f[k]) draft[k] = f[k].value;
+        for (const k of ['count', 'lengthCm', 'weightKg', 'date', 'time', 'note', 'waterC']) if (f[k]) draft[k] = f[k].value;
       };
       f.addEventListener('input', sync);
       f.addEventListener('change', (e) => {
@@ -382,6 +437,10 @@ function form(params, ctx) {
         img.hidden = false;
       }));
       root.querySelector('[data-nophoto]')?.addEventListener('click', () => { draft.photo = null; draft.hasPhoto = false; draft.removePhoto = true; ctx.refresh(); });
+      root.querySelectorAll('[data-qty]').forEach((b) => b.addEventListener('click', () => {
+        f.count.value = String(Math.min(999, Math.max(1, parseCount(f.count.value) + Number(b.dataset.qty))));
+        sync();
+      }));
       root.querySelectorAll('[data-sp]').forEach((b) => b.addEventListener('click', () => { sync(); draft.species = b.dataset.sp || null; ctx.refresh(); }));
       bindPlace(root, ctx);
       f.addEventListener('submit', async (e) => {
@@ -391,6 +450,7 @@ function form(params, ctx) {
         const item = {
           id,
           species: draft.species || null,
+          count: parseCount(draft.count),
           date: draft.when === 'sin' ? '' : (draft.date || ''),
           time: draft.when === 'sin' ? '' : (draft.time || ''),
           lengthCm: parseNumber(draft.lengthCm),
@@ -461,8 +521,8 @@ function detail(c, ctx) {
   void cond;
   const body = `
     ${c.hasPhoto ? `<img class="catch-photo" alt="Foto de la captura" hidden data-photo="${c.id}">` : ''}
-    <div class="catch-head">${s ? fishArt(s.id, 150) : glyph('fish', 48)}<div><h2 class="h2">${esc(s ? s.name : 'Sin identificar')}</h2><p>${esc(fmtDate(c))}${c.time ? ` · ${esc(c.time)}` : ''}</p></div></div>
-    <div class="chips">${c.lengthCm ? chip(`${String(c.lengthCm).replace('.', ',')} cm`, '', { icon: glyph('ruler', 20) }) : ''}${c.weightKg ? chip(`${String(c.weightKg).replace('.', ',')} kg`, '', { icon: glyph('scale', 20) }) : ''}</div>
+    <div class="catch-head">${s ? fishArt(s.id, 150) : glyph('fish', 48)}<div><h2 class="h2">${esc(s ? s.name : 'Sin identificar')}${qty(c) > 1 ? ` × ${qty(c)}` : ''}</h2><p>${esc(fmtDate(c))}${c.time ? ` · ${esc(c.time)}` : ''}</p></div></div>
+    <div class="chips">${qty(c) > 1 ? chip(fishWord(qty(c)), 'cat', { icon: glyph('fish', 20) }) : ''}${c.lengthCm ? chip(`${String(c.lengthCm).replace('.', ',')} cm`, '', { icon: glyph('ruler', 20) }) : ''}${c.weightKg ? chip(`${String(c.weightKg).replace('.', ',')} kg`, '', { icon: glyph('scale', 20) }) : ''}</div>
     ${c.conditions ? `<h2 class="block-title">Condiciones</h2>${conditionChips(c.conditions)}` : '<p class="small muted">Sin fecha: no hay condiciones guardadas.</p>'}
     ${c.note ? `<p>${esc(c.note)}</p>` : ''}
     ${c.place ? `<a class="btn white block" href="geo:${c.place.lat},${c.place.lon}?q=${c.place.lat},${c.place.lon}">${glyph('pin', 24)} Abrir en el mapa</a>` : ''}
@@ -475,7 +535,7 @@ function detail(c, ctx) {
     mount(root) {
       root.querySelectorAll('[data-photo]').forEach((img) => showPhoto(img, c.id));
       root.querySelector('[data-del]').addEventListener('click', () => {
-        if (!confirm('¿Borrar esta captura?')) return;
+        if (!confirm(qty(c) > 1 ? `¿Borrar esta anotación de ${qty(c)} peces?` : '¿Borrar esta captura?')) return;
         setCatches(getCatches().filter((x) => x.id !== c.id));
         if (c.hasPhoto) deletePhoto(c.id).catch(() => {});
         ctx.go('peces/capturas', { replace: true });
@@ -515,9 +575,10 @@ function pastOuting(ctx) {
 
 function outingDetail(o, ctx) {
   const cs = catchesOf(o, getCatches());
+  const nf = fishCount(cs);
   const w = (o.water || []).map((x) => `${x.time ? `${x.time}: ` : ''}${String(x.c).replace('.', ',')} °C`).join(' · ');
   const body = `<h2 class="h2">${esc(fmtDate(o))}${o.start ? ` · ${esc(o.start)}${o.end ? `–${esc(o.end)}` : ''}` : ''}</h2>
-    <p>${cs.length ? `${cs.length} ${cs.length === 1 ? 'captura' : 'capturas'}` : '<strong>Sin pesca.</strong> Queda anotada para comparar.'}</p>
+    <p>${nf ? fishWord(nf) : '<strong>Sin pesca.</strong> Queda anotada para comparar.'}</p>
     ${w ? `<p class="small">Agua medida en la superficie: ${esc(w)}</p>` : ''}
     ${o.conditions ? `<h2 class="block-title">Condiciones al salir</h2>${conditionChips(o.conditions)}` : ''}
     ${cs.length ? `<h2 class="block-title">Capturas</h2>${cs.map(catchRow).join('')}` : ''}
@@ -546,7 +607,7 @@ function outingDetail(o, ctx) {
 
 function outingStatsHtml(species) {
   const catches = getCatches().filter((c) => !species || c.species === species);
-  const outs = allOutings(getOutings(), getCatches()).map((o) => ({ ...o, n: species ? catchesOf(o, catches).length + (o.implicit ? catches.filter((c) => !c.outingId && c.date === o.date).length : 0) : o.n }));
+  const outs = allOutings(getOutings(), getCatches()).map((o) => ({ ...o, n: species ? fishCount(catchesOf(o, catches)) + (o.implicit ? fishCount(catches.filter((c) => !c.outingId && c.date === o.date)) : 0) : o.n }));
   const real = outs.filter((o) => !o.implicit);
   if (!real.length) return '';
   const sections = outingStats(outs).map((sec) => `<h2 class="block-title">${esc(sec.title)}</h2><div class="bars">${sec.rows.map((r) => {
@@ -567,8 +628,8 @@ function stats(species) {
     return `<h2 class="block-title">${esc(sec.title)}</h2><div class="bars">${sec.rows.map((r) => `<div class="bar-row"><span class="bl">${esc(r.label)}</span><span class="bar"><span class="fill" style="width:${Math.round((100 * r.n) / max)}%"></span></span><span class="bn">${r.n}</span></div>`).join('')}</div>`;
   }).join('');
   const body = `${filters}
-    <p class="small">${list.length} ${list.length === 1 ? 'captura' : 'capturas'} con fecha. Cada barra cuenta en qué condiciones las sacaste.</p>
-    ${list.length < 10 ? '<div class="card note"><p>Con pocas capturas los números dicen poco: sirven más a medida que registres más salidas.</p></div>' : ''}
+    <p class="small">${fishWord(fishCount(list))} con fecha. Cada barra cuenta en qué condiciones los sacaste.</p>
+    ${fishCount(list) < 10 ? '<div class="card note"><p>Con pocas capturas los números dicen poco: sirven más a medida que registres más salidas.</p></div>' : ''}
     ${outingStatsHtml(species) ? `<h2 class="group-title">Salidas: cuándo hubo pesca</h2>${outingStatsHtml(species)}<h2 class="group-title">Capturas: en qué momento picó</h2>` : ''}
     ${sections || '<p class="empty">Todavía no hay capturas con fecha.</p>'}
     <p class="small muted">${getOutings().some((o) => !o.active) ? 'Las barras de salidas sí comparan: cuentan también las salidas sin pesca. Las de capturas solo dicen cuándo picó.' : 'Cuenta solo tus capturas: anotá también las salidas sin pesca (Empezar salida) para comparar de verdad.'}</p>`;

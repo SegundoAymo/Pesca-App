@@ -74,7 +74,7 @@ export function summarize(catches) {
     for (const c of catches) {
       const k = fn(c);
       if (k == null) continue;
-      m.set(k, (m.get(k) || 0) + 1);
+      m.set(k, (m.get(k) || 0) + (Number.isInteger(c.count) && c.count > 1 ? c.count : 1));
     }
     let rows = [...m.entries()].map(([label, n]) => ({ label, n }));
     if (order) rows.sort((a, b) => order.indexOf(a.label) - order.indexOf(b.label));

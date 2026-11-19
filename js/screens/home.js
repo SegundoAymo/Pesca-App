@@ -12,7 +12,7 @@ import { seasonNow, vedaText } from './fish.js';
 import { lastKnot } from './knots.js';
 import { progress } from './checklist.js';
 import { getOutings, getCatches } from './catches.js';
-import { activeOuting, catchesOf } from '../logic/outings.js';
+import { activeOuting, catchesOf, fishCount } from '../logic/outings.js';
 import { getUpdate } from '../update.js';
 
 function climaInfo() {
@@ -57,8 +57,8 @@ function calendarLine(t) {
 function fishLine(t) {
   const o = activeOuting(getOutings());
   if (o) {
-    const n = catchesOf(o, getCatches()).length;
-    return `<span class="sub warn-txt">Salida en curso · ${n === 0 ? 'sin pesca todavía' : n === 1 ? '1 captura' : `${n} capturas`}</span>`;
+    const n = fishCount(catchesOf(o, getCatches()));
+    return `<span class="sub warn-txt">Salida en curso · ${n === 0 ? 'sin pesca todavía' : n === 1 ? '1 pez' : `${n} peces`}</span>`;
   }
   const veda = vedaText('pejerrey', t);
   if (veda) return `<span class="sub warn-txt">Pejerrey ${veda.charAt(0).toLowerCase() + veda.slice(1)}</span>`;

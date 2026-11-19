@@ -15,6 +15,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-11-19 — Claude — Cantidades de peces en una anotación
+- Rama y pull request: `ccr-b05cd55e-26yu7u` (ver PR a `main`).
+- Qué se hizo: pedido del usuario: cargar varios peces chicos sin foto ni datos de cada uno. Campo `count` en la captura, contador − / + en el formulario, botones "+1" por especie en la salida en curso (`addOne`), "Ver lo anotado". Totales en peces en Inicio, lista, por especie, salida y Tus mejores días (`qty`, `fishCount` en `js/logic/outings.js`; `summarize` pondera por cantidad). Versión v16.
+- Pruebas: `node --test` (61 pasan) y recorrido en el navegador (5 dientudos con el contador, +1 dos veces, totales 8 peces en 2 anotaciones).
+- Qué quedó pendiente o a medias: nada de esto.
+
 ## 2026-11-19 — Claude — Salidas sin pesca y agua medida
 - Rama y pull request: `ccr-b05cd55e-26yu7u`, pull request a `main`.
 - Qué se hizo: salidas en curso o pasadas (con o sin pesca), captura rápida durante una salida, agua medida en la superficie, comparación por condición en "Tus mejores días", aviso en el Inicio. Nuevo `js/logic/outings.js`; datos `outings` v1 en el teléfono.
