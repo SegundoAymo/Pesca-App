@@ -11,6 +11,8 @@ import { KNOTS } from '../data/knots.js';
 import { seasonNow, vedaText } from './fish.js';
 import { lastKnot } from './knots.js';
 import { progress } from './checklist.js';
+import { getOutings, getCatches } from './catches.js';
+import { activeOuting, catchesOf } from '../logic/outings.js';
 import { getUpdate } from '../update.js';
 
 function climaInfo() {
@@ -53,6 +55,11 @@ function calendarLine(t) {
 }
 
 function fishLine(t) {
+  const o = activeOuting(getOutings());
+  if (o) {
+    const n = catchesOf(o, getCatches()).length;
+    return `<span class="sub warn-txt">Salida en curso · ${n === 0 ? 'sin pesca todavía' : n === 1 ? '1 captura' : `${n} capturas`}</span>`;
+  }
   const veda = vedaText('pejerrey', t);
   if (veda) return `<span class="sub warn-txt">Pejerrey ${veda.charAt(0).toLowerCase() + veda.slice(1)}</span>`;
   const now = SPECIES.filter((s) => /Navarro/.test(s.where) && seasonNow(s, t)?.level === 'good').map((s) => s.name.toLowerCase());
@@ -81,7 +88,7 @@ export function render() {
     <div data-update></div>
     ${climaButton()}
     ${btn('#/calendario', homeIcon('calendario', 84, t.d), 'Calendario', calendarLine(t))}
-    ${btn('#/peces', homeIcon('peces', 84), 'Peces', fishLine(t))}
+    ${btn(activeOuting(getOutings()) ? '#/peces/capturas' : '#/peces', homeIcon('peces', 84), 'Peces', fishLine(t))}
     ${btn('#/nudos', homeIcon('nudos', 84), 'Nudos', knotLine())}
     ${btn('#/checklist', homeIcon('checklist', 84), 'Checklist', checklistLine())}
     <a class="report-link home-report" href="#/reportar">Reportar un problema o pedir un cambio</a>
