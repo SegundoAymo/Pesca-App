@@ -2,7 +2,7 @@
 
 Datos reales del equipo que ya tiene el usuario. Sirven para comparar antes de comprar la caña nueva y para las recomendaciones de la app (pesos de señuelo típicos). Si algo cambia, actualizar acá con fecha.
 
-Última actualización: 2026-11-19.
+Última actualización: 2026-11-20.
 
 ## Cómo pesca
 
@@ -41,3 +41,12 @@ Rango: de 10 a 21 g. La mayoría está entre 13 y 18 g.
 
 - El rango de señuelos de la caña tiene que cubrir al menos de 10 a 21 g sin quedar al límite de ninguno de los dos extremos.
 - Meta del usuario: más corta que 2,40 m y, si se puede, de menos de 272 g (el conjunto con el reel hoy pesa 526 g).
+
+## Criterios para la caña nueva (decididos por el usuario, 2026-11-20)
+
+- Spinning (reel frontal), de 1,80 a 2,10 m, marcas Okuma o Shimano.
+- Señuelos de hasta 20 g. Se descartan los de más de 20 g.
+- Presupuesto: $100.000, estirable un poco si vale la pena.
+- Las algas ya no son un criterio para decidir (por la incertidumbre que traían).
+- El peso de la caña ya no es prioridad máxima.
+- Pendiente: buscar modelos con precio y stock reales en MercadoLibre Argentina (la sesión no tiene acceso a esos sitios; hay que habilitar `listado.mercadolibre.com.ar`, `articulo.mercadolibre.com.ar` y `www.mercadolibre.com.ar`).
