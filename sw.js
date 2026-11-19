@@ -1,6 +1,6 @@
 // Service Worker: keeps the whole app on the phone so it works without a connection.
 // Bump VERSION on every release so phones pick up the new files.
-const VERSION = 'v13';
+const VERSION = 'v14';
 const CACHE = `kitpesca-${VERSION}`;
 const DATA_CACHE = 'kitpesca-data';
 
@@ -34,6 +34,7 @@ const SHELL = [
   'js/drawings/lure-rigs.js',
   'js/drawings/knot3d.js',
   'js/drawings/rigs.js',
+  'js/logic/conditions.js',
   'js/logic/dates.js',
   'js/logic/interp.js',
   'js/logic/labels.js',
@@ -41,6 +42,7 @@ const SHELL = [
   'js/logic/pressure.js',
   'js/logic/score.js',
   'js/logic/season.js',
+  'js/logic/sun.js',
   'js/logic/weather.js',
   'js/map-picker.js',
   'js/screens/blocks.js',
