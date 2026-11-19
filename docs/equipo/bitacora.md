@@ -15,6 +15,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-11-19 — Claude — Equipo del usuario registrado
+- Rama y pull request: `ccr-4c6aaa2e-a0pvnz`, sin pull request (no se pidió en esta sesión).
+- Qué se hizo: nuevo `docs/equipo-usuario.md` con la caña Kunnan Icaro 2402 y el reel Shimano FX FC C3000 actuales, los pesos medidos por el usuario de caña, reel y 10 señuelos, y cómo pesca (kayak, arroyos angostos, mucha alga). Es para elegir la caña nueva (más corta y liviana).
+- Pruebas: no hay código tocado; `node --test` pasa (57 pasan, 7 pendientes, 0 fallan).
+- Pendiente: elegir la caña (faltan presupuesto y peso/acción de los modelos candidatos).
+- Para el próximo: los pesos son del usuario, no de la ficha del fabricante. La acción y el rango en gramos de la Icaro no se encontraron.
+
 ## 2026-11-16 — Claude — Tope corredizo: cómo agarrarlo
 - Rama y pull request: `ccr-b05cd55e-26yu7u`, pull request a `main`.
 - Qué se hizo: pedido del usuario (se le desenrollaban las vueltas). Textos del tope corredizo reescritos según su imagen n6 y guías de "bobber stop knot", con el agarre en cada paso y la nota (dos topes con trenzado, no apretar de más). `js/data/knots.js` tocado solo en el tope.
