@@ -1,0 +1,672 @@
+<title>Pronóstico de Pique · Propuestas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&family=Lexend:wght@400;600;800&family=Archivo:wdth,wght@62..125,500;62..125,800;62..125,900&family=Zilla+Slab:wght@500;700&family=Libre+Franklin:wght@500;700;900&family=Cabin+Sketch:wght@700&family=Patrick+Hand&family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;600&family=Nunito:wght@500;700;900&display=swap">
+<style>
+/* Layout: primero el brief de la app (usuario + principios), después un catálogo de 6 propuestas: teléfono + ficha, apiladas en móvil */
+:root{
+  --bg:#EEF2EF; --surface:#FFFFFF; --fg:#16231E; --muted:#56655E; --line:#D2DCD6; --accent:#1F7A55; --chip:#E1ECE6;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C1512; --surface:#13211C; --fg:#E3EDE8; --muted:#94A69E; --line:#233830; --accent:#62CFA0; --chip:#1A2E27; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0C1512; --surface:#13211C; --fg:#E3EDE8; --muted:#94A69E; --line:#233830; --accent:#62CFA0; --chip:#1A2E27; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.6 var(--f-body)}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:20px;padding-block:48px 80px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.08}
+p{margin:0}
+.eyebrow{font:600 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.intro{display:grid;gap:18px;max-width:780px;padding-bottom:40px}
+.intro h1{font-size:clamp(34px,6vw,58px);font-weight:800;letter-spacing:-.02em}
+.intro p{color:var(--muted);font-size:18px;max-width:65ch}
+
+.brief{display:grid;gap:26px;padding-block:40px 56px;border-top:1px solid var(--line)}
+.brief h2{font-size:clamp(26px,3.6vw,36px);font-weight:800}
+.persona{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.persona div{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:grid;gap:6px;align-content:start}
+.persona b{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.persona p{font-size:16px}
+.principles{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px 28px;counter-reset:p}
+.principles div{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;padding-block:12px;border-top:1px solid var(--line)}
+.principles span{grid-row:span 2;font:600 12px/1 var(--f-mono);background:var(--chip);color:var(--accent);border-radius:999px;padding:7px 9px;height:fit-content}
+.principles strong{font-family:var(--f-display);font-size:19px;line-height:1.2}
+.principles p{color:var(--muted);font-size:15px}
+.index{display:flex;flex-wrap:wrap;gap:8px}
+.index a{font:600 13px/1 var(--f-mono);color:var(--fg);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:9px 14px;background:var(--surface)}
+.index a:hover,.index a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+
+.design{display:grid;grid-template-columns:340px minmax(0,1fr);gap:56px;align-items:start;padding-block:64px;border-top:1px solid var(--line)}
+.stage{display:flex;justify-content:center;padding:20px;border-radius:28px;background:var(--stage)}
+.info{display:grid;gap:22px;min-width:0}
+.info .tag{font:600 12px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.info h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.015em}
+.info .lede{font-size:18px;max-width:62ch}
+.info h3{font-size:15px;font-family:var(--f-mono);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.info ul{margin:0;padding-left:20px;display:grid;gap:8px;max-width:66ch}
+.info li::marker{color:var(--accent)}
+.covers{display:flex;flex-wrap:wrap;gap:6px}
+.covers span{font:600 12px/1 var(--f-mono);padding:7px 10px;border-radius:999px;background:var(--chip);color:var(--accent)}
+.covers span.off{background:transparent;border:1px dashed var(--line);color:var(--muted)}
+.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.swatches{display:flex;flex-wrap:wrap;gap:8px}
+.sw{display:grid;gap:4px;font:11px/1.2 var(--f-mono);color:var(--muted)}
+.sw i{display:block;width:44px;height:44px;border-radius:10px;border:1px solid var(--line)}
+.fonts{display:grid;gap:4px;font-size:15px}
+.fonts b{font-weight:400;font-size:22px;line-height:1.2;color:var(--fg)}
+.fonts span{font:12px var(--f-mono);color:var(--muted)}
+.note{border-left:3px solid var(--accent);padding:10px 16px;background:var(--surface);border-radius:0 12px 12px 0;max-width:66ch;font-size:15px}
+.note b{color:var(--accent)}
+
+/* ---------- teléfono base ---------- */
+.phone{width:300px;max-width:100%;height:620px;border-radius:46px;padding:10px;background:#16181B;box-shadow:0 30px 60px -20px rgba(10,25,20,.45),inset 0 0 0 2px #2A2E33;flex:none}
+.screen{height:100%;border-radius:36px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:13px 24px 4px;font:600 11px/1 system-ui,sans-serif;flex:none}
+.sb::after{content:"";position:absolute;left:50%;top:9px;width:80px;height:22px;border-radius:12px;background:#16181B;transform:translateX(-50%)}
+
+/* ---------- A · Semáforo ---------- */
+.a{background:#F7F9F6;color:#1B2420;font-family:"Lexend",system-ui,sans-serif}
+.a-loc{padding:8px 20px 0;font-size:12px;color:#5A6862;display:flex;justify-content:space-between}
+.a-loc b{color:#1B2420;font-weight:600}
+.a-light{margin:14px auto 0;width:176px;height:176px;border-radius:50%;background:#1E9E5A;color:#fff;display:grid;place-items:center;text-align:center;box-shadow:0 0 0 10px #D5EEDF,0 0 0 20px #EBF6EF}
+.a-light b{display:block;font:800 34px/1 "Lexend";letter-spacing:-.01em}
+.a-light span{font-size:12px;font-weight:600;opacity:.9}
+.a-when{text-align:center;margin-top:20px}
+.a-when b{font:800 19px/1.2 "Lexend"}
+.a-when p{font-size:13px;color:#5A6862}
+.a-why{margin:14px 18px 0;display:grid;gap:6px;font-size:13px}
+.a-why div{display:flex;gap:8px;align-items:center}
+.a-why i{width:18px;height:18px;border-radius:50%;background:#1E9E5A;color:#fff;display:grid;place-items:center;font:800 11px/1 "Lexend";font-style:normal;flex:none}
+.a-why i.w{background:#F2A900}
+.a-week{margin:auto 14px 0;display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:10px;color:#5A6862}
+.a-week div{display:grid;gap:4px;justify-items:center;padding:6px 0;border-radius:10px}
+.a-week div.on{background:#1B2420;color:#fff}
+.a-week i{width:14px;height:14px;border-radius:50%}
+.g1{background:#1E9E5A}.g2{background:#F2A900}.g3{background:#D9412B}
+.a-btn{margin:10px 14px 20px;background:#1B2420;color:#fff;border-radius:14px;padding:13px;text-align:center;font-weight:600;font-size:14px}
+
+/* ---------- B · Parte del Tiempo ---------- */
+.b{background:#0A2A66;color:#fff;font-family:"Archivo",sans-serif}
+.b-head{padding:6px 16px 0;display:flex;justify-content:space-between;align-items:flex-end}
+.b-head h4{margin:0;font:900 26px/0.9 "Archivo";font-stretch:75%;text-transform:uppercase;letter-spacing:.01em}
+.b-head h4 em{font-style:normal;color:#FFC72C}
+.b-head span{font:800 11px "Archivo";font-stretch:90%;background:#FFC72C;color:#0A2A66;padding:4px 7px;border-radius:3px}
+.b-days{display:flex;gap:4px;padding:10px 16px 0}
+.b-days span{flex:1;text-align:center;font:800 11px/1 "Archivo";font-stretch:85%;padding:7px 0;border-radius:4px;background:#163C86;color:#9DB7E8}
+.b-days .on{background:#fff;color:#0A2A66}
+.b-map{margin:10px 0 0;position:relative}
+.b-map svg{display:block;width:100%;height:auto}
+.b-lower{margin:0 10px;display:grid;grid-template-columns:auto 1fr;border-radius:6px;overflow:hidden}
+.b-lower b{background:#FFC72C;color:#0A2A66;font:900 24px/1 "Archivo";font-stretch:70%;padding:10px 10px;display:grid;place-items:center;text-transform:uppercase}
+.b-lower div{background:#fff;color:#0A2A66;padding:7px 10px;font:800 14px/1.1 "Archivo";font-stretch:85%;text-transform:uppercase}
+.b-lower small{display:block;font:500 11px "Archivo";font-stretch:100%;text-transform:none;color:#3A5590;margin-top:2px}
+.b-legend{display:flex;justify-content:center;gap:12px;padding:10px 0 0;font:800 10px "Archivo";font-stretch:85%;letter-spacing:.06em;color:#9DB7E8}
+.b-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:-1px}
+.b-nav{margin-top:auto;display:flex;justify-content:space-around;padding:10px 0 22px;font:800 11px "Archivo";font-stretch:85%;letter-spacing:.08em;color:#9DB7E8;border-top:1px solid #163C86}
+.b-nav .on{color:#FFC72C}
+
+/* ---------- C · Almanaque ---------- */
+.c{background:#F6F7F5;color:#141414;font-family:"Libre Franklin",sans-serif}
+.c-top{padding:6px 16px 0;display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid #141414;padding-bottom:6px;margin:0 14px}
+.c-top h4{margin:0;font:700 30px/0.9 "Zilla Slab",serif;color:#D52B1E;letter-spacing:-.01em}
+.c-top span{font:900 10px/1.2 "Libre Franklin";letter-spacing:.14em;text-align:right;text-transform:uppercase}
+.c-grid{display:grid;grid-template-columns:repeat(7,1fr);margin:6px 14px 0;font-variant-numeric:tabular-nums}
+.c-grid .h{font:900 9px "Libre Franklin";letter-spacing:.1em;text-align:center;padding:3px 0;color:#555}
+.c-grid .h.we{color:#D52B1E}
+.c-day{height:37px;border-top:1px solid #CFCFCA;padding:3px 3px 0;display:flex;flex-direction:column;justify-content:space-between}
+.c-day b{font:700 13px/1 "Zilla Slab",serif}
+.c-day.we b{color:#D52B1E}
+.c-day.today{background:#141414;color:#F6F7F5}
+.c-day.today b{color:#F6F7F5}
+.c-day.storm{background:repeating-linear-gradient(45deg,transparent 0 4px,#E3E3DE 4px 6px)}
+.c-fish{display:flex;gap:4px;padding-bottom:4px;min-height:9px}
+.c-fish i{width:7px;height:5px;flex:none;background:currentColor;border-radius:50% 30% 30% 50%;position:relative}
+.c-fish i::after{content:"";position:absolute;right:-3px;top:0;border-left:3px solid currentColor;border-top:2.5px solid transparent;border-bottom:2.5px solid transparent}
+.c-day.we .c-fish{color:#D52B1E}
+.c-day.today .c-fish{color:#F6F7F5}
+.c-moon{font-size:9px;line-height:1}
+.c-key{display:flex;gap:10px;justify-content:center;margin:8px 14px 0;font:700 9px "Libre Franklin";letter-spacing:.06em;text-transform:uppercase;color:#555}
+.c-best{margin:10px 14px 0;border:2px solid #141414;padding:8px 10px;display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center}
+.c-best small{font:900 9px "Libre Franklin";letter-spacing:.14em;color:#D52B1E;text-transform:uppercase}
+.c-best b{font:700 18px/1.1 "Zilla Slab",serif}
+.c-best span{grid-row:1 / span 3;grid-column:2;font:700 30px/1 "Zilla Slab";color:#D52B1E}
+.c-best p{font-size:11px;color:#444}
+.c-nav{margin-top:auto;display:flex;justify-content:space-around;padding:10px 0 22px;font:900 10px "Libre Franklin";letter-spacing:.12em;color:#777}
+.c-nav .on{color:#D52B1E}
+
+/* ---------- D · Pizarrón ---------- */
+.d{background:#6E4A2A;color:#EDEFE8;font-family:"Patrick Hand",cursive;padding:10px}
+.d .sb{color:#F2E6D6;padding-top:3px}
+.d .sb::after{top:-1px}
+.d-board{flex:1;border-radius:6px;background:radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.07),transparent 60%),radial-gradient(ellipse at 80% 90%,rgba(255,255,255,.05),transparent 50%),#22302B;padding:12px 14px;display:flex;flex-direction:column;box-shadow:inset 0 0 0 3px #4E331C}
+.d-board h4{margin:0;font:700 28px/1 "Cabin Sketch",cursive;text-align:center;letter-spacing:.02em}
+.d-sub{text-align:center;font-size:15px;color:#F4DE7A;margin-top:2px}
+.d-hr{height:2px;background:linear-gradient(90deg,transparent,rgba(237,239,232,.55) 15%,rgba(237,239,232,.35) 70%,transparent);margin:8px 0}
+.d-sp{display:grid;grid-template-columns:1fr auto;gap:0 8px;padding:5px 0}
+.d-sp b{font:700 21px/1 "Cabin Sketch";letter-spacing:.02em}
+.d-sp em{font-style:normal;font-size:20px;line-height:1;color:#F4DE7A;letter-spacing:2px}
+.d-sp span{grid-column:1 / -1;font-size:16px;line-height:1.15;color:#D6DBD0}
+.d-sp.low em{color:#8C978F}
+.d-info{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;font-size:15px;line-height:1.1}
+.d-info small{display:block;font-size:12px;color:#F2A7A0;letter-spacing:.06em}
+.d-sign{margin-top:auto;text-align:right;font-size:16px;color:#D6DBD0}
+.d-sign b{color:#F2A7A0;font-weight:400}
+.d-chalk{display:flex;gap:6px;margin-top:6px;justify-content:flex-end}
+.d-chalk i{width:22px;height:6px;border-radius:2px;background:#EDEFE8}
+.d-chalk i+i{background:#F4DE7A;width:16px}
+.d-chalk i+i+i{background:#F2A7A0;width:12px}
+.d-tabs{display:flex;justify-content:space-around;padding:10px 0 8px;font:700 13px "Cabin Sketch";letter-spacing:.06em;color:#F2E6D6}
+.d-tabs .on{color:#F4DE7A}
+
+/* ---------- E · Reloj del Pique ---------- */
+.e{background:#0E1626;color:#E8EDF5;font-family:"Instrument Sans",sans-serif}
+.e .sb{color:#8A97AD}
+.e-head{padding:6px 20px 0;display:flex;justify-content:space-between;align-items:baseline}
+.e-head h4{margin:0;font:400 26px/1 "Instrument Serif",serif}
+.e-head span{font-size:11px;color:#8A97AD;letter-spacing:.08em}
+.e-dial{position:relative;margin:4px auto 0;width:260px;height:260px}
+.e-dial svg{display:block;width:100%;height:100%}
+.e-center{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none}
+.e-center small{font-size:10px;letter-spacing:.16em;color:#8A97AD}
+.e-center b{display:block;font:400 46px/1 "Instrument Serif",serif;color:#FF8A3D}
+.e-center span{font-size:12px;color:#C4CEDD}
+.e-next{margin:4px 16px 0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.e-next div{border:1px solid #23314B;border-radius:14px;padding:9px 12px}
+.e-next small{display:block;font-size:10px;letter-spacing:.14em;color:#8A97AD}
+.e-next b{font:400 22px/1.1 "Instrument Serif",serif}
+.e-next em{font:italic 13px "Instrument Serif",serif;color:#FF8A3D}
+.e-days{margin:10px 16px 0;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.e-days div{text-align:center;font-size:11px;color:#8A97AD;display:grid;gap:5px;justify-items:center}
+.e-days svg{width:34px;height:34px}
+.e-days .on{color:#E8EDF5;font-weight:600}
+.e-nav{margin-top:auto;display:flex;justify-content:space-around;padding:10px 0 22px;font-size:11px;letter-spacing:.12em;color:#8A97AD}
+.e-nav .on{color:#FF8A3D}
+
+/* ---------- F · Baqueano ---------- */
+.f{background:#E7EEE3;color:#1F2A24;font-family:"Nunito",system-ui,sans-serif}
+.f-head{display:flex;align-items:center;gap:10px;padding:6px 14px 10px;border-bottom:1px solid #CCD8C6;background:#F3F7F0}
+.f-av{width:38px;height:38px;border-radius:50%;background:#2F6B4F;display:grid;place-items:center;flex:none}
+.f-head b{font:900 15px/1.1 "Nunito";display:block}
+.f-head span{font-size:11px;color:#5D6E63}
+.f-chat{flex:1;padding:10px 12px 0;display:flex;flex-direction:column;gap:7px;overflow:hidden;min-height:0}
+.f-msg{flex:none;max-width:84%;padding:8px 11px;border-radius:16px;font-size:13px;line-height:1.35}
+.f-msg.me{align-self:flex-end;background:#2F6B4F;color:#fff;border-bottom-right-radius:4px}
+.f-msg.bq{align-self:flex-start;background:#fff;border-bottom-left-radius:4px}
+.f-msg b{font-weight:900}
+.f-card{flex:none;align-self:flex-start;width:84%;background:#fff;border-radius:16px;overflow:hidden;border:1px solid #CCD8C6}
+.f-card header{background:#F2B544;padding:7px 11px;font:900 12px "Nunito";display:flex;justify-content:space-between}
+.f-card div{padding:8px 11px;display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px;color:#5D6E63}
+.f-card div b{display:block;font:900 14px/1.1 "Nunito";color:#1F2A24}
+.f-quick{display:flex;gap:6px;padding:10px 12px 0;flex-wrap:wrap}
+.f-quick span{font:700 12px/1 "Nunito";padding:8px 11px;border-radius:999px;border:1.5px solid #2F6B4F;color:#2F6B4F;background:#F3F7F0}
+.f-input{margin:10px 12px 20px;background:#fff;border-radius:999px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#8A9A8F;border:1px solid #CCD8C6}
+.f-input i{width:28px;height:28px;border-radius:50%;background:#2F6B4F;display:grid;place-items:center}
+
+/* ---------- comparación ---------- */
+.compare{padding-block:64px 0;border-top:1px solid var(--line);display:grid;gap:22px}
+.compare h2{font-size:clamp(28px,4vw,40px);font-weight:800}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:780px;font-size:14px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:700;white-space:nowrap}
+.dots{font-family:var(--f-mono);letter-spacing:2px;color:var(--accent);white-space:nowrap}
+.reco{display:grid;gap:14px;max-width:72ch;font-size:17px}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.flow div{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;gap:4px;align-content:start}
+.flow small{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.flow b{font-family:var(--f-display);font-size:18px}
+.flow p{font-size:14px;color:var(--muted)}
+
+@media (max-width:860px){
+  .design{grid-template-columns:minmax(0,1fr);gap:28px;padding-block:48px}
+  .stage{padding:16px 10px}
+}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <span class="eyebrow">Pronóstico de pique · agua dulce · Argentina</span>
+    <h1>Seis diseños para decidir si conviene salir a pescar</h1>
+    <p>Esta vez parto de la app que vas a hacer: un pronóstico de pique para lagunas y ríos de Argentina, pensado para quien pesca de vez en cuando. Primero defino qué necesita esa persona. Después, cada diseño muestra la pantalla principal y cómo responde a esas necesidades.</p>
+  </header>
+
+  <section class="brief" aria-labelledby="brief-t">
+    <span class="eyebrow">Primero, la app</span>
+    <h2 id="brief-t">Para quién es y qué tiene que resolver</h2>
+    <div class="persona">
+      <div><b>Quién la usa</b><p>Alguien que pesca algunos fines de semana o en un feriado, en una laguna o un río a una o dos horas de su casa. No sabe leer una tabla solunar ni qué significa que la presión baje.</p></div>
+      <div><b>Qué pregunta trae</b><p>“¿Vale la pena ir este sábado? ¿A qué hora? ¿Adónde? ¿Qué llevo?” Quiere decidir en menos de un minuto, muchas veces desde el sillón el jueves a la noche.</p></div>
+      <div><b>Qué le juega en contra</b><p>Viajar dos horas y no sacar nada, llegar tarde al pique, llevar la carnada equivocada o enterarse en el lugar de que hay veda o que hacía falta licencia.</p></div>
+    </div>
+    <div class="principles">
+      <div><span>P1</span><strong>Primero la respuesta</strong><p>Un veredicto claro (“Andá”, “Mejor otro día”) antes que cualquier número.</p></div>
+      <div><span>P2</span><strong>Lenguaje simple</strong><p>“Viento suave”, no “NE 9 km/h”. Los datos técnicos quedan a un toque, para el que quiera.</p></div>
+      <div><span>P3</span><strong>Planear el finde</strong><p>Comparar los días de la semana y los horarios, porque casi siempre se sale sábado o domingo.</p></div>
+      <div><span>P4</span><strong>Cerca tuyo</strong><p>Lagunas y ríos a una distancia razonable, ordenados por qué tan bien viene el pique.</p></div>
+      <div><span>P5</span><strong>Qué llevar</strong><p>Qué especie anda y con qué carnada: pejerrey con filet de mojarra, tararira con señuelo.</p></div>
+      <div><span>P6</span><strong>Avisos útiles</strong><p>Tormentas, veda y licencia de pesca de la provincia, antes de salir y no en la orilla.</p></div>
+    </div>
+    <nav class="index" aria-label="Propuestas">
+      <a href="#semaforo">A · Semáforo</a>
+      <a href="#parte">B · Parte del Tiempo</a>
+      <a href="#almanaque">C · Almanaque</a>
+      <a href="#pizarron">D · Pizarrón</a>
+      <a href="#reloj">E · Reloj del Pique</a>
+      <a href="#baqueano">F · El Baqueano</a>
+      <a href="#comparar">Comparación</a>
+    </nav>
+  </section>
+
+  <!-- ================= A ================= -->
+  <section class="design" id="semaforo" style="--stage:#D6EADD">
+    <div class="stage">
+      <div class="phone"><div class="screen a">
+        <div class="sb"><span>21:40</span><span>4G ▮▮▮</span></div>
+        <div class="a-loc"><span>Cerca tuyo · <b>Laguna de Lobos</b></span><span>48 km</span></div>
+        <div class="a-light"><div><b>ANDÁ</b><span>el sábado viene muy bien</span></div></div>
+        <div class="a-when"><b>Sábado 21 · de 5:30 a 8:30</b><p>Si no podés temprano, de 18:30 a 20:30</p></div>
+        <div class="a-why">
+          <div><i>✓</i>Viento suave, ideal para la costa</div>
+          <div><i>✓</i>Luna creciendo: los peces comen más</div>
+          <div><i class="w">!</i>Llevá abrigo: 9 °C a la mañana</div>
+        </div>
+        <div class="a-week">
+          <div><i class="g2"></i>Ju</div><div><i class="g1"></i>Vi</div><div class="on"><i class="g1"></i>Sá</div><div><i class="g1"></i>Do</div><div><i class="g3"></i>Lu</div><div><i class="g1"></i>Ma</div><div><i class="g2"></i>Mi</div>
+        </div>
+        <div class="a-btn">Qué llevar: pejerrey y tararira →</div>
+      </div></div>
+    </div>
+    <div class="info">
+      <span class="tag">Directo y simple · señal de tránsito</span>
+      <h2>A · Semáforo</h2>
+      <p class="lede">Toda la app gira alrededor de una sola señal: verde (andá), amarillo (puede ser) o rojo (mejor otro día). Abajo, tres motivos en criollo y la semana entera en puntitos de colores.</p>
+      <div class="covers"><span>P1 Respuesta</span><span>P2 Simple</span><span>P3 Finde</span><span>P4 Cerca</span><span class="off">P5 Qué llevar</span><span class="off">P6 Avisos</span></div>
+      <div>
+        <h3>Por qué funciona para tu app</h3>
+        <ul>
+          <li>Responde la pregunta del pescador ocasional en un segundo, sin aprender nada nuevo. Todos entienden un semáforo.</li>
+          <li>Los motivos traducen los datos (presión, luna, viento) a frases que explican <em>por qué</em>. Así el usuario confía en el veredicto y de paso aprende.</li>
+          <li>La fila de días resuelve el “¿sábado o domingo?” de un vistazo, que es la decisión real del fin de semana.</li>
+          <li>Es el diseño más fácil de construir y de mantener: un algoritmo que dé una puntuación y tres textos.</li>
+        </ul>
+      </div>
+      <div class="specs">
+        <div><h3>Paleta</h3><div class="swatches">
+          <div class="sw"><i style="background:#1E9E5A"></i>Andá</div>
+          <div class="sw"><i style="background:#F2A900"></i>Puede ser</div>
+          <div class="sw"><i style="background:#D9412B"></i>Otro día</div>
+          <div class="sw"><i style="background:#1B2420"></i>Tinta</div>
+          <div class="sw"><i style="background:#F7F9F6"></i>Fondo</div>
+        </div></div>
+        <div><h3>Tipografía</h3><div class="fonts">
+          <b style="font-family:'Lexend',sans-serif;font-weight:800">Lexend</b><span>Creada para mejorar la fluidez de lectura; una sola familia en 3 pesos</span>
+        </div></div>
+      </div>
+      <p class="note"><b>Ideal para</b> la pantalla de inicio de tu app. <b>Ojo:</b> el color no puede ser la única señal (hay daltónicos), por eso el veredicto también va escrito.</p>
+    </div>
+  </section>
+
+  <!-- ================= B ================= -->
+  <section class="design" id="parte" style="--stage:#1B3A75">
+    <div class="stage">
+      <div class="phone"><div class="screen b">
+        <div class="sb"><span>21:40</span><span>4G ▮▮▮</span></div>
+        <div class="b-head"><h4>El pique<br><em>del finde</em></h4><span>BS. AS.</span></div>
+        <div class="b-days"><span>VIE 20</span><span class="on">SÁB 21</span><span>DOM 22</span></div>
+        <div class="b-map">
+          <svg viewBox="0 0 280 236" role="img" aria-label="Mapa con lagunas y ríos y su pronóstico de pique">
+            <rect width="280" height="236" fill="#2A64C8"/>
+            <path d="M150 0H280V120C262 104 244 96 226 78C208 60 186 46 168 26Z" fill="#0A2A66"/>
+            <path d="M0 52C30 44 62 34 92 22C112 14 132 6 150 0" fill="none" stroke="#8FD0FF" stroke-width="5"/>
+            <path d="M0 64C34 56 70 44 100 30" fill="none" stroke="#8FD0FF" stroke-width="2" opacity=".6"/>
+            <g fill="none" stroke="#4E83DB" stroke-width="1" stroke-dasharray="3 3"><path d="M40 236C60 180 70 140 110 100"/><path d="M180 236C170 190 176 150 200 120"/></g>
+            <g fill="#8FD0FF"><ellipse cx="86" cy="150" rx="14" ry="8"/><ellipse cx="132" cy="176" rx="10" ry="6"/><ellipse cx="214" cy="160" rx="17" ry="10"/><ellipse cx="156" cy="212" rx="9" ry="5"/></g>
+            <g font-family="Archivo, sans-serif" font-weight="800" font-size="11" fill="#fff">
+              <text x="196" y="36" font-size="9" fill="#9DB7E8" letter-spacing=".5">RÍO DE</text><text x="196" y="47" font-size="9" fill="#9DB7E8" letter-spacing=".5">LA PLATA</text>
+              <text x="8" y="40" font-size="9" fill="#BFE3FF" letter-spacing="1">RÍO PARANÁ</text>
+              <circle cx="128" cy="78" r="4" fill="#fff"/><text x="110" y="96" font-size="9">CABA</text>
+            </g>
+            <g font-family="Archivo, sans-serif" font-weight="900">
+              <g transform="translate(40 58)"><rect x="-4" y="-13" width="78" height="20" rx="4" fill="#fff"/><circle cx="7" cy="-3" r="6" fill="#F2A900"/><text x="17" y="1" font-size="11" fill="#0A2A66">SAN PEDRO</text></g>
+              <g transform="translate(58 128)"><rect x="-4" y="-13" width="56" height="20" rx="4" fill="#fff"/><circle cx="7" cy="-3" r="6" fill="#1FB063"/><text x="17" y="1" font-size="11" fill="#0A2A66">LOBOS</text></g>
+              <g transform="translate(110 200)"><rect x="-4" y="-13" width="56" height="20" rx="4" fill="#fff"/><circle cx="7" cy="-3" r="6" fill="#F2A900"/><text x="17" y="1" font-size="11" fill="#0A2A66">MONTE</text></g>
+              <g transform="translate(160 138)"><rect x="-6" y="-17" width="110" height="26" rx="4" fill="#FFC72C"/><circle cx="7" cy="-4" r="7" fill="#1FB063" stroke="#0A2A66" stroke-width="1.5"/><text x="19" y="1" font-size="12" fill="#0A2A66">CHASCOMÚS</text></g>
+            </g>
+          </svg>
+        </div>
+        <div class="b-lower"><b>Muy<br>bueno</b><div>Chascomús, sábado temprano<small>Pejerrey de costa y tararira en los juncos · 120 km</small></div></div>
+        <div class="b-legend"><span><i style="background:#1FB063"></i>MUY BUENO</span><span><i style="background:#F2A900"></i>REGULAR</span><span><i style="background:#E5483A"></i>MALO</span></div>
+        <nav class="b-nav"><span class="on">MAPA</span><span>SEMANA</span><span>ESPECIES</span><span>AVISOS</span></nav>
+      </div></div>
+    </div>
+    <div class="info">
+      <span class="tag">Inspirado en el pronóstico del tiempo de la tele</span>
+      <h2>B · Parte del Tiempo</h2>
+      <p class="lede">Un mapa de la zona con cada laguna y río marcado según cómo viene el pique, igual que el mapa del clima del noticiero. Abajo, un zócalo con el lugar recomendado del día.</p>
+      <div class="covers"><span>P1 Respuesta</span><span>P2 Simple</span><span>P3 Finde</span><span>P4 Cerca</span><span>P5 Qué llevar</span><span class="off">P6 Avisos</span></div>
+      <div>
+        <h3>Por qué funciona para tu app</h3>
+        <ul>
+          <li>Para el ocasional, la pregunta muchas veces es “¿adónde voy?” y no solo “¿cuándo?”. El mapa compara todos los lugares de una sola vez.</li>
+          <li>El formato es conocido por todos: el pronóstico del noticiero se lee sin explicación. Pasar de “clima” a “pique” es natural.</li>
+          <li>El zócalo da una recomendación concreta (lugar, horario, especie y distancia). Es la respuesta lista para el que no quiere comparar.</li>
+          <li>Las pestañas por día permiten ver cómo cambia el mapa entre viernes, sábado y domingo.</li>
+        </ul>
+      </div>
+      <div class="specs">
+        <div><h3>Paleta</h3><div class="swatches">
+          <div class="sw"><i style="background:#0A2A66"></i>Estudio</div>
+          <div class="sw"><i style="background:#2A64C8"></i>Tierra</div>
+          <div class="sw"><i style="background:#8FD0FF"></i>Agua</div>
+          <div class="sw"><i style="background:#FFC72C"></i>Destacado</div>
+          <div class="sw"><i style="background:#1FB063"></i>Muy bueno</div>
+        </div></div>
+        <div><h3>Tipografía</h3><div class="fonts">
+          <b style="font-family:'Archivo',sans-serif;font-weight:900;font-stretch:70%;text-transform:uppercase">Archivo condensada</b><span>Títulos y zócalos de TV</span>
+          <b style="font-family:'Archivo',sans-serif;font-weight:500">Archivo normal</b><span>Texto chico, mismo sistema</span>
+        </div></div>
+      </div>
+      <p class="note"><b>Ideal para</b> la sección “Mapa” o para que el usuario elija destino. <b>Ojo:</b> necesita una base de lugares de pesca con coordenadas y accesos; conviene empezar con pocas zonas bien cubiertas.</p>
+    </div>
+  </section>
+
+  <!-- ================= C ================= -->
+  <section class="design" id="almanaque" style="--stage:#E6D9D6">
+    <div class="stage">
+      <div class="phone"><div class="screen c">
+        <div class="sb"><span>21:40</span><span>4G ▮▮▮</span></div>
+        <div class="c-top"><h4>Noviembre</h4><span>Almanaque<br>del pique · 2026</span></div>
+        <div class="c-grid" id="cal" aria-label="Calendario de pique de noviembre 2026"></div>
+        <div class="c-key"><span>● nueva</span><span>○ llena</span><span>▨ tormenta</span></div>
+        <div class="c-best">
+          <small>El mejor día del mes</small>
+          <b>Martes 24 · luna llena</b>
+          <p>Y el sábado 21 es el mejor fin de semana</p>
+          <span>24</span>
+        </div>
+        <nav class="c-nav"><span>HOY</span><span class="on">MES</span><span>LUGARES</span><span>VEDAS</span></nav>
+      </div></div>
+    </div>
+    <div class="info">
+      <span class="tag">Inspirado en los almanaques de pesca de las casas de pesca</span>
+      <h2>C · Almanaque</h2>
+      <p class="lede">Un calendario impreso a dos tintas, rojo y negro, como los almanaques del pescador que se cuelgan en las casas de pesca. Cada día muestra hasta tres pececitos según cómo viene el pique, más las fases de la luna.</p>
+      <div class="covers"><span>P1 Respuesta</span><span>P2 Simple</span><span>P3 Finde</span><span class="off">P4 Cerca</span><span class="off">P5 Qué llevar</span><span>P6 Avisos</span></div>
+      <div>
+        <h3>Por qué funciona para tu app</h3>
+        <ul>
+          <li>El ocasional planea con anticipación: un feriado largo, las vacaciones, el finde que tiene libre. El mes completo le muestra cuáles son los mejores días.</li>
+          <li>Los fines de semana van en rojo, como en los calendarios de papel, así que la vista salta directo a los días en que puede salir.</li>
+          <li>Retoma algo que los pescadores ya conocen y en lo que confían: las tablas solunares impresas. Se siente familiar para el que pesca desde chico con la familia.</li>
+          <li>Funciona muy bien para compartir: una captura del mes se manda al grupo de WhatsApp de los amigos para armar la salida.</li>
+        </ul>
+      </div>
+      <div class="specs">
+        <div><h3>Paleta</h3><div class="swatches">
+          <div class="sw"><i style="background:#F6F7F5"></i>Papel</div>
+          <div class="sw"><i style="background:#141414"></i>Negro</div>
+          <div class="sw"><i style="background:#D52B1E"></i>Rojo</div>
+          <div class="sw"><i style="background:#CFCFCA"></i>Línea</div>
+        </div></div>
+        <div><h3>Tipografía</h3><div class="fonts">
+          <b style="font-family:'Zilla Slab',serif;font-weight:700">Zilla Slab</b><span>Mes y números, como en la imprenta</span>
+          <b style="font-family:'Libre Franklin',sans-serif;font-weight:900;font-size:16px;letter-spacing:.12em">LIBRE FRANKLIN</b><span>Etiquetas y días de la semana</span>
+        </div></div>
+      </div>
+      <p class="note"><b>Ideal para</b> la vista “Mes” o un widget del celular. <b>Ojo:</b> más de 7 a 10 días adelante, el clima es incierto. La luna se puede calcular siempre, pero los días lejanos deberían marcarse como estimados.</p>
+    </div>
+  </section>
+
+  <!-- ================= D ================= -->
+  <section class="design" id="pizarron" style="--stage:#C9BBA8">
+    <div class="stage">
+      <div class="phone"><div class="screen d">
+        <div class="sb"><span>21:40</span><span>4G ▮▮▮</span></div>
+        <div class="d-board">
+          <h4>HOY EN LA LAGUNA</h4>
+          <div class="d-sub">Jueves 19 · Laguna de Monte</div>
+          <div class="d-hr"></div>
+          <div class="d-sp"><b>TARARIRA</b><em>★★★</em><span>en los juncos, con señuelo de superficie</span></div>
+          <div class="d-sp"><b>PEJERREY</b><em>★★☆</em><span>de costa, temprano, con filet de mojarra</span></div>
+          <div class="d-sp low"><b>BAGRE</b><em>★☆☆</em><span>de noche, con lombriz</span></div>
+          <div class="d-hr"></div>
+          <div class="d-info">
+            <div><small>MEJOR HORA</small>19 a 20:30</div>
+            <div><small>AGUA</small>clarita, 21 °C</div>
+            <div><small>VIENTO</small>tranqui</div>
+            <div><small>OJO</small>licencia al día</div>
+          </div>
+          <div class="d-sign">— <b>Rubén</b>, guardería “El Muelle”<br>actualizado 18:05</div>
+          <div class="d-chalk"><i></i><i></i><i></i></div>
+        </div>
+        <nav class="d-tabs"><span class="on">HOY</span><span>SEMANA</span><span>LAGUNAS</span></nav>
+      </div></div>
+    </div>
+    <div class="info">
+      <span class="tag">Inspirado en la pizarra de la guardería y la casa de carnada</span>
+      <h2>D · Pizarrón</h2>
+      <p class="lede">La pizarra que hay en la entrada de muchas guarderías y casas de carnada: qué especie está saliendo, con qué y a qué hora, escrito con tiza por alguien del lugar.</p>
+      <div class="covers"><span>P1 Respuesta</span><span>P2 Simple</span><span class="off">P3 Finde</span><span>P4 Cerca</span><span>P5 Qué llevar</span><span>P6 Avisos</span></div>
+      <div>
+        <h3>Por qué funciona para tu app</h3>
+        <ul>
+          <li>Responde lo que el ocasional más duda: qué especie anda y con qué carnada. Las estrellas por especie son más claras que un puntaje general.</li>
+          <li>Habla como la gente del lugar (“agua clarita”, “viento tranqui”). Es lenguaje simple con identidad propia.</li>
+          <li>Abre una idea de producto: que guarderías y casas de pesca actualicen su pizarra en la app. Le suma información real del día al pronóstico y crea una red de comercios aliados.</li>
+          <li>Es cálido y muy local. Se diferencia de las apps de clima genéricas y genera confianza.</li>
+        </ul>
+      </div>
+      <div class="specs">
+        <div><h3>Paleta</h3><div class="swatches">
+          <div class="sw"><i style="background:#22302B"></i>Pizarra</div>
+          <div class="sw"><i style="background:#EDEFE8"></i>Tiza</div>
+          <div class="sw"><i style="background:#F4DE7A"></i>Tiza amarilla</div>
+          <div class="sw"><i style="background:#F2A7A0"></i>Tiza rosa</div>
+          <div class="sw"><i style="background:#6E4A2A"></i>Marco</div>
+        </div></div>
+        <div><h3>Tipografía</h3><div class="fonts">
+          <b style="font-family:'Cabin Sketch',cursive;font-weight:700">CABIN SKETCH</b><span>Títulos y especies con trazo de tiza</span>
+          <b style="font-family:'Patrick Hand',cursive">Patrick Hand</b><span>Texto escrito a mano, pero legible</span>
+        </div></div>
+      </div>
+      <p class="note"><b>Ideal para</b> la vista de cada laguna y como base de una comunidad de comercios. <b>Ojo:</b> si nadie actualiza la pizarra, tiene que llenarse sola con el pronóstico, y conviene mostrar a qué hora se actualizó.</p>
+    </div>
+  </section>
+
+  <!-- ================= E ================= -->
+  <section class="design" id="reloj" style="--stage:#1A2438">
+    <div class="stage">
+      <div class="phone"><div class="screen e">
+        <div class="sb"><span>15:30</span><span>4G ▮▮▮</span></div>
+        <div class="e-head"><h4>Hoy en Chascomús</h4><span>JUE 19</span></div>
+        <div class="e-dial">
+          <svg id="dial" viewBox="0 0 260 260" role="img" aria-label="Reloj de 24 horas con la intensidad del pique"></svg>
+          <div class="e-center"><small>AHORA</small><b>Flojo</b><span>el pique fuerte arranca<br>a las 18:40</span></div>
+        </div>
+        <div class="e-next">
+          <div><small>PRÓXIMO PICO</small><b>18:40</b> <em>en 3 h 10</em></div>
+          <div><small>PUESTA DEL SOL</small><b>19:58</b> <em>hasta ahí</em></div>
+        </div>
+        <div class="e-days" id="minis"></div>
+        <nav class="e-nav"><span class="on">HOY</span><span>SEMANA</span><span>LUGARES</span></nav>
+      </div></div>
+    </div>
+    <div class="info">
+      <span class="tag">Camino más amplio · visualización de datos</span>
+      <h2>E · Reloj del Pique</h2>
+      <p class="lede">El día entero en un reloj de 24 horas. El anillo naranja se engrosa cuando el pique es fuerte, la línea amarilla marca las horas de sol y una aguja indica la hora actual.</p>
+      <div class="covers"><span>P1 Respuesta</span><span>P2 Simple</span><span>P3 Finde</span><span class="off">P4 Cerca</span><span class="off">P5 Qué llevar</span><span class="off">P6 Avisos</span></div>
+      <div>
+        <h3>Por qué funciona para tu app</h3>
+        <ul>
+          <li>El error más común del ocasional es llegar a la hora equivocada. El reloj muestra de un vistazo cuándo conviene estar con la línea en el agua.</li>
+          <li>Junta en una sola imagen lo que en otras apps son tres tablas: sol, luna y horarios de pique. No hay que entender “período solunar mayor”.</li>
+          <li>La cuenta regresiva (“en 3 h 10”) sirve para decidir si salir ya o esperar. Se presta para una notificación del tipo “en una hora arranca el pique”.</li>
+          <li>Los mini relojes de abajo comparan los días siguientes con la misma forma, sin agregar números.</li>
+        </ul>
+      </div>
+      <div class="specs">
+        <div><h3>Paleta</h3><div class="swatches">
+          <div class="sw"><i style="background:#0E1626"></i>Noche</div>
+          <div class="sw"><i style="background:#1E2A40"></i>Anillo</div>
+          <div class="sw"><i style="background:#FF8A3D"></i>Pique</div>
+          <div class="sw"><i style="background:#F6D365"></i>Sol</div>
+          <div class="sw"><i style="background:#E8EDF5"></i>Texto</div>
+        </div></div>
+        <div><h3>Tipografía</h3><div class="fonts">
+          <b style="font-family:'Instrument Serif',serif;font-size:26px">Instrument Serif</b><span>Horas y estados, con carácter</span>
+          <b style="font-family:'Instrument Sans',sans-serif">Instrument Sans</b><span>Etiquetas e interfaz</span>
+        </div></div>
+      </div>
+      <p class="note"><b>Ideal para</b> el detalle de un día o como widget. <b>Ojo:</b> un reloj de 24 horas no es intuitivo para todos; necesita una explicación breve la primera vez que se abre.</p>
+    </div>
+  </section>
+
+  <!-- ================= F ================= -->
+  <section class="design" id="baqueano" style="--stage:#C8D8C0">
+    <div class="stage">
+      <div class="phone"><div class="screen f">
+        <div class="sb"><span>21:40</span><span>4G ▮▮▮</span></div>
+        <div class="f-head">
+          <div class="f-av"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M3 15h20l-3-3H6z" fill="#F2B544"/><path d="M8 12c0-5 2-7 5-7s5 2 5 7z" fill="#F2B544"/><circle cx="13" cy="19" r="4" fill="#F3E1C7"/></svg></div>
+          <div><b>El Baqueano</b><span>conoce todas las lagunas de la zona</span></div>
+        </div>
+        <div class="f-chat">
+          <div class="f-msg me">¿Vale la pena ir a pescar el finde?</div>
+          <div class="f-msg bq">Sí. <b>El sábado es el mejor día</b>: viento suave y la luna está creciendo.</div>
+          <div class="f-card">
+            <header><span>SÁB 21 · LOBOS</span><span>MUY BUENO</span></header>
+            <div><span>Horario<b>5:30 a 8:30</b></span><span>Especie<b>Pejerrey</b></span><span>Carnada<b>Filet de mojarra</b></span><span>Distancia<b>48 km</b></span></div>
+          </div>
+          <div class="f-msg bq">Llevá la <b>licencia de pesca</b> de Provincia. ¿Te aviso el viernes si cambia el tiempo?</div>
+        </div>
+        <div class="f-quick"><span>Sí, avisame</span><span>¿Y la tararira?</span><span>Algo más cerca</span></div>
+        <div class="f-input">Preguntale algo…<i><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h9M7 3l4 4-4 4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg></i></div>
+      </div></div>
+    </div>
+    <div class="info">
+      <span class="tag">Camino más amplio · conversación</span>
+      <h2>F · El Baqueano</h2>
+      <p class="lede">En vez de pantallas con datos, la app es un baqueano: alguien que conoce la zona y te contesta como un amigo que pesca. Le preguntás y te responde con un veredicto, una tarjeta con lo justo y un consejo.</p>
+      <div class="covers"><span>P1 Respuesta</span><span>P2 Simple</span><span>P3 Finde</span><span>P4 Cerca</span><span>P5 Qué llevar</span><span>P6 Avisos</span></div>
+      <div>
+        <h3>Por qué funciona para tu app</h3>
+        <ul>
+          <li>Es la única propuesta que cubre los seis principios: responde, explica, recomienda lugar y carnada, y recuerda la licencia.</li>
+          <li>El ocasional no sabe qué preguntar ni qué dato mirar. Conversar es la interfaz que ya usa todos los días en WhatsApp.</li>
+          <li>Las respuestas rápidas (“Sí, avisame”, “Algo más cerca”) evitan tener que escribir y guían hacia lo que la app sabe responder.</li>
+          <li>El personaje le da una voz propia a la marca. Esa voz se puede usar también en notificaciones y en el resto de las pantallas.</li>
+        </ul>
+      </div>
+      <div class="specs">
+        <div><h3>Paleta</h3><div class="swatches">
+          <div class="sw"><i style="background:#E7EEE3"></i>Fondo</div>
+          <div class="sw"><i style="background:#2F6B4F"></i>Monte</div>
+          <div class="sw"><i style="background:#F2B544"></i>Sombrero</div>
+          <div class="sw"><i style="background:#FFFFFF"></i>Burbuja</div>
+          <div class="sw"><i style="background:#1F2A24"></i>Tinta</div>
+        </div></div>
+        <div><h3>Tipografía</h3><div class="fonts">
+          <b style="font-family:'Nunito',sans-serif;font-weight:900">Nunito</b><span>Redondeada y amable; una familia para todo</span>
+        </div></div>
+      </div>
+      <p class="note"><b>Ideal para</b> una función de asistente dentro de la app, o como tono de voz general. <b>Ojo:</b> si es un chat con IA, cuesta más de hacer y mantener, y tiene que basarse en el pronóstico real para no inventar.</p>
+    </div>
+  </section>
+
+  <!-- ================= Comparación ================= -->
+  <section class="compare" id="comparar">
+    <span class="eyebrow">Comparación</span>
+    <h2>Cuál resuelve mejor cada necesidad del pescador ocasional</h2>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Propuesta</th><th>Decide rápido</th><th>Planea el finde</th><th>Elige lugar</th><th>Qué llevar</th><th>Diferenciación</th><th>Esfuerzo</th></tr></thead>
+        <tbody>
+          <tr><td>A · Semáforo</td><td class="dots">●●●●●</td><td class="dots">●●●●○</td><td class="dots">●●○○○</td><td class="dots">●●○○○</td><td class="dots">●●○○○</td><td>Bajo</td></tr>
+          <tr><td>B · Parte del Tiempo</td><td class="dots">●●●●○</td><td class="dots">●●●○○</td><td class="dots">●●●●●</td><td class="dots">●●●○○</td><td class="dots">●●●●○</td><td>Medio (mapa y lugares)</td></tr>
+          <tr><td>C · Almanaque</td><td class="dots">●●●○○</td><td class="dots">●●●●●</td><td class="dots">●○○○○</td><td class="dots">●○○○○</td><td class="dots">●●●●○</td><td>Bajo</td></tr>
+          <tr><td>D · Pizarrón</td><td class="dots">●●●●○</td><td class="dots">●●○○○</td><td class="dots">●●●○○</td><td class="dots">●●●●●</td><td class="dots">●●●●●</td><td>Medio (comercios aliados)</td></tr>
+          <tr><td>E · Reloj del Pique</td><td class="dots">●●●○○</td><td class="dots">●●●○○</td><td class="dots">●○○○○</td><td class="dots">●○○○○</td><td class="dots">●●●●○</td><td>Medio</td></tr>
+          <tr><td>F · El Baqueano</td><td class="dots">●●●●○</td><td class="dots">●●●●○</td><td class="dots">●●●●○</td><td class="dots">●●●●○</td><td class="dots">●●●●●</td><td>Alto (asistente)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="reco">
+      <p><b>Mi recomendación:</b> armar la app con el <b>Semáforo</b> como pantalla de inicio, porque es la respuesta más rápida para tu usuario y la más barata de construir. Desde ahí, tres secciones que completan lo que le falta:</p>
+    </div>
+    <div class="flow">
+      <div><small>Inicio</small><b>A · Semáforo</b><p>“¿Voy o no?”, el horario y la semana en colores.</p></div>
+      <div><small>Detalle del día</small><b>D · Pizarrón</b><p>Qué especie anda y con qué carnada, por laguna.</p></div>
+      <div><small>Dónde ir</small><b>B · Parte del Tiempo</b><p>Mapa de lagunas y ríos cerca tuyo.</p></div>
+      <div><small>Planear</small><b>C · Almanaque</b><p>El mes completo para los feriados y vacaciones.</p></div>
+    </div>
+    <div class="reco">
+      <p>El <b>Baqueano</b> conviene dejarlo para una segunda versión: primero se valida el pronóstico, y después se suma el asistente. Lo que sí se puede usar desde el día uno es su tono de voz, cercano y en criollo, en todos los textos de la app.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+// C · Almanaque: noviembre 2026 empieza en domingo. Pique estimado según cercanía a luna nueva (9) y llena (24).
+(function(){
+  var cal=document.getElementById('cal'); if(!cal) return;
+  var heads=['L','M','M','J','V','S','D'], html='';
+  heads.forEach(function(h,i){html+='<div class="h'+(i>4?' we':'')+'">'+h+'</div>';});
+  for(var k=0;k<6;k++) html+='<div class="c-day" aria-hidden="true" style="border-top-color:transparent"></div>';
+  for(var d=1;d<=30;d++){
+    var dow=(d+5)%7; // 0 = lunes
+    var dist=Math.min(Math.abs(d-9),Math.abs(d-24));
+    var lvl=dist<=1?3:(dist<=3?2:1);
+    if(d===23) lvl=0;
+    var cls='c-day'+(dow>4?' we':'')+(d===19?' today':'')+(d===23?' storm':'');
+    var moon=d===9?'●':(d===24?'○':'');
+    var fish=''; for(var f=0;f<lvl;f++) fish+='<i></i>';
+    html+='<div class="'+cls+'"><b>'+d+' <span class="c-moon">'+moon+'</span></b><div class="c-fish">'+fish+'</div></div>';
+  }
+  cal.innerHTML=html;
+})();
+
+// E · Reloj del pique: reloj de 24 h con el mediodía arriba.
+(function(){
+  var NS='http://www.w3.org/2000/svg';
+  function bite(h){
+    function g(c,w,a){var d=Math.min(Math.abs(h-c),24-Math.abs(h-c));return a*Math.exp(-(d*d)/(2*w*w));}
+    return Math.min(1,0.12+g(6.6,0.9,0.85)+g(19.2,0.9,1)+g(13.1,0.5,0.45)+g(0.9,0.5,0.4));
+  }
+  function pt(cx,r,h){var a=((h-12)/24)*2*Math.PI-Math.PI/2;return [cx+r*Math.cos(a),cx+r*Math.sin(a)];}
+  function arc(cx,r,h1,h2){var p=pt(cx,r,h1),q=pt(cx,r,h2),large=(h2-h1)>12?1:0;return 'M'+p[0].toFixed(2)+' '+p[1].toFixed(2)+'A'+r+' '+r+' 0 '+large+' 1 '+q[0].toFixed(2)+' '+q[1].toFixed(2);}
+  function el(svg,tag,attrs){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);svg.appendChild(e);return e;}
+  function draw(svg,size,opts){
+    var cx=size/2, s=size/260;
+    el(svg,'circle',{cx:cx,cy:cx,r:96*s,fill:'none',stroke:'#1E2A40','stroke-width':22*s});
+    for(var h=0;h<24;h+=0.25){
+      var v=bite(h+0.125);
+      el(svg,'path',{d:arc(cx,96*s,h,h+0.27),fill:'none',stroke:'#FF8A3D','stroke-width':(4+18*v)*s,'stroke-opacity':(0.25+0.75*v).toFixed(2)});
+    }
+    el(svg,'path',{d:arc(cx,118*s,5.7,19.97),fill:'none',stroke:'#F6D365','stroke-width':3*s,'stroke-linecap':'round'});
+    if(opts.labels){
+      [[0,'0'],[6,'6'],[12,'12'],[18,'18']].forEach(function(l){var p=pt(cx,70,l[0]);var t=el(svg,'text',{x:p[0],y:p[1]+4,'text-anchor':'middle','font-family':'Instrument Sans, sans-serif','font-size':11,fill:'#8A97AD'});t.textContent=l[1];});
+      var a=pt(cx,58,15.5), b=pt(cx,110,15.5);
+      el(svg,'line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'#E8EDF5','stroke-width':2,'stroke-linecap':'round'});
+      el(svg,'circle',{cx:b[0],cy:b[1],r:4,fill:'#E8EDF5'});
+    }
+  }
+  var dial=document.getElementById('dial'); if(dial) draw(dial,260,{labels:true});
+  var minis=document.getElementById('minis');
+  if(minis){
+    ['Vie 20','Sáb 21','Dom 22','Lun 23'].forEach(function(name,i){
+      var d=document.createElement('div'); if(i===1) d.className='on';
+      var svg=document.createElementNS(NS,'svg'); svg.setAttribute('viewBox','0 0 260 260'); svg.setAttribute('aria-hidden','true');
+      d.appendChild(svg); draw(svg,260,{labels:false});
+      if(i===3){svg.style.opacity='.35';}
+      var lab=document.createElement('span'); lab.textContent=name; d.appendChild(lab);
+      minis.appendChild(d);
+    });
+  }
+})();
+</script>
