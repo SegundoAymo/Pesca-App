@@ -191,3 +191,27 @@ test('salidas: con y sin pesca, y comparación por condición', async () => {
   assert.equal(parseTemp('60'), null);
   assert.equal(parseTemp(''), null);
 });
+
+test('cantidades: varios peces en una sola anotación', async () => {
+  const { allOutings, outingStats, qty, fishCount } = await import('../js/logic/outings.js');
+  const { summarize } = await import('../js/logic/conditions.js');
+  const { parseCount } = await import('../js/screens/catches.js');
+  const cond = { moon: 'Luna nueva', month: 11, moment: 'dawn' };
+  const catches = [
+    { id: 'x', outingId: 'a', species: 'dientudo', count: 7, conditions: cond },
+    { id: 'y', outingId: 'a', species: 'tararira', conditions: cond },
+    { id: 'z', species: 'bagre', date: '2026-10-20', count: 3, conditions: cond },
+  ];
+  assert.equal(qty(catches[0]), 7);
+  assert.equal(qty(catches[1]), 1);
+  assert.equal(qty({ count: 0 }), 1);
+  assert.equal(fishCount(catches), 11);
+  const all = allOutings([{ id: 'a', date: '2026-11-01', start: '06:00', conditions: cond }], catches);
+  assert.deepEqual(all.map((o) => o.n), [8, 3]);
+  assert.equal(outingStats(all).find((s) => s.title === 'Luna').rows[0].fish, 11);
+  assert.deepEqual(summarize(catches).find((s) => s.title === 'Momento del día').rows, [{ label: 'Amanecer', n: 11 }]);
+  assert.equal(parseCount('12'), 12);
+  assert.equal(parseCount('0'), 1);
+  assert.equal(parseCount('2,5'), 1);
+  assert.equal(parseCount(''), 1);
+});
